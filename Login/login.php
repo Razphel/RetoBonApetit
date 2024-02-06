@@ -1,6 +1,5 @@
 <?php
-include_once './Include/conexion.php';
-include_once './Include/DB.php';
+include_once('Include/DB.php');
 ?>
 
 
