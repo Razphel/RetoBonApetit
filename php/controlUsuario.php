@@ -37,7 +37,7 @@ function consultaUsuario()
         $aux1 = $_REQUEST['nombreUsuario'];
         $aux2 = $_REQUEST['contraseña'];
 
-        $sql = "SELECT nombre, password FROM usuarios WHERE nombre= '$aux1' and password= '$aux2'";
+        $sql = "SELECT nombre, password, admin FROM usuarios WHERE nombre= '$aux1' and password= '$aux2'";
 
         // $preparada = $conexion->prepare($sql);
         // $preparada->bindParam(':nombre', $_REQUEST['nombre']);
@@ -47,14 +47,15 @@ function consultaUsuario()
         $resultado = $conexion->query($sql);
 
         $fila = $resultado->fetch();
-        if (isset($fila)) {
-            $respuesta = true;
+        if ($fila) {
+            $respuesta = $fila;
+        } else {
+            $respuesta = false;
         }
     } catch (Exception $e) {
         throw new Exception("ERROR: " + $e);
     }
     return $respuesta;
 }
-
 
 echo json_encode(consultaUsuario());
