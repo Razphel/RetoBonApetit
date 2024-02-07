@@ -11,7 +11,7 @@ function conexion()
     $resultado = false;
     try {
         $servidor = "localhost";
-        $basedatos = "webreto";
+        $basedatos = "pruebareto";
         $usuario = "dwes";
         $password = "abc123.";
         $opciones = array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8");
