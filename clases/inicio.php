@@ -2,6 +2,10 @@
 include_once 'BD.clase.php';
 $resulta = BD::imprimirConsultas('productos');
 $resulta2 = BD::imprimirConsultas('categorias');
+$resulta3 = BD::imprimirConsultas('estados');
+$resulta4 = BD::imprimirConsultas('unidades');
+$resulta5 = BD::imprimirConsultas('proveedores');
+$resulta6 = BD::imprimirConsultas('residuos');
 print_r($resulta);
 print_r($resulta2);
 ?>
