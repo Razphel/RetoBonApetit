@@ -1,9 +1,13 @@
 <?php
 include_once 'BD.clase.php';
-// $resulta = BD::imprimirConsultas('productos');
-// $resulta2 = BD::imprimirConsultas('categorias');
-// print_r($resulta);
-// print_r($resulta2);
+$resulta = BD::imprimirConsultas('productos');
+$resulta2 = BD::imprimirConsultas('categorias');
+$resulta3 = BD::imprimirConsultas('estados');
+$resulta4 = BD::imprimirConsultas('unidades');
+$resulta5 = BD::imprimirConsultas('proveedores');
+$resulta6 = BD::imprimirConsultas('residuos');
+print_r($resulta);
+print_r($resulta2);
 $buscar1 = BD::buscarRegistro(5,'productos');
 $buscar2 = BD::buscarRegistro(1,'productos');
 $buscar3 = BD::buscarRegistro(2,'kaldin');
