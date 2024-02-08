@@ -1,52 +1,79 @@
 window.addEventListener("load", principal);
 
 function principal() {
-    document.querySelector("#entrar").addEventListener("click", iniciarSesion);
+    //Uso jquery para seleccionar los elementos.
+    //Los manejadores de eventos en jquery se usan como funciones.
+    $("#entrar").click(iniciarSesion);
+    $("#login").submit(function (e) { e.preventDefault(); })
+}
 
-    function iniciarSesion() {
-        //Esto es copiar y pegar todo el tiempo.
-        let miXHR = new XMLHttpRequest();
+function iniciarSesion() {
+    //Compruebo que los datos no esten vacios.
+    let user = $("#nombreUsuario").val();
+    let pass = $("#contraseña").val();
 
-        //Este metodo recibe el resultado de la consulta.
-        miXHR.onreadystatechange = miXHRCambiaEstado();
+    if (comprobarVacio(user, pass)) {
+        //Obtenemos los datos del formulario, el nombre de cada variable debe ser igual que el $_REQUEST de php.
+        let parametros = {
+            nombreUsuario: user,
+            contraseña: pass
+        };
 
-        //Aqui va la ruta del archivo php donde se hace la consulta.
-        //se agrega un numero aleatorio al final para que el cache no de errores.
-        let miURL = "./php/controlUsuario.php?nocache=" + Math.random() + "&";
+        //Enviamos los valores a nuestro php usando ajax y jquery.
+        $.ajax({
+            //Ubicacion del archivo php que va a manejar los valores.
+            url: "../php/controlUsuario.php",
+            //Metodo en que los va a recibir.
+            type: "POST",
+            //Las variables que le enviamos.
+            data: parametros,
+            dataType: "json",
+            //La funcion que se ejecuta segun el resultado.
+            success: manejarRespuesta,
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.error("Error en la solicitud AJAX: " + textStatus, errorThrown);
+            }
+        });
 
-        //Aqui guardo los parametros desde el html en formato que pueda leer php.
-        //Por ejemplo= Variable1=resultado1&Variable2=Resultado2&Variable3=Resultado3
-        let parametros = cargarParametros();
-
-        //Para usar el post se tiene que hacer un paso adicional, se usa el .send para enviar las variables.
-        miXHR.open("POST", miURL);
-
-        //Desde aqui tambien es copiar y pegar siempre.
-        miXHR.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-
-        miXHR.send(parametros);
+    } else {
+        let salida = document.querySelector("#salida");
+        salida.innerHTML = "ERROR: Debes rellenar ambos campos.";
     }
 
-    function cargarParametros() {
-        let parametros = "";
-        if ((document.querySelector("#nombreUsuario").value !== "") && (document.querySelector("#contraseña").value !== "")) {
-            parametros += "nombreUsuario=" + document.querySelector("#nombreUsuario").value + "&";
-            parametros += "contraseña=" + document.querySelector("#contraseña").value;
+}
+
+function manejarRespuesta(respuesta) {
+    let salida = document.querySelector("#salida");
+    if (!respuesta) {
+        //El usuario no existe.
+        salida.innerHTML = "ERROR: Comprueba los datos.";
+        console.log("no");
+    } else {
+        //El usuario existe. Ahora hay que comprobar si es administrador.
+        if (respuesta.admin) {
+            //Si es administrador o usuario, impirmo si mensaje correspondiente y hago una redireccion a los dos segundos.
+            salida.innerHTML = "Soy admin";
+            setTimeout(function () {
+                window.location.replace("../administrador/inicioAdmin.html");
+            }, 2000);
+        } else {
+            salida.innerHTML = "Soy usuario";
+            setTimeout(function () {
+                window.location.replace("../usuario/inicioUsuario.html");
+            }, 2000);
         }
-        return parametros;
     }
 }
 
-function miXHRCambiaEstado(e) {
-    if ((this.readyState === 4) && (this.status === 200)) {
-        let respuesta = JSON.parse(this.responseText);
-        let salida = document.querySelector("#salida");
-
-        console.log("Si");
+function comprobarVacio(usuario, contraseña) {
+    let respuesta = false;
+    usuario = usuario.trim();
+    contraseña = usuario.trim();
 
 
-        for (let i = 0; i < respuesta.length; i++) {
-            salida.innerHTML += respuesta[i] + "<br>";
-        }
+    // Comprueba si alguno de los campos estan vacios.
+    if (usuario.length > 0 && contraseña.length > 0) {
+        respuesta = true;
     }
+    return respuesta;
 }

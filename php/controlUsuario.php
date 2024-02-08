@@ -14,9 +14,8 @@ function conexion()
         $basedatos = "webreto";
         $usuario = "dwes";
         $password = "abc123.";
-        $opciones = array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8");
 
-        $conexion = new PDO('mysql:host=' . $servidor . ';dbname=' . $basedatos, $usuario, $password, $opciones);
+        $conexion = new PDO('mysql:host=' . $servidor . ';dbname=' . $basedatos, $usuario, $password);
 
         //Configura el nivel de error
         $conexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -37,7 +36,7 @@ function consultaUsuario()
         $aux1 = $_REQUEST['nombreUsuario'];
         $aux2 = $_REQUEST['contraseña'];
 
-        $sql = "SELECT nombre, password FROM usuarios WHERE nombre= '$aux1' and password= '$aux2'";
+        $sql = "SELECT nombre, password, admin FROM usuarios WHERE nombre= '$aux1' and password= '$aux2'";
 
         // $preparada = $conexion->prepare($sql);
         // $preparada->bindParam(':nombre', $_REQUEST['nombre']);
@@ -47,14 +46,15 @@ function consultaUsuario()
         $resultado = $conexion->query($sql);
 
         $fila = $resultado->fetch();
-        if (isset($fila)) {
-            $respuesta = true;
+        if ($fila) {
+            $respuesta = $fila;
+        } else {
+            $respuesta = false;
         }
     } catch (Exception $e) {
         throw new Exception("ERROR: " + $e);
     }
     return $respuesta;
 }
-
 
 echo json_encode(consultaUsuario());
