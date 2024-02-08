@@ -1,16 +1,29 @@
 window.addEventListener("load", principal);
 
 function principal() {
+    //Antes de cargar la pagina principal, compruebo que no exista ya una sesion iniciada.
+    if (localStorage.getItem("usuario")) {
+        //Si es admin, redirecciona a la pagina de administradores.
+        if (usuarioActual.tipo == 1) {
+            window.location.replace("../administrador/inicioAdmin.html");
+        }
+        //Si no, te lleva a los usuarios.
+        if (usuarioActual.tipo == 0) {
+            window.location.replace("../usuario/inicioUsuario.html");
+        }
+    }
+
     //Uso jquery para seleccionar los elementos.
     //Los manejadores de eventos en jquery se usan como funciones.
     $("#entrar").click(iniciarSesion);
     $("#login").submit(function (e) { e.preventDefault(); })
+
 }
 
 function iniciarSesion() {
     //Compruebo que los datos no esten vacios.
-    let user = $("#nombreUsuario").val();
-    let pass = $("#contraseña").val();
+    let user = document.querySelector("#nombreUsuario").value;
+    let pass = document.querySelector("#contraseña").value;
 
     if (comprobarVacio(user, pass)) {
         //Obtenemos los datos del formulario, el nombre de cada variable debe ser igual que el $_REQUEST de php.
@@ -24,7 +37,7 @@ function iniciarSesion() {
             //Ubicacion del archivo php que va a manejar los valores.
             url: "../php/controlUsuario.php",
             //Metodo en que los va a recibir.
-            type: "POST",
+            type: "GET",
             //Las variables que le enviamos.
             data: parametros,
             dataType: "json",
@@ -47,10 +60,12 @@ function manejarRespuesta(respuesta) {
     if (!respuesta) {
         //El usuario no existe.
         salida.innerHTML = "ERROR: Comprueba los datos.";
-        console.log("no");
+
     } else {
+        //Guardo el usuario en la sesion.
+        localStorage.setItem("usuario", JSON.stringify({ nombre: respuesta.nombre, tipo: respuesta.admin, activo: respuesta.activo }));
         //El usuario existe. Ahora hay que comprobar si es administrador.
-        if (respuesta.admin) {
+        if (respuesta.admin == 1) {
             //Si es administrador o usuario, impirmo si mensaje correspondiente y hago una redireccion a los dos segundos.
             salida.innerHTML = "Soy admin";
             setTimeout(function () {

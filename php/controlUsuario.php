@@ -36,7 +36,7 @@ function consultaUsuario()
         $aux1 = $_REQUEST['nombreUsuario'];
         $aux2 = $_REQUEST['contraseña'];
 
-        $sql = "SELECT nombre, password, admin FROM usuarios WHERE nombre= '$aux1' and password= '$aux2'";
+        $sql = "SELECT nombre, password, admin, activo FROM usuarios WHERE nombre= '$aux1' and password= '$aux2'";
 
         // $preparada = $conexion->prepare($sql);
         // $preparada->bindParam(':nombre', $_REQUEST['nombre']);
