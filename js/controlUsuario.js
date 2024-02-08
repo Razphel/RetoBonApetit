@@ -11,6 +11,7 @@ function iniciarSesion() {
     //Compruebo que los datos no esten vacios.
     let user = $("#nombreUsuario").val();
     let pass = $("#contraseña").val();
+
     if (comprobarVacio(user, pass)) {
         //Obtenemos los datos del formulario, el nombre de cada variable debe ser igual que el $_REQUEST de php.
         let parametros = {
@@ -33,9 +34,10 @@ function iniciarSesion() {
                 console.error("Error en la solicitud AJAX: " + textStatus, errorThrown);
             }
         });
+
     } else {
         let salida = document.querySelector("#salida");
-        salida.innerHTML = "ERROR: Debes rellenar ambos campos."
+        salida.innerHTML = "ERROR: Debes rellenar ambos campos.";
     }
 
 }
