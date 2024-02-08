@@ -3,6 +3,7 @@ window.addEventListener("load", principal);
 function principal() {
     //Antes de cargar la pagina principal, compruebo que no exista ya una sesion iniciada.
     if (localStorage.getItem("usuario")) {
+        let usuarioActual = JSON.parse(localStorage.getItem("usuario"));
         //Si es admin, redirecciona a la pagina de administradores.
         if (usuarioActual.tipo == 1) {
             window.location.replace("../administrador/inicioAdmin.html");
