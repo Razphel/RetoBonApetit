@@ -94,7 +94,7 @@ class BD
     {   
         $respuesta = false;
         $conexion = self::conexionBD();
-        $sql = "SELECT id_categoria from $tabla WHERE id_categoria = $id";
+        $sql = "SELECT id_categorias from $tabla WHERE id_categoria = $id";
         $resultado = $conexion->query($sql);
         if($resultado->rowCount() > 0)
         {
