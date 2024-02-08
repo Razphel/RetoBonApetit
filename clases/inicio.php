@@ -1,7 +1,9 @@
 <?php
 include_once 'BD.clase.php';
-$resulta = BD::consultaCategorias();
+$resulta = BD::imprimirConsultas('productos');
+$resulta2 = BD::imprimirConsultas('categorias');
 print_r($resulta);
+print_r($resulta2);
 ?>
 <!DOCTYPE html>
 <html lang="es">

@@ -43,7 +43,7 @@ class BD
     {
     $respuesta = false;
     try {
-        $conexion = conexion();
+        $conexion = self::conexionBD();
         $nombreUsuario = $_REQUEST['nombreUsuario'];
         $contraseñaUsuario = $_REQUEST['contraseña'];
 
@@ -63,12 +63,13 @@ class BD
     return $respuesta;
     }
 
-    public static function consultaCategorias()
+    //Con esta funcion tan solo tenemos que pasar por parametro la tabla que deseamos imprimir por pantalla con toda su información. 
+    public static function imprimirConsultas($tablaImprimir)
     {
         try 
-        {
+        {   
             $conexion = self::conexionBD();
-            $sql = "SELECT * FROM categorias";
+            $sql = "SELECT * FROM $tablaImprimir";
 
             $resultado = $conexion->query($sql);
 
@@ -94,7 +95,7 @@ class BD
         try 
         {
             $conexion = self::conexionBD();
-            $sql = "SELECT descripcion,observaciones,imagenes FROM categorias";
+            $sql = "INSERT categorias VALUES()";
 
             $resultado = $conexion->query($sql);
 
