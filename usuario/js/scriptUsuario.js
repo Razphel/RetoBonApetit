@@ -75,21 +75,38 @@ function mostrarCategorias(respuesta) {
 }
 
 function mostrarProveedores(respuesta) {
-    let salida = document.querySelector("#proveedores");
-
+    let salida = document.querySelector("#contenido");
+    let contador = 0;
+    salida.innerHTML = "";
+    let contenedorProveedores = crearElemento("div",undefined,{id:"ContProveedores",class:"col-3",style:"border:2px black solid; padding:5px"});
     respuesta.forEach(fila => {
-        let contenedor = document.createElement("div");
-        contenedor.setAttribute("class", "col-3");
-        contenedor.style.border = "2px black solid";
-        contenedor.style.padding = "5px";
+        let proveedor = crearElemento("p",undefined,{id:contenedor});
 
-        let aux = document.createElement("p");
-        aux.innerHTML = fila.descripcion;
-        contenedor.appendChild(aux);
-        salida.appendChild(contenedor);
+        proveedor.innerHTML = fila.descripcion;
+        contenedorProveedores.appendChild(aux);
+        salida.appendChild(contenedorProveedores);
         console.log(respuesta);
+        contador++;
     });
 
+}
+
+function crearElemento(etiqueta,contenido,atributos)
+{
+    let elementoNuevo = document.createElement(etiqueta);
+    if(contenido !== undefined)
+        {
+        let contenidoNuevo = document.createTextNode(contenido);
+        elementoNuevo.appendChild(contenidoNuevo);
+        }
+    if(atributos !== undefined)
+    {
+        for(let clave in atributos)
+        {   
+            elementoNuevo.setAttribute(clave, atributos[clave]);
+        }
+    }
+    return elementoNuevo;
 }
 
 
