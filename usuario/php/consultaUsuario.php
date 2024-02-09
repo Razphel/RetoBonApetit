@@ -7,6 +7,12 @@ header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
 // Indicamos  al navegador que va a recibir contenido JSON
 header("Content-Type: application/json");
 
-$categorias = BD::consultaCategorias();
 
-echo json_encode($categorias);
+if (isset($_REQUEST['categoriaEnviada'])) {
+    $categoriaRecibida = $_REQUEST['categoriaEnviada'];
+    $productos = BD::consultaProductos($categoriaRecibida);
+    echo json_encode($productos);
+} else {
+    $categorias = BD::consultaCategorias();
+    echo json_encode($categorias);
+}

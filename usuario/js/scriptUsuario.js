@@ -45,6 +45,7 @@ function mostrarCategorias(respuesta) {
         contenedor.addEventListener("click", mostrarProductos);
         contenedor.setAttribute("class", "col-3");
         contenedor.style.border = "2px black solid";
+        contenedor.style.padding = "5px";
 
         let aux = document.createElement("p");
         aux.innerHTML = fila.descripcion;
@@ -61,7 +62,6 @@ function mostrarCategorias(respuesta) {
 function mostrarProductos(e) {
     //Selecciono el elemento p dentro del cuadro categoria en el que se haga click y recibo su texto, esto sera la categoria a mostrar.
     let categoria = this.querySelector("p").textContent;
-
     let parametros = { categoriaEnviada: categoria };
 
     $.ajax({
@@ -69,9 +69,13 @@ function mostrarProductos(e) {
         url: "./php/consultaUsuario.php",
         //Metodo en que los va a recibir.
         type: "GET",
+        //Las variables que le enviamos.
+        data: parametros,
         dataType: "json",
         //La funcion que se ejecuta segun el resultado.
-        success: mostrarCategorias,
+        success: function(resultado){
+            console.log(resultado);
+        },
         error: function (jqXHR, textStatus, errorThrown) {
             console.error("Error en la solicitud AJAX: " + textStatus, errorThrown);
         }

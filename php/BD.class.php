@@ -63,28 +63,22 @@ class BD
         return $respuesta;
     }
 
-    public static function consultaProductos()
+    public static function consultaProductos($categoria)
     {
-        $respuesta = false;
         try {
             $conexion = conexion();
-            $nombreUsuario = $_REQUEST['nombreUsuario'];
-            $contraseñaUsuario = $_REQUEST['contraseña'];
-
-            $sql = "SELECT nombre, password, admin FROM usuarios WHERE nombre= '$nombreUsuario' and password= '$contraseñaUsuario'";
+            $sql = "SELECT * FROM productos WHERE categoria= '$categoria'";
 
             $resultado = $conexion->query($sql);
+            $filas = [];
 
-            $fila = $resultado->fetch();
-            if ($fila) {
-                $respuesta = $fila;
-            } else {
-                $respuesta = false;
+            while ($fila = $resultado->fetch()) {
+                $filas[] = $fila;
             }
         } catch (Exception $e) {
             throw new Exception("ERROR: " + $e);
         }
-        return $respuesta;
+        return $filas;
     }
 
     public static function consultaCategorias()
