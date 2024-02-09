@@ -1,0 +1,125 @@
+/* ETIQUETAS GENERALES________________________________________________gen_00 */
+/* Tipografía.......................................gen_tipo */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+/* Propiedades generales............................gen_prop */
+:root {
+    /* Colores.........................*/
+    --primary-color: #E26082;
+    --accent-color: #e76a8b; /* tono claro del primary */
+    --accent-color-light: #F5F5F5; /* color de fondo gris */
+    --accent-color-dark: #b1b1b1; /* color bordes o acento oscuro del gris */
+    --light-color: white; 
+
+    /* Textos...........................*/
+    --font: 'Inter', sans-serif;
+    --text-dark-color: #0f0c09;
+    --text-light-color: white;
+
+    /* Tamaños...........................*/
+    --size-h1: 4.210rem; /* 67.36pc */
+    --size-h2: 2.197rem; /* 35,152 */
+    --size-h3: 1.369rem; /* 21.904px */
+    --size-h4:  0.82rem; /* 13.12px */
+    --size-h5: 1.333rem; /* 21.28px */
+    --size-p: 0.96rem; /* 15.36px */
+    --size-span: 0.82rem; /* 13.12px */
+    --line-height: 1.5rem;
+}
+
+/* Headings y textos............................gen_headings */
+p {
+    margin: 0; 
+}
+
+/* Botones...................................... gen_botones */ 
+.btn {  
+    font-size: 14px;  
+    margin-top: 20px;  
+    border: solid thin var(--primary-color);
+    background-color: var(--primary-color);
+}  
+
+.btn:hover {
+    border: solid thin var(--primary-color);
+    background-color: var(--primary-color);
+}
+
+/* Tablas........................................ gen_tablas */
+
+
+/* Formularios................................... gen_forms */
+form {  
+    font-size: 14px;  
+}  
+
+/* Contenedores.................................. gen_cont */
+.container {  
+    height: 100vh;  
+    width: 100%;
+    display: flex;  
+    align-items: center;  
+    justify-content: center;  
+}  
+
+.card-body {
+    padding: 30px;
+}
+
+.card-title {   
+    padding-bottom: 20px;
+    font-weight: 300;  
+}  
+
+/* Body............................................ gen_body */
+html {
+    height: 100vh;
+}
+
+body {
+    font-family: var(--font);
+    height: 100vh;
+    margin: 0; 
+    background-color: var(--accent-color-light);  
+}
+
+.login-form {   
+    width: 330px;  
+    border: none;
+}  
+
+/* Aside........................................... gen_aside */
+.menu_lateral {
+    padding: 20px;
+    background-color: rgb(209, 209, 209);
+}
+
+.menu_lateral ul {
+    list-style: none;
+    padding: 0; 
+    margin: 0; 
+}
+
+.menu_link {
+    text-decoration: none;
+    display: flex;
+    flex-direction: row;
+}
+
+/* Header.......................................... gen_header */
+.navbar {
+    background-color: rgb(250, 193, 247);
+}
+
+/* Main............................................ gen_main */
+.layout_page {
+    background-color: rgb(235, 235, 235); 
+}
+
+/* PÁGINAS____________________________________________________________ pag_00 */
+
+
+
+
+
+
