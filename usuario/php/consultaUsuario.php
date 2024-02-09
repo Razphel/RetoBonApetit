@@ -12,7 +12,15 @@ if (isset($_REQUEST['categoriaEnviada'])) {
     $categoriaRecibida = $_REQUEST['categoriaEnviada'];
     $productos = BD::consultaProductos($categoriaRecibida);
     echo json_encode($productos);
-} else {
+}
+
+if (isset($_REQUEST['claveUsuario'])) {
+    $id_usuario = $_REQUEST['claveUsuario'];
+    $historial = BD::imprimirPedidos($id_usuario);
+    echo json_encode($historial);
+} 
+
+else {
     $categorias = BD::consultaCategorias();
     echo json_encode($categorias);
 }
