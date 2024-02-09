@@ -43,11 +43,16 @@ class BD
     {
         $respuesta = false;
         try {
-            $conexion = conexion();
-            $nombreUsuario = $_REQUEST['nombreUsuario'];
-            $contraseñaUsuario = $_REQUEST['contraseña'];
+            $conexion = self::conexionBD();
+            $aux1 = $_REQUEST['nombreUsuario'];
+            $aux2 = $_REQUEST['contraseña'];
 
-            $sql = "SELECT nombre, password, admin FROM usuarios WHERE nombre= '$nombreUsuario' and password= '$contraseñaUsuario'";
+            $sql = "SELECT id_usuario, nombre, password, admin, activo FROM usuarios WHERE nombre= '$aux1' and password= '$aux2'";
+
+            // $preparada = $conexion->prepare($sql);
+            // $preparada->bindParam(':nombre', $_REQUEST['nombre']);
+            // $preparada->bindParam(':password', $_REQUEST['password']);
+            // $preparada->execute();
 
             $resultado = $conexion->query($sql);
 
@@ -66,7 +71,7 @@ class BD
     public static function consultaProductos($categoria)
     {
         try {
-            $conexion = conexion();
+            $conexion = self::conexionBD();
             $sql = "SELECT * FROM productos WHERE categoria= '$categoria'";
 
             $resultado = $conexion->query($sql);
