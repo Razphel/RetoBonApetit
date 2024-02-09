@@ -8,6 +8,6 @@ header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
 header("Content-Type: application/json");
 
 
-    $proveedores = BD::imprimirConsultas('proveedores');
-    echo json_encode($proveedores);
+    $residuos = BD::imprimirConsultas('residuos');
+    echo json_encode($residuos);
 ?>
