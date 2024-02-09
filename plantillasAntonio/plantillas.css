@@ -1,3 +1,5 @@
-* {
-    background-color: rgba(47, 72, 72, 0.799);
+.menu {
+    height: 100%;
+    /* width: 100%; */
+    background-color: rgba(132, 225, 141, 0.799);
 }
