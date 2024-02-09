@@ -51,41 +51,43 @@ function cerrarSesion() {
 
 function mostrarCategorias(respuesta) {
     //Ahora que tengo todos los datos de la tabla categorias, hago los elementos para guardarla.
-    let salida = document.querySelector("#categorias");
-
+    let salida = document.querySelector("#contenedor");
+    let categorias = crearElemento("div", undefined, { class: "row", id: "categorias" });
+ 
     respuesta.forEach(fila => {
-        let contenedor = document.createElement("div");
-        contenedor.setAttribute("class", "col-3");
-        contenedor.style.border = "2px black solid";
-        contenedor.style.padding = "5px";
-
-        let aux = document.createElement("p");
+        let contenedor = crearElemento("div", undefined, { class: "col-3", style: "border: 2px black solid; padding: 5px;" });
+ 
+        let aux = crearElemento("p", undefined, undefined);
         aux.innerHTML = fila.descripcion;
-
-        let aux3 = document.createElement("p");
+ 
+        let aux3 = crearElemento("p", undefined, undefined);
         aux3.innerHTML = fila.imagenes;
         contenedor.appendChild(aux3);
         // let aux2 = document.createElement("img");
         // aux2.setAttribute("href", fila.imagen);
         // contenedor.appendChild(aux2);
         contenedor.appendChild(aux);
-        salida.appendChild(contenedor);
+        categorias.appendChild(contenedor);
     });
-
+ 
+    salida.appendChild(categorias);
 }
 
 function mostrarProveedores(respuesta) {
-    let salida = document.querySelector("#contenido");
+    let salida = document.querySelector("#contenedor");
     let contador = 0;
     salida.innerHTML = "";
     let contenedorProveedores = crearElemento("div",undefined,{id:"ContProveedores",class:"col-3",style:"border:2px black solid; padding:5px"});
     respuesta.forEach(fila => {
         let proveedor = crearElemento("p",undefined,{id:contenedor});
-
-        proveedor.innerHTML = fila.descripcion;
-        contenedorProveedores.appendChild(aux);
-        salida.appendChild(contenedorProveedores);
-        console.log(respuesta);
+        for (let i = 0; i < Object.keys(fila).length/2; i++) 
+        {   
+            console.log(fila);
+            proveedor.innerHTML += fila[i] + " ";
+        }
+        // console.log(fila);
+        contenedorProveedores.appendChild(proveedor);
+        contenedor.appendChild(contenedorProveedores);
         contador++;
     });
 
