@@ -84,25 +84,8 @@ function mostrarCategorias(respuesta) {
 function mostrarHistorial(respuesta) {
     let salida = document.querySelector("#historial");
 
-    respuesta.forEach(fila => {
-        let contenedor = document.createElement("div");
-        contenedor.addEventListener("click", mostrarProductos);
-        contenedor.setAttribute("class", "col-3");
-        contenedor.style.border = "2px black solid";
-        contenedor.style.padding = "5px";
+    console.log(respuesta);
 
-        let aux = document.createElement("p");
-        aux.innerHTML = fila.descripcion;
-
-        let aux3 = document.createElement("p");
-        aux3.innerHTML = fila.imagenes;
-        contenedor.appendChild(aux3);
-        // let aux2 = document.createElement("img");
-        // aux2.setAttribute("href", fila.imagen);
-        // contenedor.appendChild(aux2);
-        contenedor.appendChild(aux);
-        salida.appendChild(contenedor);
-    });
 }
 
 function mostrarProductos(e) {
