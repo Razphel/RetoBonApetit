@@ -12,7 +12,7 @@ function principal() {
     //Boton para cerrar la sesion y redireccionar a la pagina de inicio.
     document.querySelector("#cerrarSesion").addEventListener("click", cerrarSesion);
     document.querySelector("#btnHistorial").addEventListener("click", botonHistorial);
-    document.querySelector("#btnProveedores").addEventListener("click", botonCategorias);
+    document.querySelector("#btnCategorias").addEventListener("click", botonCategorias);
 }
 
 function cerrarSesion() {
