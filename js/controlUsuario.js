@@ -63,20 +63,27 @@ function manejarRespuesta(respuesta) {
         salida.innerHTML = "ERROR: Comprueba los datos.";
 
     } else {
-        //Guardo el usuario en la sesion.
-        localStorage.setItem("usuario", JSON.stringify({ nombre: respuesta.nombre, tipo: respuesta.admin, activo: respuesta.activo, clavePrimaria:respuesta.id_usuario}));
-        //El usuario existe. Ahora hay que comprobar si es administrador.
-        if (respuesta.admin == 1) {
-            //Si es administrador o usuario, impirmo si mensaje correspondiente y hago una redireccion a los dos segundos.
-            salida.innerHTML = "Soy admin";
-            setTimeout(function () {
-                window.location.replace("../administrador/inicioAdmin.html");
-            }, 2000);
+        //Compruebo que el usuario no este dado de baja.
+        if (respuesta.activo == 0) {
+            salida.innerHTML = "ERROR: Usuario de baja.";
+
         } else {
-            salida.innerHTML = "Soy usuario";
-            setTimeout(function () {
-                window.location.replace("../usuario/inicioUsuario.html");
-            }, 2000);
+            //Si todo va bien guardo el usuario en la sesion.
+            localStorage.setItem("usuario", JSON.stringify({ nombre: respuesta.nombre, tipo: respuesta.admin, activo: respuesta.activo, clavePrimaria: respuesta.id_usuario }));
+
+            //Ahora hay que comprobar si es administrador.
+            if (respuesta.admin == 1) {
+                //Si es administrador o usuario, impirmo si mensaje correspondiente y hago una redireccion a los dos segundos.
+                salida.innerHTML = "Soy admin";
+                setTimeout(function () {
+                    window.location.replace("../administrador/inicioAdmin.html");
+                }, 2000);
+            } else {
+                salida.innerHTML = "Soy usuario";
+                setTimeout(function () {
+                    window.location.replace("../usuario/inicioUsuario.html");
+                }, 2000);
+            }
         }
     }
 }
