@@ -428,7 +428,7 @@ body {
 
 /* Main............................................ gen_main */
 .page_layout {
-    /* background-color: var(--accent-03); */
+    /*     background-color: var(--accent-03);  */
     background-color: rgb(206, 206, 98); 
 }
 
@@ -438,4 +438,7 @@ body {
 }
 
 /* PÁGINAS____________________________________________________________ pag_00 */
+/* Administrador_________________________________________ pag_admin */
+/* 2. Index.............................. pag_admin_index */
 
+/* Usuario_______________________________________________ pag_user */
