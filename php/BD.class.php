@@ -43,11 +43,16 @@ class BD
     {
         $respuesta = false;
         try {
-            $conexion = conexion();
-            $nombreUsuario = $_REQUEST['nombreUsuario'];
-            $contraseñaUsuario = $_REQUEST['contraseña'];
+            $conexion = self::conexionBD();
+            $aux1 = $_REQUEST['nombreUsuario'];
+            $aux2 = $_REQUEST['contraseña'];
 
-            $sql = "SELECT nombre, password, admin FROM usuarios WHERE nombre= '$nombreUsuario' and password= '$contraseñaUsuario'";
+            $sql = "SELECT id_usuario, nombre, password, admin, activo FROM usuarios WHERE nombre= '$aux1' and password= '$aux2'";
+
+            // $preparada = $conexion->prepare($sql);
+            // $preparada->bindParam(':nombre', $_REQUEST['nombre']);
+            // $preparada->bindParam(':password', $_REQUEST['password']);
+            // $preparada->execute();
 
             $resultado = $conexion->query($sql);
 
@@ -63,28 +68,22 @@ class BD
         return $respuesta;
     }
 
-    public static function consultaProductos()
+    public static function consultaProductos($categoria)
     {
-        $respuesta = false;
         try {
-            $conexion = conexion();
-            $nombreUsuario = $_REQUEST['nombreUsuario'];
-            $contraseñaUsuario = $_REQUEST['contraseña'];
-
-            $sql = "SELECT nombre, password, admin FROM usuarios WHERE nombre= '$nombreUsuario' and password= '$contraseñaUsuario'";
+            $conexion = self::conexionBD();
+            $sql = "SELECT * FROM productos WHERE categoria= '$categoria'";
 
             $resultado = $conexion->query($sql);
+            $filas = [];
 
-            $fila = $resultado->fetch();
-            if ($fila) {
-                $respuesta = $fila;
-            } else {
-                $respuesta = false;
+            while ($fila = $resultado->fetch()) {
+                $filas[] = $fila;
             }
         } catch (Exception $e) {
             throw new Exception("ERROR: " + $e);
         }
-        return $respuesta;
+        return $filas;
     }
 
     public static function consultaCategorias()
@@ -92,6 +91,27 @@ class BD
         try {
             $conexion = self::conexionBD();
             $sql = "SELECT * FROM categorias";
+
+            $resultado = $conexion->query($sql);
+
+            // Crear un array para almacenar todas las filas        
+            $filas = [];
+            // Recorrer los resultados y almacenar cada fila en el array        
+            while ($fila = $resultado->fetch()) {
+                $filas[] = $fila;
+            }
+        } catch (Exception $e) {
+            throw new Exception("ERROR: " + $e);
+        }
+        //Esta consulta te devuelve un array de arrays con todos los datos de la tabla producto.
+        return $filas;
+    }
+
+    public static function imprimirPedidos($usuarioInicioSesion)
+    {
+        try {
+            $conexion = self::conexionBD();
+            $sql = "SELECT fecha_pedido,descripcion,cantidad,unidades,linea_pedido.observaciones FROM pedidos inner join linea_pedido where pedidos.fk_usuario = $usuarioInicioSesion";
 
             $resultado = $conexion->query($sql);
 
