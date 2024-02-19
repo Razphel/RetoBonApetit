@@ -136,6 +136,7 @@ INSERT INTO proveedores (descripcion,telefono,email,direccion,observaciones) VAL
 INSERT INTO proveedores (descripcion,telefono,email,direccion,observaciones) VALUES ('MERCADONA','333333333','mercadona@gmail.com','Calle prueba 3, 12','observaciones prueba');
 INSERT INTO usuarios (admin,nombre,email,password,activo,observaciones,telefono) VALUES (1,'ADMINISTRADOR1','admin1@gmail.com','1234',1,'observaciones pruebas','888888888');
 INSERT INTO usuarios (admin,nombre,email,password,activo,observaciones,telefono) VALUES (0,'USUARIO1','usuario1@gmail.com','1235',0,'observaciones prueba','99999999');
+INSERT INTO usuarios (admin,nombre,email,password,activo,observaciones,telefono) VALUES (0,'sagaz','usuario1@gmail.com','1235',1,'observaciones prueba','99999999');
 INSERT INTO solicitudes (fecha_solicitud,descripcion,unidades,cantidad,observaciones,tramitado,fk_usuario) VALUES ('2024/02/07','huevos','cajas',6,'observaciones prueba',1,2);
 INSERT INTO solicitudes (fecha_solicitud,descripcion,unidades,cantidad,observaciones,tramitado,fk_usuario) VALUES ('2024/02/07','carne','kilogramos',3.4,'observaciones prueba',0,2);
 INSERT INTO pedidos (fecha_pedido,fk_proveedor,fk_estado,fk_usuario,observaciones) VALUES ('2024/02/07',1,3,2,'observacion kaladin');

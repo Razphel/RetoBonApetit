@@ -8,11 +8,26 @@ header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
 header("Content-Type: application/json");
 
 
-if (isset($_REQUEST['categoriaEnviada'])) {
-    $categoriaRecibida = $_REQUEST['categoriaEnviada'];
-    $productos = BD::consultaProductos($categoriaRecibida);
-    echo json_encode($productos);
-} else {
+if (isset($_REQUEST['claveUsuario'])) {
+    $id_usuario = $_REQUEST['claveUsuario'];
+    $historial = BD::imprimirPedidos($id_usuario);
+    echo json_encode($historial);
+} 
+
+if(isset($_REQUEST['claveProveedores']))
+{
+    $proveedores = BD::imprimirConsultas('proveedores');
+    echo json_encode($proveedores);
+}
+ 
+if (isset($_REQUEST['categoria'])) 
+{
     $categorias = BD::imprimirConsultas('categorias');
+    echo json_encode($categorias);
+}
+
+if (isset($_REQUEST['claveResiduos'])) 
+{
+    $categorias = BD::imprimirConsultas('residuos');
     echo json_encode($categorias);
 }

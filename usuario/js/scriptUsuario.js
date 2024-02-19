@@ -11,46 +11,23 @@ function principal() {
 
     //Boton para cerrar la sesion y redireccionar a la pagina de inicio.
     document.querySelector("#cerrarSesion").addEventListener("click", cerrarSesion);
-    let sesionActual = localStorage.getItem("usuario");
+    document.querySelector("#btnHistorial").addEventListener("click", botonHistorial);
+    document.querySelector("#btnCategorias").addEventListener("click", botonCategorias);
+    document.querySelector("#btnProveedores").addEventListener("click", botonProveedores);
+    document.querySelector("#btnResiduos").addEventListener("click", botonResiduos);
 
-    $.ajax({
-        //Ubicacion del archivo php que va a manejar los valores.
-        url: "./php/consultaUsuario.php",
-        //Metodo en que los va a recibir.
-        type: "GET",
-        dataType: "json",
-        //La funcion que se ejecuta segun el resultado.
-        success: mostrarCategorias,
-        error: function (jqXHR, textStatus, errorThrown) {
-            console.error("Error en la solicitud AJAX: " + textStatus, errorThrown);
-        }
-    });
-
-    $.ajax({
-        //Ubicacion del archivo php que va a manejar los valores.
-        url: "./php/consultaUsuarioProveedores.php",
-        //Metodo en que los va a recibir.
-        type: "GET",
-        dataType: "json",
-        //La funcion que se ejecuta segun el resultado.
-        success: mostrarProveedores,
-        error: function (jqXHR, textStatus, errorThrown) {
-            console.error("Error en la solicitud AJAX: " + textStatus, errorThrown);
-        }
-    });
-
-    $.ajax({
-        //Ubicacion del archivo php que va a manejar los valores.
-        url: "./php/consultaUsuarioResiduos.php",
-        //Metodo en que los va a recibir.
-        type: "GET",
-        dataType: "json",
-        //La funcion que se ejecuta segun el resultado.
-        success: mostrarResiduos,
-        error: function (jqXHR, textStatus, errorThrown) {
-            console.error("Error en la solicitud AJAX: " + textStatus, errorThrown);
-        }
-    });
+    // $.ajax({
+    //     //Ubicacion del archivo php que va a manejar los valores.
+    //     url: "./php/consultaUsuarioResiduos.php",
+    //     //Metodo en que los va a recibir.
+    //     type: "GET",
+    //     dataType: "json",
+    //     //La funcion que se ejecuta segun el resultado.
+    //     success: mostrarResiduos,
+    //     error: function (jqXHR, textStatus, errorThrown) {
+    //         console.error("Error en la solicitud AJAX: " + textStatus, errorThrown);
+    //     }
+    // });
 
 }
 
@@ -62,7 +39,86 @@ function cerrarSesion() {
     }, 500);
 }
 
+function mostrarProveedores(proveedores) {
+    
+    let contenedor = document.querySelector("#contenedor");
+    let contador = 0;
+    contenedor.innerHTML = "";
+    let contenedorProveedores = crearElemento("div",undefined,{id:"ContProveedores",class:"col-3",style:"border:2px black solid; padding:5px"});
+    proveedores.forEach(fila => {
+        let proveedor = crearElemento("p",undefined,{id:contenedor});
+        for (let i = 0; i < Object.keys(fila).length/2; i++) 
+        {   
+            proveedor.innerHTML += fila[i] + " ";
+        }
+        contenedorProveedores.appendChild(proveedor);
+        contenedor.appendChild(contenedorProveedores);
+        contador++;
+
+    });
+
+}
+
+function botonProveedores()
+{
+    let parametros = {
+        claveProveedores: true
+    };
+    $.ajax({
+        //Ubicacion del archivo php que va a manejar los valores.
+        url: "./php/consultaUsuario.php",
+        //Metodo en que los va a recibir.
+        type: "GET",
+        data: parametros,
+        dataType: "json",
+        success: mostrarProveedores,
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.error("Error en la solicitud AJAX: " + textStatus, errorThrown);
+        }
+    });
+}
+
+function mostrarResiduos(respuesta) {
+    let contenedor = document.querySelector("#contenedor");
+    let contador = 0;
+    contenedor.innerHTML = "";
+    let contenedorResiduos = crearElemento("div",undefined,{id:"ContResiduos",class:"col-3",style:"border:2px black solid; padding:5px"});
+    respuesta.forEach(fila => {
+        let residuo = crearElemento("p",undefined,{id:"residuos"});
+        for (let i = 0; i < Object.keys(fila).length/2; i++) 
+        {   
+            residuo.innerHTML += fila[i] + " ";
+        }
+        contenedorResiduos.appendChild(residuo);
+        contenedor.appendChild(contenedorResiduos);
+        contador++;
+    });
+
+}
+
+function botonResiduos()
+{
+    let parametros = {
+        claveResiduos: true
+    };
+    $.ajax({
+        //Ubicacion del archivo php que va a manejar los valores.
+        url: "./php/consultaUsuario.php",
+        //Metodo en que los va a recibir.
+        type: "GET",
+        data: parametros,
+        dataType: "json",
+        success: mostrarResiduos,
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.error("Error en la solicitud AJAX: " + textStatus, errorThrown);
+        }
+    });
+}
+
 function mostrarCategorias(respuesta) {
+
+    let contenedor = document.querySelector("#contenedor");
+    contenedor.innerHTML = "";
     //Ahora que tengo todos los datos de la tabla categorias, hago los elementos para guardarla.
     let salida = document.querySelector("#contenedor");
     let categorias = crearElemento("div", undefined, { class: "row", id: "categorias" });
@@ -86,58 +142,81 @@ function mostrarCategorias(respuesta) {
     salida.appendChild(categorias);
 }
 
-function mostrarProveedores(respuesta) {
-    let salida = document.querySelector("#contenedor");
-    let contador = 0;
-    salida.innerHTML = "";
-    let contenedorProveedores = crearElemento("div",undefined,{id:"ContProveedores",class:"col-3",style:"border:2px black solid; padding:5px"});
-    respuesta.forEach(fila => {
-        let proveedor = crearElemento("p",undefined,{id:contenedor});
-        for (let i = 0; i < Object.keys(fila).length/2; i++) 
-        {   
-            proveedor.innerHTML += fila[i] + " ";
+function botonCategorias() 
+{   
+    let parametros = {
+        categoria: 'categorias'
+    };
+    //Mostrar categorias.
+    $.ajax({
+        //Ubicacion del archivo php que va a manejar los valores.
+        url: "./php/consultaUsuario.php",
+        //Metodo en que los va a recibir.
+        type: "GET",
+        dataType: "json",
+        data: parametros,
+        success: mostrarCategorias,
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.error("Error en la solicitud AJAX: " + textStatus, errorThrown);
         }
-        contenedorProveedores.appendChild(proveedor);
-        contenedor.appendChild(contenedorProveedores);
-        contador++;
     });
-
 }
 
-function mostrarResiduos(respuesta) {
+function mostrarHistorial(respuesta) {
     let salida = document.querySelector("#contenedor");
-    let contador = 0;
     salida.innerHTML = "";
-    let contenedorResiduos = crearElemento("div",undefined,{id:"ContResiduos",class:"col-3",style:"border:2px black solid; padding:5px"});
-    respuesta.forEach(fila => {
-        let residuo = crearElemento("p",undefined,{id:"residuos"});
-        for (let i = 0; i < Object.keys(fila).length/2; i++) 
-        {   
-            residuo.innerHTML += fila[i] + " ";
-        }
-        contenedorResiduos.appendChild(residuo);
-        contenedor.appendChild(contenedorResiduos);
-        contador++;
-    });
+    let historial = crearElemento("table", undefined, { id: "historial", style: "border-collapse: collapse;" });
 
+    //Creo los titulos de las tablas.
+    let titulos = crearElemento("tr", undefined, undefined);
+    //Segun el formato en el que se recibe el objeto, tengo que usar sus elementos de la mitad al final.
+    let prueba = Object.keys(respuesta[0]);
+    for (let i = prueba.length / 2; i < prueba.length; i++) {
+        //Creo cada elemento y lo agrego a la fila del titulo.
+        let filaTitulo = crearElemento("th", prueba[i], { style: "padding:5px 30px;" });
+        titulos.appendChild(filaTitulo);
+    }
+
+    //Agrego el titulo a la tabla.
+    historial.appendChild(titulos);
+
+    //Ahora agrego el contenido.
+    respuesta.forEach(fila => {
+        let filaNormal = crearElemento("tr", undefined, undefined);
+        for (let i = 0; i < Object.keys(fila).length / 2; i++) {
+            let elementoFila = crearElemento("td", fila[i], undefined);
+            filaNormal.appendChild(elementoFila);
+        }
+        historial.appendChild(filaNormal);
+    });
+    contenedor.appendChild(historial);
 }
 
-function mostrarSolicitudes(respuesta) {
-    let salida = document.querySelector("#contenedor");
-    let contador = 0;
-    salida.innerHTML = "";
-    let contenedorResiduos = crearElemento("div",undefined,{id:"ContResiduos",class:"col-3",style:"border:2px black solid; padding:5px"});
-    respuesta.forEach(fila => {
-        let residuo = crearElemento("p",undefined,{id:"residuos"});
-        for (let i = 0; i < Object.keys(fila).length/2; i++) 
-        {   
-            residuo.innerHTML += fila[i] + " ";
+function botonHistorial() 
+{
+    //Mostrar Historial.
+    //Se almacena en esta variable la información recogida desde el main
+    let usuarioActual = JSON.parse(localStorage.getItem("usuario"));
+ 
+    let parametros = {
+        //UsuarioActual contiene todos los campos de usuario que se han almacenado anteriormente en principal 
+        //Y clavePrimaria ha sido creada en el js de controlUsuario en la funcion manejarRespuesta
+        claveUsuario: usuarioActual.clavePrimaria
+    };
+ 
+    $.ajax({
+        //Ubicacion del archivo php que va a manejar los valores.
+        url: "./php/consultaUsuario.php",
+        //Metodo en que los va a recibir.
+        type: "GET",
+        data: parametros,
+        dataType: "json",
+        //La funcion que se ejecuta segun el resultado.
+        success: mostrarHistorial,
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.error("Error en la solicitud AJAX: " + textStatus, errorThrown);
         }
-        contenedorResiduos.appendChild(residuo);
-        contenedor.appendChild(contenedorResiduos);
-        contador++;
     });
-
 }
 
 function crearElemento(etiqueta,contenido,atributos)
