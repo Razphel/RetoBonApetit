@@ -31,3 +31,9 @@ if (isset($_REQUEST['claveResiduos']))
     $categorias = BD::imprimirConsultas('residuos');
     echo json_encode($categorias);
 }
+
+if (isset($_REQUEST['claveTodosUsuarios'])) 
+{
+    $categorias = BD::imprimirConsultas('usuarios');
+    echo json_encode($categorias);
+}

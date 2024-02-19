@@ -15,6 +15,7 @@ function principal() {
     document.querySelector("#btnCategorias").addEventListener("click", botonCategorias);
     document.querySelector("#btnProveedores").addEventListener("click", botonProveedores);
     document.querySelector("#btnResiduos").addEventListener("click", botonResiduos);
+    document.querySelector("#btnUsuarios").addEventListener("click", botonUsuarios);
 
     // $.ajax({
     //     //Ubicacion del archivo php que va a manejar los valores.
@@ -109,6 +110,43 @@ function botonResiduos()
         data: parametros,
         dataType: "json",
         success: mostrarResiduos,
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.error("Error en la solicitud AJAX: " + textStatus, errorThrown);
+        }
+    });
+}
+
+function mostrarUsuarios(respuesta) {
+    let contenedor = document.querySelector("#contenedor");
+    let contador = 0;
+    contenedor.innerHTML = "";
+    let contenedorResiduos = crearElemento("div",undefined,{id:"ContResiduos",class:"col-3",style:"border:2px black solid; padding:5px"});
+    respuesta.forEach(fila => {
+        let residuo = crearElemento("p",undefined,{id:"residuos"});
+        for (let i = 0; i < Object.keys(fila).length/2; i++) 
+        {   
+            residuo.innerHTML += fila[i] + " ";
+        }
+        contenedorResiduos.appendChild(residuo);
+        contenedor.appendChild(contenedorResiduos);
+        contador++;
+    });
+
+}
+
+function botonUsuarios()
+{
+    let parametros = {
+        claveTodosUsuarios: true
+    };
+    $.ajax({
+        //Ubicacion del archivo php que va a manejar los valores.
+        url: "./php/consultaUsuario.php",
+        //Metodo en que los va a recibir.
+        type: "GET",
+        data: parametros,
+        dataType: "json",
+        success: mostrarUsuarios,
         error: function (jqXHR, textStatus, errorThrown) {
             console.error("Error en la solicitud AJAX: " + textStatus, errorThrown);
         }

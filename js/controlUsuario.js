@@ -53,7 +53,6 @@ function iniciarSesion() {
         let salida = document.querySelector("#salida");
         salida.innerHTML = "ERROR: Debes rellenar ambos campos.";
     }
- 
 }
  
 function manejarRespuesta(respuesta) {
@@ -61,22 +60,28 @@ function manejarRespuesta(respuesta) {
     if (!respuesta) {
         //El usuario no existe.
         salida.innerHTML = "ERROR: Comprueba los datos.";
- 
     } else {
-        //Guardo el usuario en la sesion.
-        localStorage.setItem("usuario", JSON.stringify({ nombre: respuesta.nombre, tipo: respuesta.admin, activo: respuesta.activo }));
-        //El usuario existe. Ahora hay que comprobar si es administrador.
-        if (respuesta.admin == 1) {
-            //Si es administrador o usuario, impirmo si mensaje correspondiente y hago una redireccion a los dos segundos.
-            salida.innerHTML = "Soy admin";
-            setTimeout(function () {
-                window.location.replace("../administrador/inicioAdmin.html");
-            }, 2000);
+        //Compruebo que el usuario no este dado de baja.
+        if (respuesta.activo == 0) {
+            salida.innerHTML = "ERROR: Usuario dado de baja.";
+ 
         } else {
-            salida.innerHTML = "Soy usuario";
-            setTimeout(function () {
-                window.location.replace("../usuario/inicioUsuario.html");
-            }, 2000);
+            //Si todo va bien guardo el usuario en la sesion.
+            localStorage.setItem("usuario", JSON.stringify({ nombre: respuesta.nombre, tipo: respuesta.admin, activo: respuesta.activo, clavePrimaria: respuesta.id_usuarios }));
+ 
+            //Ahora hay que comprobar si es administrador.
+            if (respuesta.admin == 1) {
+                //Si es administrador o usuario, impirmo si mensaje correspondiente y hago una redireccion a los dos segundos.
+                salida.innerHTML = "Soy admin";
+                setTimeout(function () {
+                    window.location.replace("../administrador/inicioAdmin.html");
+                }, 2000);
+            } else {
+                salida.innerHTML = "Soy usuario";
+                setTimeout(function () {
+                    window.location.replace("../usuario/inicioUsuario.html");
+                }, 2000);
+            }
         }
     }
 }
@@ -92,4 +97,18 @@ function comprobarVacio(usuario, contraseña) {
         respuesta = true;
     }
     return respuesta;
+}
+ 
+function crearElemento(etiqueta, contenido, atributos) {
+    let elementoNuevo = document.createElement(etiqueta);
+    if (contenido !== undefined) {
+        let contenidoNuevo = document.createTextNode(contenido);
+        elementoNuevo.appendChild(contenidoNuevo);
+    }
+    if (atributos !== undefined) {
+        for (let clave in atributos) {
+            elementoNuevo.setAttribute(clave, atributos[clave]);
+        }
+    }
+    return elementoNuevo;
 }
