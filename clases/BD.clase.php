@@ -40,28 +40,7 @@ class BD
     }
 
     public static function consultaUsuario()
-    {
-    $respuesta = false;
-    try {
-        $conexion = self::conexionBD();
-        $nombreUsuario = $_REQUEST['nombreUsuario'];
-        $contraseñaUsuario = $_REQUEST['contraseña'];
 
-        $sql = "SELECT id_usuario, nombre, password, admin FROM usuarios WHERE nombre= '$nombreUsuario' and password= '$contraseñaUsuario'";
-
-        $resultado = $conexion->query($sql);
-
-        $fila = $resultado->fetch();
-        if ($fila) {
-            $respuesta = $fila;
-        } else {
-            $respuesta = false;
-        }
-    } catch (Exception $e) {
-        throw new Exception("ERROR: " + $e);
-    }
-    return $respuesta;
-    }
 
     //Con esta funcion tan solo tenemos que pasar por parametro la tabla que deseamos imprimir por pantalla con toda su información. 
     public static function imprimirConsultas($tablaImprimir)
@@ -98,6 +77,39 @@ class BD
             FROM pedidos inner join linea_pedido 
             ON pedidos.id_pedidos = linea_pedido.fk_pedido 
             where pedidos.fk_usuario = $usuarioInicioSesion";
+
+            $resultado = $conexion->query($sql);
+
+            // Crear un array para almacenar todas las filas        
+            $filas = [];
+            // Recorrer los resultados y almacenar cada fila en el array        
+            while ($fila = $resultado->fetch()) 
+            {
+                $filas[] = $fila;
+            }
+        }   
+            catch (Exception $e) 
+            {
+                throw new Exception("ERROR: " + $e);
+            }
+        //Esta consulta te devuelve un array de arrays con todos los datos de la tabla producto.
+        return $filas;
+    }
+
+    public static function ImprimirProductosCategoria($categoriaSeleccionada)
+    {
+        try 
+        {   
+            $conexion = self::conexionBD();
+            $sql = "SELECT productos.descripcion AS 'nombre_producto',categorias.descripcion AS 'nombre_categoria', unidades.descripcion AS 'nombre_unidades',productos.observaciones AS 'nombre_observaciones'
+            FROM unidades 
+            INNER JOIN productos 
+            ON unidades.id_unidades = productos.fk_unidad
+            INNER JOIN producto_categoria 
+            ON productos.id_productos = producto_categoria.fk_producto
+            INNER JOIN categorias
+            ON producto_categoria.fk_categoria = categorias.id_categorias
+            WHERE producto_categoria.fk_categoria = $categoriaSeleccionada"
 
             $resultado = $conexion->query($sql);
 
