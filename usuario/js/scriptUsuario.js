@@ -3,10 +3,16 @@ window.addEventListener("load", principal);
 function principal() {
     //Antes de cargar la pagina del usuario, se comprueba que no se haya accedido sin una sesion valida.
     if (localStorage.getItem("usuario")) {
+        //Recibo los datos del usuario.
         let usuarioActual = JSON.parse(localStorage.getItem("usuario"));
-        if (usuarioActual.nombre === "") {
+
+        //Si por alguna razon no hay nada en el nombre, redirecciona al login.
+        if (usuarioActual.nombre == "") {
             window.location.replace("../../inicio.html");
         }
+    } else {
+        //Si no existe la sesion redirecciona al login.
+        window.location.replace("../../inicio.html");
     }
 
     //Boton para cerrar la sesion y redireccionar a la pagina de inicio.
@@ -16,6 +22,7 @@ function principal() {
 }
 
 function cerrarSesion() {
+    //Borro la sesion del localStorage
     localStorage.removeItem("usuario");
 
     setTimeout(function () {
@@ -28,6 +35,7 @@ function botonHistorial() {
     let usuarioActual = JSON.parse(localStorage.getItem("usuario"));
 
     let parametros = {
+        //Uso el id del usuario recibido desde el login por el localStorage.
         claveUsuario: usuarioActual.clavePrimaria
     };
 
