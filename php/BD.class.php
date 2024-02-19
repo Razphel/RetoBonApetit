@@ -47,7 +47,7 @@ class BD
             $aux1 = $_REQUEST['nombreUsuario'];
             $aux2 = $_REQUEST['contraseña'];
 
-            $sql = "SELECT id_usuario, nombre, password, admin, activo FROM usuarios WHERE nombre= '$aux1' and password= '$aux2'";
+            $sql = "SELECT id_usuarios, nombre, password, admin, activo FROM usuarios WHERE nombre= '$aux1' and password= '$aux2'";
 
             // $preparada = $conexion->prepare($sql);
             // $preparada->bindParam(':nombre', $_REQUEST['nombre']);

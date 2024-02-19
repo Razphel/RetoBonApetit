@@ -26,7 +26,7 @@ function cerrarSesion() {
     localStorage.removeItem("usuario");
 
     setTimeout(function () {
-        window.location.replace("../../inicio.html");
+        window.location.replace("../../html/sesion.html");
     }, 500);
 }
 
@@ -56,31 +56,37 @@ function botonHistorial() {
     function mostrarHistorial(respuesta) {
         let salida = document.querySelector("#contenedor");
         salida.innerHTML = "";
-        let historial = crearElemento("table", undefined, { id: "historial", style: "border-collapse: collapse;" });
 
-        //Creo los titulos de las tablas.
-        let titulos = crearElemento("tr", undefined, undefined);
-        //Segun el formato en el que se recibe el objeto, tengo que usar sus elementos de la mitad al final.
-        let prueba = Object.keys(respuesta[0]);
-        for (let i = prueba.length / 2; i < prueba.length; i++) {
-            //Creo cada elemento y lo agrego a la fila del titulo.
-            let filaTitulo = crearElemento("th", prueba[i], { style: "padding:5px 30px;" });
-            titulos.appendChild(filaTitulo);
-        }
+        //Primero compruebo que el usuario tenga algo en su lista de pedidos.
+        if (respuesta.length == 0) {
+            salida.innerHTML = "Hictorial vacio.";
+        } else {
+            let historial = crearElemento("table", undefined, { id: "historial", style: "border-collapse: collapse;" });
 
-        //Agrego el titulo a la tabla.
-        historial.appendChild(titulos);
-
-        //Ahora agrego el contenido.
-        respuesta.forEach(fila => {
-            let filaNormal = crearElemento("tr", undefined, undefined);
-            for (let i = 0; i < Object.keys(fila).length / 2; i++) {
-                let elementoFila = crearElemento("td", fila[i], undefined);
-                filaNormal.appendChild(elementoFila);
+            //Creo los titulos de las tablas.
+            let titulos = crearElemento("tr", undefined, undefined);
+            //Segun el formato en el que se recibe el objeto, tengo que usar sus elementos de la mitad al final.
+            let prueba = Object.keys(respuesta[0]);
+            for (let i = prueba.length / 2; i < prueba.length; i++) {
+                //Creo cada elemento y lo agrego a la fila del titulo.
+                let filaTitulo = crearElemento("th", prueba[i], { style: "padding:5px 30px;" });
+                titulos.appendChild(filaTitulo);
             }
-            historial.appendChild(filaNormal);
-        });
-        contenedor.appendChild(historial);
+
+            //Agrego el titulo a la tabla.
+            historial.appendChild(titulos);
+
+            //Ahora agrego el contenido.
+            respuesta.forEach(fila => {
+                let filaNormal = crearElemento("tr", undefined, undefined);
+                for (let i = 0; i < Object.keys(fila).length / 2; i++) {
+                    let elementoFila = crearElemento("td", fila[i], undefined);
+                    filaNormal.appendChild(elementoFila);
+                }
+                historial.appendChild(filaNormal);
+            });
+            contenedor.appendChild(historial);
+        }
     }
 }
 

@@ -10,6 +10,6 @@ function cerrarSesion() {
     localStorage.removeItem("usuario");
 
     setTimeout(function () {
-        window.location.replace("../../inicio.html");
+        window.location.replace("../../html/sesion.html");
     }, 500);
 }
