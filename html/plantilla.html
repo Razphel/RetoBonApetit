@@ -18,66 +18,63 @@
 
 <body>
     <div class="layout_wrapper h-100">
-        <!-- layout_container se divide en dos: aside y contenedor principal -->
+        <!-- layout_container se divide en dos: sidebar y page_container -->
         <div class="layout_container row h-100">
-            <!-- Col para el menú vertical -->
-            <div class="col-auto h-100">
-                <!-- aside -->
-                <div class="sidebar h-100">
-                    <div class="sidebar_top">
-                        <p>Logotipo</p>
-                    </div>
-                    <div class="sidebar_bottom">
-                        <!-- ! ps es de la biblioteca Perfect Scrollbar -->
-                        <ul class="sidebar_container py-1 ps ps--active-y">
-                            <li>
-                                <a href="" class="nav_link">
-                                    <div class="nav_container">
-                                        <div class="nav_container_left">
-                                            <i class='bx bxs-cookie'></i>
-                                            <p>Productos</p>
-                                        </div>
+            <!-- sidebar -->
+            <div class="sidebar col-auto h-100">
+                <div class="sidebar_top">
+                    <p>Logotipo</p>
+                </div>
+                <div class="sidebar_bottom">
+                    <!-- ! ps es de la biblioteca Perfect Scrollbar -->
+                    <ul class="sidebar_container py-1 ps ps--active-y">
+                        <li>
+                            <a href="" class="nav_link">
+                                <div class="nav_container">
+                                    <div class="nav_container_left">
+                                        <i class='bx bxs-cookie'></i>
+                                        <p>Productos</p>
                                     </div>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="" class="nav_link">
-                                    <div class="nav_container">
-                                        <div class="nav_container_left">
-                                            <i class='bx bxs-receipt'></i>
-                                            <p>Pedidos</p>
-                                        </div>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="" class="nav_link">
+                                <div class="nav_container">
+                                    <div class="nav_container_left">
+                                        <i class='bx bxs-receipt'></i>
+                                        <p>Pedidos</p>
                                     </div>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="" class="nav_link">
-                                    <div class="nav_container">
-                                        <div class="nav_container_left">
-                                            <i class='bx bxs-store'></i>
-                                            <p>Proveedores</p>
-                                        </div>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="" class="nav_link">
+                                <div class="nav_container">
+                                    <div class="nav_container_left">
+                                        <i class='bx bxs-store'></i>
+                                        <p>Proveedores</p>
                                     </div>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="" class="nav_link">
-                                    <div class="nav_container">
-                                        <div class="nav_container_left">
-                                            <i class='bx bxs-trash'></i>
-                                            <p>Residuos</p>
-                                        </div>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="" class="nav_link">
+                                <div class="nav_container">
+                                    <div class="nav_container_left">
+                                        <i class='bx bxs-trash'></i>
+                                        <p>Residuos</p>
                                     </div>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
                 </div>
             </div>
 
-            <!-- Col para el layout_page -->
-            <div class="container-xxl col bg-secondary h-100">
-                <div class="layout_page h-100">
+            <!-- page_container (contenido particular de cada página) -->
+            <div class="page_container col bg-secondary h-100">
+                <div class="page_layout h-100">
                     <!-- header superior -->
                     <div class="topbar mg-4 static-top">
                         <div class="topbar_container">
@@ -105,8 +102,8 @@
                             </div>
                         </div>
                     </div>
-                    <!-- contenedor -->
-                    <div class="content-wrapper container-fluid">
+                    <!-- contenedor particular de cada página -->
+                    <div class="content_wrapper container-fluid">
                         <h1 class="py-3 mb-3 mt-4">Plantilla de columnas</h1>
                         <div class="row">
                             <div class="col-6 col-sm-3 col-md-2 col-lg-1">
@@ -222,21 +219,18 @@
                         <button type="button" class="btn btn_custom_2">Custom 2</button>
                         <button type="button" class="btn btn_custom_3">Custom 3</button>
                     </div>
-
-                    <!-- fin del content-wrapper -->
-
+                <!-- fin del page_layout -->
                 </div>
+            <!-- fin del layout_container-->
             </div>
+        <!-- fin del layout_container -->
         </div>
+    <!-- fin del layout_wrapper -->
     </div>
 
     <!-- Enlace al archivo CSS de Perfect Scrollbar -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/1.5.2/css/perfect-scrollbar.min.css"
-        rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/1.5.2/css/perfect-scrollbar.min.css" rel="stylesheet">
     <!-- Enlace al archivo JavaScript de Perfect Scrollbar -->
-    <script
-        src="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/1.5.2/perfect-scrollbar.min.js"></script>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/1.5.2/perfect-scrollbar.min.js"></script>
 </body>
-
 </html>

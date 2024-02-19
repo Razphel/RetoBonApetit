@@ -427,11 +427,12 @@ body {
 }
 
 /* Main............................................ gen_main */
-.layout_page {
-    background-color: var(--accent-03); 
+.page_layout {
+    /* background-color: var(--accent-03); */
+    background-color: rgb(206, 206, 98); 
 }
 
-.content-wrapper {
+.content_wrapper {
     padding-left: 40px;
     padding-right: 40px;
 }
