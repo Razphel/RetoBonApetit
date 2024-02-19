@@ -11,7 +11,10 @@ if (isset($_REQUEST['claveUsuario'])) {
     $id_usuario = $_REQUEST['claveUsuario'];
     $historial = BD::imprimirPedidos($id_usuario);
     echo json_encode($historial);
-} else {
-    $categorias = BD::consultaCategorias();
+}
+
+if (isset($_REQUEST['categoria'])) {
+    $tablaCategoria = $_REQUEST['categoria'];
+    $categorias = BD::imprimirConsultas($tablaCategoria);
     echo json_encode($categorias);
 }

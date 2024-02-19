@@ -86,11 +86,14 @@ function botonHistorial() {
 
 function botonCategorias() {
     //Mostrar categorias.
+    let parametros = { categoria: "categorias" };
+
     $.ajax({
         //Ubicacion del archivo php que va a manejar los valores.
         url: "./php/consultaUsuario.php",
         //Metodo en que los va a recibir.
         type: "GET",
+        data: parametros,
         dataType: "json",
         //La funcion que se ejecuta segun el resultado.
         success: mostrarCategorias,

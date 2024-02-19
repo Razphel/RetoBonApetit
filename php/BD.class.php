@@ -68,6 +68,27 @@ class BD
         return $respuesta;
     }
 
+    public static function imprimirConsultas($tablaImprimir)
+    {
+        try {
+            $conexion = self::conexionBD();
+            $sql = "SELECT * FROM $tablaImprimir";
+
+            $resultado = $conexion->query($sql);
+
+            // Crear un array para almacenar todas las filas        
+            $filas = [];
+            // Recorrer los resultados y almacenar cada fila en el array        
+            while ($fila = $resultado->fetch()) {
+                $filas[] = $fila;
+            }
+        } catch (Exception $e) {
+            throw new Exception("ERROR: " + $e);
+        }
+        //Esta consulta te devuelve un array de arrays con todos los datos de la tabla producto.
+        return $filas;
+    }
+
     public static function consultaProductos($categoria)
     {
         try {
@@ -86,32 +107,14 @@ class BD
         return $filas;
     }
 
-    public static function consultaCategorias()
-    {
-        try {
-            $conexion = self::conexionBD();
-            $sql = "SELECT * FROM categorias";
-
-            $resultado = $conexion->query($sql);
-
-            // Crear un array para almacenar todas las filas        
-            $filas = [];
-            // Recorrer los resultados y almacenar cada fila en el array        
-            while ($fila = $resultado->fetch()) {
-                $filas[] = $fila;
-            }
-        } catch (Exception $e) {
-            throw new Exception("ERROR: " + $e);
-        }
-        //Esta consulta te devuelve un array de arrays con todos los datos de la tabla producto.
-        return $filas;
-    }
-
     public static function imprimirPedidos($usuarioInicioSesion)
     {
         try {
             $conexion = self::conexionBD();
-            $sql = "SELECT fecha_pedido,descripcion,cantidad,unidades,linea_pedido.observaciones FROM pedidos inner join linea_pedido where pedidos.fk_usuario = $usuarioInicioSesion";
+            $sql = "SELECT pedidos.fecha_pedido,linea_pedido.descripcion,linea_pedido.cantidad,linea_pedido.unidades,linea_pedido.observaciones
+            FROM pedidos inner join linea_pedido
+            ON pedidos.id_pedidos = linea_pedido.fk_pedido
+            where pedidos.fk_usuario = $usuarioInicioSesion";
 
             $resultado = $conexion->query($sql);
 
