@@ -44,10 +44,10 @@ class BD
         $respuesta = false;
         try {
             $conexion = self::conexionBD();
-            $aux1 = $_REQUEST['nombreUsuario'];
-            $aux2 = $_REQUEST['contraseña'];
+            $nombreUsuario = $_REQUEST['nombreUsuario'];
+            $contraseña = $_REQUEST['contraseña'];
 
-            $sql = "SELECT id_usuarios, nombre, password, admin, activo FROM usuarios WHERE nombre= '$aux1' and password= '$aux2'";
+            $sql = "SELECT id_usuarios, nombre, password, admin, activo FROM usuarios WHERE nombre= '$nombreUsuario' and password= '$contraseña'";
 
             // $preparada = $conexion->prepare($sql);
             // $preparada->bindParam(':nombre', $_REQUEST['nombre']);
