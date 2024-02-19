@@ -5,7 +5,7 @@ function principal() {
     if (localStorage.getItem("usuario")) {
         let usuarioActual = JSON.parse(localStorage.getItem("usuario"));
         if (usuarioActual.nombre === "") {
-            window.location.replace("../../inicio.html");
+            window.location.replace("../../html/sesion.html");
         }
     }
 
@@ -36,7 +36,7 @@ function cerrarSesion() {
     localStorage.removeItem("usuario");
 
     setTimeout(function () {
-        window.location.replace("../../inicio.html");
+        window.location.replace("../../html/sesion.html");
     }, 500);
 }
 
