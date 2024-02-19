@@ -4,9 +4,12 @@ function principal() {
     //Antes de cargar la pagina del usuario, se comprueba que no se haya accedido sin una sesion valida.
     if (localStorage.getItem("usuario")) {
         let usuarioActual = JSON.parse(localStorage.getItem("usuario"));
-        if (usuarioActual.nombre === "") {
+
+        if (usuarioActual.nombre == "") {
             window.location.replace("../../inicio.html");
         }
+    } else {
+        window.location.replace("../../inicio.html");
     }
 
     //Boton para cerrar la sesion y redireccionar a la pagina de inicio.
