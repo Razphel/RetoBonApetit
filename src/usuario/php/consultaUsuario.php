@@ -1,5 +1,5 @@
 <?php
-include_once './assets/php/BD.php';
+include_once '../../../assets/php/BD.php';
 // Para que el navegador no haga cache (fecha de expiración menor a la actual)
 header('Cache-Control: no-cache, must-revalidate');
 header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
@@ -28,7 +28,8 @@ if (isset($_REQUEST['pedirProductos'])) {
 
 //Devuelve la consulta con las categorias, recibe el nombre de la categoria.
 if (isset($_REQUEST['categoria'])) {
-    $categorias = BD::imprimirConsultas('categorias');
+    $categoriaRecibida = $_REQUEST['categoria'];
+    $categorias = BD::imprimirConsultas($categoriaRecibida);
     echo json_encode($categorias);
 }
 
