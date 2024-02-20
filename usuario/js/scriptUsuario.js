@@ -9,13 +9,13 @@ function principal() {
         }
     }
 
-    //Boton para cerrar la sesion y redireccionar a la pagina de inicio.
+    // Boton para cerrar la sesion y redireccionar a la pagina de inicio.
     document.querySelector("#cerrarSesion").addEventListener("click", cerrarSesion);
-    document.querySelector("#btnHistorial").addEventListener("click", botonHistorial);
-    document.querySelector("#btnCategorias").addEventListener("click", botonCategorias);
-    document.querySelector("#btnProveedores").addEventListener("click", botonProveedores);
-    document.querySelector("#btnResiduos").addEventListener("click", botonResiduos);
-    document.querySelector("#btnUsuarios").addEventListener("click", botonUsuarios);
+    document.querySelector("#btnCategorias").addEventListener("click", navCategorias);
+    document.querySelector("#btnHistorial").addEventListener("click", navHistorial);
+    document.querySelector("#btnProveedores").addEventListener("click", navProveedores);
+    document.querySelector("#btnResiduos").addEventListener("click", navResiduos);
+    document.querySelector("#btnUsuarios").addEventListener("click", navUsuarios);
 
     // $.ajax({
     //     //Ubicacion del archivo php que va a manejar los valores.
@@ -30,6 +30,50 @@ function principal() {
     //     }
     // });
 
+
+
+}
+
+//Consulta general para recibir productos. La funcion devuelve un array de objetos literales con los datos de los productos.
+function consultarProductos() {
+    let parametros = {
+        pedirProductos: true
+    };
+
+    $.ajax({
+        //Ubicacion del archivo php que va a manejar los valores.
+        url: "./php/consultaUsuario.php",
+        //Metodo en que los va a recibir.
+        type: "GET",
+        data: parametros,
+        dataType: "json",
+        success: guardarProductos,
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.error("Error en la solicitud AJAX: " + textStatus, errorThrown);
+        }
+    });
+
+    function guardarProductos(listaProdutos) {
+        //Creo un array donde guardo todos los productos como objetos literales.
+        let todosProductos = [];
+
+        for (let i = 0; i < listaProdutos.length; i++) {
+            //Creo un objeto literal con los datos de cada producto.
+            let producto = {
+                id_categoria: listaProdutos[i].Id_categoria,
+                imagen_categoria: listaProdutos[i].Imagen_categoria,
+                nombre_producto: listaProdutos[i].nombre_producto,
+                nombre_categoria: listaProdutos[i].nombre_categoria,
+                nombre_unidades: listaProdutos[i].nombre_unidades,
+                nombre_observaciones: listaProdutos[i].nombre_observaciones
+            }
+
+            //Lo agrego al array de productos.
+            todosProductos.push(producto);
+        }
+
+        return todosProductos;
+    }
 }
 
 function cerrarSesion() {
@@ -41,7 +85,6 @@ function cerrarSesion() {
 }
 
 function mostrarProveedores(proveedores) {
-
     let contenedor = document.querySelector("#contenedor");
     let contador = 0;
     contenedor.innerHTML = "";
@@ -56,10 +99,9 @@ function mostrarProveedores(proveedores) {
         contador++;
 
     });
-
 }
 
-function botonProveedores() {
+function navProveedores() {
     let parametros = {
         claveProveedores: true
     };
@@ -91,10 +133,9 @@ function mostrarResiduos(respuesta) {
         contenedor.appendChild(contenedorResiduos);
         contador++;
     });
-
 }
 
-function botonResiduos() {
+function navResiduos() {
     let parametros = {
         claveResiduos: true
     };
@@ -129,7 +170,7 @@ function mostrarUsuarios(respuesta) {
 
 }
 
-function botonUsuarios() {
+function navUsuarios() {
     let parametros = {
         claveTodosUsuarios: true
     };
@@ -148,33 +189,33 @@ function botonUsuarios() {
 }
 
 function mostrarCategorias(respuesta) {
-
     let contenedor = document.querySelector("#contenedor");
     contenedor.innerHTML = "";
     //Ahora que tengo todos los datos de la tabla categorias, hago los elementos para guardarla.
     let salida = document.querySelector("#contenedor");
     let categorias = crearElemento("div", undefined, { class: "row", id: "categorias" });
 
+    // modelo de la carta de categorias
+    // <div class="col-6 col-sm-3 col-md-3 col-lg-3">
+    //     <div class="label_effect card p-3 mb-3" data-toggle="tooltip">
+    //         <img src="../../img/pasteleria.png" alt="">
+    //         <p>Pastelería</p>
+    //     </div>
+    // </div>
+
     respuesta.forEach(fila => {
-        let contenedor = crearElemento("div", undefined, { class: "col-3", style: "border: 2px black solid; padding: 5px;" });
+        let carta = crearElemento("div", undefined, { class: "col-6 col-sm-3 col-md-3 col-lg-3" });
+        let contenedor = crearElemento("div", undefined, { class: "label_effect card p-3 mb-3", "data-toggle": "tooltip" });
+        let p = crearElemento("p", fila.descripcion, undefined);
+        let img = crearElemento("img", undefined, { src: "../../img" + fila.imagenes, alt: fila.descripcion });
 
-        let aux = crearElemento("p", undefined, undefined);
-        aux.innerHTML = fila.descripcion;
-
-        let aux3 = crearElemento("p", undefined, undefined);
-        aux3.innerHTML = fila.imagenes;
-        contenedor.appendChild(aux3);
-        // let aux2 = document.createElement("img");
-        // aux2.setAttribute("href", fila.imagen);
-        // contenedor.appendChild(aux2);
-        contenedor.appendChild(aux);
-        categorias.appendChild(contenedor);
+        //
     });
 
     salida.appendChild(categorias);
 }
 
-function botonCategorias() {
+function navCategorias() {
     let parametros = {
         categoria: 'categorias'
     };
@@ -223,7 +264,7 @@ function mostrarHistorial(respuesta) {
     contenedor.appendChild(historial);
 }
 
-function botonHistorial() {
+function navHistorial() {
     //Mostrar Historial.
     //Se almacena en esta variable la información recogida desde el main
     let usuarioActual = JSON.parse(localStorage.getItem("usuario"));
@@ -262,5 +303,3 @@ function crearElemento(etiqueta, contenido, atributos) {
     }
     return elementoNuevo;
 }
-
-

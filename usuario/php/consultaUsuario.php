@@ -20,6 +20,12 @@ if (isset($_REQUEST['claveProveedores'])) {
     echo json_encode($proveedores);
 }
 
+//Devuelve la consulta con todos los productos.
+if (isset($_REQUEST['pedirProductos'])) {
+    $productos = BD::CategoriasProductos();
+    echo json_encode($productos);
+}
+
 //Devuelve la consulta con las categorias, recibe el nombre de la categoria.
 if (isset($_REQUEST['categoria'])) {
     $categorias = BD::imprimirConsultas('categorias');
