@@ -116,7 +116,7 @@ function principal() {
     //Mostrar categorias.
     $.ajax({
         //Ubicacion del archivo php que va a manejar los valores.
-        url: "../../src/usuario/php/consultaUsuario.php",
+        url: "./php/consultaUsuario.php",
         //Metodo en que los va a recibir.
         type: "GET",
         dataType: "json",
@@ -140,7 +140,7 @@ function principal() {
 
     $.ajax({
         //Ubicacion del archivo php que va a manejar los valores.
-        url: "../../src/usuario/php/consultaUsuario.php",
+        url: "./php/consultaUsuario.php",
         //Metodo en que los va a recibir.
         type: "GET",
         data: parametros,
@@ -163,7 +163,7 @@ function consultarProductos() {
 
     $.ajax({
         //Ubicacion del archivo php que va a manejar los valores.
-        url: "../../src/usuario/php/consultaUsuario.php",
+        url: "./php/consultaUsuario.php",
         //Metodo en que los va a recibir.
         type: "GET",
         data: parametros,
@@ -236,7 +236,7 @@ function navProveedores() {
     };
     $.ajax({
         //Ubicacion del archivo php que va a manejar los valores.
-        url: "../../src/usuario/php/consultaUsuario.php",
+        url: "./php/consultaUsuario.php",
         //Metodo en que los va a recibir.
         type: "GET",
         data: parametros,
@@ -278,7 +278,7 @@ function navResiduos() {
     };
     $.ajax({
         //Ubicacion del archivo php que va a manejar los valores.
-        url: "../../src/usuario/php/consultaUsuario.php",
+        url: "./php/consultaUsuario.php",
         //Metodo en que los va a recibir.
         type: "GET",
         data: parametros,
@@ -321,7 +321,7 @@ function navUsuarios() {
     };
     $.ajax({
         //Ubicacion del archivo php que va a manejar los valores.
-        url: "../../src/usuario/php/consultaUsuario.php",
+        url: "./php/consultaUsuario.php",
         //Metodo en que los va a recibir.
         type: "GET",
         data: parametros,
@@ -382,7 +382,7 @@ function navCategorias() {
     //Mostrar categorias.
     $.ajax({
         //Ubicacion del archivo php que va a manejar los valores.
-        url: "../../src/usuario/php/consultaUsuario.php",
+        url: "./php/consultaUsuario.php",
         //Metodo en que los va a recibir.
         type: "GET",
         dataType: "json",
@@ -451,7 +451,7 @@ function navHistorial() {
 
     $.ajax({
         //Ubicacion del archivo php que va a manejar los valores.
-        url: "../../src/usuario/php/consultaUsuario.php",
+        url: "./php/consultaUsuario.php",
         //Metodo en que los va a recibir.
         type: "GET",
         data: parametros,

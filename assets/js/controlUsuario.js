@@ -6,11 +6,11 @@ function principal() {
         let usuarioActual = JSON.parse(localStorage.getItem("usuario"));
         //Si es admin, redirecciona a la pagina de administradores.
         if (usuarioActual.tipo == 1) {
-            window.location.replace("../../html/admin/inicioAdmin.html");
+            window.location.replace("./src/admin/inicioAdmin.html");
         }
         //Si no, te lleva a los usuarios.
         if (usuarioActual.tipo == 0) {
-            window.location.replace("../../html/user/inicioUsuario.html");
+            window.location.replace("./src/usuario/inicioUsuario.html");
         }
     }
 
@@ -72,9 +72,9 @@ function manejarRespuesta(respuesta) {
             //Ahora hay que comprobar si es administrador.
             if (respuesta.admin == 1) {
                 //Si es administrador o usuario, impirmo si mensaje correspondiente y hago una redireccion a los dos segundos.
-                    window.location.replace("../../html/admin/inicioAdmin.html");
+                    window.location.replace("./src/admin/inicioAdmin.html");
             } else {
-                    window.location.replace("../../html/user/inicioUsuario.html");
+                    window.location.replace("./src/usuario/inicioUsuario.html");
             }
         }
     }
