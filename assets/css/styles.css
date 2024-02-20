@@ -420,8 +420,7 @@ body {
 
 /* Main............................................ gen_main */
 .page_layout {
-    /* background-color: var(--accent-03);  */
-    background-color: rgb(206, 206, 98); 
+    background-color: var(--accent-03);  
 }
 
 .content_wrapper {
