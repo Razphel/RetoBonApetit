@@ -40,6 +40,33 @@ class BD
     }
 
     public static function consultaUsuario()
+    {
+        $respuesta = false;
+        try {
+            $conexion = self::conexionBD();
+            $nombreUsuario = $_REQUEST['nombreUsuario'];
+            $contraseña = $_REQUEST['contraseña'];
+ 
+            $sql = "SELECT id_usuarios, nombre, password, admin, activo FROM usuarios WHERE nombre= '$nombreUsuario' and password= '$contraseña'";
+ 
+            // $preparada = $conexion->prepare($sql);
+            // $preparada->bindParam(':nombre', $_REQUEST['nombre']);
+            // $preparada->bindParam(':password', $_REQUEST['password']);
+            // $preparada->execute();
+ 
+            $resultado = $conexion->query($sql);
+ 
+            $fila = $resultado->fetch();
+            if ($fila) {
+                $respuesta = $fila;
+            } else {
+                $respuesta = false;
+            }
+        } catch (Exception $e) {
+            throw new Exception("ERROR: " + $e);
+        }
+        return $respuesta;
+    }
 
 
     //Con esta funcion tan solo tenemos que pasar por parametro la tabla que deseamos imprimir por pantalla con toda su información. 
@@ -109,7 +136,7 @@ class BD
             ON productos.id_productos = producto_categoria.fk_producto
             INNER JOIN categorias
             ON producto_categoria.fk_categoria = categorias.id_categorias
-            WHERE producto_categoria.fk_categoria = $categoriaSeleccionada"
+            WHERE producto_categoria.fk_categoria = $categoriaSeleccionada";
 
             $resultado = $conexion->query($sql);
 

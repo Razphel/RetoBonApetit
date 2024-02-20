@@ -37,3 +37,4 @@ if (isset($_REQUEST['claveTodosUsuarios']))
     $categorias = BD::imprimirConsultas('usuarios');
     echo json_encode($categorias);
 }
+
