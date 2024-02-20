@@ -115,19 +115,18 @@ class BD
         return $filas;
     }
 
-    public static function ImprimirProductosCategoria($categoriaSeleccionada)
+    public static function CategoriasProductos()
     {
         try {
             $conexion = self::conexionBD();
-            $sql = "SELECT productos.descripcion AS 'nombre_producto',categorias.descripcion AS 'nombre_categoria', unidades.descripcion AS 'nombre_unidades',productos.observaciones AS 'nombre_observaciones'
-            FROM unidades 
-            INNER JOIN productos 
+            $sql = "SELECT categorias.id_categorias AS 'Id_categoria', categorias.imagenes AS 'Imagen_categoria', productos.descripcion AS 'nombre_producto',categorias.descripcion AS 'nombre_categoria', unidades.descripcion AS 'nombre_unidades',productos.observaciones AS 'nombre_observaciones'
+            FROM unidades
+            INNER JOIN productos
             ON unidades.id_unidades = productos.fk_unidad
-            INNER JOIN producto_categoria 
+            INNER JOIN producto_categoria
             ON productos.id_productos = producto_categoria.fk_producto
             INNER JOIN categorias
-            ON producto_categoria.fk_categoria = categorias.id_categorias
-            WHERE producto_categoria.fk_categoria = $categoriaSeleccionada";
+            ON producto_categoria.fk_categoria = categorias.id_categorias";
 
             $resultado = $conexion->query($sql);
 
@@ -143,7 +142,6 @@ class BD
         //Esta consulta te devuelve un array de arrays con todos los datos de la tabla producto.
         return $filas;
     }
-
     //Esta funcion nos permitirá comprobar si existe un registro en la base de datos, de este modo podremos acceder a el para eliminarle, modificarle o crear un nuevo registro si no existe ya en la base de datos
     public static function buscarRegistro($id, $tabla)
     {
