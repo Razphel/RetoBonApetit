@@ -19,11 +19,11 @@ function principal() {
 
     // Boton para cerrar la sesion y redireccionar a la pagina de inicio.
     document.querySelector("#cerrarSesion").addEventListener("click", cerrarSesion);
-    document.querySelector("#btnCategorias").addEventListener("click", navProductos);
-    document.querySelector("#btnHistorial").addEventListener("click", navPedidos);
-    document.querySelector("#btnProveedores").addEventListener("click", navProveedores);
-    document.querySelector("#btnResiduos").addEventListener("click", navResiduos);
-    document.querySelector("#btnUsuarios").addEventListener("click", navUsuarios); // función del admin
+    document.querySelector("#navProductos").addEventListener("click", navProductos);
+    document.querySelector("#navPedidos").addEventListener("click", navPedidos);
+    document.querySelector("#navProveedores").addEventListener("click", navProveedores);
+    document.querySelector("#navResiduos").addEventListener("click", navResiduos);
+    // document.querySelector("#navUsuarios").addEventListener("click", navUsuarios); // función del admin
 
     // $.ajax({
     //     //Ubicacion del archivo php que va a manejar los valores.
