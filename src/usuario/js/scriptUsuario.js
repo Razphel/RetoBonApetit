@@ -152,6 +152,9 @@ function principal() {
             console.error("Error en la solicitud AJAX: " + textStatus, errorThrown);
         }
     });
+
+    //Guardo en el localStorage el listado con todos los productos.
+    localStorage.setItem("todosProductos", JSON.stringify(consultarProductos));
 }
 
 
@@ -462,6 +465,10 @@ function navHistorial() {
             console.error("Error en la solicitud AJAX: " + textStatus, errorThrown);
         }
     });
+}
+
+function filtroCategoria() {
+
 }
 
 function crearElemento(etiqueta, contenido, atributos) {
