@@ -17,8 +17,8 @@ function principal() {
 
     //Boton para cerrar la sesion y redireccionar a la pagina de inicio.
     document.querySelector("#cerrarSesion").addEventListener("click", cerrarSesion);
-    document.querySelector("#btnHistorial").addEventListener("click", botonHistorial);
-    document.querySelector("#btnCategorias").addEventListener("click", botonCategorias);
+    document.querySelector("#btnHistorial").addEventListener("click", navPedidos);
+    document.querySelector("#btnCategorias").addEventListener("click", navProductos);
 }
 
 function cerrarSesion() {
@@ -30,7 +30,7 @@ function cerrarSesion() {
     }, 500);
 }
 
-function botonHistorial() {
+function navPedidos() {
     //Mostrar Historial.
     let usuarioActual = JSON.parse(localStorage.getItem("usuario"));
 
@@ -84,7 +84,7 @@ function botonHistorial() {
     }
 }
 
-function botonCategorias() {
+function navProductos() { 
     //Mostrar categorias.
     $.ajax({
         //Ubicacion del archivo php que va a manejar los valores.
@@ -124,6 +124,7 @@ function botonCategorias() {
         salida.appendChild(categorias);
     }
 }
+
 
 function crearElemento(etiqueta, contenido, atributos) {
     let elementoNuevo = document.createElement(etiqueta);
