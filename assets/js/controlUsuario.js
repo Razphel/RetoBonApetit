@@ -72,15 +72,9 @@ function manejarRespuesta(respuesta) {
             //Ahora hay que comprobar si es administrador.
             if (respuesta.admin == 1) {
                 //Si es administrador o usuario, impirmo si mensaje correspondiente y hago una redireccion a los dos segundos.
-                salida.innerHTML = "Soy admin";
-                setTimeout(function () {
-                    window.location.replace("../administrador/inicioAdmin.html");
-                }, 2000);
+                    window.location.replace("./html/admin/inicioAdmin.html");
             } else {
-                salida.innerHTML = "Soy usuario";
-                setTimeout(function () {
-                    window.location.replace("../usuario/inicioUsuario.html");
-                }, 2000);
+                    window.location.replace("./html/user/inicioUsuario.html");
             }
         }
     }
