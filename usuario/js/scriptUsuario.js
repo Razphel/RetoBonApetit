@@ -17,9 +17,18 @@ function principal() {
     document.querySelector("#btnResiduos").addEventListener("click", botonResiduos);
     document.querySelector("#btnUsuarios").addEventListener("click", botonUsuarios);
 
-    let contedorCategoriasInicio = crearElemento("div",undefined,{id:"DivCategoriaInicio",class:"row"});
-    contenedor.appendChild(contedorCategoriasInicio);
-    mostrarCategorias();
+    // $.ajax({
+    //     //Ubicacion del archivo php que va a manejar los valores.
+    //     url: "./php/consultaUsuarioResiduos.php",
+    //     //Metodo en que los va a recibir.
+    //     type: "GET",
+    //     dataType: "json",
+    //     //La funcion que se ejecuta segun el resultado.
+    //     success: mostrarResiduos,
+    //     error: function (jqXHR, textStatus, errorThrown) {
+    //         console.error("Error en la solicitud AJAX: " + textStatus, errorThrown);
+    //     }
+    // });
 
 }
 
@@ -160,7 +169,7 @@ function mostrarCategorias(respuesta) {
  
         let aux3 = crearElemento("p", undefined, undefined);
         aux3.innerHTML = fila.imagenes;
-        contenedor.appendChild("../img/"+aux3);
+        contenedor.appendChild(aux3);
         // let aux2 = document.createElement("img");
         // aux2.setAttribute("href", fila.imagen);
         // contenedor.appendChild(aux2);
@@ -171,25 +180,25 @@ function mostrarCategorias(respuesta) {
     salida.appendChild(categorias);
 }
 
-// function botonCategorias() 
-// {   
-//     let parametros = {
-//         categoria: 'categorias'
-//     };
-//     //Mostrar categorias.
-//     $.ajax({
-//         //Ubicacion del archivo php que va a manejar los valores.
-//         url: "./php/consultaUsuario.php",
-//         //Metodo en que los va a recibir.
-//         type: "GET",
-//         dataType: "json",
-//         data: parametros,
-//         success: mostrarCategorias,
-//         error: function (jqXHR, textStatus, errorThrown) {
-//             console.error("Error en la solicitud AJAX: " + textStatus, errorThrown);
-//         }
-//     });
-// }
+function botonCategorias() 
+{   
+    let parametros = {
+        categoria: 'categorias'
+    };
+    //Mostrar categorias.
+    $.ajax({
+        //Ubicacion del archivo php que va a manejar los valores.
+        url: "./php/consultaUsuario.php",
+        //Metodo en que los va a recibir.
+        type: "GET",
+        dataType: "json",
+        data: parametros,
+        success: mostrarCategorias,
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.error("Error en la solicitud AJAX: " + textStatus, errorThrown);
+        }
+    });
+}
 
 function mostrarHistorial(respuesta) {
     let salida = document.querySelector("#contenedor");
