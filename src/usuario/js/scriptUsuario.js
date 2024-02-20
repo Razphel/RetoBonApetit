@@ -4,6 +4,12 @@
         - Pedidos (navPedidos)
         - Proveedores (navProveedores)
         - Residuos (navResiduos)
+
+    Funciones comunes para el admin y el usuario (deberían ir en el js de assets):
+        - crearElemento()
+        - consultarProductos()
+        - guardarProductos()
+        - mostrarCategorias()
 */
 
 window.addEventListener("load", principal);
