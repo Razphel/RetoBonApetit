@@ -8,17 +8,17 @@ function principal() {
 
         //Si por alguna razon no hay nada en el nombre, redirecciona al login.
         if (usuarioActual.nombre == "") {
-            window.location.replace("../../inicio.html");
+            window.location.replace("../sesion.html");
         }
     } else {
         //Si no existe la sesion redirecciona al login.
-        window.location.replace("../../inicio.html");
+        window.location.replace("../sesion.html");
     }
 
     //Boton para cerrar la sesion y redireccionar a la pagina de inicio.
     document.querySelector("#cerrarSesion").addEventListener("click", cerrarSesion);
-    document.querySelector("#btnHistorial").addEventListener("click", botonHistorial);
-    document.querySelector("#btnCategorias").addEventListener("click", botonCategorias);
+    document.querySelector("#btnHistorial").addEventListener("click", navPedidos);
+    document.querySelector("#btnCategorias").addEventListener("click", navProductos);
 }
 
 function cerrarSesion() {
@@ -26,11 +26,11 @@ function cerrarSesion() {
     localStorage.removeItem("usuario");
 
     setTimeout(function () {
-        window.location.replace("../../inicio.html");
+        window.location.replace("../sesion.html");
     }, 500);
 }
 
-function botonHistorial() {
+function navPedidos() {
     //Mostrar Historial.
     let usuarioActual = JSON.parse(localStorage.getItem("usuario"));
 
@@ -84,7 +84,7 @@ function botonHistorial() {
     }
 }
 
-function botonCategorias() {
+function navProductos() { 
     //Mostrar categorias.
     $.ajax({
         //Ubicacion del archivo php que va a manejar los valores.
