@@ -1,0 +1,435 @@
+/*
+    ÍNDICE: 
+        - Etiquetas/Elementos generales______________________ gen_00
+            - Tipografía.................. gen_tipo
+            - Propiedades generales....... gen_prop
+            - Headings y textos........... gen_head
+            - Botones..................... gen_btn
+            - Iconos...................... gen_icon
+            - Tablas...................... gen_tablas
+            - Formularios................. gen_form
+            - Contenedores................ gen_cont
+            - Modales..................... gen_mod
+
+            - Body........................ gen_body
+            - Aside....................... gen_aside
+            - Header...................... gen_header
+            - Main........................ gen_main
+
+        - Páginas individuales_____________________________________________________________ total: 17
+            Comunes_____________________________________________________________________ pag_00
+                1. Inicio sesión...................................... pag_inicio
+
+            Administrador_______________________________________________________________ pag_admin
+                2. Index................................................. pag_admin_index
+                3. Categorías............................................ pag_admin_cat
+                    3.1. Nueva categoría.................. pag_admin_cat_new 
+                    . Pop up vista previa categorías 
+                    . Pop up editar categoría
+                4. Productos............................................. pag_admin_prod
+                    4.1. Nuevo producto................... pag_admin_prod_new 
+                    . Pop up vista previa producto 
+                    . Pop up editar producto
+                    4.2. Ud. de medida.................... pag_admin_prod_ud
+                5. Solicitudes........................................... pag_admin_soli
+                6. Pedidos............................................... pag_admin_ped
+                    6.1. Nuevo pedido..................... pag_admin_ped_new
+                    !Falta pedidos
+                    6.2. Estados de pedido................ pag_admin_ped_estados
+                7. Facturas.............................................. pag_admin_fact
+                8. Usuarios.............................................. pag_admin_users
+                    8.1. Nuevo usuario.................... pag_admin_users_new
+                    . Pop up vista previa usuario
+                    . Pop up editar usuario
+                9. Proveedores........................................... pag_admin_prov
+                    9.1. Nuevo proveedor.................. pag_admin_prov_new
+                    . Pop up vista previa proveedor
+                    . Pop up editar proveedor
+                10. Residuos............................................. pag_admin_res
+                    ! Falta residuos
+
+            Usuario_____________________________________________________________________ pag_user
+                2. Index................................................. pag_user_index
+                3. Productos............................................. pag_user_prod
+                4. Pedidos............................................... pag_user_ped
+                5. Proveedores........................................... pag_user_prov
+                6. Residuos.............................................. pag_user_res
+*/
+
+/* ETIQUETAS GENERALES________________________________________________gen_00 */
+/* Tipografía.......................................gen_tipo */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+/* Propiedades generales............................gen_prop */
+:root {
+    /* Colores.........................*/
+    --primary-color: #EE2F7F; /* fondos, textos, iconos... */
+    --secondary-color: #F8EBF0; /* solo usar para fondos */
+    
+    /* Escala de grises */
+    --accent-01: #DCDCDC; /* fondo cajas, barras scroll, líneas horizontales...*/
+    --accent-02: #ECECEC; /* Fondo de botones */
+    --accent-03: #F9FAFB; /* Fondo de página */
+    --accent-04: #F9F9FA; /* Fondo de etiquetas y marcador de sección menú */
+    --aside-back: white;
+    --light-color: white; 
+
+    /* Textos...........................*/
+    --font: 'Inter', sans-serif;
+    --text-dark-color: #0f0c09;
+    --text-light-color: #ABABAB;
+
+    /* Tamaños...........................*/
+    --head-h1: 22px; 
+    --head-h2: 20px; 
+    --head-h3: 18px; 
+    --head-h4: 16px; 
+    --size-p: 14px;
+    --head-h5: 12px;
+    --size-span: ; 
+    --line-height: ;
+}
+
+.row {
+    --bs-gutter-x: 0;
+    --bs-gutter-y: 0;
+}
+
+/* Bootstrap....................*/
+.bg-primary {
+    background-color: transparent !important;
+    border: solid thin gray;
+}
+
+/* Headings y textos............................gen_head */
+h1, h2, h3, h4, h5, p {
+    padding: 0;
+    margin: 0;
+}
+
+h1 {
+    font-weight: 300;
+    font-size: var(--head-h1);
+}
+
+h2 {
+    font-size: var(--head-h2);
+}
+
+h3 {
+    font-weight: 400;
+    font-size: var(--head-h3);
+}
+
+h4 {
+    font-weight: 400;
+    font-size: var(--head-h4); 
+}
+
+h5 {
+    font-weight: 400;
+    font-size: var(--head-h5);
+}
+
+p {
+    font-size: var(--size-p);
+}
+
+/* Botones...................................... gen_btn */ 
+.btn {  
+    font-size: var(--size-p);  
+    padding: 10px 20px;
+    border-radius: 4px;
+    width: fit-content; 
+}  
+
+.btn:hover {
+    transform: translateY(-1px);
+}
+
+/* Botón principal. Fondo color principal */
+/* <button type="button" class="btn btn_custom_1">Ver pedido</button> */
+.btn_custom_1, .btn_custom_1:hover {
+    color: white;
+    border: solid thin var(--primary-color);
+    background-color: var(--primary-color);
+}
+
+/* Botón secundario. Fondo color secundario */
+/* <button type="button" class="btn btn_custom_2">Ver pedido</button> */
+.btn_custom_2, .btn_custom_2:hover {
+    color: var(--primary-color);
+    font-weight: 500;
+    border: solid thin var(--secondary-color);
+    background-color: var(--secondary-color);
+}
+
+/* Botón extra. Escala de grises. Usos: "Limpiar formulario" */
+/* <button type="button" class="btn btn_custom_3">Limpiar</button> */
+.btn_custom_3, .btn_custom_3:hover {
+    color: var(--text-dark-color);
+    border: solid thin var(--accent-02);
+    background-color: var(--accent-02);
+}
+
+/* Iconos........................................ gen_icon */ 
+i:hover {
+    cursor: pointer;
+    color:#ee2f7f;
+}
+
+/* chevron del sidebar */
+.nav_container i.bi-chevron-right {
+    font-size: 10px;
+}   
+
+.bi-person-fill {
+    padding: 6px 10px;
+    border-radius: 50%;
+    background-color: rgb(230, 230, 230);
+}
+
+.nav_container .bx {
+    color: rgb(167, 167, 167);
+}
+
+/* Tablas........................................ gen_tablas */
+
+
+/* Formularios................................... gen_forms */
+form {  
+    font-size: 14px;  
+}  
+
+/* ! Revisar estos estilos del form login */
+.login-form {   
+    width: 330px;  
+    border: none;
+}  
+
+input::placeholder {
+    color: var(--text-light-color);
+    font-size: var(--head-h5);
+}
+
+.search_bar input {
+    border-radius: 30px;
+}
+
+/* Contenedores.................................. gen_cont */
+/* ! Revisar estos estilos container y card */
+.container {  
+    height: 100vh;  
+    display: flex;  
+    align-items: center;  
+    justify-content: center;  
+}  
+
+.card {
+    border: none;
+    box-shadow: 0 2px 6px 0 rgba(138, 138, 138, 0.055);
+}
+
+.card-body {
+    padding: 30px;
+}
+
+.card-title {   
+    padding-bottom: 20px;
+    font-weight: 300;  
+}  
+/* ! ................................*/
+
+.label_effect { /* contenedor con hover */
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+    align-items: center;
+    gap: 15px;
+    padding: 10px 20px !important;
+}
+
+.label_effect:hover {
+    cursor: pointer;
+    box-shadow: 0 2px 6px 0 rgba(138, 138, 138, 0.151);
+}   
+
+.label_effect img {
+    width: 35px;
+}
+
+.label_empty { /* contenedor sin elementos dentro */
+    border: dashed thin rgb(179, 179, 179);
+    background-color: transparent; 
+}
+
+
+/* Body............................................ gen_body */
+html {
+    height: 100vh;
+}
+
+body {
+    font-family: var(--font);
+    height: 100vh;
+    margin: 0; 
+    background-color: var(--accent-03);  
+}
+
+* {
+    box-sizing: border-box;
+}
+
+/* Aside........................................... gen_aside */
+.col-auto {
+    padding: 0; 
+}
+
+.sidebar {
+    height: 100vh;
+    width: 250px;
+    padding: 20px 15px 15px 15px;
+    margin: 0;
+    border-right: solid thin rgb(238, 238, 238);
+    background-color: var(--aside-back);
+}
+
+.sidebar_top {
+    padding-left: 10px;
+    background-color: white;
+}
+
+.sidebar_bottom {
+    padding-top: 60px;
+}
+
+.sidebar_container {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding: 0; 
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0; 
+    margin: 0; 
+}
+
+.nav_link {
+    width: 100%;
+    text-decoration: none;
+    color: var(--text-dark-color);
+}
+
+.nav_container {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border-radius: 4px;
+}
+
+.nav_container:hover {
+    background-color: rgb(248, 248, 248);
+}
+
+.nav_container_left {
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Header.......................................... gen_header */
+.topbar {
+    height: 70px;
+    border-bottom: solid thin rgb(221, 221, 221);
+    display: flex;
+    justify-content: left;
+    align-items: center;
+}
+
+.topbar_container {
+    width: 100%;
+    padding: 0 40px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.search_bar {
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+    align-items: center;
+}
+
+.topbar_left {
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+    align-items: center;
+    gap: 20px;
+}
+
+.topbar_right {
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+    align-items: center;
+    gap: 20px;
+}
+
+.topbar_icons {
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+    align-items: center;
+}
+
+.topbar_icons i {
+    padding: 10px;
+}
+
+.topbar_profile {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+}
+
+.topbar_profile_info {
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+}
+
+.topbar_profile_name {
+    font-size: var(--size-p);
+}
+
+.topbar_profile_account {
+    font-size: var(--head-h5);
+}
+
+/* Main............................................ gen_main */
+.page_layout {
+    background-color: var(--accent-03);  
+}
+
+.content_wrapper {
+    padding-left: 40px;
+    padding-right: 40px;
+}
+
+/* PÁGINAS____________________________________________________________ pag_00 */
+/* Administrador_________________________________________ pag_admin */
+/* 2. Index.............................. pag_admin_index */
+
+/* Usuario_______________________________________________ pag_user */
