@@ -41,15 +41,14 @@ function cerrarSesion() {
 }
 
 function mostrarProveedores(proveedores) {
-    
+
     let contenedor = document.querySelector("#contenedor");
     let contador = 0;
     contenedor.innerHTML = "";
-    let contenedorProveedores = crearElemento("div",undefined,{id:"ContProveedores",class:"col-3",style:"border:2px black solid; padding:5px"});
+    let contenedorProveedores = crearElemento("div", undefined, { id: "ContProveedores", class: "col-3", style: "border:2px black solid; padding:5px" });
     proveedores.forEach(fila => {
-        let proveedor = crearElemento("p",undefined,{id:contenedor});
-        for (let i = 0; i < Object.keys(fila).length/2; i++) 
-        {   
+        let proveedor = crearElemento("p", undefined, { id: contenedor });
+        for (let i = 0; i < Object.keys(fila).length / 2; i++) {
             proveedor.innerHTML += fila[i] + " ";
         }
         contenedorProveedores.appendChild(proveedor);
@@ -60,8 +59,7 @@ function mostrarProveedores(proveedores) {
 
 }
 
-function botonProveedores()
-{
+function botonProveedores() {
     let parametros = {
         claveProveedores: true
     };
@@ -83,11 +81,10 @@ function mostrarResiduos(respuesta) {
     let contenedor = document.querySelector("#contenedor");
     let contador = 0;
     contenedor.innerHTML = "";
-    let contenedorResiduos = crearElemento("div",undefined,{id:"ContResiduos",class:"col-3",style:"border:2px black solid; padding:5px"});
+    let contenedorResiduos = crearElemento("div", undefined, { id: "ContResiduos", class: "col-3", style: "border:2px black solid; padding:5px" });
     respuesta.forEach(fila => {
-        let residuo = crearElemento("p",undefined,{id:"residuos"});
-        for (let i = 0; i < Object.keys(fila).length/2; i++) 
-        {   
+        let residuo = crearElemento("p", undefined, { id: "residuos" });
+        for (let i = 0; i < Object.keys(fila).length / 2; i++) {
             residuo.innerHTML += fila[i] + " ";
         }
         contenedorResiduos.appendChild(residuo);
@@ -97,8 +94,7 @@ function mostrarResiduos(respuesta) {
 
 }
 
-function botonResiduos()
-{
+function botonResiduos() {
     let parametros = {
         claveResiduos: true
     };
@@ -120,11 +116,10 @@ function mostrarUsuarios(respuesta) {
     let contenedor = document.querySelector("#contenedor");
     let contador = 0;
     contenedor.innerHTML = "";
-    let contenedorResiduos = crearElemento("div",undefined,{id:"ContResiduos",class:"col-3",style:"border:2px black solid; padding:5px"});
+    let contenedorResiduos = crearElemento("div", undefined, { id: "ContResiduos", class: "col-3", style: "border:2px black solid; padding:5px" });
     respuesta.forEach(fila => {
-        let residuo = crearElemento("p",undefined,{id:"residuos"});
-        for (let i = 0; i < Object.keys(fila).length/2; i++) 
-        {   
+        let residuo = crearElemento("p", undefined, { id: "residuos" });
+        for (let i = 0; i < Object.keys(fila).length / 2; i++) {
             residuo.innerHTML += fila[i] + " ";
         }
         contenedorResiduos.appendChild(residuo);
@@ -134,8 +129,7 @@ function mostrarUsuarios(respuesta) {
 
 }
 
-function botonUsuarios()
-{
+function botonUsuarios() {
     let parametros = {
         claveTodosUsuarios: true
     };
@@ -160,13 +154,13 @@ function mostrarCategorias(respuesta) {
     //Ahora que tengo todos los datos de la tabla categorias, hago los elementos para guardarla.
     let salida = document.querySelector("#contenedor");
     let categorias = crearElemento("div", undefined, { class: "row", id: "categorias" });
- 
+
     respuesta.forEach(fila => {
         let contenedor = crearElemento("div", undefined, { class: "col-3", style: "border: 2px black solid; padding: 5px;" });
- 
+
         let aux = crearElemento("p", undefined, undefined);
         aux.innerHTML = fila.descripcion;
- 
+
         let aux3 = crearElemento("p", undefined, undefined);
         aux3.innerHTML = fila.imagenes;
         contenedor.appendChild(aux3);
@@ -176,12 +170,11 @@ function mostrarCategorias(respuesta) {
         contenedor.appendChild(aux);
         categorias.appendChild(contenedor);
     });
- 
+
     salida.appendChild(categorias);
 }
 
-function botonCategorias() 
-{   
+function botonCategorias() {
     let parametros = {
         categoria: 'categorias'
     };
@@ -230,18 +223,17 @@ function mostrarHistorial(respuesta) {
     contenedor.appendChild(historial);
 }
 
-function botonHistorial() 
-{
+function botonHistorial() {
     //Mostrar Historial.
     //Se almacena en esta variable la información recogida desde el main
     let usuarioActual = JSON.parse(localStorage.getItem("usuario"));
- 
+
     let parametros = {
         //UsuarioActual contiene todos los campos de usuario que se han almacenado anteriormente en principal 
         //Y clavePrimaria ha sido creada en el js de controlUsuario en la funcion manejarRespuesta
         claveUsuario: usuarioActual.clavePrimaria
     };
- 
+
     $.ajax({
         //Ubicacion del archivo php que va a manejar los valores.
         url: "./php/consultaUsuario.php",
@@ -257,18 +249,14 @@ function botonHistorial()
     });
 }
 
-function crearElemento(etiqueta,contenido,atributos)
-{
+function crearElemento(etiqueta, contenido, atributos) {
     let elementoNuevo = document.createElement(etiqueta);
-    if(contenido !== undefined)
-        {
+    if (contenido !== undefined) {
         let contenidoNuevo = document.createTextNode(contenido);
         elementoNuevo.appendChild(contenidoNuevo);
-        }
-    if(atributos !== undefined)
-    {
-        for(let clave in atributos)
-        {   
+    }
+    if (atributos !== undefined) {
+        for (let clave in atributos) {
             elementoNuevo.setAttribute(clave, atributos[clave]);
         }
     }

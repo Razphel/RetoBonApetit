@@ -7,33 +7,34 @@ header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
 // Indicamos  al navegador que va a recibir contenido JSON
 header("Content-Type: application/json");
 
-
+//Devuelve la consulta de los pedidos del usuario, recibiendo el id del usuario.
 if (isset($_REQUEST['claveUsuario'])) {
     $id_usuario = $_REQUEST['claveUsuario'];
     $historial = BD::imprimirPedidos($id_usuario);
     echo json_encode($historial);
-} 
+}
 
-if(isset($_REQUEST['claveProveedores']))
-{
+//Devuelve la consulta con los proveedores
+if (isset($_REQUEST['claveProveedores'])) {
     $proveedores = BD::imprimirConsultas('proveedores');
     echo json_encode($proveedores);
 }
- 
-if (isset($_REQUEST['categoria'])) 
-{
+
+//Devuelve la consulta con las categorias, recibe el nombre de la categoria.
+if (isset($_REQUEST['categoria'])) {
     $categorias = BD::imprimirConsultas('categorias');
     echo json_encode($categorias);
 }
 
-if (isset($_REQUEST['claveResiduos'])) 
-{
+//Devuelve la consulta con los residuos, recibe el nombre de la tabla.
+if (isset($_REQUEST['claveResiduos'])) {
     $categorias = BD::imprimirConsultas('residuos');
     echo json_encode($categorias);
 }
 
-if (isset($_REQUEST['claveTodosUsuarios'])) 
-{
+//Esto es para el admin.
+//Devuelve la consulta con todos los datos de usuarios, recibe el nombre de tabla.
+if (isset($_REQUEST['claveTodosUsuarios'])) {
     $categorias = BD::imprimirConsultas('usuarios');
     echo json_encode($categorias);
 }

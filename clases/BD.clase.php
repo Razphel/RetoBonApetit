@@ -227,5 +227,3 @@ class BD
         return $filas;
     }
 }
-
-?>
