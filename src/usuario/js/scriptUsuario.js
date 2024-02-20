@@ -39,7 +39,7 @@ function principal() {
     // });
 
     // Cargar la página de inicio del usuario nada más acceder
-
+    navProductos();
 }
 
 function navUsuarios() {
@@ -164,7 +164,9 @@ function mostrarProveedores(proveedores) {
     let contenedorProveedores = crearElemento("div", undefined, { 
         id: "ContProveedores", 
         class: "col-3", 
-        style: "border:2px black solid; padding:5px" });
+        style: "border:2px black solid; padding:5px" 
+    });
+    
     proveedores.forEach(fila => {
         let proveedor = crearElemento("p", undefined, { 
             id: contenedor 
@@ -175,7 +177,6 @@ function mostrarProveedores(proveedores) {
         contenedorProveedores.appendChild(proveedor);
         contenedor.appendChild(contenedorProveedores);
         contador++;
-
     });
 }
 
@@ -275,11 +276,9 @@ function consultarProductos() {
                 nombre_unidades: listaProdutos[i].nombre_unidades,
                 nombre_observaciones: listaProdutos[i].nombre_observaciones
             }
-
             //Lo agrego al array de productos.
             todosProductos.push(producto);
         }
-
         return todosProductos;
     }
 }
@@ -312,8 +311,8 @@ function mostrarCategorias(respuesta) {
         let p = crearElemento("p", fila.descripcion, undefined);
         let img = crearElemento("img", undefined, { 
             src: "../../img" + fila.imagenes, 
-            alt: fila.descripcion });
-
+            alt: fila.descripcion 
+        });
         //
     });
     salida.appendChild(categorias);
