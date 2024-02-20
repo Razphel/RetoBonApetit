@@ -49,11 +49,6 @@ class BD
 
             $sql = "SELECT id_usuarios, nombre, password, admin, activo FROM usuarios WHERE nombre= '$nombreUsuario' and password= '$contraseña'";
 
-            // $preparada = $conexion->prepare($sql);
-            // $preparada->bindParam(':nombre', $_REQUEST['nombre']);
-            // $preparada->bindParam(':password', $_REQUEST['password']);
-            // $preparada->execute();
-
             $resultado = $conexion->query($sql);
 
             $fila = $resultado->fetch();
@@ -120,10 +115,10 @@ class BD
         try {
             $conexion = self::conexionBD();
             $sql = "SELECT categorias.id_categorias AS 'Id_categoria', categorias.imagenes AS 'Imagen_categoria', productos.descripcion AS 'nombre_producto',categorias.descripcion AS 'nombre_categoria', unidades.descripcion AS 'nombre_unidades',productos.observaciones AS 'nombre_observaciones'
-            FROM unidades
-            INNER JOIN productos
+            FROM unidades 
+            INNER JOIN productos 
             ON unidades.id_unidades = productos.fk_unidad
-            INNER JOIN producto_categoria
+            INNER JOIN producto_categoria 
             ON productos.id_productos = producto_categoria.fk_producto
             INNER JOIN categorias
             ON producto_categoria.fk_categoria = categorias.id_categorias";
@@ -142,86 +137,62 @@ class BD
         //Esta consulta te devuelve un array de arrays con todos los datos de la tabla producto.
         return $filas;
     }
-    //Esta funcion nos permitirá comprobar si existe un registro en la base de datos, de este modo podremos acceder a el para eliminarle, modificarle o crear un nuevo registro si no existe ya en la base de datos
-    public static function buscarRegistro($id, $tabla)
-    {
-        $respuesta = false;
-        $conexion = self::conexionBD();
-        $sql = "SELECT id_categorias from $tabla WHERE id_categoria = $id";
-        $resultado = $conexion->query($sql);
-        if ($resultado->rowCount() > 0) {
-            $respuesta = true;
-        }
-        return $respuesta;
-    }
 
     public static function insertarCategoria()
     {
         $resultado = false;
         try {
             $conexion = self::conexionBD();
-            $idCategoria = $_REQUEST['idCategoria'];
             $descripcionCategoria = $_REQUEST['descripcionCategoria'];
             $observacionesCategoria = $_REQUEST['observacionesCategoria'];
             $imagenesCategoria = $_REQUEST['imagenesCategoria'];
-            $sql = "SELECT id_categoria from categorias WHERE id_categoria = $idCategoria";
+            $sql = "INSERT INTO tabla_categoria (descripcion, observaciones, imagenes) VALUES ($descripcionCategoria, $observacionesCategoria, $imagenesCategoria)";
+            $consulta = $conexion->exec($sql);
 
-            $resultado = $conexion->query($sql);
-
-            // Crear un array para almacenar todas las filas        
-            $filas = [];
-            // Recorrer los resultados y almacenar cada fila en el array        
-            while ($fila = $resultado->fetch()) {
-                $filas[] = $fila;
-            }
         } catch (Exception $e) {
             throw new Exception("ERROR: " + $e);
         }
-        //Esta consulta te devuelve un array de arrays con todos los datos de la tabla producto.
-        return $filas;
     }
 
-    public static function eliminarCategoria()
+    //Con la intencionalidad de que la siguiente funcion sea capaz de insertar datos en cualquier tabla, pasaremos por parametro el nombre de la tabla y un array asociativo en el cual 
+    //el array_key serán los campos del registro y el valor asociado serán los datos que queremos introducir en la base de datos
+    public static function insertarRegistro($tabla,$datos)
     {
-        $respuesta = false;
         try {
             $conexion = self::conexionBD();
-            $sql = "SELECT descripcion,observaciones,imagenes FROM categorias";
+            $columnas = implode(', ', array_keys($datos));
+            // var_dump(array_keys($datos));
+            // echo "<br>".$columnas;
+            $placeholders = implode(', ', array_fill(0, count($datos), '?'));
 
-            $resultado = $conexion->query($sql);
-
-            // Crear un array para almacenar todas las filas        
-            $filas = [];
-            // Recorrer los resultados y almacenar cada fila en el array        
-            while ($fila = $resultado->fetch()) {
-                $filas[] = $fila;
-            }
-        } catch (Exception $e) {
-            throw new Exception("ERROR: " + $e);
+            $sql = "INSERT INTO $tabla ($columnas) VALUES ($placeholders)";
+            $consulta = $conexion->prepare($sql);
+    
+            // Ejecutar la consulta preparada con los valores
+            $consulta->execute(array_values($datos));
+            return true;
+        } catch (PDOException  $e) {
+            throw new Exception("ERROR: " . $e->getMessage());
         }
-        //Esta consulta te devuelve un array de arrays con todos los datos de la tabla producto.
-        return $filas;
     }
-
-    public static function modificarCategoria()
-    {
-        $respuesta = false;
-        try {
-            $conexion = self::conexionBD();
-            $sql = "SELECT descripcion,observaciones,imagenes FROM categorias";
-
-            $resultado = $conexion->query($sql);
-
-            // Crear un array para almacenar todas las filas        
-            $filas = [];
-            // Recorrer los resultados y almacenar cada fila en el array        
-            while ($fila = $resultado->fetch()) {
-                $filas[] = $fila;
-            }
-        } catch (Exception $e) {
-            throw new Exception("ERROR: " + $e);
-        }
-        //Esta consulta te devuelve un array de arrays con todos los datos de la tabla producto.
-        return $filas;
     }
-}
+    $datos1 = [
+        "admin" => "1",
+        "nombre_usuario" => "Coral",
+        "nombre" => "Corey",
+        "apellido" => "Isbell",
+        "email" => "coreyisbell22@gmail.com",
+        "password" => "0000",
+        "activo" => 1,
+        "observaciones" => "es un friki",
+        "telefono" => "666666666"
+    ];
+    BD::insertarRegistro("usuarios",$datos1);
+    $datos2 = [
+        "descripcion" => "marisco",
+        "imagenes" => "pesacado.png",
+        "observaciones" => "El pescado es mejor",
+    ];
+    BD::insertarRegistro("categorias",$datos2);
+
+?>

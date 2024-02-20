@@ -67,7 +67,7 @@ function manejarRespuesta(respuesta) {
 
         } else {
             //Si todo va bien guardo el usuario en la sesion.
-            localStorage.setItem("usuario", JSON.stringify({ nombre: respuesta.nombreUsuario, tipo: respuesta.admin, activo: respuesta.activo, clavePrimaria: respuesta.id_usuarios }));
+            localStorage.setItem("usuario", JSON.stringify({ nombre: respuesta.nombre, tipo: respuesta.admin, activo: respuesta.activo, clavePrimaria: respuesta.id_usuarios }));
 
             //Ahora hay que comprobar si es administrador.
             if (respuesta.admin == 1) {
