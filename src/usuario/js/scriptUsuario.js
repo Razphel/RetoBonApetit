@@ -58,7 +58,7 @@ function principal() {
         async: false,
         dataType: "json",
         //La funcion que se ejecuta segun el resultado.
-        success: inicioPedidos,
+        success: inicioSolicitudes,
         error: function (jqXHR, textStatus, errorThrown) {
             console.error("Error en la solicitud AJAX: " + textStatus, errorThrown);
         }
@@ -66,7 +66,6 @@ function principal() {
 
     //Guardo en el localStorage el listado con todos los productos.
     consultarProductos();
-    filtroCategoria(1);
 }
 
 
@@ -270,6 +269,7 @@ function mostrarCategorias(respuesta) {
             class: "label_effect card p-3 mb-3",
             "data-toggle": "tooltip"
         });
+        divCarta.addEventListener("click", manejadorCategoria);
 
         let p = crearElemento("p", fila.descripcion, undefined);
         let img = crearElemento("img", undefined, {
@@ -308,7 +308,7 @@ function navCategorias() {
     });
 }
 
-function mostrarSolicitudes(respuesta) {
+function mostrarPedidos(respuesta) {
     let contenedor = document.querySelector("#contenedor");
     contenedor.innerHTML = "";
 
@@ -371,14 +371,13 @@ function navPedidos() {
         data: parametros,
         dataType: "json",
         //La funcion que se ejecuta segun el resultado.
-        success: mostrarSolicitudes,
+        success: mostrarPedidos,
         error: function (jqXHR, textStatus, errorThrown) {
             console.error("Error en la solicitud AJAX: " + textStatus, errorThrown);
         }
     });
 }
 
-// Cargar la página de inicio del usuario nada más acceder
 function inicioCategorias(respuesta) {
     let contenedor = document.querySelector("#contenedor");
     let categorias = crearElemento("div", undefined, {
@@ -405,6 +404,7 @@ function inicioCategorias(respuesta) {
             class: "label_effect card p-3 mb-3",
             "data-toggle": "tooltip"
         });
+        divCarta.addEventListener("click", manejadorCategoria);
 
         let p = crearElemento("p", fila.descripcion, undefined);
         let img = crearElemento("img", undefined, {
@@ -423,7 +423,7 @@ function inicioCategorias(respuesta) {
     contenedor.appendChild(categorias);
 }
 
-function inicioPedidos(respuesta) {
+function inicioSolicitudes(respuesta) {
     let contenedor = document.querySelector("#contenedor");
 
     //Compruebo que exista algun dato.
@@ -467,6 +467,13 @@ function inicioPedidos(respuesta) {
 
 }
 
+function manejadorCategoria(e) {
+    let textoDividido = this.id.split("_");
+    let idCategoria = textoDividido[1];
+
+    filtroCategoria(idCategoria);
+}
+
 function filtroCategoria(id_categoriaRecibido) {
     //Esta variable es un array de objetos literales, cada objeto tiene los datos del producto y categorias.
     //Cada producto tiene este formato:
@@ -481,6 +488,7 @@ function filtroCategoria(id_categoriaRecibido) {
 
     let todosProductos = JSON.parse(localStorage.getItem("todosProductos"));
     let contenedor = document.querySelector("#contenedor");
+    let contenidoCategoria = crearElemento("div", undefined, undefined);
 
     let tabla = crearElemento("table", undefined, undefined);
     let tr = crearElemento("tr", undefined, undefined);
@@ -494,21 +502,34 @@ function filtroCategoria(id_categoriaRecibido) {
     tr.appendChild(th);
     th = crearElemento("th", "Observaciones", undefined);
     tr.appendChild(th);
-
+    tabla.appendChild(tr);
 
     //Ahora recorro todos los productos y los guardo en la tabla si son de la misma categoria recibida.
     for (let i = 0; i < todosProductos.length; i++) {
         tr = crearElemento("tr", undefined, undefined);
-        if (todosProductos[i][id_categoria] == id_categoriaRecibido) {
-            for (let indice in todosProductos[i]) {
-                let td = crearElemento("td", todosProductos[i][indice], undefined);
-                tr.appendChild(td);
-            }
+        if (todosProductos[i]["id_categoria"] == id_categoriaRecibido) {
+            let td = crearElemento("td", todosProductos[i]["nombre_producto"], undefined);
+            tr.appendChild(td);
+            td = crearElemento("td", todosProductos[i]["nombre_categoria"], undefined);
+            tr.appendChild(td);
+            td = crearElemento("td", todosProductos[i]["nombre_unidades"], undefined);
+            tr.appendChild(td);
+            td = crearElemento("td", todosProductos[i]["nombre_observaciones"], undefined);
+            tr.appendChild(td);
+
+            tabla.appendChild(tr);
         }
-        tabla.appendChild(tr);
     }
 
-    contenedor.appendChild(tabla);
+    //Limpio el elemento que va a contener la tabla para que no se cree mas de una a la vez.
+    if (contenidoCategoria.parentNode != null) {
+        contenidoCategoria.parentNode.removeChild(contenidoCategoria);
+    }
+
+    contenidoCategoria.appendChild(tabla);
+
+    //Agrego el elemento al contenedor principal.
+    contenedor.appendChild(contenidoCategoria);
 }
 
 function crearElemento(etiqueta, contenido, atributos) {
