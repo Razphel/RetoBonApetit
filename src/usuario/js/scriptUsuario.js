@@ -125,7 +125,6 @@ function navProductos() {
     }
 }
 
-
 function crearElemento(etiqueta, contenido, atributos) {
     let elementoNuevo = document.createElement(etiqueta);
     if (contenido !== undefined) {
