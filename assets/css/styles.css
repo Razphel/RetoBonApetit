@@ -90,22 +90,15 @@
     --line-height: ;
 }
 
-
 .row {
     --bs-gutter-x: 0;
     --bs-gutter-y: 0;
 }
 
-
 /* Bootstrap....................*/
 .bg-primary {
     background-color: transparent !important;
     border: solid thin gray;
-}
-
-.container-xxl {
-    padding-right: 0;
-    padding-left: 0;
 }
 
 /* Headings y textos............................gen_head */
@@ -427,7 +420,7 @@ body {
 
 /* Main............................................ gen_main */
 .page_layout {
-    /*     background-color: var(--accent-03);  */
+    /* background-color: var(--accent-03);  */
     background-color: rgb(206, 206, 98); 
 }
 

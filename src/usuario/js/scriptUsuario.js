@@ -11,11 +11,11 @@ function principal() {
 
     // Boton para cerrar la sesion y redireccionar a la pagina de inicio.
     document.querySelector("#cerrarSesion").addEventListener("click", cerrarSesion);
-    document.querySelector("#btnCategorias").addEventListener("click", navCategorias);
-    document.querySelector("#btnHistorial").addEventListener("click", navHistorial);
-    document.querySelector("#btnProveedores").addEventListener("click", navProveedores);
-    document.querySelector("#btnResiduos").addEventListener("click", navResiduos);
-    document.querySelector("#btnUsuarios").addEventListener("click", navUsuarios);
+    document.querySelector("#navCategorias").addEventListener("click", navCategorias);
+    document.querySelector("#navPedidos").addEventListener("click", navHistorial);
+    document.querySelector("#navProveedores").addEventListener("click", navProveedores);
+    document.querySelector("#navResiduos").addEventListener("click", navResiduos);
+    document.querySelector("#navUsuarios").addEventListener("click", navUsuarios);
 
     // $.ajax({
     //     //Ubicacion del archivo php que va a manejar los valores.
@@ -40,6 +40,24 @@ function cerrarSesion() {
     }, 500);
 }
 
+function navProveedores() {
+    let parametros = {
+        claveProveedores: true
+    };
+    $.ajax({
+        //Ubicacion del archivo php que va a manejar los valores.
+        url: "./php/consultaUsuario.php",
+        //Metodo en que los va a recibir.
+        type: "GET",
+        data: parametros,
+        dataType: "json",
+        success: mostrarProveedores,
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.error("Error en la solicitud AJAX: " + textStatus, errorThrown);
+        }
+    });
+}
+
 function mostrarProveedores(proveedores) {
     let contenedor = document.querySelector("#contenedor");
     let contador = 0;
@@ -58,9 +76,9 @@ function mostrarProveedores(proveedores) {
     });
 }
 
-function navProveedores() {
+function navResiduos() {
     let parametros = {
-        claveProveedores: true
+        claveResiduos: true
     };
     $.ajax({
         //Ubicacion del archivo php que va a manejar los valores.
@@ -69,7 +87,7 @@ function navProveedores() {
         type: "GET",
         data: parametros,
         dataType: "json",
-        success: mostrarProveedores,
+        success: mostrarResiduos,
         error: function (jqXHR, textStatus, errorThrown) {
             console.error("Error en la solicitud AJAX: " + textStatus, errorThrown);
         }
@@ -93,9 +111,9 @@ function mostrarResiduos(respuesta) {
     });
 }
 
-function navResiduos() {
+function navUsuarios() {
     let parametros = {
-        claveResiduos: true
+        claveTodosUsuarios: true
     };
     $.ajax({
         //Ubicacion del archivo php que va a manejar los valores.
@@ -104,7 +122,7 @@ function navResiduos() {
         type: "GET",
         data: parametros,
         dataType: "json",
-        success: mostrarResiduos,
+        success: mostrarUsuarios,
         error: function (jqXHR, textStatus, errorThrown) {
             console.error("Error en la solicitud AJAX: " + textStatus, errorThrown);
         }
@@ -126,21 +144,21 @@ function mostrarUsuarios(respuesta) {
         contenedor.appendChild(contenedorResiduos);
         contador++;
     });
-
 }
 
-function navUsuarios() {
+function navCategorias() {   
     let parametros = {
-        claveTodosUsuarios: true
+        categoria: 'categorias'
     };
+    //Mostrar categorias.
     $.ajax({
         //Ubicacion del archivo php que va a manejar los valores.
         url: "./php/consultaUsuario.php",
         //Metodo en que los va a recibir.
         type: "GET",
-        data: parametros,
         dataType: "json",
-        success: mostrarUsuarios,
+        data: parametros,
+        success: mostrarCategorias,
         error: function (jqXHR, textStatus, errorThrown) {
             console.error("Error en la solicitud AJAX: " + textStatus, errorThrown);
         }
@@ -174,19 +192,26 @@ function mostrarCategorias(respuesta) {
     salida.appendChild(categorias);
 }
 
-function navCategorias() {   
+function navHistorial() {
+    //Mostrar Historial.
+    //Se almacena en esta variable la información recogida desde el main
+    let usuarioActual = JSON.parse(localStorage.getItem("usuario"));
+ 
     let parametros = {
-        categoria: 'categorias'
+        //UsuarioActual contiene todos los campos de usuario que se han almacenado anteriormente en principal 
+        //Y clavePrimaria ha sido creada en el js de controlUsuario en la funcion manejarRespuesta
+        claveUsuario: usuarioActual.clavePrimaria
     };
-    //Mostrar categorias.
+ 
     $.ajax({
         //Ubicacion del archivo php que va a manejar los valores.
         url: "./php/consultaUsuario.php",
         //Metodo en que los va a recibir.
         type: "GET",
-        dataType: "json",
         data: parametros,
-        success: mostrarCategorias,
+        dataType: "json",
+        //La funcion que se ejecuta segun el resultado.
+        success: mostrarHistorial,
         error: function (jqXHR, textStatus, errorThrown) {
             console.error("Error en la solicitud AJAX: " + textStatus, errorThrown);
         }
@@ -221,32 +246,6 @@ function mostrarHistorial(respuesta) {
         historial.appendChild(filaNormal);
     });
     contenedor.appendChild(historial);
-}
-
-function navHistorial() {
-    //Mostrar Historial.
-    //Se almacena en esta variable la información recogida desde el main
-    let usuarioActual = JSON.parse(localStorage.getItem("usuario"));
- 
-    let parametros = {
-        //UsuarioActual contiene todos los campos de usuario que se han almacenado anteriormente en principal 
-        //Y clavePrimaria ha sido creada en el js de controlUsuario en la funcion manejarRespuesta
-        claveUsuario: usuarioActual.clavePrimaria
-    };
- 
-    $.ajax({
-        //Ubicacion del archivo php que va a manejar los valores.
-        url: "./php/consultaUsuario.php",
-        //Metodo en que los va a recibir.
-        type: "GET",
-        data: parametros,
-        dataType: "json",
-        //La funcion que se ejecuta segun el resultado.
-        success: mostrarHistorial,
-        error: function (jqXHR, textStatus, errorThrown) {
-            console.error("Error en la solicitud AJAX: " + textStatus, errorThrown);
-        }
-    });
 }
 
 function crearElemento(etiqueta,contenido,atributos) {
