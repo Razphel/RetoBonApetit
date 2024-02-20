@@ -147,12 +147,12 @@ INSERT INTO linea_pedido (fk_pedido,descripcion,cantidad,unidades,observaciones)
 INSERT INTO unidades (descripcion,observar) VALUES ('cajas','observacion kaladin');
 INSERT INTO unidades (descripcion,observar) VALUES ('kilogramos','observacion dalinar');
 INSERT INTO unidades (descripcion,observar) VALUES ('sacos','observacion adolin');
-INSERT INTO categorias (descripcion,observaciones,imagenes) VALUES ('carne','observacion kaladin','carniceria.jpg');
-INSERT INTO categorias (descripcion,observaciones,imagenes) VALUES ('pasteleria','observacion dalinar','pasteleria.jpg');
-INSERT INTO categorias (descripcion,observaciones,imagenes) VALUES ('pescado','observacion adolin','pescaderia.jpg');
-INSERT INTO categorias (descripcion,observaciones,imagenes) VALUES ('panaderia','observacion sagaz','panaderia.jpg');
-INSERT INTO categorias (descripcion,observaciones,imagenes) VALUES ('fruteria','observacion eshonai','fruteria.jpg');
-INSERT INTO categorias (descripcion,observaciones,imagenes) VALUES ('Cubiertos, servilletas...','observacion szeth','utiles.jpg');
+INSERT INTO categorias (descripcion,observaciones,imagenes) VALUES ('carne','observacion kaladin','carniceria.png');
+INSERT INTO categorias (descripcion,observaciones,imagenes) VALUES ('pasteleria','observacion dalinar','pasteleria.png');
+INSERT INTO categorias (descripcion,observaciones,imagenes) VALUES ('pescado','observacion adolin','pescaderia.png');
+INSERT INTO categorias (descripcion,observaciones,imagenes) VALUES ('panaderia','observacion sagaz','panaderia.png');
+INSERT INTO categorias (descripcion,observaciones,imagenes) VALUES ('fruteria','observacion eshonai','fruteria.png');
+INSERT INTO categorias (descripcion,observaciones,imagenes) VALUES ('Cubiertos, servilletas...','observacion szeth','utiles.png');
 INSERT INTO residuos (descripcion,observaciones) VALUES ('caja de papel','observacion kaladin');
 INSERT INTO residuos (descripcion,observaciones) VALUES ('bolsa de plastico','observacion dalinar');
 INSERT INTO residuos (descripcion,observaciones) VALUES ('botellas de cristal','observacion adolin');
@@ -161,7 +161,7 @@ INSERT INTO productos (descripcion,fk_unidad,observaciones) VALUES ('carne de te
 INSERT INTO productos (descripcion,fk_unidad,observaciones) VALUES ('huevos',1,'observacion dalinar');
 INSERT INTO productos (descripcion,fk_unidad,observaciones) VALUES ('patatas',2,'observacion adolin');
 INSERT INTO productos (descripcion,fk_unidad,observaciones) VALUES ('tomate frito',1,'observacion sagaz');
-INSERT INTO producto_categoria (fk_producto,fk_categoria) VALUES (1,3);
+INSERT INTO producto_categoria (fk_producto,fk_categoria) VALUES (1,1);
 INSERT INTO producto_categoria (fk_producto,fk_categoria) VALUES (2,4);
 INSERT INTO producto_categoria (fk_producto,fk_categoria) VALUES (3,2);
-INSERT INTO producto_categoria (fk_producto,fk_categoria) VALUES (4,1);
+INSERT INTO producto_categoria (fk_producto,fk_categoria) VALUES (4,5);
