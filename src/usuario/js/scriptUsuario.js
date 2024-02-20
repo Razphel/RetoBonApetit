@@ -37,6 +37,9 @@ function principal() {
     //         console.error("Error en la solicitud AJAX: " + textStatus, errorThrown);
     //     }
     // });
+
+    // Cargar la página de inicio del usuario nada más acceder
+
 }
 
 function navUsuarios() {
@@ -79,7 +82,10 @@ function navProductos() {
 function mostrarHistorial(respuesta) {
     let salida = document.querySelector("#contenedor");
     salida.innerHTML = "";
-    let historial = crearElemento("table", undefined, { id: "historial", style: "border-collapse: collapse;" });
+    let historial = crearElemento("table", undefined, { 
+        id: "historial", 
+        style: "border-collapse: collapse;" 
+    });
 
     //Creo los titulos de las tablas.
     let titulos = crearElemento("tr", undefined, undefined);
@@ -87,7 +93,8 @@ function mostrarHistorial(respuesta) {
     let prueba = Object.keys(respuesta[0]);
     for (let i = prueba.length / 2; i < prueba.length; i++) {
         //Creo cada elemento y lo agrego a la fila del titulo.
-        let filaTitulo = crearElemento("th", prueba[i], { style: "padding:5px 30px;" });
+        let filaTitulo = crearElemento("th", prueba[i], { 
+            style: "padding:5px 30px;" });
         titulos.appendChild(filaTitulo);
     }
 
@@ -154,9 +161,14 @@ function mostrarProveedores(proveedores) {
     let contenedor = document.querySelector("#contenedor");
     let contador = 0;
     contenedor.innerHTML = "";
-    let contenedorProveedores = crearElemento("div", undefined, { id: "ContProveedores", class: "col-3", style: "border:2px black solid; padding:5px" });
+    let contenedorProveedores = crearElemento("div", undefined, { 
+        id: "ContProveedores", 
+        class: "col-3", 
+        style: "border:2px black solid; padding:5px" });
     proveedores.forEach(fila => {
-        let proveedor = crearElemento("p", undefined, { id: contenedor });
+        let proveedor = crearElemento("p", undefined, { 
+            id: contenedor 
+        });
         for (let i = 0; i < Object.keys(fila).length / 2; i++) {
             proveedor.innerHTML += fila[i] + " ";
         }
@@ -189,9 +201,15 @@ function mostrarResiduos(respuesta) {
     let contenedor = document.querySelector("#contenedor");
     let contador = 0;
     contenedor.innerHTML = "";
-    let contenedorResiduos = crearElemento("div", undefined, { id: "ContResiduos", class: "col-3", style: "border:2px black solid; padding:5px" });
+    let contenedorResiduos = crearElemento("div", undefined, { 
+        id: "ContResiduos", 
+        class: "col-3", 
+        style: "border:2px black solid; padding:5px" 
+    });
     respuesta.forEach(fila => {
-        let residuo = crearElemento("p", undefined, { id: "residuos" });
+        let residuo = crearElemento("p", undefined, { 
+            id: "residuos" 
+        });
         for (let i = 0; i < Object.keys(fila).length / 2; i++) {
             residuo.innerHTML += fila[i] + " ";
         }
@@ -271,7 +289,10 @@ function mostrarCategorias(respuesta) {
     contenedor.innerHTML = "";
     //Ahora que tengo todos los datos de la tabla categorias, hago los elementos para guardarla.
     let salida = document.querySelector("#contenedor");
-    let categorias = crearElemento("div", undefined, { class: "row", id: "categorias" });
+    let categorias = crearElemento("div", undefined, { 
+        class: "row", 
+        id: "categorias" 
+    });
 
     // modelo de la carta de categorias
     // <div class="col-6 col-sm-3 col-md-3 col-lg-3">
@@ -282,13 +303,18 @@ function mostrarCategorias(respuesta) {
     // </div>
 
     respuesta.forEach(fila => {
-        let carta = crearElemento("div", undefined, { class: "col-6 col-sm-3 col-md-3 col-lg-3" });
-        let contenedor = crearElemento("div", undefined, { class: "label_effect card p-3 mb-3", "data-toggle": "tooltip" });
+        let carta = crearElemento("div", undefined, { 
+            class: "col-6 col-sm-3 col-md-3 col-lg-3" 
+        });
+        let contenedor = crearElemento("div", undefined, { 
+            class: "label_effect card p-3 mb-3", "data-toggle": "tooltip" 
+        });
         let p = crearElemento("p", fila.descripcion, undefined);
-        let img = crearElemento("img", undefined, { src: "../../img" + fila.imagenes, alt: fila.descripcion });
+        let img = crearElemento("img", undefined, { 
+            src: "../../img" + fila.imagenes, 
+            alt: fila.descripcion });
 
         //
     });
-
     salida.appendChild(categorias);
 }
