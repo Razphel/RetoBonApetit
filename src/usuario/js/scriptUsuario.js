@@ -154,7 +154,9 @@ function principal() {
     });
 
     //Guardo en el localStorage el listado con todos los productos.
-    localStorage.setItem("todosProductos", JSON.stringify(consultarProductos));
+    localStorage.setItem("todosProductos", JSON.stringify(consultarProductos()));
+
+    console.log(consultarProductos());
 }
 
 
@@ -397,7 +399,7 @@ function navCategorias() {
     });
 }
 
-function mostrarHistorial(respuesta) {
+function mostrarSolicitudes(respuesta) {
     let contenedor = document.querySelector("#contenedor");
     contenedor.innerHTML = "";
 
