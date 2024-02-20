@@ -23,7 +23,7 @@ function principal() {
     document.querySelector("#btnHistorial").addEventListener("click", navPedidos);
     document.querySelector("#btnProveedores").addEventListener("click", navProveedores);
     document.querySelector("#btnResiduos").addEventListener("click", navResiduos);
-    document.querySelector("#btnUsuarios").addEventListener("click", navUsuarios);
+    document.querySelector("#btnUsuarios").addEventListener("click", navUsuarios); // función del admin
 
     // $.ajax({
     //     //Ubicacion del archivo php que va a manejar los valores.
@@ -39,16 +39,120 @@ function principal() {
     // });
 
     // Cargar la página de inicio del usuario nada más acceder
-    navProductos();
+    let parametros = {
+        categoria: 'categorias'
+    };
+    //Mostrar categorias.
+    $.ajax({
+        //Ubicacion del archivo php que va a manejar los valores.
+        url: "../php/consultaUsuario.php",
+        //Metodo en que los va a recibir.
+        type: "GET",
+        dataType: "json",
+        data: parametros,
+        success: inicioCategorias,
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.error("Error en la solicitud AJAX: " + textStatus, errorThrown);
+        }
+    });
+
+    //Mostrar Historial.
+    //Se almacena en esta variable la información recogida desde el main
+    let usuarioActual = JSON.parse(localStorage.getItem("usuario"));
+
+    parametros = {
+        //UsuarioActual contiene todos los campos de usuario que se han almacenado anteriormente en principal 
+        //Y clavePrimaria ha sido creada en el js de controlUsuario en la funcion manejarRespuesta
+        claveUsuario: usuarioActual.clavePrimaria
+    };
+
+    $.ajax({
+        //Ubicacion del archivo php que va a manejar los valores.
+        url: "../php/consultaUsuario.php",
+        //Metodo en que los va a recibir.
+        type: "GET",
+        data: parametros,
+        dataType: "json",
+        //La funcion que se ejecuta segun el resultado.
+        success: inicioHistorial,
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.error("Error en la solicitud AJAX: " + textStatus, errorThrown);
+        }
+    });
+
+    function inicioCategorias(respuesta) {
+        let contenedor = document.querySelector("#contenedor");
+        //Ahora que tengo todos los datos de la tabla categorias, hago los elementos para guardarla.
+        let salida = document.querySelector("#contenedor");
+        let categorias = crearElemento("div", undefined, { class: "row", id: "categorias" });
+     
+        // modelo de la carta de categorias
+        // <div class="col-6 col-sm-3 col-md-3 col-lg-3">
+        //     <div class="label_effect card p-3 mb-3" data-toggle="tooltip">
+        //         <img src="../../img/pasteleria.png" alt="">
+        //         <p>Pastelería</p>
+        //     </div>
+        // </div>
+     
+        respuesta.forEach(fila => {
+            let carta = crearElemento("div", undefined, { class: "col-6 col-sm-3 col-md-3 col-lg-3" });
+            let divCarta = crearElemento("div", undefined, { class: "label_effect card p-3 mb-3", "data-toggle": "tooltip" });
+            let p = crearElemento("p", fila.descripcion, undefined);
+            let img = crearElemento("img", undefined, { src: "../img/" + fila.imagenes, alt: fila.descripcion });
+     
+            //Organizo los elementos y los agrego al div row.
+            divCarta.appendChild(img);
+            divCarta.appendChild(p);
+            carta.appendChild(divCarta);
+            categorias.appendChild(carta);
+        });
+     
+        //Agrego el div con la lista de cartas al contenedor principal de la pagina.
+        salida.appendChild(categorias);
+    }
+
+    function inicioHistorial(respuesta) {
+        let salida = document.querySelector("#contenedor");
+        let historial = crearElemento("table", undefined, { 
+            id: "historial", 
+            style: "border-collapse: collapse;" 
+        });
+    
+        //Creo los titulos de las tablas.
+        let titulos = crearElemento("tr", undefined, undefined);
+        //Segun el formato en el que se recibe el objeto, tengo que usar sus elementos de la mitad al final.
+        let prueba = Object.keys(respuesta[0]);
+        for (let i = prueba.length / 2; i < prueba.length; i++) {
+            //Creo cada elemento y lo agrego a la fila del titulo.
+            let filaTitulo = crearElemento("th", prueba[i], { 
+                style: "padding:5px 30px;" });
+            titulos.appendChild(filaTitulo);
+        }
+    
+        //Agrego el titulo a la tabla.
+        historial.appendChild(titulos);
+    
+        //Ahora agrego el contenido.
+        respuesta.forEach(fila => {
+            let filaNormal = crearElemento("tr", undefined, undefined);
+            for (let i = 0; i < Object.keys(fila).length / 2; i++) {
+                let elementoFila = crearElemento("td", fila[i], undefined);
+                filaNormal.appendChild(elementoFila);
+            }
+            historial.appendChild(filaNormal);
+        });
+        contenedor.appendChild(historial);
+    }
 }
 
+// Función del admin 
 function navUsuarios() {
     let parametros = {
         claveTodosUsuarios: true
     };
     $.ajax({
         //Ubicacion del archivo php que va a manejar los valores.
-        url: "./php/consultaUsuario.php",
+        url: "../php/consultaUsuario.php",
         //Metodo en que los va a recibir.
         type: "GET",
         data: parametros,
@@ -61,13 +165,15 @@ function navUsuarios() {
 }
 
 function navProductos() {
+    salida.innerHTML = "";
+
     let parametros = {
         categoria: 'categorias'
     };
     //Mostrar categorias.
     $.ajax({
         //Ubicacion del archivo php que va a manejar los valores.
-        url: "./php/consultaUsuario.php",
+        url: "../php/consultaUsuario.php",
         //Metodo en que los va a recibir.
         type: "GET",
         dataType: "json",
@@ -126,7 +232,7 @@ function navPedidos() {
 
     $.ajax({
         //Ubicacion del archivo php que va a manejar los valores.
-        url: "./php/consultaUsuario.php",
+        url: "../php/consultaUsuario.php",
         //Metodo en que los va a recibir.
         type: "GET",
         data: parametros,
@@ -145,7 +251,7 @@ function navProveedores() {
     };
     $.ajax({
         //Ubicacion del archivo php que va a manejar los valores.
-        url: "./php/consultaUsuario.php",
+        url: "../php/consultaUsuario.php",
         //Metodo en que los va a recibir.
         type: "GET",
         data: parametros,
@@ -166,7 +272,7 @@ function mostrarProveedores(proveedores) {
         class: "col-3", 
         style: "border:2px black solid; padding:5px" 
     });
-    
+
     proveedores.forEach(fila => {
         let proveedor = crearElemento("p", undefined, { 
             id: contenedor 
@@ -186,7 +292,7 @@ function navResiduos() {
     };
     $.ajax({
         //Ubicacion del archivo php que va a manejar los valores.
-        url: "./php/consultaUsuario.php",
+        url: "../php/consultaUsuario.php",
         //Metodo en que los va a recibir.
         type: "GET",
         data: parametros,
@@ -251,7 +357,7 @@ function consultarProductos() {
 
     $.ajax({
         //Ubicacion del archivo php que va a manejar los valores.
-        url: "./php/consultaUsuario.php",
+        url: "../php/consultaUsuario.php",
         //Metodo en que los va a recibir.
         type: "GET",
         data: parametros,
@@ -288,11 +394,8 @@ function mostrarCategorias(respuesta) {
     contenedor.innerHTML = "";
     //Ahora que tengo todos los datos de la tabla categorias, hago los elementos para guardarla.
     let salida = document.querySelector("#contenedor");
-    let categorias = crearElemento("div", undefined, { 
-        class: "row", 
-        id: "categorias" 
-    });
-
+    let categorias = crearElemento("div", undefined, { class: "row", id: "categorias" });
+ 
     // modelo de la carta de categorias
     // <div class="col-6 col-sm-3 col-md-3 col-lg-3">
     //     <div class="label_effect card p-3 mb-3" data-toggle="tooltip">
@@ -300,20 +403,20 @@ function mostrarCategorias(respuesta) {
     //         <p>Pastelería</p>
     //     </div>
     // </div>
-
+ 
     respuesta.forEach(fila => {
-        let carta = crearElemento("div", undefined, { 
-            class: "col-6 col-sm-3 col-md-3 col-lg-3" 
-        });
-        let contenedor = crearElemento("div", undefined, { 
-            class: "label_effect card p-3 mb-3", "data-toggle": "tooltip" 
-        });
+        let carta = crearElemento("div", undefined, { class: "col-6 col-sm-3 col-md-3 col-lg-3" });
+        let divCarta = crearElemento("div", undefined, { class: "label_effect card p-3 mb-3", "data-toggle": "tooltip" });
         let p = crearElemento("p", fila.descripcion, undefined);
-        let img = crearElemento("img", undefined, { 
-            src: "../../img" + fila.imagenes, 
-            alt: fila.descripcion 
-        });
-        //
+        let img = crearElemento("img", undefined, { src: "../img/" + fila.imagenes, alt: fila.descripcion });
+ 
+        //Organizo los elementos y los agrego al div row.
+        divCarta.appendChild(img);
+        divCarta.appendChild(p);
+        carta.appendChild(divCarta);
+        categorias.appendChild(carta);
     });
+ 
+    //Agrego el div con la lista de cartas al contenedor principal de la pagina.
     salida.appendChild(categorias);
 }
