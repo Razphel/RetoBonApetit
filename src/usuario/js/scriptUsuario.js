@@ -345,7 +345,7 @@ function cerrarSesion() {
     localStorage.removeItem("usuario");
 
     setTimeout(function () {
-        window.location.replace("../../html/sesion.html");
+        window.location.replace("../../../sesion.html");
     }, 500);
 }
 
