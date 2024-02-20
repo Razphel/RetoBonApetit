@@ -19,43 +19,34 @@ function principal() {
     if (localStorage.getItem("usuario")) {
         let usuarioActual = JSON.parse(localStorage.getItem("usuario"));
         if (usuarioActual.nombre === "") {
-            window.location.replace("../../html/sesion.html");
+            window.location.replace("../../../sesion.html");
         }
+    } else {
+        //Redirige al usuario a la página de sesion no existen datos en el localStorage.
+        window.location.replace("../../../sesion.html");
     }
 
     // Boton para cerrar la sesion y redireccionar a la pagina de inicio.
     document.querySelector("#cerrarSesion").addEventListener("click", cerrarSesion);
-    document.querySelector("#navProductos").addEventListener("click", navProductos);
+    document.querySelector("#navProductos").addEventListener("click", navCategorias);
     document.querySelector("#navPedidos").addEventListener("click", navPedidos);
     document.querySelector("#navProveedores").addEventListener("click", navProveedores);
     document.querySelector("#navResiduos").addEventListener("click", navResiduos);
-    // document.querySelector("#navUsuarios").addEventListener("click", navUsuarios); // función del admin
 
-    // $.ajax({
-    //     //Ubicacion del archivo php que va a manejar los valores.
-    //     url: "./php/consultaUsuarioResiduos.php",
-    //     //Metodo en que los va a recibir.
-    //     type: "GET",
-    //     dataType: "json",
-    //     //La funcion que se ejecuta segun el resultado.
-    //     success: mostrarResiduos,
-    //     error: function (jqXHR, textStatus, errorThrown) {
-    //         console.error("Error en la solicitud AJAX: " + textStatus, errorThrown);
-    //     }
-    // });
-
-    // Cargar la página de inicio del usuario nada más acceder
+    //Aqui es necesario que las consultas se ejecuten en el orden correcto.
+    //Para eso hay que evitar que el ajax funcione de forma asincrona agregando async: false.
     let parametros = {
         categoria: 'categorias'
     };
     //Mostrar categorias.
     $.ajax({
         //Ubicacion del archivo php que va a manejar los valores.
-        url: "../php/consultaUsuario.php",
+        url: "./php/consultaUsuario.php",
         //Metodo en que los va a recibir.
         type: "GET",
         dataType: "json",
         data: parametros,
+        async: false,
         success: inicioCategorias,
         error: function (jqXHR, textStatus, errorThrown) {
             console.error("Error en la solicitud AJAX: " + textStatus, errorThrown);
@@ -74,180 +65,99 @@ function principal() {
 
     $.ajax({
         //Ubicacion del archivo php que va a manejar los valores.
-        url: "../php/consultaUsuario.php",
+        url: "./php/consultaUsuario.php",
         //Metodo en que los va a recibir.
         type: "GET",
         data: parametros,
+        async: false,
         dataType: "json",
         //La funcion que se ejecuta segun el resultado.
-        success: inicioHistorial,
+        success: inicioSolicitudes,
         error: function (jqXHR, textStatus, errorThrown) {
             console.error("Error en la solicitud AJAX: " + textStatus, errorThrown);
         }
     });
 
-    function inicioCategorias(respuesta) {
-        let contenedor = document.querySelector("#contenedor");
-        //Ahora que tengo todos los datos de la tabla categorias, hago los elementos para guardarla.
-        let salida = document.querySelector("#contenedor");
-        let categorias = crearElemento("div", undefined, { class: "row", id: "categorias" });
-     
-        // modelo de la carta de categorias
-        // <div class="col-6 col-sm-3 col-md-3 col-lg-3">
-        //     <div class="label_effect card p-3 mb-3" data-toggle="tooltip">
-        //         <img src="../../img/pasteleria.png" alt="">
-        //         <p>Pastelería</p>
-        //     </div>
-        // </div>
-     
-        respuesta.forEach(fila => {
-            let carta = crearElemento("div", undefined, { class: "col-6 col-sm-3 col-md-3 col-lg-3" });
-            let divCarta = crearElemento("div", undefined, { class: "label_effect card p-3 mb-3", "data-toggle": "tooltip" });
-            let p = crearElemento("p", fila.descripcion, undefined);
-            let img = crearElemento("img", undefined, { src: "../img/" + fila.imagenes, alt: fila.descripcion });
-     
-            //Organizo los elementos y los agrego al div row.
-            divCarta.appendChild(img);
-            divCarta.appendChild(p);
-            carta.appendChild(divCarta);
-            categorias.appendChild(carta);
-        });
-     
-        //Agrego el div con la lista de cartas al contenedor principal de la pagina.
-        salida.appendChild(categorias);
-    }
+    //Guardo en el localStorage el listado con todos los productos.
+    localStorage.setItem("todosProductos", JSON.stringify(consultarProductos()));
 
-    function inicioHistorial(respuesta) {
-        let salida = document.querySelector("#contenedor");
-        let historial = crearElemento("table", undefined, { 
-            id: "historial", 
-            style: "border-collapse: collapse;" 
-        });
-    
-        //Creo los titulos de las tablas.
-        let titulos = crearElemento("tr", undefined, undefined);
-        //Segun el formato en el que se recibe el objeto, tengo que usar sus elementos de la mitad al final.
-        let prueba = Object.keys(respuesta[0]);
-        for (let i = prueba.length / 2; i < prueba.length; i++) {
-            //Creo cada elemento y lo agrego a la fila del titulo.
-            let filaTitulo = crearElemento("th", prueba[i], { 
-                style: "padding:5px 30px;" });
-            titulos.appendChild(filaTitulo);
-        }
-    
-        //Agrego el titulo a la tabla.
-        historial.appendChild(titulos);
-    
-        //Ahora agrego el contenido.
-        respuesta.forEach(fila => {
-            let filaNormal = crearElemento("tr", undefined, undefined);
-            for (let i = 0; i < Object.keys(fila).length / 2; i++) {
-                let elementoFila = crearElemento("td", fila[i], undefined);
-                filaNormal.appendChild(elementoFila);
-            }
-            historial.appendChild(filaNormal);
-        });
-        contenedor.appendChild(historial);
-    }
+    console.log(consultarProductos());
 }
 
-// Función del admin 
-function navUsuarios() {
+
+//Consulta general para recibir productos. La funcion devuelve un array de objetos literales con los datos de los productos.
+function consultarProductos() 
+{
     let parametros = {
-        claveTodosUsuarios: true
+        pedirProductos: true
     };
+
+    let todosProductos = [];
+
     $.ajax({
         //Ubicacion del archivo php que va a manejar los valores.
-        url: "../php/consultaUsuario.php",
+        url: "./php/consultaUsuario.php",
         //Metodo en que los va a recibir.
         type: "GET",
         data: parametros,
         dataType: "json",
-        success: mostrarUsuarios,
+        success: guardarProductos,
         error: function (jqXHR, textStatus, errorThrown) {
             console.error("Error en la solicitud AJAX: " + textStatus, errorThrown);
         }
     });
-}
 
-function navProductos() {
-    salida.innerHTML = "";
-
-    let parametros = {
-        categoria: 'categorias'
-    };
-    //Mostrar categorias.
-    $.ajax({
-        //Ubicacion del archivo php que va a manejar los valores.
-        url: "../php/consultaUsuario.php",
-        //Metodo en que los va a recibir.
-        type: "GET",
-        dataType: "json",
-        data: parametros,
-        success: mostrarCategorias,
-        error: function (jqXHR, textStatus, errorThrown) {
-            console.error("Error en la solicitud AJAX: " + textStatus, errorThrown);
+function guardarProductos(listaProdutos) 
+{
+    //Creo un array donde guardo todos los productos como objetos literales.
+    for (let i = 0; i < listaProdutos.length; i++) {
+        //Creo un objeto literal con los datos de cada producto.
+        let producto = {
+            id_categoria: listaProdutos[i].Id_categoria,
+            imagen_categoria: listaProdutos[i].Imagen_categoria,
+            nombre_producto: listaProdutos[i].nombre_producto,
+            nombre_categoria: listaProdutos[i].nombre_categoria,
+            nombre_unidades: listaProdutos[i].nombre_unidades,
+            nombre_observaciones: listaProdutos[i].nombre_observaciones
         }
-    });
-}
-
-function mostrarHistorial(respuesta) {
-    let salida = document.querySelector("#contenedor");
-    salida.innerHTML = "";
-    let historial = crearElemento("table", undefined, { 
-        id: "historial", 
-        style: "border-collapse: collapse;" 
-    });
-
-    //Creo los titulos de las tablas.
-    let titulos = crearElemento("tr", undefined, undefined);
-    //Segun el formato en el que se recibe el objeto, tengo que usar sus elementos de la mitad al final.
-    let prueba = Object.keys(respuesta[0]);
-    for (let i = prueba.length / 2; i < prueba.length; i++) {
-        //Creo cada elemento y lo agrego a la fila del titulo.
-        let filaTitulo = crearElemento("th", prueba[i], { 
-            style: "padding:5px 30px;" });
-        titulos.appendChild(filaTitulo);
+        //Lo agrego al array de productos.
+        todosProductos.push(producto);
+    }
     }
 
-    //Agrego el titulo a la tabla.
-    historial.appendChild(titulos);
+    return todosProductos;
+}
 
-    //Ahora agrego el contenido.
-    respuesta.forEach(fila => {
-        let filaNormal = crearElemento("tr", undefined, undefined);
+function cerrarSesion() {
+    localStorage.removeItem("usuario");
+
+    setTimeout(function () {
+        window.location.replace("../../../sesion.html");
+    }, 500);
+}
+
+function mostrarProveedores(proveedores) {
+    let contenedor = document.querySelector("#contenedor");
+    let contador = 0;
+    contenedor.innerHTML = "";
+    let contenedorProveedores = crearElemento("div", undefined, {
+        id: "ContProveedores",
+        class: "col-3",
+        style: "border:2px black solid; padding:5px"
+    });
+
+    proveedores.forEach(fila => {
+        let proveedor = crearElemento("p", undefined, {
+            id: contenedor
+        });
+
         for (let i = 0; i < Object.keys(fila).length / 2; i++) {
-            let elementoFila = crearElemento("td", fila[i], undefined);
-            filaNormal.appendChild(elementoFila);
+            proveedor.innerHTML += fila[i] + " ";
         }
-        historial.appendChild(filaNormal);
-    });
-    contenedor.appendChild(historial);
-}
+        contenedorProveedores.appendChild(proveedor);
+        contenedor.appendChild(contenedorProveedores);
+        contador++;
 
-function navPedidos() {
-    //Mostrar Historial.
-    //Se almacena en esta variable la información recogida desde el main
-    let usuarioActual = JSON.parse(localStorage.getItem("usuario"));
-
-    let parametros = {
-        //UsuarioActual contiene todos los campos de usuario que se han almacenado anteriormente en principal 
-        //Y clavePrimaria ha sido creada en el js de controlUsuario en la funcion manejarRespuesta
-        claveUsuario: usuarioActual.clavePrimaria
-    };
-
-    $.ajax({
-        //Ubicacion del archivo php que va a manejar los valores.
-        url: "../php/consultaUsuario.php",
-        //Metodo en que los va a recibir.
-        type: "GET",
-        data: parametros,
-        dataType: "json",
-        //La funcion que se ejecuta segun el resultado.
-        success: mostrarHistorial,
-        error: function (jqXHR, textStatus, errorThrown) {
-            console.error("Error en la solicitud AJAX: " + textStatus, errorThrown);
-        }
     });
 }
 
@@ -257,7 +167,7 @@ function navProveedores() {
     };
     $.ajax({
         //Ubicacion del archivo php que va a manejar los valores.
-        url: "../php/consultaUsuario.php",
+        url: "./php/consultaUsuario.php",
         //Metodo en que los va a recibir.
         type: "GET",
         data: parametros,
@@ -269,25 +179,26 @@ function navProveedores() {
     });
 }
 
-function mostrarProveedores(proveedores) {
+function mostrarResiduos(respuesta) {
     let contenedor = document.querySelector("#contenedor");
     let contador = 0;
     contenedor.innerHTML = "";
-    let contenedorProveedores = crearElemento("div", undefined, { 
-        id: "ContProveedores", 
-        class: "col-3", 
-        style: "border:2px black solid; padding:5px" 
+    let contenedorResiduos = crearElemento("div", undefined, {
+        id: "ContResiduos",
+        class: "col-3",
+        style: "border:2px black solid; padding:5px"
     });
 
-    proveedores.forEach(fila => {
-        let proveedor = crearElemento("p", undefined, { 
-            id: contenedor 
+    respuesta.forEach(fila => {
+        let residuo = crearElemento("p", undefined, {
+            id: "residuos"
         });
+
         for (let i = 0; i < Object.keys(fila).length / 2; i++) {
-            proveedor.innerHTML += fila[i] + " ";
+            residuo.innerHTML += fila[i] + " ";
         }
-        contenedorProveedores.appendChild(proveedor);
-        contenedor.appendChild(contenedorProveedores);
+        contenedorResiduos.appendChild(residuo);
+        contenedor.appendChild(contenedorResiduos);
         contador++;
     });
 }
@@ -298,7 +209,7 @@ function navResiduos() {
     };
     $.ajax({
         //Ubicacion del archivo php que va a manejar los valores.
-        url: "../php/consultaUsuario.php",
+        url: "./php/consultaUsuario.php",
         //Metodo en que los va a recibir.
         type: "GET",
         data: parametros,
@@ -310,19 +221,21 @@ function navResiduos() {
     });
 }
 
-function mostrarResiduos(respuesta) {
+function mostrarUsuarios(respuesta) {
     let contenedor = document.querySelector("#contenedor");
     let contador = 0;
     contenedor.innerHTML = "";
-    let contenedorResiduos = crearElemento("div", undefined, { 
-        id: "ContResiduos", 
-        class: "col-3", 
-        style: "border:2px black solid; padding:5px" 
+    let contenedorResiduos = crearElemento("div", undefined, {
+        id: "ContResiduos",
+        class: "col-3",
+        style: "border:2px black solid; padding:5px"
     });
+
     respuesta.forEach(fila => {
-        let residuo = crearElemento("p", undefined, { 
-            id: "residuos" 
+        let residuo = crearElemento("p", undefined, {
+            id: "residuos"
         });
+
         for (let i = 0; i < Object.keys(fila).length / 2; i++) {
             residuo.innerHTML += fila[i] + " ";
         }
@@ -330,9 +243,278 @@ function mostrarResiduos(respuesta) {
         contenedor.appendChild(contenedorResiduos);
         contador++;
     });
+
 }
 
-//: Herramientas_____________________________________________________________________________
+function navUsuarios() {
+    let parametros = {
+        claveTodosUsuarios: true
+    };
+    $.ajax({
+        //Ubicacion del archivo php que va a manejar los valores.
+        url: "./php/consultaUsuario.php",
+        //Metodo en que los va a recibir.
+        type: "GET",
+        data: parametros,
+        dataType: "json",
+        success: mostrarUsuarios,
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.error("Error en la solicitud AJAX: " + textStatus, errorThrown);
+        }
+    });
+}
+
+function mostrarCategorias(respuesta) {
+    let contenedor = document.querySelector("#contenedor");
+    contenedor.innerHTML = "";
+    let categorias = crearElemento("div", undefined, {
+        class: "row",
+        id: "categorias"
+    });
+
+    // modelo de la carta de categorias
+    // <div class="col-6 col-sm-3 col-md-3 col-lg-3">
+    //     <div class="label_effect card p-3 mb-3" data-toggle="tooltip">
+    //         <img src="../../img/pasteleria.png" alt="">
+    //         <p>Pastelería</p>
+    //     </div>
+    // </div>
+
+    respuesta.forEach(fila => {
+        let carta = crearElemento("div", undefined, { class: "col-6 col-sm-3 col-md-3 col-lg-3" });
+        let divCarta = crearElemento("div", undefined, {
+            id: "idCategoria_" + fila.id_categorias,
+            class: "label_effect card p-3 mb-3",
+            "data-toggle": "tooltip"
+        });
+
+        let p = crearElemento("p", fila.descripcion, undefined);
+        let img = crearElemento("img", undefined, {
+            id: "idCategoria_" + fila.id_categorias,
+            src: "../../../assets/img/categorias/" + fila.imagenes,
+            alt: fila.descripcion
+        });
+
+        //Organizo los elementos y los agrego al div row.
+        divCarta.appendChild(img);
+        divCarta.appendChild(p);
+        carta.appendChild(divCarta);
+        categorias.appendChild(carta);
+    });
+
+    //Agrego el div con la lista de cartas al contenedor principal de la pagina.
+    contenedor.appendChild(categorias);
+}
+
+function navCategorias() 
+{
+    let parametros = {
+        categoria: 'categorias'
+    };
+    //Mostrar categorias.
+    $.ajax({
+        //Ubicacion del archivo php que va a manejar los valores.
+        url: "./php/consultaUsuario.php",
+        //Metodo en que los va a recibir.
+        type: "GET",
+        dataType: "json",
+        data: parametros,
+        success: mostrarCategorias,
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.error("Error en la solicitud AJAX: " + textStatus, errorThrown);
+        }
+    });
+}
+
+function navPedidos() 
+{
+    //Mostrar Historial.
+    //Se almacena en esta variable la información recogida desde el main.
+    let usuarioActual = JSON.parse(localStorage.getItem("usuario"));
+
+    let parametros = {
+        //UsuarioActual contiene todos los campos de usuario que se han almacenado anteriormente en principal .
+        //Y clavePrimaria ha sido creada en el js de controlUsuario en la funcion manejarRespuesta.
+        claveUsuario: usuarioActual.clavePrimaria
+    };
+
+    $.ajax({
+        //Ubicacion del archivo php que va a manejar los valores.
+        url: "./php/consultaUsuario.php",
+        //Metodo en que los va a recibir.
+        type: "GET",
+        data: parametros,
+        dataType: "json",
+        //La funcion que se ejecuta segun el resultado.
+        success: mostrarPedido,
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.error("Error en la solicitud AJAX: " + textStatus, errorThrown);
+        }
+    });
+}
+
+function mostrarPedido(respuesta) {
+    let contenedor = document.querySelector("#contenedor");
+    contenedor.innerHTML = "";
+
+    //Se comprueba primero que exista algo en el historial de solicitudes.
+    if (respuesta[0] != null) {
+        let historial = crearElemento("table", undefined, {
+            id: "historial",
+            style: "border-collapse: collapse;"
+        });
+
+        //Creo los titulos de las tablas.
+        let titulos = crearElemento("tr", undefined, undefined);
+        //Segun el formato en el que se recibe el objeto, tengo que usar sus elementos de la mitad al final.
+        let prueba = Object.keys(respuesta[0]);
+        for (let i = prueba.length / 2; i < prueba.length; i++) {
+            //Creo cada elemento y lo agrego a la fila del titulo.
+            let filaTitulo = crearElemento("th", prueba[i], {
+                style: "padding:5px 30px;"
+            });
+            titulos.appendChild(filaTitulo);
+        }
+
+        //Agrego el titulo a la tabla.
+        historial.appendChild(titulos);
+
+        //Ahora agrego el contenido.
+        respuesta.forEach(fila => {
+            let filaNormal = crearElemento("tr", undefined, undefined);
+            for (let i = 0; i < Object.keys(fila).length / 2; i++) {
+                let elementoFila = crearElemento("td", fila[i], undefined);
+                filaNormal.appendChild(elementoFila);
+            }
+            historial.appendChild(filaNormal);
+        });
+        contenedor.appendChild(historial);
+    } else {
+        let sinHistorial = crearElemento("p", "Historial Vacio.", undefined)
+        contenedor.appendChild(sinHistorial);
+    }
+}
+
+// function mostrarSolicitud() 
+// {
+//     //Mostrar Historial.
+//     //Se almacena en esta variable la información recogida desde el main.
+//     let usuarioActual = JSON.parse(localStorage.getItem("usuario"));
+
+//     let parametros = {
+//         //UsuarioActual contiene todos los campos de usuario que se han almacenado anteriormente en principal .
+//         //Y clavePrimaria ha sido creada en el js de controlUsuario en la funcion manejarRespuesta.
+//         claveUsuario: usuarioActual.clavePrimaria
+//     };
+
+//     $.ajax({
+//         //Ubicacion del archivo php que va a manejar los valores.
+//         url: "./php/consultaUsuario.php",
+//         //Metodo en que los va a recibir.
+//         type: "GET",
+//         data: parametros,
+//         dataType: "json",
+//         //La funcion que se ejecuta segun el resultado.
+//         success: mostrarPedido,
+//         error: function (jqXHR, textStatus, errorThrown) {
+//             console.error("Error en la solicitud AJAX: " + textStatus, errorThrown);
+//         }
+//     });
+// }
+
+// Cargar la página de inicio del usuario nada más acceder
+function inicioCategorias(respuesta) {
+    let contenedor = document.querySelector("#contenedor");
+    let categorias = crearElemento("div", undefined, {
+        class: "row",
+        id: "categorias"
+    });
+
+    // modelo de la carta de categorias
+    // <div class="col-6 col-sm-3 col-md-3 col-lg-3">
+    //     <div class="label_effect card p-3 mb-3" data-toggle="tooltip">
+    //         <img src="../../img/pasteleria.png" alt="">
+    //         <p>Pastelería</p>
+    //     </div>
+    // </div>
+
+    respuesta.forEach(fila => {
+        let carta = crearElemento("div", undefined, {
+            class: "col-6 col-sm-3 col-md-3 col-lg-3"
+        });
+
+        //Le doy un id al contenedor para usarlo en el manejador.
+        let divCarta = crearElemento("div", undefined, {
+            id: "idCategoria_" + fila.id_categorias,
+            class: "label_effect card p-3 mb-3",
+            "data-toggle": "tooltip"
+        });
+
+        let p = crearElemento("p", fila.descripcion, undefined);
+        let img = crearElemento("img", undefined, {
+            src: "../../../assets/img/categorias/" + fila.imagenes,
+            alt: fila.descripcion
+        });
+
+        //Organizo los elementos y los agrego al div row.
+        divCarta.appendChild(img);
+        divCarta.appendChild(p);
+        carta.appendChild(divCarta);
+        categorias.appendChild(carta);
+    });
+
+    //Agrego el div con la lista de cartas al contenedor principal de la pagina.
+    contenedor.appendChild(categorias);
+}
+
+function inicioSolicitudes(respuesta) {
+    let contenedor = document.querySelector("#contenedor");
+
+    //Compruebo que exista algun dato.
+    if (respuesta[0] != null) {
+
+        let historial = crearElemento("table", undefined, {
+            id: "historial",
+            style: "border-collapse: collapse;"
+        });
+
+        //Creo los titulos de las tablas.
+        let titulos = crearElemento("tr", undefined, undefined);
+        //Segun el formato en el que se recibe el objeto, tengo que usar sus elementos de la mitad al final.
+        let prueba = Object.keys(respuesta[0]);
+        for (let i = prueba.length / 2; i < prueba.length; i++) {
+            //Creo cada elemento y lo agrego a la fila del titulo.
+            let filaTitulo = crearElemento("th", prueba[i], {
+                style: "padding:5px 30px;"
+            });
+            titulos.appendChild(filaTitulo);
+        }
+
+        //Agrego el titulo a la tabla.
+        historial.appendChild(titulos);
+
+        //Ahora agrego el contenido.
+        respuesta.forEach(fila => {
+            let filaNormal = crearElemento("tr", undefined, undefined);
+            for (let i = 0; i < Object.keys(fila).length / 2; i++) {
+                let elementoFila = crearElemento("td", fila[i], undefined);
+                filaNormal.appendChild(elementoFila);
+            }
+            historial.appendChild(filaNormal);
+        });
+        contenedor.appendChild(historial);
+    }
+    else {
+        let sinHistorial = crearElemento("p", "Historial Vacio.", undefined)
+        contenedor.appendChild(sinHistorial);
+    }
+
+}
+
+function filtroCategoria() {
+
+}
+
 function crearElemento(etiqueta, contenido, atributos) {
     let elementoNuevo = document.createElement(etiqueta);
     if (contenido !== undefined) {
@@ -345,84 +527,4 @@ function crearElemento(etiqueta, contenido, atributos) {
         }
     }
     return elementoNuevo;
-}
-
-function cerrarSesion() {
-    localStorage.removeItem("usuario");
-
-    setTimeout(function () {
-        window.location.replace("../../../sesion.html");
-    }, 500);
-}
-
-//Consulta general para recibir productos. La funcion devuelve un array de objetos literales con los datos de los productos.
-function consultarProductos() {
-    let parametros = {
-        pedirProductos: true
-    };
-
-    $.ajax({
-        //Ubicacion del archivo php que va a manejar los valores.
-        url: "../php/consultaUsuario.php",
-        //Metodo en que los va a recibir.
-        type: "GET",
-        data: parametros,
-        dataType: "json",
-        success: guardarProductos,
-        error: function (jqXHR, textStatus, errorThrown) {
-            console.error("Error en la solicitud AJAX: " + textStatus, errorThrown);
-        }
-    });
-
-    function guardarProductos(listaProdutos) {
-        //Creo un array donde guardo todos los productos como objetos literales.
-        let todosProductos = [];
-
-        for (let i = 0; i < listaProdutos.length; i++) {
-            //Creo un objeto literal con los datos de cada producto.
-            let producto = {
-                id_categoria: listaProdutos[i].Id_categoria,
-                imagen_categoria: listaProdutos[i].Imagen_categoria,
-                nombre_producto: listaProdutos[i].nombre_producto,
-                nombre_categoria: listaProdutos[i].nombre_categoria,
-                nombre_unidades: listaProdutos[i].nombre_unidades,
-                nombre_observaciones: listaProdutos[i].nombre_observaciones
-            }
-            //Lo agrego al array de productos.
-            todosProductos.push(producto);
-        }
-        return todosProductos;
-    }
-}
-
-function mostrarCategorias(respuesta) {
-    let contenedor = document.querySelector("#contenedor");
-    contenedor.innerHTML = "";
-    //Ahora que tengo todos los datos de la tabla categorias, hago los elementos para guardarla.
-    let salida = document.querySelector("#contenedor");
-    let categorias = crearElemento("div", undefined, { class: "row", id: "categorias" });
- 
-    // modelo de la carta de categorias
-    // <div class="col-6 col-sm-3 col-md-3 col-lg-3">
-    //     <div class="label_effect card p-3 mb-3" data-toggle="tooltip">
-    //         <img src="../../img/pasteleria.png" alt="">
-    //         <p>Pastelería</p>
-    //     </div>
-    // </div>
- 
-    respuesta.forEach(fila => {
-        let carta = crearElemento("div", undefined, { class: "col-6 col-sm-3 col-md-3 col-lg-3" });
-        let divCarta = crearElemento("div", undefined, { class: "label_effect card p-3 mb-3", "data-toggle": "tooltip" });
-        let p = crearElemento("p", fila.descripcion, undefined);
-        let img = crearElemento("img", undefined, { src: "../img/" + fila.imagenes, alt: fila.descripcion });
- 
-        //Organizo los elementos y los agrego al div row.
-        divCarta.appendChild(img);
-        divCarta.appendChild(p);
-        carta.appendChild(divCarta);
-        categorias.appendChild(carta);
-    });
- 
-    //Agrego el div con la lista de cartas al contenedor principal de la pagina.
-    salida.appendChild(categorias);
 }

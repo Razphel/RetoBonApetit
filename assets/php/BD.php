@@ -181,4 +181,29 @@
             //Esta consulta te devuelve un array de arrays con todos los datos de la tabla producto.
             return $filas;
         }
-    }
+
+        //En este caso se ha creado una función en lugar de usar imprimirConsulta para poder realizar una consulta más compleja y facilitar el js
+        public static function imprimirSolicitudesInicio($usuarioInicioSesion) {
+            try {
+                $conexion = self::conexionBD();
+                $sql = "SELECT *
+                FROM solicitudes 
+                WHERE fk_usuario= $usuarioInicioSesion
+                ORDER BY fecha_solicitud DESC 
+                LIMIT 3";
+
+                $resultado = $conexion->query($sql);
+
+                // Crear un array para almacenar todas las filas
+                $filas = [];
+                // Recorrer los resultados y almacenar cada fila en el array
+                while ($fila = $resultado->fetch()) {
+                    $filas[] = $fila;
+                }
+            } catch (Exception $e) {
+                throw new Exception("ERROR: " + $e);
+            }
+            //Esta consulta te devuelve un array de arrays con todos los datos de la tabla producto.
+            return $filas;
+        }
+}
