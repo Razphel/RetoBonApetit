@@ -205,13 +205,18 @@ function mostrarCategorias(respuesta) {
 
     respuesta.forEach(fila => {
         let carta = crearElemento("div", undefined, { class: "col-6 col-sm-3 col-md-3 col-lg-3" });
-        let contenedor = crearElemento("div", undefined, { class: "label_effect card p-3 mb-3", "data-toggle": "tooltip" });
+        let divCarta = crearElemento("div", undefined, { class: "label_effect card p-3 mb-3", "data-toggle": "tooltip" });
         let p = crearElemento("p", fila.descripcion, undefined);
-        let img = crearElemento("img", undefined, { src: "../../img" + fila.imagenes, alt: fila.descripcion });
+        let img = crearElemento("img", undefined, { src: "../img/" + fila.imagenes, alt: fila.descripcion });
 
-        //
+        //Organizo los elementos y los agrego al div row.
+        divCarta.appendChild(img);
+        divCarta.appendChild(p);
+        carta.appendChild(divCarta);
+        categorias.appendChild(carta);
     });
 
+    //Agrego el div con la lista de cartas al contenedor principal de la pagina.
     salida.appendChild(categorias);
 }
 
