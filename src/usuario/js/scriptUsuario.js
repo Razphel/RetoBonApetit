@@ -75,7 +75,7 @@ function inicioCategorias(respuesta) {
     let contenedor = document.querySelector("#contenedor");
 
     //Contenedor de botones de categorias y h1 con el titulo de la vista inicio.
-    let headerInicio = crearElemento("div", undefined, undefined);
+    let inicioTopUser = crearElemento("div", undefined, undefined);
 
     //Busco el nombre del usuario.
     let nombreUsuario = JSON.parse(localStorage.getItem("usuario"));
@@ -86,20 +86,12 @@ function inicioCategorias(respuesta) {
         class: "py-3 mb-3 mt-4"
     });
 
-    headerInicio.appendChild(h1Inicio);
+    inicioTopUser.appendChild(h1Inicio);
 
     let categorias = crearElemento("div", undefined, {
         class: "row",
         id: "categorias"
     });
-
-    // modelo de la carta de categorias
-    // <div class="col-6 col-sm-3 col-md-3 col-lg-3">
-    //     <div class="label_effect card p-3 mb-3" data-toggle="tooltip">
-    //         <img src="../../img/pasteleria.png" alt="">
-    //         <p>Pastelería</p>
-    //     </div>
-    // </div>
 
     respuesta.forEach(fila => {
         let carta = crearElemento("div", undefined, {
@@ -130,10 +122,10 @@ function inicioCategorias(respuesta) {
     });
 
     //Agrego el div con la lista de cartas al contenedor superior de la pagina.
-    headerInicio.appendChild(categorias);
+    inicioTopUser.appendChild(categorias);
 
     //Agrego el contenedor superior a la pagina.
-    contenedor.appendChild(headerInicio);
+    contenedor.appendChild(inicioTopUser);
 }
 
 function inicioSolicitudes(respuesta) {
@@ -208,26 +200,18 @@ function pagProductos(respuesta) {
     contenedor.innerHTML = "";
 
     //Contenedor de botones de categorias y h1 con el titulo de la vista inicio.
-    let headerInicio = crearElemento("div", undefined, undefined);
+    let inicioTopUser = crearElemento("div", undefined, undefined);
     let h1Inicio = crearElemento("h1", "Productos", {
         id: "tituloApartado",
         class: "py-3 mb-3 mt-4"
     });
 
-    headerInicio.appendChild(h1Inicio);
+    inicioTopUser.appendChild(h1Inicio);
 
     let categorias = crearElemento("div", undefined, {
         class: "row",
         id: "categorias"
     });
-
-    // modelo de la carta de categorias
-    // <div class="col-6 col-sm-3 col-md-3 col-lg-3">
-    //     <div class="label_effect card p-3 mb-3" data-toggle="tooltip">
-    //         <img src="../../img/pasteleria.png" alt="">
-    //         <p>Pastelería</p>
-    //     </div>
-    // </div>
 
     respuesta.forEach(fila => {
         let carta = crearElemento("div", undefined, {
@@ -258,10 +242,10 @@ function pagProductos(respuesta) {
     });
 
     //Agrego el div con la lista de cartas al contenedor superior de la pagina.
-    headerInicio.appendChild(categorias);
+    inicioTopUser.appendChild(categorias);
 
     //Agrego el contenedor superior a la pagina.
-    contenedor.appendChild(headerInicio);
+    contenedor.appendChild(inicioTopUser);
 }
 
 // Página pedidos_____________________________________________________________________
@@ -427,6 +411,7 @@ function manejadorCategoria(e) {
     filtroCategoria(idCategoria);
 }
 
+/*
 function filtroCategoria(id_categoriaRecibido) {
     // Esta letiable es un array de objetos literales, cada objeto tiene los datos del producto y categorias.
     // Cada producto tiene este formato:
@@ -457,10 +442,10 @@ function filtroCategoria(id_categoriaRecibido) {
 
     // Contenedor inferior de la pagina. La tabla se crea por separado del inicio y las categorias.
     // Este contenedor se crea si no existe todavia.
-    let parteInferior = document.querySelector("#parteInferior");
-    if (document.querySelector("#parteInferior") == null) {
-        parteInferior = crearElemento("div", undefined, {
-            id: "parteInferior",
+    let inicioBottomUser = document.querySelector("#inicioBottomUser");
+    if (document.querySelector("#inicioBottomUser") == null) {
+        inicioBottomUser = crearElemento("div", undefined, {
+            id: "inicioBottomUser",
             class: "mt-5"
         });
     }
@@ -471,7 +456,7 @@ function filtroCategoria(id_categoriaRecibido) {
         filtro = crearElemento("div", "Fila reservada para el filtro.", {
             id: "filtro"
         });
-        parteInferior.appendChild(filtro);
+        inicioBottomUser.appendChild(filtro);
     }
 
     // Compruebo si existe el contenedor de la tabla. Si existe se elimina para imprimir uno con nuevos datos.
@@ -555,6 +540,7 @@ function filtroCategoria(id_categoriaRecibido) {
     // Agregar el contenido de categoría al contenedor principal
     contenedor.appendChild(contenidoCategoria);
 }
+*/
 
 //! OTRA VERSIÓN
 // Función para filtrar productos por categoría y actualizar la tabla
@@ -613,20 +599,20 @@ document.addEventListener("DOMContentLoaded", function() {
         historial.remove();
     }
     
-    let parteInferior = document.querySelector("#parteInferior");
-    if (document.querySelector("#parteInferior") == null) {
-        parteInferior = crearElemento("div", undefined, {
-            id: "parteInferior",
+    let inicioBottomUser = document.querySelector("#inicioBottomUser");
+    if (document.querySelector("#inicioBottomUser") == null) {
+        inicioBottomUser = crearElemento("div", undefined, {
+            id: "inicioBottomUser",
             class: "mt-5"
         });
     }
     
-    let filtro = document.querySelector("#filtro");
-    if (filtro == null) {
-        filtro = crearElemento("div", "Fila reservada para el filtro.", {
-            id: "filtro"
+    let filtrosProductos = document.querySelector("#filtrosProductos");
+    if (filtrosProductos == null) {
+        filtrosProductos = crearElemento("div", "Fila reservada para el filtro.", {
+            id: "filtrosProductos"
         });
-        parteInferior.appendChild(filtro);
+        inicioBottomUser.appendChild(filtrosProductos);
     }
     
     if (document.querySelector("#contenidoCategoria") != null) {
