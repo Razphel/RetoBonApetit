@@ -638,7 +638,8 @@ document.addEventListener("DOMContentLoaded", function() {
     });
     tablaHead.appendChild(filaHead);
     
+    tabla.appendChild(tablaHead);
     tabla.appendChild(tablaBody);
-    contenidoCategoria.appendChild(tabla);
-    contenedor.appendChild(contenidoCategoria);
+    inicioBottomUser.appendChild(tabla);
+    contenedor.appendChild(inicioBottomUser);
 });
