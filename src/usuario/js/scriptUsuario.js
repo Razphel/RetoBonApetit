@@ -108,7 +108,7 @@ function inicioCategorias(respuesta) {
         //Le doy un id al contenedor para usarlo en el manejador.
         let divCarta = crearElemento("div", undefined, {
             id: "idCategoria_" + fila.id_categorias,
-            class: "label_effect card p-3 mb-3",
+            class: "label_effect card card_margin p-3 mb-3 ",
             "data-toggle": "tooltip"
         });
 
