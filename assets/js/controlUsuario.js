@@ -28,9 +28,10 @@ function principal() {
         });
     });
 
-    //Eevntos change que colorean los inputs en verde o rojo si son o no invalidos.
-    $("#nombreUsuario").change(comprobarEntrada);
-    $("#contraseña").change(comprobarEntrada);
+    //Eventos blur, que se disparan cuando el usuario pierde la seleccion.
+    //La funcion comprueba que el campo este vacio, si lo esta, marca el input en rojo.
+    $("#nombreUsuario").blur(comprobarEntrada);
+    $("#contraseña").blur(comprobarEntrada);
 
 }
 
@@ -64,7 +65,15 @@ function iniciarSesion() {
 
     } else {
         let salida = document.querySelector("#salida");
-        salida.innerHTML = "Error. Debes rellenar todos los campos";
+        //Agrego la clase para resaltar en rojo el mensaje de error.
+        salida.classList.add('alert', 'alert-danger');
+        salida.innerHTML = "Error. Debes rellenar todos los campos.";
+
+        //Controlo que el error no aparezca de forma indefinida.
+        setTimeout(function () {
+            salida.classList.remove('alert', 'alert-danger');
+            salida.innerHTML = "";
+        }, 5000);
     }
 }
 
@@ -72,12 +81,27 @@ function manejarRespuesta(respuesta) {
     let salida = document.querySelector("#salida");
     if (!respuesta) {
         //El usuario no existe.
+        //Agrego la clase para resaltar en rojo el mensaje de error.
+        salida.classList.add('alert', 'alert-danger');
         salida.innerHTML = "Error. Comprueba los datos.";
+
+        //Controlo que el error no aparezca de forma indefinida.
+        setTimeout(function () {
+            salida.classList.remove('alert', 'alert-danger');
+            salida.innerHTML = "";
+        }, 5000);
     } else {
         //Compruebo que el usuario no este dado de baja.
         if (respuesta.activo == 0) {
+            //Agrego la clase para resaltar en rojo el mensaje de error.
+            salida.classList.add('alert', 'alert-danger');
             salida.innerHTML = "Error. Usuario dado de baja.";
 
+            //Controlo que el error no aparezca de forma indefinida.
+            setTimeout(function () {
+                salida.classList.remove('alert', 'alert-danger');
+                salida.innerHTML = "";
+            }, 5000);
         } else {
             //Si todo va bien guardo el usuario en la sesion.
             localStorage.setItem("usuario", JSON.stringify({ nombre: respuesta.nombre, tipo: respuesta.admin, activo: respuesta.activo, clavePrimaria: respuesta.id_usuarios }));
