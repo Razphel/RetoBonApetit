@@ -71,7 +71,22 @@ function principal() {
 
 // Página de inicio___________________________________________________________________
 function inicioCategorias(respuesta) {
+    //Contenedor general de la pagina.
     let contenedor = document.querySelector("#contenedor");
+
+    //Contenedor de botones de categorias y h1 con el titulo de la vista inicio.
+    let headerInicio = crearElemento("div", undefined, undefined);
+
+    //Busco el nombre del usuario.
+    let nombreUsuario = JSON.parse(localStorage.getItem("usuario"));
+    nombreUsuario = nombreUsuario.nombre;
+
+    let h1Inicio = crearElemento("h1", "Bienvenido, " + nombreUsuario, {
+        class: "py-3 mb-3 mt-4"
+    });
+
+    headerInicio.appendChild(h1Inicio);
+
     let categorias = crearElemento("div", undefined, {
         class: "row",
         id: "categorias"
@@ -87,15 +102,17 @@ function inicioCategorias(respuesta) {
 
     respuesta.forEach(fila => {
         let carta = crearElemento("div", undefined, {
-            class: "col-6 col-sm-3 col-md-3 col-lg-3 px-2"
+            class: "col-6 col-sm-3 col-md-3 col-lg-3 d-flex justify-content-between"
         });
 
         //Le doy un id al contenedor para usarlo en el manejador.
         let divCarta = crearElemento("div", undefined, {
             id: "idCategoria_" + fila.id_categorias,
-            class: "label_effect card p-3 mb-3",
+            class: "label_effect card card_margin p-3 mb-3",
             "data-toggle": "tooltip"
         });
+
+        //Le doy un manejador a cada boton que usa el id para consultar las categorias.
         divCarta.addEventListener("click", manejadorCategoria);
 
         let p = crearElemento("p", fila.descripcion, undefined);
@@ -111,8 +128,11 @@ function inicioCategorias(respuesta) {
         categorias.appendChild(carta);
     });
 
-    //Agrego el div con la lista de cartas al contenedor principal de la pagina.
-    contenedor.appendChild(categorias);
+    //Agrego el div con la lista de cartas al contenedor superior de la pagina.
+    headerInicio.appendChild(categorias);
+
+    //Agrego el contenedor superior a la pagina.
+    contenedor.appendChild(headerInicio);
 }
 
 function inicioSolicitudes(respuesta) {
@@ -180,8 +200,18 @@ function navProductos() {
 }
 
 function pagProductos(respuesta) {
+    //Contenedor general de la pagina.
     let contenedor = document.querySelector("#contenedor");
+
+    //Antes que nada, se limpia el contenedor.
     contenedor.innerHTML = "";
+
+    //Contenedor de botones de categorias y h1 con el titulo de la vista inicio.
+    let headerInicio = crearElemento("div", undefined, undefined);
+    let h1Inicio = crearElemento("h1", "Productos", undefined);
+
+    headerInicio.appendChild(h1Inicio);
+
     let categorias = crearElemento("div", undefined, {
         class: "row",
         id: "categorias"
@@ -196,17 +226,22 @@ function pagProductos(respuesta) {
     // </div>
 
     respuesta.forEach(fila => {
-        let carta = crearElemento("div", undefined, { class: "col-6 col-sm-3 col-md-3 col-lg-3" });
+        let carta = crearElemento("div", undefined, {
+            class: "col-6 col-sm-3 col-md-3 col-lg-3"
+        });
+
+        //Le doy un id al contenedor para usarlo en el manejador.
         let divCarta = crearElemento("div", undefined, {
             id: "idCategoria_" + fila.id_categorias,
             class: "label_effect card p-3 mb-3",
             "data-toggle": "tooltip"
         });
+
+        //Le doy un manejador a cada boton que usa el id para consultar las categorias.
         divCarta.addEventListener("click", manejadorCategoria);
 
         let p = crearElemento("p", fila.descripcion, undefined);
         let img = crearElemento("img", undefined, {
-            id: "idCategoria_" + fila.id_categorias,
             src: "../../../assets/img/categorias/" + fila.imagenes,
             alt: fila.descripcion
         });
@@ -218,8 +253,11 @@ function pagProductos(respuesta) {
         categorias.appendChild(carta);
     });
 
-    //Agrego el div con la lista de cartas al contenedor principal de la pagina.
-    contenedor.appendChild(categorias);
+    //Agrego el div con la lista de cartas al contenedor superior de la pagina.
+    headerInicio.appendChild(categorias);
+
+    //Agrego el contenedor superior a la pagina.
+    contenedor.appendChild(headerInicio);
 }
 
 // Página pedidos_____________________________________________________________________
@@ -378,8 +416,6 @@ function pagResiduos(respuesta) {
     });
 }
 
-
-
 function manejadorCategoria(e) {
     let textoDividido = this.id.split("_");
     let idCategoria = textoDividido[1];
@@ -398,12 +434,40 @@ function filtroCategoria(id_categoriaRecibido) {
     //     nombre_unidades: nombre_unidades,
     //     nombre_observaciones: nombre_observaciones
     // }
-
     let todosProductos = JSON.parse(localStorage.getItem("todosProductos"));
-    let contenedor = document.querySelector("#contenedor");
-    let contenidoCategoria = crearElemento("div", undefined, undefined);
 
-    let tabla = crearElemento("table", undefined, undefined);
+    //Contenedor principal de la pagina.
+    let contenedor = document.querySelector("#contenedor");
+
+    //Contenedor inferior de la pagina. La tabla se crea por separado del inicio y las categorias.
+    //Este contenedor se crea si no existe todavia.
+    if (document.querySelector("#parteInferior") == null) {
+        let parteInferior = crearElemento("div", undefined, {
+            id: "parteInferior"
+        });
+    }
+
+    //Div reservado para hacer el filtro de la tabla, se crea si todavia no existe.
+    if (document.querySelector("#filtro")) {
+        let filtro = crearElemento("div", "Fila reservada para el filtro.", {
+            id: "filtro"
+        });
+        parteInferior.appendChild(filtro);
+    }
+
+    //Compruebo si existe el contenedor de la tabla. Si existe se elimina para imprimir uno con nuevos datos.
+    if (document.querySelector("#contenidoCategoria") != null) {
+        document.querySelector("#contenidoCategoria").remove();
+    }
+
+    //Aqui deberia ir la fila con el filtro y la tabla.
+    let contenidoCategoria = crearElemento("div", undefined, {
+        id: "contenidoCategoria"
+    });
+
+    let tabla = crearElemento("table", undefined, {
+        id: "tabla"
+    });
     let tr = crearElemento("tr", undefined, undefined);
 
     //Se crean los titulos de la tabla.
@@ -434,13 +498,11 @@ function filtroCategoria(id_categoriaRecibido) {
         }
     }
 
-    //Limpio el elemento que va a contener la tabla para que no se cree mas de una a la vez.
-    if (contenidoCategoria.parentNode != null) {
-        contenidoCategoria.parentNode.removeChild(contenidoCategoria);
-    }
-
     contenidoCategoria.appendChild(tabla);
 
-    //Agrego el elemento al contenedor principal.
-    contenedor.appendChild(contenidoCategoria);
+    //Limpio la tabla y la imprimo otra vez con nueva informacion.
+    parteInferior.appendChild(contenidoCategoria);
+
+    //Agrego la tabla a la pagina.
+    contenedor.appendChild(parteInferior);
 }
