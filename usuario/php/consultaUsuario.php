@@ -38,7 +38,7 @@ if (isset($_REQUEST['claveTodosUsuarios']))
 }
 if(isset($_POST['datos']))
 {   
-    echo("MONDONGO3");
+    echo("HOLA");
     // echo var_dump($_REQUEST['datos']);
     // $parametros = $_REQUEST['datos'];
     // $add = BD::insertarRegistro("categorias",$parametros);

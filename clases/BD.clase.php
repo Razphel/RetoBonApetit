@@ -177,14 +177,33 @@ class BD
         }
     }
 
-
-
     public static function eliminarRegistro($tabla,$id)
     {
         try {
             $conexion = self::conexionBD();
             $sql = "DELETE FROM $tabla where id_$tabla =".$id;
             $resultado = $conexion->exec($sql);
+            return true;
+        } catch (PDOException  $e) {
+            throw new Exception("ERROR: " . $e->getMessage());
+        }
+    }
+
+    public static function actualizarRegistro($tabla,$datos)
+    {   
+        try {
+            $conexion = self::conexionBD();
+            $columnas = implode(', ', array_keys($datos));
+            // var_dump(array_keys($datos));
+            // echo "<br>".$columnas;
+            //Con array_fill indicaremos que la cadena empiece en la posicion 0, tendrá la misma longitud que el numero de datos que haya
+            $valores = implode(', ', array_fill(0, count($datos), '?'));
+
+            $sql = "INSERT INTO $tabla ($columnas) VALUES ($valores)";
+            $consulta = $conexion->prepare($sql);
+    
+            // Ejecutar la consulta preparada con los valores
+            $consulta->execute(array_values($datos));
             return true;
         } catch (PDOException  $e) {
             throw new Exception("ERROR: " . $e->getMessage());
