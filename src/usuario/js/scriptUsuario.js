@@ -87,7 +87,7 @@ function inicioCategorias(respuesta) {
 
     respuesta.forEach(fila => {
         let carta = crearElemento("div", undefined, {
-            class: "col-6 col-sm-3 col-md-3 col-lg-3"
+            class: "col-6 col-sm-3 col-md-3 col-lg-3 px-2"
         });
 
         //Le doy un id al contenedor para usarlo en el manejador.
