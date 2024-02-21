@@ -4,6 +4,10 @@
         - crearElemento()
         - crearFormulario()
 
+        Las siguientes funciones son dinámicas pero se llaman desde 
+        cada script (user y admin) y se sobreescribe para adaptarlo 
+        a cada perfil
+
         //! función dinámica para consultar cualquier dato de la BBDD
         - consultarCategorias()
         - consultarProductos()
