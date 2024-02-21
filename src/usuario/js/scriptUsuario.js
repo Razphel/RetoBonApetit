@@ -41,7 +41,7 @@ function principal() {
     });
 
     //Mostrar Historial.
-    //Se almacena en esta variable la información recogida desde el main
+    //Se almacena en esta letiable la información recogida desde el main
     let usuarioActual = JSON.parse(localStorage.getItem("usuario"));
 
     parametros = {
@@ -267,7 +267,7 @@ function pagProductos(respuesta) {
 // Página pedidos_____________________________________________________________________
 function navPedidos() {
     //Mostrar Historial.
-    //Se almacena en esta variable la información recogida desde el main.
+    //Se almacena en esta letiable la información recogida desde el main.
     let usuarioActual = JSON.parse(localStorage.getItem("usuario"));
 
     let parametros = {
@@ -428,7 +428,7 @@ function manejadorCategoria(e) {
 }
 
 function filtroCategoria(id_categoriaRecibido) {
-    //Esta variable es un array de objetos literales, cada objeto tiene los datos del producto y categorias.
+    //Esta letiable es un array de objetos literales, cada objeto tiene los datos del producto y categorias.
     //Cada producto tiene este formato:
     // producto = {
     //     id_categoria: Id_categoria,
@@ -460,7 +460,8 @@ function filtroCategoria(id_categoriaRecibido) {
     let parteInferior = document.querySelector("#parteInferior");
     if (document.querySelector("#parteInferior") == null) {
         parteInferior = crearElemento("div", undefined, {
-            id: "parteInferior"
+            id: "parteInferior",
+            class: "mt-5"
         });
     }
 
@@ -478,6 +479,45 @@ function filtroCategoria(id_categoriaRecibido) {
         document.querySelector("#contenidoCategoria").remove();
     }
 
+    //Formato de la tabla
+    // <table class="table">
+    //             <thead>
+    //                 <tr>
+    //                     <th scope="col"><input type="checkbox" name="generico" id="genericoCheckCabecera"></th>
+    //                     <th scope="col">NOMBRE</th>
+    //                     <th scope="col">CATEGORÍA</th>
+    //                     <th scope="col">OBSERVACIONES</th>
+    //                     <th scope="col">UD. DE MEDIDA</th>
+    //                     <th scope="col"></th>
+    //                 </tr>
+    //             </thead>
+    //             <tbody>
+    //                 <tr>
+    //                     <div class="fila">
+    //                         <td><input type="checkbox" name="generico" id="genericoCheckCuerpo"></td>
+    //                         <td>Manzana Perigrulla</td>
+    //                         <td>
+    //                             <div class="categoria">
+    //                                 <img src="../assets/img/categorias/fruteria.png" alt="icono de la categoria"
+    //                                     class="foto">
+    //                                 Fruteria
+    //                             </div>
+    //                         </td>
+    //                         <td>Descripcion de mi enorme banana</td>
+    //                         <td>kg</td>
+    //                         <td>
+    //                             <div class="fila">
+    //                                 <input type="number" class="form-control form-control-small" size="3" min="0" max=""
+    //                                     step="1" value="0" id="numeroInput">
+    //                                 <button type="button" class="btn btn-primary">Primary</button>
+    //                             </div>
+    //                         </td>
+    //                     </div>
+    //                 </tr>
+    //                 <!-- Agrega más filas según sea necesario -->
+    //             </tbody>
+    //         </table>
+
     //Aqui deberia ir la fila con el filtro y la tabla.
     let contenidoCategoria = crearElemento("div", undefined, {
         id: "contenidoCategoria"
@@ -486,35 +526,54 @@ function filtroCategoria(id_categoriaRecibido) {
     let tabla = crearElemento("table", undefined, {
         id: "tabla"
     });
-    let tr = crearElemento("tr", undefined, undefined);
+    let tablaHead = crearElemento("thead", undefined, undefined);
+    let tablaBody = crearElemento("tbody", undefined, undefined);
+
+    let filaHead = crearElemento("tr", undefined, undefined);
 
     //Se crean los titulos de la tabla.
-    let th = crearElemento("th", "Producto", undefined);
-    tr.appendChild(th);
-    th = crearElemento("th", "Categoria", undefined);
-    tr.appendChild(th);
-    th = crearElemento("th", "Unidades", undefined);
-    tr.appendChild(th);
-    th = crearElemento("th", "Observaciones", undefined);
-    tr.appendChild(th);
-    tabla.appendChild(tr);
+    let celdaHead = crearElemento("th", undefined, undefined);
+    let inputHead = crearElemento("input", undefined, {
+        type: "checkbox",
+        class: "genericoCheckCabecera"
+    })
+    celdaHead.appendChild(inputHead);
+    filaHead.appendChild(celdaHead);
+    celdaHead = crearElemento("th", "Producto", undefined);
+    filaHead.appendChild(celdaHead);
+    celdaHead = crearElemento("th", "Categoria", undefined);
+    filaHead.appendChild(celdaHead);
+    celdaHead = crearElemento("th", "Unidades", undefined);
+    filaHead.appendChild(celdaHead);
+    celdaHead = crearElemento("th", "Observaciones", undefined);
+    filaHead.appendChild(celdaHead);
+    celdaHead = crearElemento("th", undefined, undefined);
+    filaHead.appendChild(celdaHead);
+    tablaHead.appendChild(filaHead);
+    tabla.appendChild(tablaHead);
 
     //Ahora recorro todos los productos y los guardo en la tabla si son de la misma categoria recibida.
     for (let i = 0; i < todosProductos.length; i++) {
-        tr = crearElemento("tr", undefined, undefined);
+        let filaBody = crearElemento("tr", undefined, undefined);
         if (todosProductos[i]["id_categoria"] == id_categoriaRecibido) {
-            let td = crearElemento("td", todosProductos[i]["nombre_producto"], undefined);
-            tr.appendChild(td);
-            td = crearElemento("td", todosProductos[i]["nombre_categoria"], undefined);
-            tr.appendChild(td);
-            td = crearElemento("td", todosProductos[i]["nombre_unidades"], undefined);
-            tr.appendChild(td);
-            td = crearElemento("td", todosProductos[i]["nombre_observaciones"], undefined);
-            tr.appendChild(td);
+            let celdaBody = crearElemento("td", undefined, undefined);
+            celdaBody.appendChild(inputHead);
+            filaBody.appendChild(celdaBody);
+            celdaBody = crearElemento("td", todosProductos[i]["nombre_producto"], undefined);
+            filaBody.appendChild(celdaBody);
+            celdaBody = crearElemento("td", todosProductos[i]["nombre_categoria"], undefined);
+            filaBody.appendChild(celdaBody);
+            celdaBody = crearElemento("td", todosProductos[i]["nombre_unidades"], undefined);
+            filaBody.appendChild(celdaBody);
+            celdaBody = crearElemento("td", todosProductos[i]["nombre_observaciones"], undefined);
+            filaBody.appendChild(celdaBody);
 
-            tabla.appendChild(tr);
+            
+
+            tablaBody.appendChild(filaBody);
         }
     }
+    tabla.appendChild(tablaBody);
 
     contenidoCategoria.appendChild(tabla);
 
@@ -523,4 +582,47 @@ function filtroCategoria(id_categoriaRecibido) {
 
     //Agrego la tabla a la pagina.
     contenedor.appendChild(parteInferior);
+}
+
+function crearTabla(filas, columnas, salida) {
+    let tabla = document.crearElemento("table", undefined, {
+        id: "tabla"
+    });
+    tabla.style.borderCollapse = "collapse";
+
+    //
+    let tablaHead = crearElemento("thead", undefined, undefined);
+    let tablaBody = crearElemento("tbody", undefined, undefined);
+
+    let filaHead = crearElemento("tr", undefined, undefined);
+    let celdaHead = crearElemento("th", "Producto", undefined);
+    filaHead.appendChild(celdaHead);
+    celdaHead = crearElemento("th", "Categoria", undefined);
+    filaHead.appendChild(celdaHead);
+    celdaHead = crearElemento("th", "Unidades", undefined);
+    filaHead.appendChild(celdaHead);
+    celdaHead = crearElemento("th", "Observaciones", undefined);
+    filaHead.appendChild(celdaHead);
+    celdaHead = crearElemento("th", undefined, undefined);
+    filaHead.appendChild(celdaHead);
+    tablaHead.appendChild(filaHead);
+
+    for (let i = 1; i <= filas; i++) {
+        let fila = document.crearElemento("tr", undefined, undefined);
+
+        for (let j = 1; j <= columnas; j++) {
+            let celda = document.crearElemento("td", undefined, undefined);
+            celda.textContent = todosProductos[i]
+            celda.id = "celda" + i + "" + j;
+
+            celda.style.border = "1px solid black";
+            celda.style.padding = "10px";
+            celda.style.textAlign = "center";
+
+            fila.appendChild(celda);
+        }
+        salida.innerHTML = "";
+        tabla.appendChild(fila);
+    }
+    salida.appendChild(tabla);
 }
