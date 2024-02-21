@@ -90,6 +90,10 @@
     --line-height: ;
 }
 
+* {
+    color: var(--text-dark-color);
+}
+
 .row {
     --bs-gutter-x: 0;
     --bs-gutter-y: 0;
@@ -194,7 +198,25 @@ i:hover {
 }
 
 /* Tablas........................................ gen_tablas */
+table {
+    color: var(--text-dark-color);
+}
 
+th {
+    font-size: var(--head-h5);
+    color: var(--text-light-color) !important;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+td {
+    font-size: var(--size-p);
+}
+
+td:hover {
+    cursor: pointer;
+}
 
 /* Formularios................................... gen_forms */
 form {  
