@@ -556,6 +556,7 @@ function filtroCategoria(id_categoriaRecibido) {
     contenedor.appendChild(contenidoCategoria);
 }
 
+//! OTRA VERSIÓN
 // Función para filtrar productos por categoría y actualizar la tabla
 function filtroCategoria(id_categoriaRecibido) {
     let todosProductos = JSON.parse(localStorage.getItem("todosProductos"));
