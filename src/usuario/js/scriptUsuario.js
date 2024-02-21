@@ -208,7 +208,9 @@ function pagProductos(respuesta) {
 
     //Contenedor de botones de categorias y h1 con el titulo de la vista inicio.
     let headerInicio = crearElemento("div", undefined, undefined);
-    let h1Inicio = crearElemento("h1", "Productos", undefined);
+    let h1Inicio = crearElemento("h1", "Productos", undefined, {
+        class: "py-3 mb-3 mt-4"
+    });
 
     headerInicio.appendChild(h1Inicio);
 
@@ -227,13 +229,13 @@ function pagProductos(respuesta) {
 
     respuesta.forEach(fila => {
         let carta = crearElemento("div", undefined, {
-            class: "col-6 col-sm-3 col-md-3 col-lg-3"
+            class: "col-6 col-sm-3 col-md-3 col-lg-3 d-flex justify-content-between"
         });
 
         //Le doy un id al contenedor para usarlo en el manejador.
         let divCarta = crearElemento("div", undefined, {
             id: "idCategoria_" + fila.id_categorias,
-            class: "label_effect card p-3 mb-3",
+            class: "label_effect card card_margin p-3 mb-3",
             "data-toggle": "tooltip"
         });
 
@@ -439,17 +441,25 @@ function filtroCategoria(id_categoriaRecibido) {
     //Contenedor principal de la pagina.
     let contenedor = document.querySelector("#contenedor");
 
+    //En caso de que sea la primera vez que cargue la pagina, va a haber una seccion con id historial. Lo elimino
+    let historial = document.querySelector("#historial");
+    if (historial != null) {
+        historial.remove();
+    }
+
     //Contenedor inferior de la pagina. La tabla se crea por separado del inicio y las categorias.
     //Este contenedor se crea si no existe todavia.
+    let parteInferior = document.querySelector("#parteInferior");
     if (document.querySelector("#parteInferior") == null) {
-        let parteInferior = crearElemento("div", undefined, {
+        parteInferior = crearElemento("div", undefined, {
             id: "parteInferior"
         });
     }
 
     //Div reservado para hacer el filtro de la tabla, se crea si todavia no existe.
-    if (document.querySelector("#filtro")) {
-        let filtro = crearElemento("div", "Fila reservada para el filtro.", {
+    let filtro = document.querySelector("#filtro");
+    if (filtro == null) {
+        filtro = crearElemento("div", "Fila reservada para el filtro.", {
             id: "filtro"
         });
         parteInferior.appendChild(filtro);
