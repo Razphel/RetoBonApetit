@@ -225,7 +225,7 @@ function pagProductos(respuesta) {
             "data-toggle": "tooltip"
         });
 
-        //Le doy un manejador a cada boton que usa el id para consultar las categorias.
+        // Le doy un manejador a cada boton que usa el id para consultar las categorias.
         divCarta.addEventListener("click", manejadorCategoria);
 
         let p = crearElemento("p", fila.descripcion, undefined);
@@ -411,9 +411,9 @@ function manejadorCategoria(e) {
     filtroCategoria(idCategoria);
 }
 
-/*
+
 function filtroCategoria(id_categoriaRecibido) {
-    // Esta letiable es un array de objetos literales, cada objeto tiene los datos del producto y categorias.
+    // Esta variable es un array de objetos literales, cada objeto tiene los datos del producto y categorias.
     // Cada producto tiene este formato:
     // producto = {
     //     id_categoria: Id_categoria,
@@ -540,98 +540,3 @@ function filtroCategoria(id_categoriaRecibido) {
     // Agregar el contenido de categoría al contenedor principal
     contenedor.appendChild(contenedorTablaProductos);
 }
-*/
-
-//! OTRA VERSIÓN
-// Función para filtrar productos por categoría y actualizar la tabla
-function filtroCategoria(id_categoriaRecibido) {
-    let todosProductos = JSON.parse(localStorage.getItem("todosProductos"));
-    let productosFiltrados = todosProductos.filter(producto => producto.id_categoria == id_categoriaRecibido);
-    
-    let tablaBody = document.querySelector("#tabla tbody");
-    tablaBody.innerHTML = ""; // Limpiar contenido anterior de la tabla
-    
-    productosFiltrados.forEach(producto => {
-        let fila = crearFilaProducto(producto);
-        tablaBody.appendChild(fila);
-    });
-}
-
-// Función para crear una fila de producto en la tabla
-function crearFilaProducto(producto) {
-    let fila = document.createElement("tr");
-    
-    // Crear celda para checkbox
-    let celdaCheckbox = document.createElement("td");
-    let inputCheckbox = document.createElement("input");
-    inputCheckbox.type = "checkbox";
-    inputCheckbox.classList.add("genericoCheck"); // Mantén la consistencia en el nombre de la clase
-    celdaCheckbox.appendChild(inputCheckbox);
-    fila.appendChild(celdaCheckbox);
-    
-    // Crear celdas para los datos del producto
-    let datosProducto = [
-        producto.nombre_producto,
-        producto.nombre_categoria,
-        producto.nombre_unidades,
-        producto.nombre_observaciones
-    ];
-    datosProducto.forEach(dato => {
-        let celda = document.createElement("td");
-        celda.textContent = dato;
-        fila.appendChild(celda);
-    });
-    
-    return fila;
-}
-
-// Código principal
-document.addEventListener("DOMContentLoaded", function() {
-    let contenedor = document.querySelector("#contenedor");
-    let tituloApartado = document.querySelector("#tituloApartado");
-    
-    if (tituloApartado != null && tituloApartado.innerHTML != "Productos") {
-        tituloApartado.innerHTML = "Productos";
-    }
-    
-    let historial = document.querySelector("#historial");
-    if (historial != null) {
-        historial.remove();
-    }
-    
-    let inicioBottomUser = document.querySelector("#inicioBottomUser");
-    if (document.querySelector("#inicioBottomUser") == null) {
-        inicioBottomUser = crearElemento("div", undefined, {
-            id: "inicioBottomUser",
-            class: "mt-5"
-        });
-    }
-    
-    let filtrosProductos = document.querySelector("#filtrosProductos");
-    if (filtrosProductos == null) {
-        filtrosProductos = crearElemento("div", "Fila reservada para el filtro.", {
-            id: "filtrosProductos"
-        });
-        inicioBottomUser.appendChild(filtrosProductos);
-    }
-    
-    let tabla = crearElemento("table", undefined, {
-        id: "tabla",
-        class: "table table-responsive table-hover"
-    });
-    let tablaHead = crearElemento("thead");
-    let tablaBody = crearElemento("tbody");
-    
-    let filaHead = crearElemento("tr");
-    let titulos = ["Producto", "Categoría", "Unidades", "Observaciones", ""];
-    titulos.forEach(titulo => {
-        let celdaHead = crearElemento("th", titulo);
-        filaHead.appendChild(celdaHead);
-    });
-    tablaHead.appendChild(filaHead);
-    
-    tabla.appendChild(tablaHead);
-    tabla.appendChild(tablaBody);
-    inicioBottomUser.appendChild(tabla);
-    contenedor.appendChild(inicioBottomUser);
-});
