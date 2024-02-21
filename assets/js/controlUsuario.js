@@ -17,7 +17,16 @@ function principal() {
     //Uso jquery para seleccionar los elementos.
     //Los manejadores de eventos en jquery se usan como funciones.
     $("#entrar").click(iniciarSesion);
-    $("#login").submit(function (e) { e.preventDefault(); })
+    $("#login").submit(function (e) { e.preventDefault(); });
+
+    $(document).ready(function () {
+        $('#toggleContraseña').click(function () {
+            const contraseñaInput = $('#contraseña');
+            const tipo = contraseñaInput.attr('type') === 'password' ? 'text' : 'password';
+            contraseñaInput.attr('type', tipo);
+            $(this).find('i').toggleClass('bi bi-eye');
+        });
+    });
 
 }
 
@@ -51,7 +60,7 @@ function iniciarSesion() {
 
     } else {
         let salida = document.querySelector("#salida");
-        salida.innerHTML = "ERROR: Debes rellenar ambos campos.";
+        salida.innerHTML = "Error. Debes rellenar todos los campos";
     }
 }
 
@@ -59,11 +68,11 @@ function manejarRespuesta(respuesta) {
     let salida = document.querySelector("#salida");
     if (!respuesta) {
         //El usuario no existe.
-        salida.innerHTML = "ERROR: Comprueba los datos.";
+        salida.innerHTML = "Error. Comprueba los datos.";
     } else {
         //Compruebo que el usuario no este dado de baja.
         if (respuesta.activo == 0) {
-            salida.innerHTML = "ERROR: Usuario dado de baja.";
+            salida.innerHTML = "Error. Usuario dado de baja.";
 
         } else {
             //Si todo va bien guardo el usuario en la sesion.

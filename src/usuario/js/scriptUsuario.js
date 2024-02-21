@@ -75,7 +75,9 @@ function inicioCategorias(respuesta) {
     let contenedor = document.querySelector("#contenedor");
 
     //Contenedor de botones de categorias y h1 con el titulo de la vista inicio.
-    let inicioTopUser = crearElemento("div", undefined, undefined);
+    let inicioTopUser = crearElemento("div", undefined, {
+        class: "row"
+    });
 
     //Busco el nombre del usuario.
     let nombreUsuario = JSON.parse(localStorage.getItem("usuario"));
@@ -193,13 +195,13 @@ function navProductos() {
 }
 
 function pagProductos(respuesta) {
-    //Contenedor general de la pagina.
+    // Contenedor general de la pagina.
     let contenedor = document.querySelector("#contenedor");
 
-    //Antes que nada, se limpia el contenedor.
+    // Antes que nada, se limpia el contenedor.
     contenedor.innerHTML = "";
 
-    //Contenedor de botones de categorias y h1 con el titulo de la vista inicio.
+    // Contenedor de botones de categorias y h1 con el titulo de la vista inicio.
     let inicioTopUser = crearElemento("div", undefined, undefined);
     let h1Inicio = crearElemento("h1", "Productos", {
         id: "tituloApartado",
@@ -218,7 +220,7 @@ function pagProductos(respuesta) {
             class: "col-6 col-sm-3 col-md-3 col-lg-3"
         });
 
-        //Le doy un id al contenedor para usarlo en el manejador.
+        // Le doy un id al contenedor para usarlo en el manejador.
         let divCarta = crearElemento("div", undefined, {
             id: "idCategoria_" + fila.id_categorias,
             class: "label_effect card card_margin p-3 mb-3",
@@ -278,6 +280,15 @@ function navPedidos() {
 function pagPedidos(respuesta) {
     let contenedor = document.querySelector("#contenedor");
     contenedor.innerHTML = "";
+
+    let pedidosTopUser = crearElemento("div", undefined, undefined);
+    let h1Pedidos = crearElemento("h1", "Pedidos", {
+        id: "tituloApartado",
+        class: "py-3 mb-3 mt-4"
+    });
+
+    pedidosTopUser.appendChild(h1Pedidos);
+    contenedor.appendChild(pedidosTopUser);
 
     //Se comprueba primero que exista algo en el historial de solicitudes.
     if (respuesta[0] != null) {
@@ -340,6 +351,16 @@ function pagProveedores(proveedores) {
     let contenedor = document.querySelector("#contenedor");
     let contador = 0;
     contenedor.innerHTML = "";
+
+    let provTopUser = crearElemento("div", undefined, undefined);
+    let h1Proveedores = crearElemento("h1", "Proveedores", {
+        id: "tituloApartado",
+        class: "py-3 mb-3 mt-4"
+    });
+
+    provTopUser.appendChild(h1Proveedores);
+    contenedor.appendChild(provTopUser);
+
     let contenedorProveedores = crearElemento("div", undefined, {
         id: "ContProveedores",
         class: "col-3",
@@ -389,6 +410,15 @@ function pagResiduos(respuesta) {
         class: "col-3",
         style: "border:2px black solid; padding:5px"
     });
+
+    let resiTopUser = crearElemento("div", undefined, undefined);
+    let h1Residuos = crearElemento("h1", "Residuos", {
+        id: "tituloApartado",
+        class: "py-3 mb-3 mt-4"
+    });
+
+    resiTopUser.appendChild(h1Residuos);
+    contenedor.appendChild(resiTopUser);
 
     respuesta.forEach(fila => {
         let residuo = crearElemento("p", undefined, {
@@ -464,8 +494,9 @@ function filtroCategoria(id_categoriaRecibido) {
         document.querySelector("#contenedorTablaProductos").remove();
     }
 
-    // Contenedor intermedio para el contenido de la categoría
+    // Contenedor para la tabla de productos
     let contenedorTablaProductos = crearElemento("div", undefined, {
+        class: "row",
         id: "contenedorTablaProductos"
     });
 
@@ -521,6 +552,22 @@ function filtroCategoria(id_categoriaRecibido) {
                 let celdaBody = crearElemento("td", dato);
                 filaBody.appendChild(celdaBody);
             });
+
+            let celdaBoton = crearElemento("td"); // celda para el input y el botón de la tabla
+            let inputCantidad = crearElemento("input", undefined, {
+                type: "number",
+                value: "0",
+                id: "inputCantidad",
+                class: "form-control form-control-sm mr-2"
+            });
+            let botonAñadir = crearElemento("input", undefined, {
+                type: "submit",
+                class: "btn btn_custom_1 btn_sm",
+                value: "Añadir"
+            })
+            celdaBoton.appendChild(inputCantidad);
+            celdaBoton.appendChild(botonAñadir);
+            filaBody.appendChild(celdaBoton);
 
             // Agregar la fila al cuerpo de la tabla
             tablaBody.appendChild(filaBody);
