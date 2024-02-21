@@ -366,6 +366,10 @@ function mostrarPedidos(respuesta) {
 
 }
 
+function inicioUsuario() {
+    
+}
+
 function navPedidos() {
     //Mostrar Historial.
     //Se almacena en esta variable la información recogida desde el main.
