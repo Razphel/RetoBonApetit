@@ -90,6 +90,10 @@
     --line-height: ;
 }
 
+* {
+    color: var(--text-dark-color);
+}
+
 .row {
     --bs-gutter-x: 0;
     --bs-gutter-y: 0;
@@ -138,7 +142,6 @@ p {
 /* Botones...................................... gen_btn */ 
 .btn {  
     font-size: var(--size-p);  
-    padding: 10px 20px;
     border-radius: 4px;
     width: fit-content; 
 }  
@@ -183,28 +186,65 @@ i:hover {
     font-size: 10px;
 }   
 
-.bi-person-fill {
-    padding: 6px 10px;
-    border-radius: 50%;
-    background-color: rgb(230, 230, 230);
-}
-
 .nav_container .bx {
     color: rgb(167, 167, 167);
 }
 
 /* Tablas........................................ gen_tablas */
+table {
+    color: var(--text-dark-color);
+}
 
+th {
+    font-size: var(--head-h5);
+    color: var(--text-light-color) !important;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+td {
+    font-size: var(--size-p);
+}
+
+td:first-child, th:first-child {
+    padding-left: 15px; 
+  }
+
+td:last-child {
+    padding-right: 20px;
+    text-align: right; 
+}
+
+td:hover {
+    cursor: pointer;
+}
 
 /* Formularios................................... gen_forms */
 form {  
     font-size: 14px;  
 }  
 
-/* ! Revisar estos estilos del form login */
-.login-form {   
-    width: 330px;  
-    border: none;
+.form-label {
+    font-size: var(--size-p);
+}
+
+.container_login {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+}
+
+.login-form {
+    width: fit-content;
+}
+
+input[type="number"] {
+    display: inline;
+    width: 80px;
 }  
 
 input::placeholder {
@@ -217,14 +257,6 @@ input::placeholder {
 }
 
 /* Contenedores.................................. gen_cont */
-/* ! Revisar estos estilos container y card */
-.container {  
-    height: 100vh;  
-    display: flex;  
-    align-items: center;  
-    justify-content: center;  
-}  
-
 .card {
     border: none;
     box-shadow: 0 2px 6px 0 rgba(138, 138, 138, 0.055);
@@ -233,16 +265,6 @@ input::placeholder {
 .card_margin {
     width: 93%;
 }
-
-.card-body {
-    padding: 30px;
-}
-
-.card-title {   
-    padding-bottom: 20px;
-    font-weight: 300;  
-}  
-/* ! ................................*/
 
 .label_effect { /* contenedor con hover */
     display: flex;
@@ -266,7 +288,6 @@ input::placeholder {
     border: dashed thin rgb(179, 179, 179);
     background-color: transparent; 
 }
-
 
 /* Body............................................ gen_body */
 html {
@@ -310,7 +331,7 @@ body {
 .sidebar_container {
     display: flex;
     flex-direction: column;
-    gap: 5px;
+    gap: 10px;
     padding: 0; 
 }
 
@@ -345,7 +366,7 @@ body {
     flex-direction: row;
     justify-content: left;
     align-items: center;
-    gap: 10px;
+    gap: 15px;
 }
 
 /* Header.......................................... gen_header */

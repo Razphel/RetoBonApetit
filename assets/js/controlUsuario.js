@@ -17,16 +17,29 @@ function principal() {
     //Uso jquery para seleccionar los elementos.
     //Los manejadores de eventos en jquery se usan como funciones.
     $("#entrar").click(iniciarSesion);
-    $("#login").submit(function (e) { e.preventDefault(); })
+    $("#login").submit(function (e) { e.preventDefault(); });
+
+    $(document).ready(function () {
+        $('#toggleContraseña').click(function () {
+            const contraseñaInput = $('#contraseña');
+            const tipo = contraseñaInput.attr('type') === 'password' ? 'text' : 'password';
+            contraseñaInput.attr('type', tipo);
+            $(this).find('i').toggleClass('bi bi-eye');
+        });
+    });
+
+    //Eevntos change que colorean los inputs en verde o rojo si son o no invalidos.
+    $("#nombreUsuario").change(comprobarEntrada);
+    $("#contraseña").change(comprobarEntrada);
 
 }
 
 function iniciarSesion() {
-    //Compruebo que los datos no esten vacios.
     let user = document.querySelector("#nombreUsuario").value;
     let pass = document.querySelector("#contraseña").value;
 
-    if (comprobarVacio(user, pass)) {
+    //Vuelvo a comprobar que los datos no esten vacios.
+    if (comprobarVacio(user) && comprobarVacio(pass)) {
         //Obtenemos los datos del formulario, el nombre de cada variable debe ser igual que el $_REQUEST de php.
         let parametros = {
             nombreUsuario: user,
@@ -51,7 +64,7 @@ function iniciarSesion() {
 
     } else {
         let salida = document.querySelector("#salida");
-        salida.innerHTML = "ERROR: Debes rellenar ambos campos.";
+        salida.innerHTML = "Error. Debes rellenar todos los campos";
     }
 }
 
@@ -59,11 +72,11 @@ function manejarRespuesta(respuesta) {
     let salida = document.querySelector("#salida");
     if (!respuesta) {
         //El usuario no existe.
-        salida.innerHTML = "ERROR: Comprueba los datos.";
+        salida.innerHTML = "Error. Comprueba los datos.";
     } else {
         //Compruebo que el usuario no este dado de baja.
         if (respuesta.activo == 0) {
-            salida.innerHTML = "ERROR: Usuario dado de baja.";
+            salida.innerHTML = "Error. Usuario dado de baja.";
 
         } else {
             //Si todo va bien guardo el usuario en la sesion.
@@ -72,21 +85,30 @@ function manejarRespuesta(respuesta) {
             //Ahora hay que comprobar si es administrador.
             if (respuesta.admin == 1) {
                 //Si es administrador o usuario, impirmo si mensaje correspondiente y hago una redireccion a los dos segundos.
-                    window.location.replace("./src/admin/inicioAdmin.html");
+                window.location.replace("./src/admin/inicioAdmin.html");
             } else {
-                    window.location.replace("./src/usuario/inicioUsuario.html");
+                window.location.replace("./src/usuario/inicioUsuario.html");
             }
         }
     }
 }
 
-function comprobarVacio(usuario, contraseña) {
+function comprobarEntrada(e) {
+    let entrada = this.value;
+    if (comprobarVacio(entrada)) {
+        this.classList.remove("is-invalid");
+    } else {
+        this.classList.add("is-invalid");
+    }
+}
+
+
+function comprobarVacio(texto) {
     let respuesta = false;
-    usuario = usuario.trim();
-    contraseña = contraseña.trim();
+    texto = texto.trim();
 
     // Comprueba si alguno de los campos estan vacios.
-    if (usuario.length > 0 && contraseña.length > 0) {
+    if (texto.length > 0) {
         respuesta = true;
     }
     return respuesta;
