@@ -87,3 +87,45 @@ function crearFormulario(campos, contenedor) {
         console.error('El contenedor especificado no es un elemento HTML válido.');
     }
 }
+
+//Consulta general para recibir productos. La funcion devuelve un array de objetos literales con los datos de los productos.
+function consultarProductos() {
+    let parametros = {
+        pedirProductos: true
+    };
+
+    $.ajax({
+        //Ubicacion del archivo php que va a manejar los valores.
+        url: "./php/consultaUsuario.php",
+        //Metodo en que los va a recibir.
+        type: "GET",
+        data: parametros,
+        dataType: "json",
+        success: guardarProductos,
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.error("Error en la solicitud AJAX: " + textStatus, errorThrown);
+        }
+    });
+
+    function guardarProductos(listaProdutos) {
+        //Creo un array donde guardo todos los productos como objetos literales.
+        let todosProductos = [];
+
+        for (let i = 0; i < listaProdutos.length; i++) {
+            //Creo un objeto literal con los datos de cada producto.
+            let producto = {
+                id_categoria: listaProdutos[i].Id_categoria,
+                imagen_categoria: listaProdutos[i].Imagen_categoria,
+                nombre_producto: listaProdutos[i].nombre_producto,
+                nombre_categoria: listaProdutos[i].nombre_categoria,
+                nombre_unidades: listaProdutos[i].nombre_unidades,
+                nombre_observaciones: listaProdutos[i].nombre_observaciones
+            }
+            //Lo agrego al array de productos.
+            todosProductos.push(producto);
+        }
+
+        localStorage.setItem("todosProductos", JSON.stringify(todosProductos));
+    }
+}
+
