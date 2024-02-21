@@ -12,14 +12,6 @@ function principal() {
     }
 }
 
-function cerrarSesion() {
-    localStorage.removeItem("usuario");
-
-    setTimeout(function () {
-        window.location.replace("../../../sesion.html");
-    }, 500);
-}
-
 function mostrarUsuarios(respuesta) {
     let contenedor = document.querySelector("#contenedor");
     let contador = 0;
@@ -42,7 +34,6 @@ function mostrarUsuarios(respuesta) {
         contenedor.appendChild(contenedorResiduos);
         contador++;
     });
-
 }
 
 function navUsuarios() {
@@ -331,43 +322,3 @@ function navProveedores() {
     - elementoPadre (se especifica el elemento HTML en el cual se va a insertar el formulario)
     - campos(recibe un array de objetos con todos los elementos a incluir en el formulario)
 */
-function crearFormulario(campos, contenedor) {
-    let formulario = crearElemento('form');
-
-    campos.forEach(campo => {
-        let etiqueta = campo.etiqueta || 'input';
-        let atributos = campo.atributos || {};
-        let contenido = campo.contenido || '';
-
-        let input = crearElemento(etiqueta);
-
-        for (let clave in atributos) {
-            input.setAttribute(clave, atributos[clave]);
-        }
-
-        if (contenido !== '') {
-            input.value = contenido;
-        }
-        formulario.appendChild(input);
-    });
-    
-    if (contenedor instanceof HTMLElement) {
-        contenedor.appendChild(formulario);
-    } else {
-        console.error('El contenedor especificado no es un elemento HTML válido.');
-    }
-}
-
-function crearElemento(etiqueta, contenido, atributos) {
-    let elementoNuevo = document.createElement(etiqueta);
-    if (contenido !== undefined) {
-        let contenidoNuevo = document.createTextNode(contenido);
-        elementoNuevo.appendChild(contenidoNuevo);
-    }
-    if (atributos !== undefined) {
-        for (let clave in atributos) {
-            elementoNuevo.setAttribute(clave, atributos[clave]);
-        }
-    }
-    return elementoNuevo;
-}
