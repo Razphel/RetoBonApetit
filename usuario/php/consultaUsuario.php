@@ -7,7 +7,6 @@ header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
 // Indicamos  al navegador que va a recibir contenido JSON
 header("Content-Type: application/json");
 
-
 if (isset($_REQUEST['claveUsuario'])) {
     $id_usuario = $_REQUEST['claveUsuario'];
     $historial = BD::imprimirPedidos($id_usuario);
@@ -28,12 +27,19 @@ if (isset($_REQUEST['categoria']))
 
 if (isset($_REQUEST['claveResiduos'])) 
 {
-    $categorias = BD::imprimirConsultas('residuos');
-    echo json_encode($categorias);
+    $residuos = BD::imprimirConsultas('residuos');
+    echo json_encode($residuos);
 }
 
 if (isset($_REQUEST['claveTodosUsuarios'])) 
 {
-    $categorias = BD::imprimirConsultas('usuarios');
-    echo json_encode($categorias);
+    $usuarios = BD::imprimirConsultas('usuarios');
+    echo json_encode($usuarios);
 }
+if(isset($_POST['datos']))
+{   
+    echo("MONDONGO3");
+    // echo var_dump($_REQUEST['datos']);
+    // $parametros = $_REQUEST['datos'];
+    // $add = BD::insertarRegistro("categorias",$parametros);
+} 

@@ -157,15 +157,16 @@ class BD
     //Con la intencionalidad de que la siguiente funcion sea capaz de insertar datos en cualquier tabla, pasaremos por parametro el nombre de la tabla y un array asociativo en el cual 
     //el array_key serán los campos del registro y el valor asociado serán los datos que queremos introducir en la base de datos
     public static function insertarRegistro($tabla,$datos)
-    {
+    {   
         try {
             $conexion = self::conexionBD();
             $columnas = implode(', ', array_keys($datos));
             // var_dump(array_keys($datos));
             // echo "<br>".$columnas;
-            $placeholders = implode(', ', array_fill(0, count($datos), '?'));
+            //Con array_fill indicaremos que la cadena empiece en la posicion 0, tendrá la misma longitud que el numero de datos que haya
+            $valores = implode(', ', array_fill(0, count($datos), '?'));
 
-            $sql = "INSERT INTO $tabla ($columnas) VALUES ($placeholders)";
+            $sql = "INSERT INTO $tabla ($columnas) VALUES ($valores)";
             $consulta = $conexion->prepare($sql);
     
             // Ejecutar la consulta preparada con los valores
@@ -175,24 +176,38 @@ class BD
             throw new Exception("ERROR: " . $e->getMessage());
         }
     }
-    }
-    $datos1 = [
-        "admin" => "1",
-        "nombre_usuario" => "Coral",
-        "nombre" => "Corey",
-        "apellido" => "Isbell",
-        "email" => "coreyisbell22@gmail.com",
-        "password" => "0000",
-        "activo" => 1,
-        "observaciones" => "es un friki",
-        "telefono" => "666666666"
-    ];
-    BD::insertarRegistro("usuarios",$datos1);
-    $datos2 = [
-        "descripcion" => "marisco",
-        "imagenes" => "pesacado.png",
-        "observaciones" => "El pescado es mejor",
-    ];
-    BD::insertarRegistro("categorias",$datos2);
 
+
+
+    public static function eliminarRegistro($tabla,$id)
+    {
+        try {
+            $conexion = self::conexionBD();
+            $sql = "DELETE FROM $tabla where id_$tabla =".$id;
+            $resultado = $conexion->exec($sql);
+            return true;
+        } catch (PDOException  $e) {
+            throw new Exception("ERROR: " . $e->getMessage());
+        }
+    }
+    }
+    // $datos1 = [
+    //     "admin" => "1",
+    //     "nombre_usuario" => "Coral",
+    //     "nombre" => "Corey",
+    //     "apellido" => "Isbell",
+    //     "email" => "coreyisbell22@gmail.com",
+    //     "password" => "0000",
+    //     "activo" => 1,
+    //     "observaciones" => "es un friki",
+    //     "telefono" => "666666666"
+    // ];
+    // BD::insertarRegistro("usuarios",$datos1);
+    // $datos2 = [
+    //     "descripcion" => "marisco",
+    //     "imagenes" => "pesacado.png",
+    //     "observaciones" => "El pescado es mejor",
+    // ];
+    // BD::insertarRegistro("categorias",$datos2);
+    // BD::eliminarRegistro("usuarios",7);
 ?>

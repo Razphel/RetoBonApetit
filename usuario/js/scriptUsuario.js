@@ -42,40 +42,61 @@ function principal() {
 
 }
 
-function Insertado()
+function insertado()
 {   
     let contenedor = document.querySelector("#contenedor");
     let mensaje = crearElemento("div","SE HA INSERTADO CORRECTAMENTE",{id:"mensajeInsertado",style:"color: green"})
     contenedor.appendChild(mensaje);
 }
 
-function NewCategoria()
+function botonMierda()
 {
-    let descripcionCategoria = document.querySelector("#descripcionCategoria").value;
-    let imagenesCategoria = document.querySelector("#imagenesCategoria").value;
-    let observacionesCategoria = document.querySelector("#observacionesCategoria").value;
-    botonMierda(descripcionCategoria,imagenesCategoria,observacionesCategoria)
+    let descripcion = document.querySelectorAll("#descripcionCategoria")[1].value;
+    let imagen = document.querySelectorAll("#imagenesCategoria")[1].value;
+    let observacion = document.querySelectorAll("#observacionesCategoria")[1].value;
+    formNewCategoria(descripcion,imagen,observacion);
 }
 
-function botonMierda(descripcion,imagen,observacion)
-{
+// function formNewCategoria(descripcion,imagen,observacion)
+// {   
+//     console.log("MONDONGO");
+//     let parametros = {
+//         descripcion: descripcion,
+//         imagen: imagen,
+//         observacion: observacion
+//     };
+//     $.ajax({
+//         //Ubicacion del archivo php que va a manejar los valores.
+//         url: "./php/consultaUsuario.php",
+//         //Metodo en que los va a recibir.
+//         type: "POST",
+//         data: {parametros},
+//         dataType: 'json',
+//         success: console.log(parametros),
+//         error: function (jqXHR, textStatus, errorThrown) {
+//             console.error("Error en la solicitud AJAX: " + textStatus, errorThrown);
+//         }
+//     });
+// }
+
+function formNewCategoria(descripcion,imagen,observacion)
+{   
     let parametros = {
-        descripcionCategoria: descripcion,
-        imagenesCategoria: imagen,
-        observacionesCategoria: observacion
+        descripcion: descripcion,
+        imagen: imagen,
+        observacion: observacion
     };
+    console.log(parametros);
     $.ajax({
-        //Ubicacion del archivo php que va a manejar los valores.
+        type: "POST",
         url: "./php/consultaUsuario.php",
-        //Metodo en que los va a recibir.
-        type: "GET",
-        data: parametros,
-        dataType: "json",
-        success: mostrarProveedores,
-        error: function (jqXHR, textStatus, errorThrown) {
-            console.error("Error en la solicitud AJAX: " + textStatus, errorThrown);
-        }
-    });
+        data: {
+          datos: parametros
+        },
+      }).done(function (a) {
+        console.log(a);
+        console.log("hecho");
+      });
 }
 
 function cerrarSesion() {
