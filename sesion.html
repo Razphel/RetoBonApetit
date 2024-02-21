@@ -1,18 +1,19 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Iniciar sesión</title>
     <!-- Enlace a la hoja de estilos CSS -->
-    <link rel="stylesheet" href="../assets/css/styles.css">
+    <link rel="stylesheet" href="./assets/css/estilos.css">
     <!-- Enlace a Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <!-- JQuery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <!-- Mi Script -->
-    <script src="../src/usuario/php/consultaUsuario.php"></script>
+    <script src="./assets/js/controlUsuario.js"></script>
 </head>
 
 <body>
@@ -24,7 +25,8 @@
                     <form id="login" class="login">
                         <div class="mb-3">
                             <label for="nombreUsuario" class="form-label">Usuario</label>
-                            <input type="text" class="form-control form-control-sm" id="nombreUsuario" aria-describedby="emailHelp">
+                            <input type="text" class="form-control form-control-sm" id="nombreUsuario"
+                                aria-describedby="emailHelp">
                             <small id="userHelp" class="form-text text-muted">Por favor, ingrese su nombre de usuario.</small>
                         </div>
                         <div class="mb-3">
@@ -33,6 +35,7 @@
                             <small id="passwordHelp" class="form-text text-muted">Por favor, ingrese su contraseña.</small>
                         </div>
                         <input type="submit" id="entrar" value="Iniciar sesión" class="btn btn-custom_1 d-block w-100">
+                        <div id="salida"></div>
                     </form>
                 </div>
             </div>

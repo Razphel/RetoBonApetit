@@ -6,11 +6,11 @@ function principal() {
         let usuarioActual = JSON.parse(localStorage.getItem("usuario"));
         //Si es admin, redirecciona a la pagina de administradores.
         if (usuarioActual.tipo == 1) {
-            window.location.replace("../administrador/inicioAdmin.html");
+            window.location.replace("./src/admin/inicioAdmin.html");
         }
         //Si no, te lleva a los usuarios.
         if (usuarioActual.tipo == 0) {
-            window.location.replace("../usuario/inicioUsuario.html");
+            window.location.replace("./src/usuario/inicioUsuario.html");
         }
     }
 
@@ -36,7 +36,7 @@ function iniciarSesion() {
         //Enviamos los valores a nuestro php usando ajax y jquery.
         $.ajax({
             //Ubicacion del archivo php que va a manejar los valores.
-            url: "../php/controlUsuario.php",
+            url: "./assets/php/controlUsuario.php",
             //Metodo en que los va a recibir.
             type: "GET",
             //Las variables que le enviamos.
@@ -72,15 +72,9 @@ function manejarRespuesta(respuesta) {
             //Ahora hay que comprobar si es administrador.
             if (respuesta.admin == 1) {
                 //Si es administrador o usuario, impirmo si mensaje correspondiente y hago una redireccion a los dos segundos.
-                salida.innerHTML = "Soy admin";
-                setTimeout(function () {
-                    window.location.replace("../administrador/inicioAdmin.html");
-                }, 2000);
+                    window.location.replace("./src/admin/inicioAdmin.html");
             } else {
-                salida.innerHTML = "Soy usuario";
-                setTimeout(function () {
-                    window.location.replace("../usuario/inicioUsuario.html");
-                }, 2000);
+                    window.location.replace("./src/usuario/inicioUsuario.html");
             }
         }
     }
@@ -89,8 +83,7 @@ function manejarRespuesta(respuesta) {
 function comprobarVacio(usuario, contraseña) {
     let respuesta = false;
     usuario = usuario.trim();
-    contraseña = usuario.trim();
-
+    contraseña = contraseña.trim();
 
     // Comprueba si alguno de los campos estan vacios.
     if (usuario.length > 0 && contraseña.length > 0) {
