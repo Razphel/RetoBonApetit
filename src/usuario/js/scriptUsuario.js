@@ -71,13 +71,11 @@ function principal() {
 
 // Página de inicio___________________________________________________________________
 function inicioCategorias(respuesta) {
-    // Contenedor general de la pagina.
+    //Contenedor general de la pagina.
     let contenedor = document.querySelector("#contenedor");
 
-    // Contenedor de botones de categorias y h1 con el titulo de la vista inicio.
-    let inicioTopUser = crearElemento("div", undefined, {
-        class: "inicioTopUser"
-    });
+    //Contenedor de botones de categorias y h1 con el titulo de la vista inicio.
+    let inicioTopUser = crearElemento("div", undefined, undefined);
 
     //Busco el nombre del usuario.
     let nombreUsuario = JSON.parse(localStorage.getItem("usuario"));
@@ -444,10 +442,10 @@ function filtroCategoria(id_categoriaRecibido) {
 
     // Contenedor inferior de la pagina. La tabla se crea por separado del inicio y las categorias.
     // Este contenedor se crea si no existe todavia.
-    let productosBottomUser = document.querySelector("#productosBottomUser");
-    if (document.querySelector("#productosBottomUser") == null) {
-        productosBottomUser = crearElemento("div", undefined, {
-            id: "productosBottomUser",
+    let inicioBottomUser = document.querySelector("#inicioBottomUser");
+    if (document.querySelector("#inicioBottomUser") == null) {
+        inicioBottomUser = crearElemento("div", undefined, {
+            id: "inicioBottomUser",
             class: "mt-5"
         });
     }
@@ -458,17 +456,17 @@ function filtroCategoria(id_categoriaRecibido) {
         filtro = crearElemento("div", "Fila reservada para el filtro.", {
             id: "filtro"
         });
-        productosBottomUser.appendChild(filtro);
+        inicioBottomUser.appendChild(filtro);
     }
 
     // Compruebo si existe el contenedor de la tabla. Si existe se elimina para imprimir uno con nuevos datos.
-    if (document.querySelector("#contenidoCategoria") != null) {
-        document.querySelector("#contenidoCategoria").remove();
+    if (document.querySelector("#contenedorTablaProductos") != null) {
+        document.querySelector("#contenedorTablaProductos").remove();
     }
 
     // Contenedor intermedio para el contenido de la categoría
-    let contenidoCategoria = crearElemento("div", undefined, {
-        id: "contenidoCategoria"
+    let contenedorTablaProductos = crearElemento("div", undefined, {
+        id: "contenedorTablaProductos"
     });
 
     // Crear la tabla
@@ -537,10 +535,10 @@ function filtroCategoria(id_categoriaRecibido) {
     tabla.appendChild(tablaBody);
 
     // Agregar la tabla al contenedor de contenido de categoría
-    contenidoCategoria.appendChild(tabla);
+    contenedorTablaProductos.appendChild(tabla);
 
     // Agregar el contenido de categoría al contenedor principal
-    contenedor.appendChild(contenidoCategoria);
+    contenedor.appendChild(contenedorTablaProductos);
 }
 */
 
@@ -567,7 +565,7 @@ function crearFilaProducto(producto) {
     let celdaCheckbox = document.createElement("td");
     let inputCheckbox = document.createElement("input");
     inputCheckbox.type = "checkbox";
-    inputCheckbox.classList.add("genericoCheck");
+    inputCheckbox.classList.add("genericoCheck"); // Mantén la consistencia en el nombre de la clase
     celdaCheckbox.appendChild(inputCheckbox);
     fila.appendChild(celdaCheckbox);
     
@@ -601,10 +599,10 @@ document.addEventListener("DOMContentLoaded", function() {
         historial.remove();
     }
     
-    let productosBottomUser = document.querySelector("#productosBottomUser");
-    if (document.querySelector("#productosBottomUser") == null) {
-        productosBottomUser = crearElemento("div", undefined, {
-            id: "productosBottomUser",
+    let inicioBottomUser = document.querySelector("#inicioBottomUser");
+    if (document.querySelector("#inicioBottomUser") == null) {
+        inicioBottomUser = crearElemento("div", undefined, {
+            id: "inicioBottomUser",
             class: "mt-5"
         });
     }
@@ -614,16 +612,8 @@ document.addEventListener("DOMContentLoaded", function() {
         filtrosProductos = crearElemento("div", "Fila reservada para el filtro.", {
             id: "filtrosProductos"
         });
-        productosBottomUser.appendChild(filtrosProductos);
+        inicioBottomUser.appendChild(filtrosProductos);
     }
-    
-    if (document.querySelector("#contenidoCategoria") != null) {
-        document.querySelector("#contenidoCategoria").remove();
-    }
-    
-    let contenidoCategoria = crearElemento("div", undefined, {
-        id: "contenidoCategoria"
-    });
     
     let tabla = crearElemento("table", undefined, {
         id: "tabla",
@@ -639,9 +629,9 @@ document.addEventListener("DOMContentLoaded", function() {
         filaHead.appendChild(celdaHead);
     });
     tablaHead.appendChild(filaHead);
-
+    
     tabla.appendChild(tablaHead);
     tabla.appendChild(tablaBody);
-    productosBottomUser.appendChild(tabla);
-    contenedor.appendChild(productosBottomUser);
+    inicioBottomUser.appendChild(tabla);
+    contenedor.appendChild(inicioBottomUser);
 });
