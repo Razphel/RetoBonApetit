@@ -267,7 +267,7 @@ function pagProductos(respuesta) {
 // Página pedidos_____________________________________________________________________
 function navPedidos() {
     //Mostrar Historial.
-    //Se almacena en esta letiable la información recogida desde el main.
+    //Se almacena en esta variable la información recogida desde el main.
     let usuarioActual = JSON.parse(localStorage.getItem("usuario"));
 
     let parametros = {
