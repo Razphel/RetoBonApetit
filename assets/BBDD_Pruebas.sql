@@ -152,7 +152,7 @@ INSERT INTO categorias (descripcion,observaciones,imagenes) VALUES ('pasteleria'
 INSERT INTO categorias (descripcion,observaciones,imagenes) VALUES ('pescado','observacion adolin','pescaderia.png');
 INSERT INTO categorias (descripcion,observaciones,imagenes) VALUES ('panaderia','observacion sagaz','panaderia.png');
 INSERT INTO categorias (descripcion,observaciones,imagenes) VALUES ('fruteria','observacion eshonai','fruteria.png');
-INSERT INTO categorias (descripcion,observaciones,imagenes) VALUES ('Cubiertos, servilletas...','observacion szeth','utiles.png');
+INSERT INTO categorias (descripcion,observaciones,imagenes) VALUES ('útiles y materiales','observacion szeth','utiles.png');
 INSERT INTO residuos (descripcion,observaciones) VALUES ('caja de papel','observacion kaladin');
 INSERT INTO residuos (descripcion,observaciones) VALUES ('bolsa de plastico','observacion dalinar');
 INSERT INTO residuos (descripcion,observaciones) VALUES ('botellas de cristal','observacion adolin');
