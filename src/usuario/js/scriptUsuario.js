@@ -82,6 +82,7 @@ function inicioCategorias(respuesta) {
     nombreUsuario = nombreUsuario.nombre;
 
     let h1Inicio = crearElemento("h1", "Bienvenido, " + nombreUsuario, {
+        id: "tituloApartado",
         class: "py-3 mb-3 mt-4"
     });
 
@@ -208,7 +209,10 @@ function pagProductos(respuesta) {
 
     //Contenedor de botones de categorias y h1 con el titulo de la vista inicio.
     let headerInicio = crearElemento("div", undefined, undefined);
-    let h1Inicio = crearElemento("h1", "Productos", undefined);
+    let h1Inicio = crearElemento("h1", "Productos", {
+        id: "tituloApartado",
+        class: "py-3 mb-3 mt-4"
+    });
 
     headerInicio.appendChild(h1Inicio);
 
@@ -233,7 +237,7 @@ function pagProductos(respuesta) {
         //Le doy un id al contenedor para usarlo en el manejador.
         let divCarta = crearElemento("div", undefined, {
             id: "idCategoria_" + fila.id_categorias,
-            class: "label_effect card p-3 mb-3",
+            class: "label_effect card card_margin p-3 mb-3",
             "data-toggle": "tooltip"
         });
 
@@ -438,6 +442,12 @@ function filtroCategoria(id_categoriaRecibido) {
 
     //Contenedor principal de la pagina.
     let contenedor = document.querySelector("#contenedor");
+
+    //Se cambia el titulo de la pagina para que coincida con los productos.
+    let tituloApartado = document.querySelector("#tituloApartado");
+    if (tituloApartado != null && tituloApartado.innerHTML != "Productos") {
+        tituloApartado.innerHTML = "Productos";
+    }
 
     //En caso de que sea la primera vez que cargue la pagina, va a haber una seccion con id historial. Lo elimino
     let historial = document.querySelector("#historial");
