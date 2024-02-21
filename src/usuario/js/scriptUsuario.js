@@ -439,17 +439,25 @@ function filtroCategoria(id_categoriaRecibido) {
     //Contenedor principal de la pagina.
     let contenedor = document.querySelector("#contenedor");
 
+    //En caso de que sea la primera vez que cargue la pagina, va a haber una seccion con id historial. Lo elimino
+    let historial = document.querySelector("#historial");
+    if (historial != null) {
+        historial.remove();
+    }
+
     //Contenedor inferior de la pagina. La tabla se crea por separado del inicio y las categorias.
     //Este contenedor se crea si no existe todavia.
+    let parteInferior = document.querySelector("#parteInferior");
     if (document.querySelector("#parteInferior") == null) {
-        let parteInferior = crearElemento("div", undefined, {
+        parteInferior = crearElemento("div", undefined, {
             id: "parteInferior"
         });
     }
 
     //Div reservado para hacer el filtro de la tabla, se crea si todavia no existe.
-    if (document.querySelector("#filtro")) {
-        let filtro = crearElemento("div", "Fila reservada para el filtro.", {
+    let filtro = document.querySelector("#filtro");
+    if (filtro == null) {
+        filtro = crearElemento("div", "Fila reservada para el filtro.", {
             id: "filtro"
         });
         parteInferior.appendChild(filtro);
