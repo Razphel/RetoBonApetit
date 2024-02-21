@@ -79,20 +79,15 @@ function principal() {
     });
 
     //Guardo en el localStorage el listado con todos los productos.
-    localStorage.setItem("todosProductos", JSON.stringify(consultarProductos()));
-
-    console.log(consultarProductos());
+    consultarProductos();
 }
 
 
 //Consulta general para recibir productos. La funcion devuelve un array de objetos literales con los datos de los productos.
-function consultarProductos() 
-{
+function consultarProductos() {
     let parametros = {
         pedirProductos: true
     };
-
-    let todosProductos = [];
 
     $.ajax({
         //Ubicacion del archivo php que va a manejar los valores.
@@ -107,25 +102,26 @@ function consultarProductos()
         }
     });
 
-function guardarProductos(listaProdutos) 
-{
-    //Creo un array donde guardo todos los productos como objetos literales.
-    for (let i = 0; i < listaProdutos.length; i++) {
-        //Creo un objeto literal con los datos de cada producto.
-        let producto = {
-            id_categoria: listaProdutos[i].Id_categoria,
-            imagen_categoria: listaProdutos[i].Imagen_categoria,
-            nombre_producto: listaProdutos[i].nombre_producto,
-            nombre_categoria: listaProdutos[i].nombre_categoria,
-            nombre_unidades: listaProdutos[i].nombre_unidades,
-            nombre_observaciones: listaProdutos[i].nombre_observaciones
-        }
-        //Lo agrego al array de productos.
-        todosProductos.push(producto);
-    }
-    }
+    function guardarProductos(listaProdutos) {
+        //Creo un array donde guardo todos los productos como objetos literales.
+        let todosProductos = [];
 
-    return todosProductos;
+        for (let i = 0; i < listaProdutos.length; i++) {
+            //Creo un objeto literal con los datos de cada producto.
+            let producto = {
+                id_categoria: listaProdutos[i].Id_categoria,
+                imagen_categoria: listaProdutos[i].Imagen_categoria,
+                nombre_producto: listaProdutos[i].nombre_producto,
+                nombre_categoria: listaProdutos[i].nombre_categoria,
+                nombre_unidades: listaProdutos[i].nombre_unidades,
+                nombre_observaciones: listaProdutos[i].nombre_observaciones
+            }
+            //Lo agrego al array de productos.
+            todosProductos.push(producto);
+        }
+
+        localStorage.setItem("todosProductos", JSON.stringify(todosProductos));
+    }
 }
 
 function cerrarSesion() {
@@ -287,6 +283,7 @@ function mostrarCategorias(respuesta) {
             class: "label_effect card p-3 mb-3",
             "data-toggle": "tooltip"
         });
+        divCarta.addEventListener("click", manejadorCategoria);
 
         let p = crearElemento("p", fila.descripcion, undefined);
         let img = crearElemento("img", undefined, {
@@ -306,8 +303,7 @@ function mostrarCategorias(respuesta) {
     contenedor.appendChild(categorias);
 }
 
-function navCategorias() 
-{
+function navCategorias() {
     let parametros = {
         categoria: 'categorias'
     };
@@ -326,34 +322,7 @@ function navCategorias()
     });
 }
 
-function navPedidos() 
-{
-    //Mostrar Historial.
-    //Se almacena en esta variable la información recogida desde el main.
-    let usuarioActual = JSON.parse(localStorage.getItem("usuario"));
-
-    let parametros = {
-        //UsuarioActual contiene todos los campos de usuario que se han almacenado anteriormente en principal .
-        //Y clavePrimaria ha sido creada en el js de controlUsuario en la funcion manejarRespuesta.
-        claveUsuario: usuarioActual.clavePrimaria
-    };
-
-    $.ajax({
-        //Ubicacion del archivo php que va a manejar los valores.
-        url: "./php/consultaUsuario.php",
-        //Metodo en que los va a recibir.
-        type: "GET",
-        data: parametros,
-        dataType: "json",
-        //La funcion que se ejecuta segun el resultado.
-        success: mostrarPedido,
-        error: function (jqXHR, textStatus, errorThrown) {
-            console.error("Error en la solicitud AJAX: " + textStatus, errorThrown);
-        }
-    });
-}
-
-function mostrarPedido(respuesta) {
+function mostrarPedidos(respuesta) {
     let contenedor = document.querySelector("#contenedor");
     contenedor.innerHTML = "";
 
@@ -393,36 +362,36 @@ function mostrarPedido(respuesta) {
         let sinHistorial = crearElemento("p", "Historial Vacio.", undefined)
         contenedor.appendChild(sinHistorial);
     }
+
+
 }
 
-// function mostrarSolicitud() 
-// {
-//     //Mostrar Historial.
-//     //Se almacena en esta variable la información recogida desde el main.
-//     let usuarioActual = JSON.parse(localStorage.getItem("usuario"));
+function navPedidos() {
+    //Mostrar Historial.
+    //Se almacena en esta variable la información recogida desde el main.
+    let usuarioActual = JSON.parse(localStorage.getItem("usuario"));
 
-//     let parametros = {
-//         //UsuarioActual contiene todos los campos de usuario que se han almacenado anteriormente en principal .
-//         //Y clavePrimaria ha sido creada en el js de controlUsuario en la funcion manejarRespuesta.
-//         claveUsuario: usuarioActual.clavePrimaria
-//     };
+    let parametros = {
+        //UsuarioActual contiene todos los campos de usuario que se han almacenado anteriormente en principal .
+        //Y clavePrimaria ha sido creada en el js de controlUsuario en la funcion manejarRespuesta.
+        claveUsuario: usuarioActual.clavePrimaria
+    };
 
-//     $.ajax({
-//         //Ubicacion del archivo php que va a manejar los valores.
-//         url: "./php/consultaUsuario.php",
-//         //Metodo en que los va a recibir.
-//         type: "GET",
-//         data: parametros,
-//         dataType: "json",
-//         //La funcion que se ejecuta segun el resultado.
-//         success: mostrarPedido,
-//         error: function (jqXHR, textStatus, errorThrown) {
-//             console.error("Error en la solicitud AJAX: " + textStatus, errorThrown);
-//         }
-//     });
-// }
+    $.ajax({
+        //Ubicacion del archivo php que va a manejar los valores.
+        url: "./php/consultaUsuario.php",
+        //Metodo en que los va a recibir.
+        type: "GET",
+        data: parametros,
+        dataType: "json",
+        //La funcion que se ejecuta segun el resultado.
+        success: mostrarPedidos,
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.error("Error en la solicitud AJAX: " + textStatus, errorThrown);
+        }
+    });
+}
 
-// Cargar la página de inicio del usuario nada más acceder
 function inicioCategorias(respuesta) {
     let contenedor = document.querySelector("#contenedor");
     let categorias = crearElemento("div", undefined, {
@@ -449,6 +418,7 @@ function inicioCategorias(respuesta) {
             class: "label_effect card p-3 mb-3",
             "data-toggle": "tooltip"
         });
+        divCarta.addEventListener("click", manejadorCategoria);
 
         let p = crearElemento("p", fila.descripcion, undefined);
         let img = crearElemento("img", undefined, {
@@ -511,8 +481,69 @@ function inicioSolicitudes(respuesta) {
 
 }
 
-function filtroCategoria() {
+function manejadorCategoria(e) {
+    let textoDividido = this.id.split("_");
+    let idCategoria = textoDividido[1];
 
+    filtroCategoria(idCategoria);
+}
+
+function filtroCategoria(id_categoriaRecibido) {
+    //Esta variable es un array de objetos literales, cada objeto tiene los datos del producto y categorias.
+    //Cada producto tiene este formato:
+    // producto = {
+    //     id_categoria: Id_categoria,
+    //     imagen_categoria: Imagen_categoria,
+    //     nombre_producto: nombre_producto,
+    //     nombre_categoria: nombre_categoria,
+    //     nombre_unidades: nombre_unidades,
+    //     nombre_observaciones: nombre_observaciones
+    // }
+
+    let todosProductos = JSON.parse(localStorage.getItem("todosProductos"));
+    let contenedor = document.querySelector("#contenedor");
+    let contenidoCategoria = crearElemento("div", undefined, undefined);
+
+    let tabla = crearElemento("table", undefined, undefined);
+    let tr = crearElemento("tr", undefined, undefined);
+
+    //Se crean los titulos de la tabla.
+    let th = crearElemento("th", "Producto", undefined);
+    tr.appendChild(th);
+    th = crearElemento("th", "Categoria", undefined);
+    tr.appendChild(th);
+    th = crearElemento("th", "Unidades", undefined);
+    tr.appendChild(th);
+    th = crearElemento("th", "Observaciones", undefined);
+    tr.appendChild(th);
+    tabla.appendChild(tr);
+
+    //Ahora recorro todos los productos y los guardo en la tabla si son de la misma categoria recibida.
+    for (let i = 0; i < todosProductos.length; i++) {
+        tr = crearElemento("tr", undefined, undefined);
+        if (todosProductos[i]["id_categoria"] == id_categoriaRecibido) {
+            let td = crearElemento("td", todosProductos[i]["nombre_producto"], undefined);
+            tr.appendChild(td);
+            td = crearElemento("td", todosProductos[i]["nombre_categoria"], undefined);
+            tr.appendChild(td);
+            td = crearElemento("td", todosProductos[i]["nombre_unidades"], undefined);
+            tr.appendChild(td);
+            td = crearElemento("td", todosProductos[i]["nombre_observaciones"], undefined);
+            tr.appendChild(td);
+
+            tabla.appendChild(tr);
+        }
+    }
+
+    //Limpio el elemento que va a contener la tabla para que no se cree mas de una a la vez.
+    if (contenidoCategoria.parentNode != null) {
+        contenidoCategoria.parentNode.removeChild(contenidoCategoria);
+    }
+
+    contenidoCategoria.appendChild(tabla);
+
+    //Agrego el elemento al contenedor principal.
+    contenedor.appendChild(contenidoCategoria);
 }
 
 function crearElemento(etiqueta, contenido, atributos) {
