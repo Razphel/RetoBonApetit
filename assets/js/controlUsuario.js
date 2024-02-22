@@ -68,12 +68,6 @@ function iniciarSesion() {
         //Agrego la clase para resaltar en rojo el mensaje de error.
         salida.classList.add('alert', 'alert-danger');
         salida.innerHTML = "Error. Debes rellenar todos los campos.";
-
-        //Controlo que el error no aparezca de forma indefinida.
-        setTimeout(function () {
-            salida.classList.remove('alert', 'alert-danger');
-            salida.innerHTML = "";
-        }, 5000);
     }
 }
 
@@ -84,24 +78,12 @@ function manejarRespuesta(respuesta) {
         //Agrego la clase para resaltar en rojo el mensaje de error.
         salida.classList.add('alert', 'alert-danger');
         salida.innerHTML = "Error. Comprueba los datos.";
-
-        //Controlo que el error no aparezca de forma indefinida.
-        setTimeout(function () {
-            salida.classList.remove('alert', 'alert-danger');
-            salida.innerHTML = "";
-        }, 5000);
     } else {
         //Compruebo que el usuario no este dado de baja.
         if (respuesta.activo == 0) {
             //Agrego la clase para resaltar en rojo el mensaje de error.
             salida.classList.add('alert', 'alert-danger');
             salida.innerHTML = "Error. Usuario dado de baja.";
-
-            //Controlo que el error no aparezca de forma indefinida.
-            setTimeout(function () {
-                salida.classList.remove('alert', 'alert-danger');
-                salida.innerHTML = "";
-            }, 5000);
         } else {
             //Si todo va bien guardo el usuario en la sesion.
             localStorage.setItem("usuario", JSON.stringify({ nombre: respuesta.nombre, tipo: respuesta.admin, activo: respuesta.activo, clavePrimaria: respuesta.id_usuarios }));
@@ -126,7 +108,6 @@ function comprobarEntrada(e) {
     }
 }
 
-
 function comprobarVacio(texto) {
     let respuesta = false;
     texto = texto.trim();
@@ -136,18 +117,4 @@ function comprobarVacio(texto) {
         respuesta = true;
     }
     return respuesta;
-}
-
-function crearElemento(etiqueta, contenido, atributos) {
-    let elementoNuevo = document.createElement(etiqueta);
-    if (contenido !== undefined) {
-        let contenidoNuevo = document.createTextNode(contenido);
-        elementoNuevo.appendChild(contenidoNuevo);
-    }
-    if (atributos !== undefined) {
-        for (let clave in atributos) {
-            elementoNuevo.setAttribute(clave, atributos[clave]);
-        }
-    }
-    return elementoNuevo;
 }

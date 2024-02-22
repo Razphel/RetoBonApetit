@@ -75,7 +75,9 @@ function inicioCategorias(respuesta) {
     let contenedor = document.querySelector("#contenedor");
 
     //Contenedor de botones de categorias y h1 con el titulo de la vista inicio.
-    let headerInicio = crearElemento("div", undefined, undefined);
+    let parteSuperior = crearElemento("div", undefined, {
+        class: "row"
+    });
 
     //Busco el nombre del usuario.
     let nombreUsuario = JSON.parse(localStorage.getItem("usuario"));
@@ -86,20 +88,12 @@ function inicioCategorias(respuesta) {
         class: "py-3 mb-3 mt-4"
     });
 
-    headerInicio.appendChild(h1Inicio);
+    parteSuperior.appendChild(h1Inicio);
 
     let categorias = crearElemento("div", undefined, {
         class: "row",
         id: "categorias"
     });
-
-    // modelo de la carta de categorias
-    // <div class="col-6 col-sm-3 col-md-3 col-lg-3">
-    //     <div class="label_effect card p-3 mb-3" data-toggle="tooltip">
-    //         <img src="../../img/pasteleria.png" alt="">
-    //         <p>Pastelería</p>
-    //     </div>
-    // </div>
 
     respuesta.forEach(fila => {
         let carta = crearElemento("div", undefined, {
@@ -130,22 +124,22 @@ function inicioCategorias(respuesta) {
     });
 
     //Agrego el div con la lista de cartas al contenedor superior de la pagina.
-    headerInicio.appendChild(categorias);
+    parteSuperior.appendChild(categorias);
 
     //Agrego el contenedor superior a la pagina.
-    contenedor.appendChild(headerInicio);
+    contenedor.appendChild(parteSuperior);
 }
 
 function inicioSolicitudes(respuesta) {
     let contenedor = document.querySelector("#contenedor");
 
+    let historial = crearElemento("table", undefined, {
+        id: "historial",
+        style: "border-collapse: collapse;"
+    });
+
     //Compruebo que exista algun dato.
     if (respuesta[0] != null) {
-
-        let historial = crearElemento("table", undefined, {
-            id: "historial",
-            style: "border-collapse: collapse;"
-        });
 
         //Creo los titulos de las tablas.
         let titulos = crearElemento("tr", undefined, undefined);
@@ -174,8 +168,10 @@ function inicioSolicitudes(respuesta) {
         contenedor.appendChild(historial);
     }
     else {
-        let sinHistorial = crearElemento("p", "Historial Vacio.", undefined)
-        contenedor.appendChild(sinHistorial);
+        historial = crearElemento("p", "Historial Vacio.", {
+            id: "historial"
+        });
+        contenedor.appendChild(historial);
     }
 
 }
@@ -201,47 +197,39 @@ function navProductos() {
 }
 
 function pagProductos(respuesta) {
-    //Contenedor general de la pagina.
+    // Contenedor general de la pagina.
     let contenedor = document.querySelector("#contenedor");
 
-    //Antes que nada, se limpia el contenedor.
+    // Antes que nada, se limpia el contenedor.
     contenedor.innerHTML = "";
 
-    //Contenedor de botones de categorias y h1 con el titulo de la vista inicio.
-    let headerInicio = crearElemento("div", undefined, undefined);
+    // Contenedor de botones de categorias y h1 con el titulo de la vista inicio.
+    let parteSuperior = crearElemento("div", undefined, undefined);
     let h1Inicio = crearElemento("h1", "Productos", {
         id: "tituloApartado",
         class: "py-3 mb-3 mt-4"
     });
 
-    headerInicio.appendChild(h1Inicio);
+    parteSuperior.appendChild(h1Inicio);
 
     let categorias = crearElemento("div", undefined, {
         class: "row",
         id: "categorias"
     });
 
-    // modelo de la carta de categorias
-    // <div class="col-6 col-sm-3 col-md-3 col-lg-3">
-    //     <div class="label_effect card p-3 mb-3" data-toggle="tooltip">
-    //         <img src="../../img/pasteleria.png" alt="">
-    //         <p>Pastelería</p>
-    //     </div>
-    // </div>
-
     respuesta.forEach(fila => {
         let carta = crearElemento("div", undefined, {
             class: "col-6 col-sm-3 col-md-3 col-lg-3"
         });
 
-        //Le doy un id al contenedor para usarlo en el manejador.
+        // Le doy un id al contenedor para usarlo en el manejador.
         let divCarta = crearElemento("div", undefined, {
             id: "idCategoria_" + fila.id_categorias,
             class: "label_effect card card_margin p-3 mb-3",
             "data-toggle": "tooltip"
         });
 
-        //Le doy un manejador a cada boton que usa el id para consultar las categorias.
+        // Le doy un manejador a cada boton que usa el id para consultar las categorias.
         divCarta.addEventListener("click", manejadorCategoria);
 
         let p = crearElemento("p", fila.descripcion, undefined);
@@ -258,16 +246,28 @@ function pagProductos(respuesta) {
     });
 
     //Agrego el div con la lista de cartas al contenedor superior de la pagina.
-    headerInicio.appendChild(categorias);
+    parteSuperior.appendChild(categorias);
 
     //Agrego el contenedor superior a la pagina.
-    contenedor.appendChild(headerInicio);
+    contenedor.appendChild(parteSuperior);
+
+    // Contenedor inferior de la pagina. La tabla se crea por separado del inicio y las categorias.
+    // Este contenedor se crea si no existe todavia.
+    let parteInferior = document.querySelector("#parteInferior");
+    if (document.querySelector("#parteInferior") == null) {
+        parteInferior = crearElemento("div", undefined, {
+            id: "parteInferior",
+            class: "mt-5"
+        });
+    }
+    imprimirTablaProductos();
+
 }
 
 // Página pedidos_____________________________________________________________________
 function navPedidos() {
     //Mostrar Historial.
-    //Se almacena en esta variable la información recogida desde el main.
+    //Se almacena en esta letiable la información recogida desde el main.
     let usuarioActual = JSON.parse(localStorage.getItem("usuario"));
 
     let parametros = {
@@ -294,6 +294,15 @@ function navPedidos() {
 function pagPedidos(respuesta) {
     let contenedor = document.querySelector("#contenedor");
     contenedor.innerHTML = "";
+
+    let pedidosTopUser = crearElemento("div", undefined, undefined);
+    let h1Pedidos = crearElemento("h1", "Pedidos", {
+        id: "tituloApartado",
+        class: "py-3 mb-3 mt-4"
+    });
+
+    pedidosTopUser.appendChild(h1Pedidos);
+    contenedor.appendChild(pedidosTopUser);
 
     //Se comprueba primero que exista algo en el historial de solicitudes.
     if (respuesta[0] != null) {
@@ -356,6 +365,16 @@ function pagProveedores(proveedores) {
     let contenedor = document.querySelector("#contenedor");
     let contador = 0;
     contenedor.innerHTML = "";
+
+    let provTopUser = crearElemento("div", undefined, undefined);
+    let h1Proveedores = crearElemento("h1", "Proveedores", {
+        id: "tituloApartado",
+        class: "py-3 mb-3 mt-4"
+    });
+
+    provTopUser.appendChild(h1Proveedores);
+    contenedor.appendChild(provTopUser);
+
     let contenedorProveedores = crearElemento("div", undefined, {
         id: "ContProveedores",
         class: "col-3",
@@ -406,6 +425,15 @@ function pagResiduos(respuesta) {
         style: "border:2px black solid; padding:5px"
     });
 
+    let resiTopUser = crearElemento("div", undefined, undefined);
+    let h1Residuos = crearElemento("h1", "Residuos", {
+        id: "tituloApartado",
+        class: "py-3 mb-3 mt-4"
+    });
+
+    resiTopUser.appendChild(h1Residuos);
+    contenedor.appendChild(resiTopUser);
+
     respuesta.forEach(fila => {
         let residuo = crearElemento("p", undefined, {
             id: "residuos"
@@ -427,9 +455,100 @@ function manejadorCategoria(e) {
     filtroCategoria(idCategoria);
 }
 
+
 function filtroCategoria(id_categoriaRecibido) {
-    //Esta letiable es un array de objetos literales, cada objeto tiene los datos del producto y categorias.
-    //Cada producto tiene este formato:
+    //Contenedor principal de la pagina.
+    let contenedor = document.querySelector("#contenedor");
+
+    //Se cambia el titulo de la pagina para que coincida con los productos.
+    let tituloApartado = document.querySelector("#tituloApartado");
+    if (tituloApartado != null && tituloApartado.innerHTML != "Productos") {
+        tituloApartado.innerHTML = "Productos";
+    }
+
+    // En caso de que sea la primera vez que cargue la pagina, va a haber una seccion con id historial. Lo elimino
+    let historial = document.querySelector("#historial");
+    if (historial != null) {
+        historial.remove();
+    }
+
+    // Contenedor inferior de la pagina. La tabla se crea por separado del inicio y las categorias.
+    // Este contenedor se crea si no existe todavia.
+    let parteInferior = document.querySelector("#parteInferior");
+    if (document.querySelector("#parteInferior") == null) {
+        parteInferior = crearElemento("div", undefined, {
+            id: "parteInferior",
+            class: "mt-5"
+        });
+    }
+
+    // Div reservado para hacer el filtro de la tabla, se crea si todavia no existe.
+    let filtro = document.querySelector("#filtro");
+    if (filtro == null) {
+        filtro = crearElemento("div", "Fila reservada para el filtro.", {
+            id: "filtro"
+        });
+        parteInferior.appendChild(filtro);
+    }
+    contenedor.appendChild(parteInferior);
+    imprimirFiltroTabla();
+    imprimirTablaProductos(null, id_categoriaRecibido, null);
+}
+
+function imprimirFiltroTabla(nombre = null, categoria = null, unidades = null) {
+    let todosProductos = JSON.parse(localStorage.getItem("todosProductos"));
+
+    let parteInferior = document.querySelector("#parteInferior");
+
+    // Crear el contenedor del filtro
+    let contenedorFiltro = document.createElement("div");
+
+    // Crear el campo de texto para el nombre
+    let inputNombre = document.createElement("input");
+    inputNombre.type = "text";
+    inputNombre.placeholder = "Filtro";
+    inputNombre.value = nombre || "";
+    contenedorFiltro.appendChild(inputNombre);
+
+    // Crear el desplegable para las categorías
+    let selectCategoria = document.createElement("select");
+    let optionDefaultCategoria = document.createElement("option");
+    optionDefaultCategoria.text = "Todas las categorías";
+    selectCategoria.add(optionDefaultCategoria);
+    let categorias = [...new Set(todosProductos.map(producto => producto.nombre_categoria))];
+    categorias.forEach(categoria => {
+        let optionCategoria = document.createElement("option");
+        optionCategoria.text = categoria;
+        if (categoria == categoria) {
+            optionCategoria.selected = true;
+        }
+        selectCategoria.add(optionCategoria);
+    });
+    contenedorFiltro.appendChild(selectCategoria);
+
+    // Crear el desplegable para las unidades
+    let selectUnidades = document.createElement("select");
+    let optionDefaultUnidades = document.createElement("option");
+    optionDefaultUnidades.text = "Todas las unidades";
+    selectUnidades.add(optionDefaultUnidades);
+    let unidadesFiltro = [...new Set(todosProductos.map(producto => producto.nombre_unidades))];
+    unidadesFiltro.forEach(unidad => {
+        let optionUnidad = document.createElement("option");
+        optionUnidad.text = unidad;
+        if (unidad == unidades) {
+            optionUnidad.selected = true;
+        }
+        selectUnidades.add(optionUnidad);
+    });
+    contenedorFiltro.appendChild(selectUnidades);
+
+    // Añadir el contenedor del filtro al DOM
+    parteInferior.appendChild(contenedorFiltro);
+}
+
+function imprimirTablaProductos(nombre = null, categoria = null, unidades = null) {
+    // Esta variable es un array de objetos literales, cada objeto tiene los datos del producto y categorias.
+    // Cada producto tiene este formato:
     // producto = {
     //     id_categoria: Id_categoria,
     //     imagen_categoria: Imagen_categoria,
@@ -440,189 +559,104 @@ function filtroCategoria(id_categoriaRecibido) {
     // }
     let todosProductos = JSON.parse(localStorage.getItem("todosProductos"));
 
-    //Contenedor principal de la pagina.
-    let contenedor = document.querySelector("#contenedor");
-
-    //Se cambia el titulo de la pagina para que coincida con los productos.
-    let tituloApartado = document.querySelector("#tituloApartado");
-    if (tituloApartado != null && tituloApartado.innerHTML != "Productos") {
-        tituloApartado.innerHTML = "Productos";
-    }
-
-    //En caso de que sea la primera vez que cargue la pagina, va a haber una seccion con id historial. Lo elimino
-    let historial = document.querySelector("#historial");
-    if (historial != null) {
-        historial.remove();
-    }
-
-    //Contenedor inferior de la pagina. La tabla se crea por separado del inicio y las categorias.
-    //Este contenedor se crea si no existe todavia.
-    let parteInferior = document.querySelector("#parteInferior");
-    if (document.querySelector("#parteInferior") == null) {
-        parteInferior = crearElemento("div", undefined, {
-            id: "parteInferior",
-            class: "mt-5"
+    //Contenedor para la tabla de productos
+    //Se crea el contenedor principal si no existe, si existe se limpia su conotenido.
+    let contenedorTablaProductos = document.querySelector("#contenedorTablaProductos");
+    if (contenedorTablaProductos == null) {
+        contenedorTablaProductos = crearElemento("div", undefined, {
+            class: "row",
+            id: "contenedorTablaProductos"
         });
+    } else {
+        contenedorTablaProductos.innerHTML = "";
     }
 
-    //Div reservado para hacer el filtro de la tabla, se crea si todavia no existe.
-    let filtro = document.querySelector("#filtro");
-    if (filtro == null) {
-        filtro = crearElemento("div", "Fila reservada para el filtro.", {
-            id: "filtro"
-        });
-        parteInferior.appendChild(filtro);
-    }
 
-    //Compruebo si existe el contenedor de la tabla. Si existe se elimina para imprimir uno con nuevos datos.
-    if (document.querySelector("#contenidoCategoria") != null) {
-        document.querySelector("#contenidoCategoria").remove();
-    }
-
-    //Formato de la tabla
-    // <table class="table">
-    //             <thead>
-    //                 <tr>
-    //                     <th scope="col"><input type="checkbox" name="generico" id="genericoCheckCabecera"></th>
-    //                     <th scope="col">NOMBRE</th>
-    //                     <th scope="col">CATEGORÍA</th>
-    //                     <th scope="col">OBSERVACIONES</th>
-    //                     <th scope="col">UD. DE MEDIDA</th>
-    //                     <th scope="col"></th>
-    //                 </tr>
-    //             </thead>
-    //             <tbody>
-    //                 <tr>
-    //                     <div class="fila">
-    //                         <td><input type="checkbox" name="generico" id="genericoCheckCuerpo"></td>
-    //                         <td>Manzana Perigrulla</td>
-    //                         <td>
-    //                             <div class="categoria">
-    //                                 <img src="../assets/img/categorias/fruteria.png" alt="icono de la categoria"
-    //                                     class="foto">
-    //                                 Fruteria
-    //                             </div>
-    //                         </td>
-    //                         <td>Descripcion de mi enorme banana</td>
-    //                         <td>kg</td>
-    //                         <td>
-    //                             <div class="fila">
-    //                                 <input type="number" class="form-control form-control-small" size="3" min="0" max=""
-    //                                     step="1" value="0" id="numeroInput">
-    //                                 <button type="button" class="btn btn-primary">Primary</button>
-    //                             </div>
-    //                         </td>
-    //                     </div>
-    //                 </tr>
-    //                 <!-- Agrega más filas según sea necesario -->
-    //             </tbody>
-    //         </table>
-
-    //Aqui deberia ir la fila con el filtro y la tabla.
-    let contenidoCategoria = crearElemento("div", undefined, {
-        id: "contenidoCategoria"
-    });
-
+    // Crear la tabla
     let tabla = crearElemento("table", undefined, {
-        id: "tabla"
+        id: "tabla",
+        class: "table table-responsive table-hover"
     });
-    let tablaHead = crearElemento("thead", undefined, undefined);
-    let tablaBody = crearElemento("tbody", undefined, undefined);
+    let tablaHead = crearElemento("thead");
+    let tablaBody = crearElemento("tbody");
 
-    let filaHead = crearElemento("tr", undefined, undefined);
+    // Crear la fila de encabezado
+    let filaHead = crearElemento("tr");
 
-    //Se crean los titulos de la tabla.
-    let celdaHead = crearElemento("th", undefined, undefined);
-    let inputHead = crearElemento("input", undefined, {
+    // Crear el checkbox en la primera celda de encabezado
+    let celdaCheckbox = crearElemento("th");
+    let inputCheckbox = crearElemento("input", undefined, {
         type: "checkbox",
         class: "genericoCheckCabecera"
-    })
-    celdaHead.appendChild(inputHead);
-    filaHead.appendChild(celdaHead);
-    celdaHead = crearElemento("th", "Producto", undefined);
-    filaHead.appendChild(celdaHead);
-    celdaHead = crearElemento("th", "Categoria", undefined);
-    filaHead.appendChild(celdaHead);
-    celdaHead = crearElemento("th", "Unidades", undefined);
-    filaHead.appendChild(celdaHead);
-    celdaHead = crearElemento("th", "Observaciones", undefined);
-    filaHead.appendChild(celdaHead);
-    celdaHead = crearElemento("th", undefined, undefined);
-    filaHead.appendChild(celdaHead);
-    tablaHead.appendChild(filaHead);
-    tabla.appendChild(tablaHead);
+    });
+    celdaCheckbox.appendChild(inputCheckbox);
+    filaHead.appendChild(celdaCheckbox);
 
-    //Ahora recorro todos los productos y los guardo en la tabla si son de la misma categoria recibida.
+    // Crear las celdas de encabezado restantes
+    let titulos = ["Producto", "Categoría", "Unidades", "Observaciones", ""];
+    titulos.forEach(titulo => {
+        let celdaHead = crearElemento("th", titulo);
+        filaHead.appendChild(celdaHead);
+    });
+
+    // Recorrer todos los productos y agregarlos a la tabla si son de la misma categoría recibida
     for (let i = 0; i < todosProductos.length; i++) {
-        let filaBody = crearElemento("tr", undefined, undefined);
-        if (todosProductos[i]["id_categoria"] == id_categoriaRecibido) {
-            let celdaBody = crearElemento("td", undefined, undefined);
-            celdaBody.appendChild(inputHead);
-            filaBody.appendChild(celdaBody);
-            celdaBody = crearElemento("td", todosProductos[i]["nombre_producto"], undefined);
-            filaBody.appendChild(celdaBody);
-            celdaBody = crearElemento("td", todosProductos[i]["nombre_categoria"], undefined);
-            filaBody.appendChild(celdaBody);
-            celdaBody = crearElemento("td", todosProductos[i]["nombre_unidades"], undefined);
-            filaBody.appendChild(celdaBody);
-            celdaBody = crearElemento("td", todosProductos[i]["nombre_observaciones"], undefined);
-            filaBody.appendChild(celdaBody);
+        // Filtrar los productos basado en los argumentos
+        if ((nombre == null || todosProductos[i]["nombre_producto"] == nombre) &&
+            (categoria == null || todosProductos[i]["id_categoria"] == categoria) &&
+            (unidades == null || todosProductos[i]["nombre_unidades"] == unidades)) {
 
-            
+            let filaBody = crearElemento("tr");
+
+            let celdaCheckbox = crearElemento("td");
+            let inputCheckbox = crearElemento("input", undefined, {
+                type: "checkbox",
+                class: "genericoCheck"
+            });
+            celdaCheckbox.appendChild(inputCheckbox);
+            filaBody.appendChild(celdaCheckbox);
+
+            let datosProducto = [
+                todosProductos[i]["nombre_producto"],
+                todosProductos[i]["nombre_categoria"],
+                todosProductos[i]["nombre_unidades"],
+                todosProductos[i]["nombre_observaciones"]
+            ];
+            datosProducto.forEach(dato => {
+                let celdaBody = crearElemento("td", dato);
+                filaBody.appendChild(celdaBody);
+            });
+
+            let celdaBoton = crearElemento("td");
+            let inputCantidad = crearElemento("input", undefined, {
+                type: "number",
+                value: "0",
+                id: "inputCantidad",
+                class: "form-control form-control-sm mr-2"
+            });
+            let botonAñadir = crearElemento("input", undefined, {
+                type: "submit",
+                class: "btn btn_custom_1 btn_sm",
+                value: "Añadir"
+            })
+            celdaBoton.appendChild(inputCantidad);
+            celdaBoton.appendChild(botonAñadir);
+            filaBody.appendChild(celdaBoton);
 
             tablaBody.appendChild(filaBody);
         }
     }
-    tabla.appendChild(tablaBody);
 
-    contenidoCategoria.appendChild(tabla);
-
-    //Limpio la tabla y la imprimo otra vez con nueva informacion.
-    parteInferior.appendChild(contenidoCategoria);
-
-    //Agrego la tabla a la pagina.
-    contenedor.appendChild(parteInferior);
-}
-
-function crearTabla(filas, columnas, salida) {
-    let tabla = document.crearElemento("table", undefined, {
-        id: "tabla"
-    });
-    tabla.style.borderCollapse = "collapse";
-
-    //
-    let tablaHead = crearElemento("thead", undefined, undefined);
-    let tablaBody = crearElemento("tbody", undefined, undefined);
-
-    let filaHead = crearElemento("tr", undefined, undefined);
-    let celdaHead = crearElemento("th", "Producto", undefined);
-    filaHead.appendChild(celdaHead);
-    celdaHead = crearElemento("th", "Categoria", undefined);
-    filaHead.appendChild(celdaHead);
-    celdaHead = crearElemento("th", "Unidades", undefined);
-    filaHead.appendChild(celdaHead);
-    celdaHead = crearElemento("th", "Observaciones", undefined);
-    filaHead.appendChild(celdaHead);
-    celdaHead = crearElemento("th", undefined, undefined);
-    filaHead.appendChild(celdaHead);
+    // Agregar la fila de encabezado a la sección de encabezado de la tabla
     tablaHead.appendChild(filaHead);
 
-    for (let i = 1; i <= filas; i++) {
-        let fila = document.crearElemento("tr", undefined, undefined);
+    // Agregar las secciones de encabezado y cuerpo a la tabla
+    tabla.appendChild(tablaHead);
+    tabla.appendChild(tablaBody);
 
-        for (let j = 1; j <= columnas; j++) {
-            let celda = document.crearElemento("td", undefined, undefined);
-            celda.textContent = todosProductos[i]
-            celda.id = "celda" + i + "" + j;
+    // Agregar la tabla al contenedor de contenido de categoría
+    contenedorTablaProductos.appendChild(tabla);
 
-            celda.style.border = "1px solid black";
-            celda.style.padding = "10px";
-            celda.style.textAlign = "center";
-
-            fila.appendChild(celda);
-        }
-        salida.innerHTML = "";
-        tabla.appendChild(fila);
-    }
-    salida.appendChild(tabla);
+    // Agregar el contenido de categoría al contenedor principal
+    contenedor.appendChild(contenedorTablaProductos);
 }
