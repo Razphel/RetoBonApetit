@@ -228,6 +228,31 @@ td:hover {
 }
 
 /* Filtros....................................... gen_filtros */
+.contenedorFiltros {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.contenedorFiltroLabel {
+    width: fit-content;
+}
+
+.contenedorFiltroLabelySelect {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.contenedorFiltroSelect {
+    width: fit-content;
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+    align-items: center;
+    gap: 10px;
+}
+
 .filtroBuscador {
     display: inline;
     width: 20%;

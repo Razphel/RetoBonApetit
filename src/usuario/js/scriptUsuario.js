@@ -507,6 +507,26 @@ function imprimirFiltroTabla(nombre = null, categoria = null, unidades = null) {
     let todosProductos = JSON.parse(localStorage.getItem("todosProductos"));
     let parteInferior = document.querySelector("#parteInferior");
 
+    let contenedorFiltroLabelySelect = crearElemento("div", undefined, { // contiene el div contenedorFiltroLabel y contenedorFiltroSelect
+        id: "contenedorFiltroLabelySelect"
+    });
+
+    let contenedorFiltroLabel = crearElemento("div", undefined, { // contiene el icono de filtros y el texto "Filtrar por"
+        id: "contenedorFiltroLabel",
+        class: "contenedorFiltroLabel"
+    });
+
+    let labelFiltros = crearElemento("p", "Filtrar por", { 
+        id: "labelFiltro"
+    });
+
+    contenedorFiltroLabel.appendChild(labelFiltros);
+
+    let contenedorFiltroSelect = crearElemento("div", undefined, { // contiene los select de los filtros
+        id: "contenedorFiltroSelect",
+        class: "contenedorFiltroSelect"
+    });
+
     // Crear el contenedor del filtro
     // Se renueva el filtro.
     let contenedorFiltro = document.querySelector("#filtro");
@@ -514,7 +534,8 @@ function imprimirFiltroTabla(nombre = null, categoria = null, unidades = null) {
         contenedorFiltro.remove();
     }
     contenedorFiltro = crearElemento("div", undefined, {
-        id: "filtro"
+        id: "filtro",
+        class: "row contenedorFiltros"
     });
 
     // Crear el desplegable para las categorías
@@ -536,7 +557,7 @@ function imprimirFiltroTabla(nombre = null, categoria = null, unidades = null) {
         }
         selectCategoria.add(optionCategoria);
     });
-    contenedorFiltro.appendChild(selectCategoria);
+    contenedorFiltroSelect.appendChild(selectCategoria);
 
     // Crear el desplegable para las unidades
     let selectUnidades = crearElemento("select", undefined, {
@@ -556,7 +577,12 @@ function imprimirFiltroTabla(nombre = null, categoria = null, unidades = null) {
         }
         selectUnidades.add(optionUnidad);
     });
-    contenedorFiltro.appendChild(selectUnidades);
+    contenedorFiltroSelect.appendChild(selectUnidades);
+
+    contenedorFiltroLabelySelect.appendChild(contenedorFiltroLabel); 
+    contenedorFiltroLabelySelect.appendChild(contenedorFiltroSelect); 
+
+    contenedorFiltro.appendChild(contenedorFiltroLabelySelect);
 
     // Crear el campo de texto para el nombre
     let inputNombre = crearElemento("input", undefined, {
@@ -598,7 +624,6 @@ function imprimirTablaProductos(nombre = null, categoria = null, unidades = null
         contenedorTablaProductos.innerHTML = "";
     }
 
-
     // Crear la tabla
     let tabla = crearElemento("table", undefined, {
         id: "tabla",
@@ -625,6 +650,8 @@ function imprimirTablaProductos(nombre = null, categoria = null, unidades = null
         let celdaHead = crearElemento("th", titulo);
         filaHead.appendChild(celdaHead);
     });
+
+    let productosEncontrados = false;
 
     // Recorrer todos los productos y agregarlos a la tabla si son de la misma categoría recibida
     for (let i = 0; i < todosProductos.length; i++) {
@@ -681,8 +708,21 @@ function imprimirTablaProductos(nombre = null, categoria = null, unidades = null
             filaBody.appendChild(celdaBoton);
 
             tablaBody.appendChild(filaBody);
+            productosEncontrados = true;
         }
     }
+
+    // Si la tabla está vacía llamar a la función mostrarMensajeVacio
+    if (!productosEncontrados) {
+        parteInferior.innerHTML = "";
+        let mensajeVacio = mostrarMensajeVacio("No hay productos", "¿Hacer una solicitud de producto?", "Hacer solicitud");
+        parteInferior.appendChild(mensajeVacio);
+    } else {
+        contenedorTablaProductos.innerHTML = "";
+    }
+
+    let contenedor = document.getElementById("contenedor");
+    contenedor.appendChild(contenedorTablaProductos);
 
     // Agregar la fila de encabezado a la sección de encabezado de la tabla
     tablaHead.appendChild(filaHead);
@@ -696,4 +736,37 @@ function imprimirTablaProductos(nombre = null, categoria = null, unidades = null
 
     // Agregar el contenido de categoría al contenedor principal
     contenedor.appendChild(contenedorTablaProductos);
+}
+
+// Contenedor con borde punteado que aparece cuando una tabla está vacía o no tiene contenido
+function mostrarMensajeVacio(titulo, texto, textoBoton) {
+    let divRow = document.createElement("div");
+    divRow.classList.add("row");
+
+    let divCol = document.createElement("div");
+    divCol.classList.add("col-6", "col-sm-3", "col-md-3", "col-lg-12");
+
+    let divLabelEmpty = document.createElement("div");
+    divLabelEmpty.classList.add("label_empty", "card", "p-4", "align-items-center", "mt-4");
+
+    let h4 = document.createElement("h4");
+    h4.textContent = titulo;
+
+    let p = document.createElement("p");
+    p.textContent = texto;
+
+    let button = document.createElement("button");
+    button.setAttribute("type", "button");
+    button.classList.add("btn", "btn_custom_1", "mt-3");
+    button.textContent = textoBoton;
+
+    // Construir la estructura
+    divLabelEmpty.appendChild(h4);
+    divLabelEmpty.appendChild(p);
+    divLabelEmpty.appendChild(button);
+
+    divCol.appendChild(divLabelEmpty);
+    divRow.appendChild(divCol);
+
+    return divRow;
 }
