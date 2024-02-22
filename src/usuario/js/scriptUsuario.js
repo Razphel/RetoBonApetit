@@ -508,13 +508,17 @@ function imprimirFiltroTabla(nombre = null, categoria = null, unidades = null) {
     let parteInferior = document.querySelector("#parteInferior");
 
     let contenedorFiltroLabelySelect = crearElemento("div", undefined, { // contiene el div contenedorFiltroLabel y contenedorFiltroSelect
-        id: "contenedorFiltroLabelySelect"
+        id: "contenedorFiltroLabelySelect",
+        class: "contenedorFiltroLabelySelect"
     });
 
     let contenedorFiltroLabel = crearElemento("div", undefined, { // contiene el icono de filtros y el texto "Filtrar por"
         id: "contenedorFiltroLabel",
         class: "contenedorFiltroLabel"
     });
+
+    // icono filtros (añadir dentro de contenedorFiltroLabel delante de labelFiltros)
+    // <i class="bi bi-sliders"></i>
 
     let labelFiltros = crearElemento("p", "Filtrar por", { 
         id: "labelFiltro"
