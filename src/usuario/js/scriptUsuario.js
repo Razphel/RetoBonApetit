@@ -75,7 +75,7 @@ function inicioCategorias(respuesta) {
     let contenedor = document.querySelector("#contenedor");
 
     //Contenedor de botones de categorias y h1 con el titulo de la vista inicio.
-    let inicioTopUser = crearElemento("div", undefined, {
+    let parteSuperior = crearElemento("div", undefined, {
         class: "row"
     });
 
@@ -88,7 +88,7 @@ function inicioCategorias(respuesta) {
         class: "py-3 mb-3 mt-4"
     });
 
-    inicioTopUser.appendChild(h1Inicio);
+    parteSuperior.appendChild(h1Inicio);
 
     let categorias = crearElemento("div", undefined, {
         class: "row",
@@ -124,23 +124,22 @@ function inicioCategorias(respuesta) {
     });
 
     //Agrego el div con la lista de cartas al contenedor superior de la pagina.
-    inicioTopUser.appendChild(categorias);
+    parteSuperior.appendChild(categorias);
 
     //Agrego el contenedor superior a la pagina.
-    contenedor.appendChild(inicioTopUser);
+    contenedor.appendChild(parteSuperior);
 }
 
 function inicioSolicitudes(respuesta) {
     let contenedor = document.querySelector("#contenedor");
 
+    let historial = crearElemento("table", undefined, {
+        id: "historial",
+        style: "border-collapse: collapse;"
+    });
+
     //Compruebo que exista algun dato.
     if (respuesta[0] != null) {
-
-        let historial = crearElemento("table", undefined, {
-            id: "historial",
-            style: "border-collapse: collapse;"
-        });
-
         //Creo los titulos de las tablas.
         let titulos = crearElemento("tr", undefined, undefined);
         //Segun el formato en el que se recibe el objeto, tengo que usar sus elementos de la mitad al final.
@@ -168,8 +167,10 @@ function inicioSolicitudes(respuesta) {
         contenedor.appendChild(historial);
     }
     else {
-        let sinHistorial = crearElemento("p", "Historial Vacio.", undefined)
-        contenedor.appendChild(sinHistorial);
+        let historial = crearElemento("p", "Historial Vacio.", {
+            id: "historial"
+        });
+        contenedor.appendChild(historial);
     }
 
 }
@@ -202,13 +203,13 @@ function pagProductos(respuesta) {
     contenedor.innerHTML = "";
 
     // Contenedor de botones de categorias y h1 con el titulo de la vista inicio.
-    let inicioTopUser = crearElemento("div", undefined, undefined);
+    let parteSuperior = crearElemento("div", undefined, undefined);
     let h1Inicio = crearElemento("h1", "Productos", {
         id: "tituloApartado",
         class: "py-3 mb-3 mt-4"
     });
 
-    inicioTopUser.appendChild(h1Inicio);
+    parteSuperior.appendChild(h1Inicio);
 
     let categorias = crearElemento("div", undefined, {
         class: "row",
@@ -244,10 +245,10 @@ function pagProductos(respuesta) {
     });
 
     //Agrego el div con la lista de cartas al contenedor superior de la pagina.
-    inicioTopUser.appendChild(categorias);
+    parteSuperior.appendChild(categorias);
 
     //Agrego el contenedor superior a la pagina.
-    contenedor.appendChild(inicioTopUser);
+    contenedor.appendChild(parteSuperior);
 }
 
 // Página pedidos_____________________________________________________________________
@@ -472,10 +473,10 @@ function filtroCategoria(id_categoriaRecibido) {
 
     // Contenedor inferior de la pagina. La tabla se crea por separado del inicio y las categorias.
     // Este contenedor se crea si no existe todavia.
-    let inicioBottomUser = document.querySelector("#inicioBottomUser");
-    if (document.querySelector("#inicioBottomUser") == null) {
-        inicioBottomUser = crearElemento("div", undefined, {
-            id: "inicioBottomUser",
+    let parteInferior = document.querySelector("#parteInferior");
+    if (document.querySelector("#parteInferior") == null) {
+        parteInferior = crearElemento("div", undefined, {
+            id: "parteInferior",
             class: "mt-5"
         });
     }
@@ -486,7 +487,7 @@ function filtroCategoria(id_categoriaRecibido) {
         filtro = crearElemento("div", "Fila reservada para el filtro.", {
             id: "filtro"
         });
-        inicioBottomUser.appendChild(filtro);
+        parteInferior.appendChild(filtro);
     }
 
     // Compruebo si existe el contenedor de la tabla. Si existe se elimina para imprimir uno con nuevos datos.
@@ -530,7 +531,9 @@ function filtroCategoria(id_categoriaRecibido) {
     // Recorrer todos los productos y agregarlos a la tabla si son de la misma categoría recibida
     for (let i = 0; i < todosProductos.length; i++) {
         if (todosProductos[i]["id_categoria"] == id_categoriaRecibido) {
-            let filaBody = crearElemento("tr");
+            let filaBody = crearElemento("tr", undefined, {
+                class: "p-2"
+            });
 
             // Crear celda para el checkbox
             let celdaCheckbox = crearElemento("td");
@@ -548,10 +551,27 @@ function filtroCategoria(id_categoriaRecibido) {
                 todosProductos[i]["nombre_unidades"],
                 todosProductos[i]["nombre_observaciones"]
             ];
-            datosProducto.forEach(dato => {
-                let celdaBody = crearElemento("td", dato);
+
+            datosProducto.forEach((dato, index) => {
+                let celdaBody = crearElemento("td");
+    
+                // Si estamos en la columna "nombre_categoria", agregamos la imagen de la categoría
+                if (index === 1) {
+                    let imagenCategoria = crearElemento("img", undefined, {
+                        src: `../../../assets/img/categorias/${todosProductos[i]["imagen_categoria"]}`,
+                        width: "30px",
+                        class: "categoriaImgTabla"
+                    });
+                    celdaBody.appendChild(imagenCategoria);
+                }
+                celdaBody.innerHTML += dato;
                 filaBody.appendChild(celdaBody);
             });
+            /*
+            celdaCategoria.appendChild(imagenCategoria);
+            celdaCategoria.appendChild(nombreCategoria);
+            filaBody.appendChild(celdaCategoria);
+            */
 
             let celdaBoton = crearElemento("td"); // celda para el input y el botón de la tabla
             let inputCantidad = crearElemento("input", undefined, {

@@ -220,6 +220,10 @@ td:hover {
     cursor: pointer;
 }
 
+.categoriaImgTabla img {
+    margin-right: 10px !important;
+}
+
 /* Formularios................................... gen_forms */
 form {  
     font-size: 14px;  
