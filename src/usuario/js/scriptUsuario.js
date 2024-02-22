@@ -517,13 +517,15 @@ function imprimirFiltroTabla(nombre = null, categoria = null, unidades = null) {
         class: "contenedorFiltroLabel"
     });
 
-    // icono filtros (añadir dentro de contenedorFiltroLabel delante de labelFiltros)
-    // <i class="bi bi-sliders"></i>
+    // Crear el ícono de filtros
+    let iconoFiltros = document.createElement("i");
+    iconoFiltros.classList.add("bi", "bi-sliders");
 
     let labelFiltros = crearElemento("p", "Filtrar por", { 
         id: "labelFiltro"
     });
 
+    contenedorFiltroLabel.appendChild(iconoFiltros);
     contenedorFiltroLabel.appendChild(labelFiltros);
 
     let contenedorFiltroSelect = crearElemento("div", undefined, { // contiene los select de los filtros
