@@ -40,6 +40,22 @@ function principal() {
     formulario.appendChild(inputObservaciones);
     formulario.appendChild(botonDeMierda);
 
+    let parametros = {
+        claveUsuarioInicioSolicitud: true
+    };
+    $.ajax({
+        //Ubicacion del archivo php que va a manejar los valores.
+        url: "./php/consultaUsuario.php",
+        //Metodo en que los va a recibir.
+        type: "GET",
+        data: parametros,
+        dataType: "json",
+        success: mostrarSolicitudes,
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.error("Error en la solicitud AJAX: " + textStatus, errorThrown);
+        }
+    });
+
 }
 
 function insertado()
@@ -56,6 +72,7 @@ function botonMierda()
     let observacion = document.querySelectorAll("#observacionesCategoria")[1].value;
     formNewCategoria(descripcion,imagen,observacion);
 }
+ 
 
 // function formNewCategoria(descripcion,imagen,observacion)
 // {   

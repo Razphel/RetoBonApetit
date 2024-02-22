@@ -18,7 +18,13 @@ if(isset($_REQUEST['claveProveedores']))
     $proveedores = BD::imprimirConsultas('proveedores');
     echo json_encode($proveedores);
 }
- 
+
+if(isset($_REQUEST['claveUsuarioInicioSolicitud']))
+{
+    $claveUsuarioInicioSolicitud = BD::imprimirSolicitudesInicio('claveUsuarioInicioSolicitud');
+    echo json_encode($claveUsuarioInicioSolicitud);
+}
+
 if (isset($_REQUEST['categoria'])) 
 {
     $categorias = BD::imprimirConsultas('categorias');
