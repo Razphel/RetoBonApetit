@@ -567,11 +567,6 @@ function filtroCategoria(id_categoriaRecibido) {
                 celdaBody.innerHTML += dato;
                 filaBody.appendChild(celdaBody);
             });
-            /*
-            celdaCategoria.appendChild(imagenCategoria);
-            celdaCategoria.appendChild(nombreCategoria);
-            filaBody.appendChild(celdaCategoria);
-            */
 
             let celdaBoton = crearElemento("td"); // celda para el input y el botón de la tabla
             let inputCantidad = crearElemento("input", undefined, {
