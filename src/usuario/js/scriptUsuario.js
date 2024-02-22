@@ -260,6 +260,8 @@ function pagProductos(respuesta) {
             class: "mt-5"
         });
     }
+    contenedor.appendChild(parteInferior);
+    imprimirFiltroTabla();
     imprimirTablaProductos();
 
 }
@@ -455,6 +457,15 @@ function manejadorCategoria(e) {
     filtroCategoria(idCategoria);
 }
 
+function manejadorFiltro(e) {
+    let nombre = document.getElementById("FiltroBuscadorNombre").value;
+    let categoria = document.getElementById("FiltroDesplegableCategoria").value;
+    let unidades = document.getElementById("FiltroDesplegableUnidades").value;
+
+    imprimirFiltroTabla(nombre, categoria, unidades);
+    imprimirTablaProductos(nombre, categoria, unidades);
+}
+
 
 function filtroCategoria(id_categoriaRecibido) {
     //Contenedor principal de la pagina.
@@ -482,44 +493,50 @@ function filtroCategoria(id_categoriaRecibido) {
         });
     }
 
-    // Div reservado para hacer el filtro de la tabla, se crea si todavia no existe.
-    let filtro = document.querySelector("#filtro");
-    if (filtro == null) {
-        filtro = crearElemento("div", "Fila reservada para el filtro.", {
-            id: "filtro"
-        });
-        parteInferior.appendChild(filtro);
-    }
     contenedor.appendChild(parteInferior);
-    imprimirFiltroTabla();
+
+    imprimirFiltroTabla(null, id_categoriaRecibido, null);
     imprimirTablaProductos(null, id_categoriaRecibido, null);
 }
 
 function imprimirFiltroTabla(nombre = null, categoria = null, unidades = null) {
     let todosProductos = JSON.parse(localStorage.getItem("todosProductos"));
-
     let parteInferior = document.querySelector("#parteInferior");
 
     // Crear el contenedor del filtro
-    let contenedorFiltro = document.createElement("div");
+    // Se renueva el filtro.
+    let contenedorFiltro = document.querySelector("#filtro");
+    if (contenedorFiltro != null) {
+        contenedorFiltro.remove();
+    }
+    contenedorFiltro = crearElemento("div", undefined, {
+        id: "filtro"
+    });
 
     // Crear el campo de texto para el nombre
-    let inputNombre = document.createElement("input");
-    inputNombre.type = "text";
-    inputNombre.placeholder = "Filtro";
-    inputNombre.value = nombre || "";
+    let inputNombre = crearElemento("input", undefined, {
+        id: "FiltroBuscadorNombre",
+        type: "text",
+        placeholder: "Filtro",
+        value: nombre || ""
+    });
+    inputNombre.addEventListener("input", manejadorFiltro);
     contenedorFiltro.appendChild(inputNombre);
 
     // Crear el desplegable para las categorías
-    let selectCategoria = document.createElement("select");
+    let selectCategoria = crearElemento("select", undefined, {
+        id: "FiltroDesplegableCategoria"
+    });
+    selectCategoria.addEventListener("change", manejadorFiltro);
     let optionDefaultCategoria = document.createElement("option");
     optionDefaultCategoria.text = "Todas las categorías";
     selectCategoria.add(optionDefaultCategoria);
-    let categorias = [...new Set(todosProductos.map(producto => producto.nombre_categoria))];
-    categorias.forEach(categoria => {
+    let categorias = [...new Set(todosProductos.map(producto => producto.id_categoria))];
+    categorias.forEach(id => {
         let optionCategoria = document.createElement("option");
-        optionCategoria.text = categoria;
-        if (categoria == categoria) {
+        optionCategoria.text = todosProductos.find(producto => producto.id_categoria == id).nombre_categoria;
+        optionCategoria.value = id;
+        if (id == categoria) {
             optionCategoria.selected = true;
         }
         selectCategoria.add(optionCategoria);
@@ -527,7 +544,10 @@ function imprimirFiltroTabla(nombre = null, categoria = null, unidades = null) {
     contenedorFiltro.appendChild(selectCategoria);
 
     // Crear el desplegable para las unidades
-    let selectUnidades = document.createElement("select");
+    let selectUnidades = crearElemento("select", undefined, {
+        id: "FiltroDesplegableUnidades"
+    });
+    selectUnidades.addEventListener("change", manejadorFiltro);
     let optionDefaultUnidades = document.createElement("option");
     optionDefaultUnidades.text = "Todas las unidades";
     selectUnidades.add(optionDefaultUnidades);
@@ -622,8 +642,19 @@ function imprimirTablaProductos(nombre = null, categoria = null, unidades = null
                 todosProductos[i]["nombre_unidades"],
                 todosProductos[i]["nombre_observaciones"]
             ];
-            datosProducto.forEach(dato => {
-                let celdaBody = crearElemento("td", dato);
+            datosProducto.forEach((dato, index) => {
+                let celdaBody = crearElemento("td");
+
+                // Si estamos en la columna "nombre_categoria", agregamos la imagen de la categoría
+                if (index === 1) {
+                    let imagenCategoria = crearElemento("img", undefined, {
+                        src: `../../../assets/img/categorias/${todosProductos[i]["imagen_categoria"]}`,
+                        width: "30px",
+                        class: "categoriaImgTabla"
+                    });
+                    celdaBody.appendChild(imagenCategoria);
+                }
+                celdaBody.innerHTML += dato;
                 filaBody.appendChild(celdaBody);
             });
 
