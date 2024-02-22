@@ -140,6 +140,7 @@ function inicioSolicitudes(respuesta) {
 
     //Compruebo que exista algun dato.
     if (respuesta[0] != null) {
+
         //Creo los titulos de las tablas.
         let titulos = crearElemento("tr", undefined, undefined);
         //Segun el formato en el que se recibe el objeto, tengo que usar sus elementos de la mitad al final.
@@ -167,7 +168,7 @@ function inicioSolicitudes(respuesta) {
         contenedor.appendChild(historial);
     }
     else {
-        let historial = crearElemento("p", "Historial Vacio.", {
+        historial = crearElemento("p", "Historial Vacio.", {
             id: "historial"
         });
         contenedor.appendChild(historial);
@@ -249,6 +250,20 @@ function pagProductos(respuesta) {
 
     //Agrego el contenedor superior a la pagina.
     contenedor.appendChild(parteSuperior);
+
+    // Contenedor inferior de la pagina. La tabla se crea por separado del inicio y las categorias.
+    // Este contenedor se crea si no existe todavia.
+    let parteInferior = document.querySelector("#parteInferior");
+    if (document.querySelector("#parteInferior") == null) {
+        parteInferior = crearElemento("div", undefined, {
+            id: "parteInferior",
+            class: "mt-5"
+        });
+    }
+    contenedor.appendChild(parteInferior);
+    imprimirFiltroTabla();
+    imprimirTablaProductos();
+
 }
 
 // Página pedidos_____________________________________________________________________
@@ -442,20 +457,21 @@ function manejadorCategoria(e) {
     filtroCategoria(idCategoria);
 }
 
+function manejadorFiltro(e) {
+    let nombre = document.getElementById("filtroBuscadorNombre").value.trim();
+    nombre = nombre === "" ? null : nombre;
+
+    let categoria = document.getElementById("filtroDesplegableCategoria").value;
+    categoria = categoria === "" ? null : categoria;
+
+    let unidades = document.getElementById("filtroDesplegableUnidades").value;
+    unidades = unidades === "" ? null : unidades;
+
+    imprimirFiltroTabla(nombre, categoria, unidades);
+    imprimirTablaProductos(nombre, categoria, unidades);
+}
 
 function filtroCategoria(id_categoriaRecibido) {
-    // Esta variable es un array de objetos literales, cada objeto tiene los datos del producto y categorias.
-    // Cada producto tiene este formato:
-    // producto = {
-    //     id_categoria: Id_categoria,
-    //     imagen_categoria: Imagen_categoria,
-    //     nombre_producto: nombre_producto,
-    //     nombre_categoria: nombre_categoria,
-    //     nombre_unidades: nombre_unidades,
-    //     nombre_observaciones: nombre_observaciones
-    // }
-    let todosProductos = JSON.parse(localStorage.getItem("todosProductos"));
-
     //Contenedor principal de la pagina.
     let contenedor = document.querySelector("#contenedor");
 
@@ -481,30 +497,112 @@ function filtroCategoria(id_categoriaRecibido) {
         });
     }
 
-    // Div reservado para hacer el filtro de la tabla, se crea si todavia no existe.
-    let filtro = document.querySelector("#filtro");
-    if (filtro == null) {
-        filtro = crearElemento("div", "Fila reservada para el filtro.", {
-            id: "filtro"
-        });
-        parteInferior.appendChild(filtro);
-    }
+    contenedor.appendChild(parteInferior);
 
-    // Compruebo si existe el contenedor de la tabla. Si existe se elimina para imprimir uno con nuevos datos.
-    if (document.querySelector("#contenedorTablaProductos") != null) {
-        document.querySelector("#contenedorTablaProductos").remove();
-    }
+    imprimirFiltroTabla(null, id_categoriaRecibido, null);
+    imprimirTablaProductos(null, id_categoriaRecibido, null);
+}
 
-    // Contenedor para la tabla de productos
-    let contenedorTablaProductos = crearElemento("div", undefined, {
-        class: "row",
-        id: "contenedorTablaProductos"
+function imprimirFiltroTabla(nombre = null, categoria = null, unidades = null) {
+    let todosProductos = JSON.parse(localStorage.getItem("todosProductos"));
+    let parteInferior = document.querySelector("#parteInferior");
+
+    // Crear el contenedor del filtro
+    // Se renueva el filtro.
+    let contenedorFiltro = document.querySelector("#filtro");
+    if (contenedorFiltro != null) {
+        contenedorFiltro.remove();
+    }
+    contenedorFiltro = crearElemento("div", undefined, {
+        id: "filtro"
     });
+
+    // Crear el desplegable para las categorías
+    let selectCategoria = crearElemento("select", undefined, {
+        id: "filtroDesplegableCategoria",
+        class: "form-select selectFiltros"
+    });
+    selectCategoria.addEventListener("change", manejadorFiltro);
+    let optionDefaultCategoria = document.createElement("option");
+    optionDefaultCategoria.text = "Categorías";
+    selectCategoria.add(optionDefaultCategoria);
+    let categorias = [...new Set(todosProductos.map(producto => producto.id_categoria))];
+    categorias.forEach(id => {
+        let optionCategoria = document.createElement("option");
+        optionCategoria.text = todosProductos.find(producto => producto.id_categoria == id).nombre_categoria;
+        optionCategoria.value = id;
+        if (id == categoria) {
+            optionCategoria.selected = true;
+        }
+        selectCategoria.add(optionCategoria);
+    });
+    contenedorFiltro.appendChild(selectCategoria);
+
+    // Crear el desplegable para las unidades
+    let selectUnidades = crearElemento("select", undefined, {
+        id: "filtroDesplegableUnidades",
+        class: "form-select selectFiltros"
+    });
+    selectUnidades.addEventListener("change", manejadorFiltro);
+    let optionDefaultUnidades = document.createElement("option");
+    optionDefaultUnidades.text = "Ud. de medida";
+    selectUnidades.add(optionDefaultUnidades);
+    let unidadesFiltro = [...new Set(todosProductos.map(producto => producto.nombre_unidades))];
+    unidadesFiltro.forEach(unidad => {
+        let optionUnidad = document.createElement("option");
+        optionUnidad.text = unidad;
+        if (unidad == unidades) {
+            optionUnidad.selected = true;
+        }
+        selectUnidades.add(optionUnidad);
+    });
+    contenedorFiltro.appendChild(selectUnidades);
+
+    // Crear el campo de texto para el nombre
+    let inputNombre = crearElemento("input", undefined, {
+        id: "filtroBuscadorNombre",
+        type: "text",
+        placeholder: "Buscar por nombre de producto...",
+        class: "form-control filtroBuscador",
+        value: nombre || ""
+    });
+    inputNombre.addEventListener("input", manejadorFiltro);
+    contenedorFiltro.appendChild(inputNombre);
+
+    // Añadir el contenedor del filtro al DOM
+    parteInferior.appendChild(contenedorFiltro);
+}
+
+function imprimirTablaProductos(nombre = null, categoria = null, unidades = null) {
+    // Esta variable es un array de objetos literales, cada objeto tiene los datos del producto y categorias.
+    // Cada producto tiene este formato:
+    // producto = {
+    //     id_categoria: Id_categoria,
+    //     imagen_categoria: Imagen_categoria,
+    //     nombre_producto: nombre_producto,
+    //     nombre_categoria: nombre_categoria,
+    //     nombre_unidades: nombre_unidades,
+    //     nombre_observaciones: nombre_observaciones
+    // }
+    let todosProductos = JSON.parse(localStorage.getItem("todosProductos"));
+
+    //Contenedor para la tabla de productos
+    //Se crea el contenedor principal si no existe, si existe se limpia su conotenido.
+    let contenedorTablaProductos = document.querySelector("#contenedorTablaProductos");
+    if (contenedorTablaProductos == null) {
+        contenedorTablaProductos = crearElemento("div", undefined, {
+            class: "row",
+            id: "contenedorTablaProductos"
+        });
+    } else {
+        contenedorTablaProductos.innerHTML = "";
+    }
+
 
     // Crear la tabla
     let tabla = crearElemento("table", undefined, {
         id: "tabla",
-        class: "table table-responsive table-hover"
+        class: "table table-responsive table-hover mt-4"
     });
     let tablaHead = crearElemento("thead");
     let tablaBody = crearElemento("tbody");
@@ -530,12 +628,13 @@ function filtroCategoria(id_categoriaRecibido) {
 
     // Recorrer todos los productos y agregarlos a la tabla si son de la misma categoría recibida
     for (let i = 0; i < todosProductos.length; i++) {
-        if (todosProductos[i]["id_categoria"] == id_categoriaRecibido) {
-            let filaBody = crearElemento("tr", undefined, {
-                class: "p-2"
-            });
+        // Filtrar los productos basado en los argumentos
+        if ((nombre == null || todosProductos[i]["nombre_producto"] == nombre) &&
+            (categoria == null || todosProductos[i]["id_categoria"] == categoria) &&
+            (unidades == null || todosProductos[i]["nombre_unidades"] == unidades)) {
 
-            // Crear celda para el checkbox
+            let filaBody = crearElemento("tr");
+
             let celdaCheckbox = crearElemento("td");
             let inputCheckbox = crearElemento("input", undefined, {
                 type: "checkbox",
@@ -544,23 +643,20 @@ function filtroCategoria(id_categoriaRecibido) {
             celdaCheckbox.appendChild(inputCheckbox);
             filaBody.appendChild(celdaCheckbox);
 
-            // Crear celdas para los datos del producto
             let datosProducto = [
                 todosProductos[i]["nombre_producto"],
                 todosProductos[i]["nombre_categoria"],
                 todosProductos[i]["nombre_unidades"],
                 todosProductos[i]["nombre_observaciones"]
             ];
-
             datosProducto.forEach((dato, index) => {
                 let celdaBody = crearElemento("td");
-    
+
                 // Si estamos en la columna "nombre_categoria", agregamos la imagen de la categoría
                 if (index === 1) {
                     let imagenCategoria = crearElemento("img", undefined, {
                         src: `../../../assets/img/categorias/${todosProductos[i]["imagen_categoria"]}`,
-                        width: "30px",
-                        class: "categoriaImgTabla"
+                        width: "35px",
                     });
                     celdaBody.appendChild(imagenCategoria);
                 }
@@ -568,12 +664,12 @@ function filtroCategoria(id_categoriaRecibido) {
                 filaBody.appendChild(celdaBody);
             });
 
-            let celdaBoton = crearElemento("td"); // celda para el input y el botón de la tabla
+            let celdaBoton = crearElemento("td");
             let inputCantidad = crearElemento("input", undefined, {
                 type: "number",
                 value: "0",
                 id: "inputCantidad",
-                class: "form-control form-control-sm mr-2"
+                class: "form-control form-control-sm"
             });
             let botonAñadir = crearElemento("input", undefined, {
                 type: "submit",
@@ -584,7 +680,6 @@ function filtroCategoria(id_categoriaRecibido) {
             celdaBoton.appendChild(botonAñadir);
             filaBody.appendChild(celdaBoton);
 
-            // Agregar la fila al cuerpo de la tabla
             tablaBody.appendChild(filaBody);
         }
     }

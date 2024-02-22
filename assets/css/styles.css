@@ -7,6 +7,7 @@
             - Botones..................... gen_btn
             - Iconos...................... gen_icon
             - Tablas...................... gen_tablas
+            - Filtros..................... gen_filtros
             - Formularios................. gen_form
             - Contenedores................ gen_cont
             - Modales..................... gen_mod
@@ -192,7 +193,13 @@ i:hover {
 
 /* Tablas........................................ gen_tablas */
 table {
+    border: none;
+    box-shadow: 0 2px 6px 0 rgba(138, 138, 138, 0.055);
     color: var(--text-dark-color);
+}
+
+table img {
+    padding-right: 10px;
 }
 
 th {
@@ -220,8 +227,16 @@ td:hover {
     cursor: pointer;
 }
 
-.categoriaImgTabla img {
-    margin-right: 10px !important;
+/* Filtros....................................... gen_filtros */
+.filtroBuscador {
+    display: inline;
+    width: 20%;
+}
+
+.selectFiltros {
+    font-size: var(--size-p);
+    display: inline;
+    width: fit-content;
 }
 
 /* Formularios................................... gen_forms */

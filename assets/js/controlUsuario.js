@@ -28,14 +28,19 @@ function principal() {
         });
     });
 
+    //Eventos blur, que se disparan cuando el usuario pierde la seleccion.
+    //La funcion comprueba que el campo este vacio, si lo esta, marca el input en rojo.
+    $("#nombreUsuario").blur(comprobarEntrada);
+    $("#contraseña").blur(comprobarEntrada);
+
 }
 
 function iniciarSesion() {
-    //Compruebo que los datos no esten vacios.
     let user = document.querySelector("#nombreUsuario").value;
     let pass = document.querySelector("#contraseña").value;
 
-    if (comprobarVacio(user, pass)) {
+    //Vuelvo a comprobar que los datos no esten vacios.
+    if (comprobarVacio(user) && comprobarVacio(pass)) {
         //Obtenemos los datos del formulario, el nombre de cada variable debe ser igual que el $_REQUEST de php.
         let parametros = {
             nombreUsuario: user,
@@ -60,7 +65,9 @@ function iniciarSesion() {
 
     } else {
         let salida = document.querySelector("#salida");
-        salida.innerHTML = "Error. Debes rellenar todos los campos";
+        //Agrego la clase para resaltar en rojo el mensaje de error.
+        salida.classList.add('alert', 'alert-danger');
+        salida.innerHTML = "Error. Debes rellenar todos los campos.";
     }
 }
 
@@ -68,12 +75,15 @@ function manejarRespuesta(respuesta) {
     let salida = document.querySelector("#salida");
     if (!respuesta) {
         //El usuario no existe.
+        //Agrego la clase para resaltar en rojo el mensaje de error.
+        salida.classList.add('alert', 'alert-danger');
         salida.innerHTML = "Error. Comprueba los datos.";
     } else {
         //Compruebo que el usuario no este dado de baja.
         if (respuesta.activo == 0) {
+            //Agrego la clase para resaltar en rojo el mensaje de error.
+            salida.classList.add('alert', 'alert-danger');
             salida.innerHTML = "Error. Usuario dado de baja.";
-
         } else {
             //Si todo va bien guardo el usuario en la sesion.
             localStorage.setItem("usuario", JSON.stringify({ nombre: respuesta.nombre, tipo: respuesta.admin, activo: respuesta.activo, clavePrimaria: respuesta.id_usuarios }));
@@ -81,36 +91,30 @@ function manejarRespuesta(respuesta) {
             //Ahora hay que comprobar si es administrador.
             if (respuesta.admin == 1) {
                 //Si es administrador o usuario, impirmo si mensaje correspondiente y hago una redireccion a los dos segundos.
-                    window.location.replace("./src/admin/inicioAdmin.html");
+                window.location.replace("./src/admin/inicioAdmin.html");
             } else {
-                    window.location.replace("./src/usuario/inicioUsuario.html");
+                window.location.replace("./src/usuario/inicioUsuario.html");
             }
         }
     }
 }
 
-function comprobarVacio(usuario, contraseña) {
+function comprobarEntrada(e) {
+    let entrada = this.value;
+    if (comprobarVacio(entrada)) {
+        this.classList.remove("is-invalid");
+    } else {
+        this.classList.add("is-invalid");
+    }
+}
+
+function comprobarVacio(texto) {
     let respuesta = false;
-    usuario = usuario.trim();
-    contraseña = contraseña.trim();
+    texto = texto.trim();
 
     // Comprueba si alguno de los campos estan vacios.
-    if (usuario.length > 0 && contraseña.length > 0) {
+    if (texto.length > 0) {
         respuesta = true;
     }
     return respuesta;
-}
-
-function crearElemento(etiqueta, contenido, atributos) {
-    let elementoNuevo = document.createElement(etiqueta);
-    if (contenido !== undefined) {
-        let contenidoNuevo = document.createTextNode(contenido);
-        elementoNuevo.appendChild(contenidoNuevo);
-    }
-    if (atributos !== undefined) {
-        for (let clave in atributos) {
-            elementoNuevo.setAttribute(clave, atributos[clave]);
-        }
-    }
-    return elementoNuevo;
 }
