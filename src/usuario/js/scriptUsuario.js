@@ -458,20 +458,20 @@ function manejadorCategoria(e) {
 }
 
 function manejadorFiltro(e) {
-    let nombre = document.getElementById("FiltroBuscadorNombre").value.trim();
-    nombre = nombre === "" ? null : nombre;
+    let nombre = document.getElementById("filtroBuscadorNombre").value.trim();
+    let categoria = document.getElementById("filtroDesplegableCategoria").value;
+    let unidades = document.getElementById("filtroDesplegableUnidades").value;
 
-    let categoria = document.getElementById("FiltroDesplegableCategoria").value;
-    categoria = categoria === "" ? null : categoria;
+    // Si la opción por defecto está seleccionada, asigna null
+    if (categoria === "Categorías") {
+        categoria = null;
+    }
+    if (unidades === "Ud. de medida") {
+        unidades = null;
+    }
 
-    let unidades = document.getElementById("FiltroDesplegableUnidades").value;
-    unidades = unidades === "" ? null : unidades;
-
-    imprimirFiltroTabla(nombre, categoria, unidades);
     imprimirTablaProductos(nombre, categoria, unidades);
 }
-
-
 
 function filtroCategoria(id_categoriaRecibido) {
     //Contenedor principal de la pagina.
@@ -522,23 +522,14 @@ function imprimirFiltroTabla(nombre = null, categoria = null, unidades = null) {
         id: "filtro"
     });
 
-    // Crear el campo de texto para el nombre
-    let inputNombre = crearElemento("input", undefined, {
-        id: "FiltroBuscadorNombre",
-        type: "text",
-        placeholder: "Filtro",
-        value: nombre || ""
-    });
-    inputNombre.addEventListener("input", manejadorFiltro);
-    contenedorFiltro.appendChild(inputNombre);
-
     // Crear el desplegable para las categorías
     let selectCategoria = crearElemento("select", undefined, {
-        id: "FiltroDesplegableCategoria"
+        id: "filtroDesplegableCategoria",
+        class: "form-select selectFiltros"
     });
     selectCategoria.addEventListener("change", manejadorFiltro);
     let optionDefaultCategoria = document.createElement("option");
-    optionDefaultCategoria.text = "Todas las categorías";
+    optionDefaultCategoria.text = "Categorías";
     selectCategoria.add(optionDefaultCategoria);
     let categorias = [...new Set(todosProductos.map(producto => producto.id_categoria))];
     categorias.forEach(id => {
@@ -554,11 +545,12 @@ function imprimirFiltroTabla(nombre = null, categoria = null, unidades = null) {
 
     // Crear el desplegable para las unidades
     let selectUnidades = crearElemento("select", undefined, {
-        id: "FiltroDesplegableUnidades"
+        id: "filtroDesplegableUnidades",
+        class: "form-select selectFiltros"
     });
     selectUnidades.addEventListener("change", manejadorFiltro);
     let optionDefaultUnidades = document.createElement("option");
-    optionDefaultUnidades.text = "Todas las unidades";
+    optionDefaultUnidades.text = "Ud. de medida";
     selectUnidades.add(optionDefaultUnidades);
     let unidadesFiltro = [...new Set(todosProductos.map(producto => producto.nombre_unidades))];
     unidadesFiltro.forEach(unidad => {
@@ -572,25 +564,24 @@ function imprimirFiltroTabla(nombre = null, categoria = null, unidades = null) {
     contenedorFiltroSelect.appendChild(selectUnidades);
     contenedorFiltro.appendChild(contenedorFiltroSelect);
 
+    // Crear el campo de texto para el nombre
+    let inputNombre = crearElemento("input", undefined, {
+        id: "filtroBuscadorNombre",
+        type: "text",
+        placeholder: "Buscar por nombre de producto...",
+        class: "form-control filtroBuscador",
+        value: nombre || ""
+    });
+    inputNombre.addEventListener("input", manejadorFiltro);
+    contenedorFiltro.appendChild(inputNombre);
+
     // Añadir el contenedor del filtro al DOM
     parteInferior.appendChild(contenedorFiltro);
 }
 
 function imprimirTablaProductos(nombre = null, categoria = null, unidades = null) {
-    // Esta variable es un array de objetos literales, cada objeto tiene los datos del producto y categorias.
-    // Cada producto tiene este formato:
-    // producto = {
-    //     id_categoria: Id_categoria,
-    //     imagen_categoria: Imagen_categoria,
-    //     nombre_producto: nombre_producto,
-    //     nombre_categoria: nombre_categoria,
-    //     nombre_unidades: nombre_unidades,
-    //     nombre_observaciones: nombre_observaciones
-    // }
     let todosProductos = JSON.parse(localStorage.getItem("todosProductos"));
 
-    //Contenedor para la tabla de productos
-    //Se crea el contenedor principal si no existe, si existe se limpia su conotenido.
     let contenedorTablaProductos = document.querySelector("#contenedorTablaProductos");
     if (contenedorTablaProductos == null) {
         contenedorTablaProductos = crearElemento("div", undefined, {
@@ -601,19 +592,14 @@ function imprimirTablaProductos(nombre = null, categoria = null, unidades = null
         contenedorTablaProductos.innerHTML = "";
     }
 
-
-    // Crear la tabla
     let tabla = crearElemento("table", undefined, {
         id: "tabla",
-        class: "table table-responsive table-hover"
+        class: "table table-responsive table-hover mt-4"
     });
     let tablaHead = crearElemento("thead");
     let tablaBody = crearElemento("tbody");
 
-    // Crear la fila de encabezado
     let filaHead = crearElemento("tr");
-
-    // Crear el checkbox en la primera celda de encabezado
     let celdaCheckbox = crearElemento("th");
     let inputCheckbox = crearElemento("input", undefined, {
         type: "checkbox",
@@ -622,45 +608,41 @@ function imprimirTablaProductos(nombre = null, categoria = null, unidades = null
     celdaCheckbox.appendChild(inputCheckbox);
     filaHead.appendChild(celdaCheckbox);
 
-    // Crear las celdas de encabezado restantes
     let titulos = ["Producto", "Categoría", "Unidades", "Observaciones", ""];
     titulos.forEach(titulo => {
         let celdaHead = crearElemento("th", titulo);
         filaHead.appendChild(celdaHead);
     });
 
-    // Recorrer todos los productos y agregarlos a la tabla si son de la misma categoría recibida
     for (let i = 0; i < todosProductos.length; i++) {
-        // Filtrar los productos basado en los argumentos
-        if ((nombre == null || todosProductos[i]["nombre_producto"] == nombre) &&
-            (categoria == null || todosProductos[i]["id_categoria"] == categoria) &&
-            (unidades == null || todosProductos[i]["nombre_unidades"] == unidades)) {
+        let filaBody = crearElemento("tr");
 
-            let filaBody = crearElemento("tr");
+        let celdaCheckbox = crearElemento("td");
+        let inputCheckbox = crearElemento("input", undefined, {
+            type: "checkbox",
+            class: "genericoCheck"
+        });
+        celdaCheckbox.appendChild(inputCheckbox);
+        filaBody.appendChild(celdaCheckbox);
 
-            let celdaCheckbox = crearElemento("td");
-            let inputCheckbox = crearElemento("input", undefined, {
-                type: "checkbox",
-                class: "genericoCheck"
-            });
-            celdaCheckbox.appendChild(inputCheckbox);
-            filaBody.appendChild(celdaCheckbox);
+        let datosProducto = [
+            todosProductos[i]["nombre_producto"],
+            todosProductos[i]["nombre_categoria"],
+            todosProductos[i]["nombre_unidades"],
+            todosProductos[i]["nombre_observaciones"]
+        ];
 
-            let datosProducto = [
-                todosProductos[i]["nombre_producto"],
-                todosProductos[i]["nombre_categoria"],
-                todosProductos[i]["nombre_unidades"],
-                todosProductos[i]["nombre_observaciones"]
-            ];
+        if ((nombre === null || todosProductos[i]["nombre_producto"].toLowerCase().includes(nombre.toLowerCase())) &&
+            (categoria === null || todosProductos[i]["id_categoria"] == categoria) &&
+            (unidades === null || todosProductos[i]["nombre_unidades"] == unidades)) {
+
             datosProducto.forEach((dato, index) => {
                 let celdaBody = crearElemento("td");
 
-                // Si estamos en la columna "nombre_categoria", agregamos la imagen de la categoría
                 if (index === 1) {
                     let imagenCategoria = crearElemento("img", undefined, {
                         src: `../../../assets/img/categorias/${todosProductos[i]["imagen_categoria"]}`,
-                        width: "30px",
-                        class: "categoriaImgTabla"
+                        width: "35px",
                     });
                     celdaBody.appendChild(imagenCategoria);
                 }
@@ -673,7 +655,7 @@ function imprimirTablaProductos(nombre = null, categoria = null, unidades = null
                 type: "number",
                 value: "0",
                 id: "inputCantidad",
-                class: "form-control form-control-sm mr-2"
+                class: "form-control form-control-sm"
             });
             let botonAñadir = crearElemento("input", undefined, {
                 type: "submit",
@@ -688,16 +670,10 @@ function imprimirTablaProductos(nombre = null, categoria = null, unidades = null
         }
     }
 
-    // Agregar la fila de encabezado a la sección de encabezado de la tabla
     tablaHead.appendChild(filaHead);
-
-    // Agregar las secciones de encabezado y cuerpo a la tabla
     tabla.appendChild(tablaHead);
     tabla.appendChild(tablaBody);
 
-    // Agregar la tabla al contenedor de contenido de categoría
     contenedorTablaProductos.appendChild(tabla);
-
-    // Agregar el contenido de categoría al contenedor principal
     contenedor.appendChild(contenedorTablaProductos);
 }
