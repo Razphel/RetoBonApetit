@@ -508,6 +508,9 @@ function filtroCategoria(id_categoriaRecibido) {
 function imprimirFiltroTabla(nombre = null, categoria = null, unidades = null) {
     let todosProductos = JSON.parse(localStorage.getItem("todosProductos"));
     let parteInferior = document.querySelector("#parteInferior");
+    let contenedorFiltroSelect = crearElemento("div", undefined, {
+        id: "contenedorFiltroSelect"
+    })
 
     // Crear el contenedor del filtro
     // Se renueva el filtro.
@@ -547,7 +550,7 @@ function imprimirFiltroTabla(nombre = null, categoria = null, unidades = null) {
         }
         selectCategoria.add(optionCategoria);
     });
-    contenedorFiltro.appendChild(selectCategoria);
+    contenedorFiltroSelect.appendChild(selectCategoria);
 
     // Crear el desplegable para las unidades
     let selectUnidades = crearElemento("select", undefined, {
@@ -566,7 +569,8 @@ function imprimirFiltroTabla(nombre = null, categoria = null, unidades = null) {
         }
         selectUnidades.add(optionUnidad);
     });
-    contenedorFiltro.appendChild(selectUnidades);
+    contenedorFiltroSelect.appendChild(selectUnidades);
+    contenedorFiltro.appendChild(contenedorFiltroSelect);
 
     // Añadir el contenedor del filtro al DOM
     parteInferior.appendChild(contenedorFiltro);
