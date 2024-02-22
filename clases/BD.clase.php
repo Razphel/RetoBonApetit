@@ -138,22 +138,6 @@ class BD
         return $filas;
     }
 
-    public static function insertarCategoria()
-    {
-        $resultado = false;
-        try {
-            $conexion = self::conexionBD();
-            $descripcionCategoria = $_REQUEST['descripcionCategoria'];
-            $observacionesCategoria = $_REQUEST['observacionesCategoria'];
-            $imagenesCategoria = $_REQUEST['imagenesCategoria'];
-            $sql = "INSERT INTO tabla_categoria (descripcion, observaciones, imagenes) VALUES ($descripcionCategoria, $observacionesCategoria, $imagenesCategoria)";
-            $consulta = $conexion->exec($sql);
-
-        } catch (Exception $e) {
-            throw new Exception("ERROR: " + $e);
-        }
-    }
-
     //Con la intencionalidad de que la siguiente funcion sea capaz de insertar datos en cualquier tabla, pasaremos por parametro el nombre de la tabla y un array asociativo en el cual 
     //el array_key serán los campos del registro y el valor asociado serán los datos que queremos introducir en la base de datos
     public static function insertarRegistro($tabla,$datos)
@@ -189,17 +173,16 @@ class BD
         }
     }
 
-    public static function actualizarRegistro($tabla,$datos)
+    public static function actualizarRegistro($tabla,$datos,$id)
     {   
         try {
             $conexion = self::conexionBD();
-            $columnas = implode(', ', array_keys($datos));
-            // var_dump(array_keys($datos));
-            // echo "<br>".$columnas;
-            //Con array_fill indicaremos que la cadena empiece en la posicion 0, tendrá la misma longitud que el numero de datos que haya
-            $valores = implode(', ', array_fill(0, count($datos), '?'));
-
-            $sql = "INSERT INTO $tabla ($columnas) VALUES ($valores)";
+            foreach ($datos as $columna => $value) 
+            {
+                $columnas_valores[] = "$columna = ?";
+            }
+            $columnas_valores = implode(",", $columnas_valores);
+            $sql = "UPDATE $tabla SET $columnas_valores WHERE id_$tabla = $id";
             $consulta = $conexion->prepare($sql);
     
             // Ejecutar la consulta preparada con los valores
@@ -229,4 +212,11 @@ class BD
     // ];
     // BD::insertarRegistro("categorias",$datos2);
     // BD::eliminarRegistro("usuarios",7);
-?>
+    // $datos3 = [
+    //     "descripcion" => "ODIOELMARISCO",
+    //     "imagenes" => "marisco.png",
+    //     "observaciones" => "VIVA EL PESCADO"
+    // ];
+    // $id = 7;
+    // BD::actualizarRegistro("categorias",$datos3,$id);
+?>  

@@ -90,9 +90,10 @@ function formNewCategoria(descripcion,imagen,observacion)
     $.ajax({
         type: "POST",
         url: "./php/consultaUsuario.php",
-        data: {
-          datos: parametros
-        },
+        // data: {
+        //   datos: parametros
+        // },
+        data: "datos=" + JSON.stringify(parametros)
       }).done(function (a) {
         console.log(a);
         console.log("hecho");
