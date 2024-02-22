@@ -458,13 +458,19 @@ function manejadorCategoria(e) {
 }
 
 function manejadorFiltro(e) {
-    let nombre = document.getElementById("FiltroBuscadorNombre").value;
+    let nombre = document.getElementById("FiltroBuscadorNombre").value.trim();
+    nombre = nombre === "" ? null : nombre;
+
     let categoria = document.getElementById("FiltroDesplegableCategoria").value;
+    categoria = categoria === "" ? null : categoria;
+
     let unidades = document.getElementById("FiltroDesplegableUnidades").value;
+    unidades = unidades === "" ? null : unidades;
 
     imprimirFiltroTabla(nombre, categoria, unidades);
     imprimirTablaProductos(nombre, categoria, unidades);
 }
+
 
 
 function filtroCategoria(id_categoriaRecibido) {
