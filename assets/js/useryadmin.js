@@ -34,9 +34,6 @@ function principal() {
         //Redirige al usuario a la página de sesion no existen datos en el localStorage.
         window.location.replace("../../../sesion.html");
     }
-
-    // Boton para cerrar la sesion y redireccionar a la pagina de inicio.
-    document.querySelector("#cerrarSesion").addEventListener("click", cerrarSesion);
 }
 
 function cerrarSesion() {
@@ -76,7 +73,7 @@ function crearFormulario(campos, contenedor) {
     contenedor.appendChild(formulario);
 }
 
-//Consulta general para recibir productos. La funcion devuelve un array de objetos literales con los datos de los productos.
+// Consulta general para recibir productos. La funcion devuelve un array de objetos literales con los datos de los productos.
 function consultarProductos() {
     let parametros = {
         pedirProductos: true

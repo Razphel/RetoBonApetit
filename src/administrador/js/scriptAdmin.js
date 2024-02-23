@@ -19,12 +19,33 @@
 window.addEventListener("load", principal);
 
 function principal() {
+    // Apartado inicio
     document.querySelector("#navInicio").addEventListener("click", navInicio);
+    // Apartado categorías
     document.querySelector("#navCategorias").addEventListener("click", navCategorias);
+        document.querySelector("#navListarCategorias").addEventListener("click", navListarCategorias);
+        document.querySelector("#navAñadirCategoria").addEventListener("click", navAñadirCategoria);
+    // Apartado productos
     document.querySelector("#navProductos").addEventListener("click", navProductos);
+        document.querySelector("#navListarProductos").addEventListener("click", navListarProductos);
+        document.querySelector("#navAñadirProducto").addEventListener("click", navAñadirProducto);
+        document.querySelector("#navUdMedida").addEventListener("click", navUdMedida);
+    // Apartado solicitudes
     document.querySelector("#navSolicitudes").addEventListener("click", navSolicitudes);
+    // Apartado pedidos
     document.querySelector("#navPedidos").addEventListener("click", navPedidos);
+        document.querySelector("#navListarPedidos").addEventListener("click", navListarPedidos);
+        document.querySelector("#navAñadirPedido").addEventListener("click", navAñadirPedido);
+        document.querySelector("#navEstadosPedido").addEventListener("click", navEstadosPedido);
+    // Apartado usuarios
+    document.querySelector("#navUsuarios").addEventListener("click", navUsuarios);
+        document.querySelector("#navListarUsuarios").addEventListener("click", navListarUsuarios);
+        document.querySelector("#navAñadirUsuario").addEventListener("click", navAñadirUsuario);
+    // Apartado proveedores
     document.querySelector("#navProveedores").addEventListener("click", navProveedores);
+        document.querySelector("#navListarProveedores").addEventListener("click", navListarProveedores);
+        document.querySelector("#navAñadirProveedor").addEventListener("click", navAñadirProveedor);
+    // Apartado residuos
     document.querySelector("#navResiduos").addEventListener("click", navResiduos);
 
 

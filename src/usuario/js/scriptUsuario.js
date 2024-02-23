@@ -77,7 +77,7 @@ function navInicio() {
 }
 
 function pagInicio() {
-    
+
 }
 
 
@@ -801,4 +801,46 @@ function mostrarMensajeVacio(titulo, texto, textoBoton) {
     divRow.appendChild(divCol);
 
     return divRow;
+}
+
+function agregarCesta(e) {
+    let todosProductos = JSON.parse(localStorage.getItem("todosProductos"));
+
+    // Separar el id del botón, el índice del producto seleccionado está después del guion bajo.
+    let textoDividido = this.id.split("_");
+    let productoSeleccionado = parseInt(textoDividido[1]);
+
+    // Busco la cantidad de productos a añadir.
+    let cantidadRecibida = parseInt(document.querySelector("#inputCantidad_" + productoSeleccionado).value);
+
+    // Si la cantidad es 0 o menor, no hacemos nada
+    if (cantidadRecibida <= 0) {
+        return;
+    }
+
+    // Obtengo la cesta o creo una nueva si no existe
+    let cesta = JSON.parse(localStorage.getItem("cesta")) || [];
+
+    // Verificar si el producto ya está en la cesta, comparo que sea el mismo producto de la misma categoria.
+    let productoEnCestaIndex = cesta.findIndex(item =>
+        item.nombre_producto === todosProductos[productoSeleccionado].nombre_producto &&
+        item.nombre_categoria === todosProductos[productoSeleccionado].nombre_categoria
+    );
+
+    if (productoEnCestaIndex === -1) {
+        // Si el producto no está en la cesta, agregarlo con la cantidad recibida
+        let nuevoProducto = {
+            ...todosProductos[productoSeleccionado],
+            cantidad: cantidadRecibida
+        };
+        cesta.push(nuevoProducto);
+    } else {
+        // Si el producto ya está en la cesta, sumar la cantidad recibida a la cantidad existente
+        cesta[productoEnCestaIndex].cantidad += cantidadRecibida;
+    }
+
+    // Guardar la cesta actualizada en el almacenamiento local
+    localStorage.setItem("cesta", JSON.stringify(cesta));
+
+    //Despues de agregar elementos en la cesta, compruebo
 }

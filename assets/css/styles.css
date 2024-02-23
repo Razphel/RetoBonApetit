@@ -434,13 +434,16 @@ body {
 }
 
 .nav_container {
+    padding: 10px;
+    border-radius: 4px;
+}
+
+.nav_content {
     width: 100%;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    padding: 10px;
-    border-radius: 4px;
 }
 
 .nav_container:hover {
