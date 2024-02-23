@@ -70,7 +70,7 @@ function pagUsuarios(respuesta) {
     let camposFormulario = [
         { etiqueta: 'label', contenido: 'Label 1', atributos: { for: 'input1', class: 'form-label' }},
         { etiqueta: 'input', atributos: { type: 'text', id: 'input1', class: '' }},
-        { etiqueta: 'button', contenido: 'Crear', atributos: { type: 'button', onclick: 'crear()', class: 'button-class' }},
+        { etiqueta: 'input', contenido: 'Crear', atributos: { type: 'submit', onclick: 'crear()', class: 'submit-class' }},
     ]
 */
 
@@ -97,17 +97,17 @@ function navCategorias() {
             class: '' 
         }},
         // Botones................................................
-        { etiqueta: 'button', contenido: 'Cancelar', atributos: { //! revisar tipo de botones y sus eventos
-            type: 'button', 
+        { etiqueta: 'input', contenido: 'Cancelar', atributos: { //! revisar tipo de botones y sus eventos
+            type: 'submit', 
             class: 'btn btn_custom_3', 
             onclick: '' 
         }},
-        { etiqueta: 'button', contenido: 'Limpiar datos', atributos: { 
-            type: 'button', 
+        { etiqueta: 'input', contenido: 'Limpiar datos', atributos: { 
+            type: 'submit', 
             class: 'btn btn_custom_2',
             onclick: '' }},
-        { etiqueta: 'button', contenido: 'Crear categoría', atributos: { 
-            type: 'button', 
+        { etiqueta: 'input', contenido: 'Crear categoría', atributos: { 
+            type: 'submit', 
             class: 'btn btn_custom_1',
             onclick: '' }}
     ];
@@ -140,8 +140,8 @@ function pagUdMedida(respuesta) {
             type: 'text', 
             id: 'newObservacionesMedida',
             class: '' }},
-        { etiqueta: 'button', contenido: 'Crear ud. de medida', atributos: { 
-            type: 'button', 
+        { etiqueta: 'input', contenido: 'Crear ud. de medida', atributos: { 
+            type: 'submit', 
             onclick: '', 
             class: 'btn btn_custom_1' 
         }},
@@ -303,8 +303,8 @@ function pagUsuarios(respuesta) {
             type: 'text', 
             id: 'newObservacionUser',
             class: '' }},
-        { etiqueta: 'button', contenido: 'Crear ud. de medida', atributos: { 
-            type: 'button', 
+        { etiqueta: 'input', contenido: 'Crear ud. de medida', atributos: { 
+            type: 'submit', 
             onclick: '', 
             class: 'btn btn_custom_1' 
         }},
@@ -359,8 +359,8 @@ function pagProveedores(respuesta) {
             type: 'text', 
             id: 'newObservacionesProv',
             class: '' }},
-        { etiqueta: 'button', contenido: 'Crear ud. de medida', atributos: { 
-            type: 'button', 
+        { etiqueta: 'input', contenido: 'Crear ud. de medida', atributos: { 
+            type: 'submit', 
             onclick: '', 
             class: 'btn btn_custom_1' 
         }},
