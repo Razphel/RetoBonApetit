@@ -475,13 +475,6 @@ body {
     align-items: center;
 }
 
-.search_bar {
-    display: flex;
-    flex-direction: row;
-    justify-content: left;
-    align-items: center;
-}
-
 .topbar_left {
     display: flex;
     flex-direction: row;

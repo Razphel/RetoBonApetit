@@ -1,15 +1,30 @@
+/*
+    Páginas del usuario:
+        - Inicio 
+        - Categorías (navCategorias)
+        - Productos (navProductos)
+        - Solicitudes (navSolicitudes)
+        - Pedidos (navPedidos)
+        - Proveedores (navProveedores)
+        - Residuos (navResiduos)
+
+    Funciones comunes para el admin y el usuario (deberían ir en el js de assets):
+        - crearElemento()
+        - crearFormulario()
+        - consultarProductos()
+        - guardarProductos()
+        - pagProductos()
+*/
+
 window.addEventListener("load", principal);
 
 function principal() {
-    if (localStorage.getItem("usuario")) {
-        let usuarioActual = JSON.parse(localStorage.getItem("usuario"));
-        if (usuarioActual.nombre === "") {
-            window.location.replace("../../../sesion.html");
-        }
-    } else {
-        //Redirige al usuario a la pÃ¡gina de sesion no existen datos en el localStorage.
-        window.location.replace("../../../sesion.html");
-    }
+    document.querySelector("#navCategorias").addEventListener("click", navCategorias);
+    document.querySelector("#navProductos").addEventListener("click", navProductos);
+    document.querySelector("#navSolicitudes").addEventListener("click", navSolicitudes);
+    document.querySelector("#navPedidos").addEventListener("click", navPedidos);
+    document.querySelector("#navProveedores").addEventListener("click", navProveedores);
+    document.querySelector("#navResiduos").addEventListener("click", navResiduos);
 }
 
 function mostrarUsuarios(respuesta) {

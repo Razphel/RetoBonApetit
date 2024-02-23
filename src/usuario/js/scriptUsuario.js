@@ -1,5 +1,6 @@
 /*
     Páginas del usuario:
+        - Inicio
         - Productos (navProductos)
         - Pedidos (navPedidos)
         - Proveedores (navProveedores)
@@ -7,6 +8,7 @@
 
     Funciones comunes para el admin y el usuario (deberían ir en el js de assets):
         - crearElemento()
+        - crearFormulario()
         - consultarProductos()
         - guardarProductos()
         - pagProductos()
