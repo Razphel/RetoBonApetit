@@ -219,18 +219,18 @@ class BD
         }
     }
     }
-    $datos1 = [
-        "admin" => "1",
-        "nombre_usuario" => "Coral",
-        "nombre" => "Corey",
-        "apellido" => "Isbell",
-        "email" => "coreyisbell22@gmail.com",
-        "password" => "0000",
-        "activo" => 1,
-        "observaciones" => "es un friki",
-        "telefono" => "666666666"
-    ];
-    BD::insertarRegistro("usuarios",$datos1);
+    // $datos1 = [
+    //     "admin" => "1",
+    //     "nombre_usuario" => "Coral",
+    //     "nombre" => "Corey",
+    //     "apellido" => "Isbell",
+    //     "email" => "coreyisbell22@gmail.com",
+    //     "password" => "0000",
+    //     "activo" => 1,
+    //     "observaciones" => "es un friki",
+    //     "telefono" => "666666666"
+    // ];
+    // BD::insertarRegistro("usuarios",$datos1);
     // $datos2 = [
     //     "descripcion" => "marisco",
     //     "imagenes" => "pesacado.png",
@@ -245,4 +245,5 @@ class BD
     // ];
     // $id = 7;
     // BD::actualizarRegistro("categorias",$datos3,$id);
+    //CREAR CONSULTA QUE IMPRIME LAS TRES ULTIMAS SOLICITUDES PARA EL ADMINISTRADOR
 ?>  

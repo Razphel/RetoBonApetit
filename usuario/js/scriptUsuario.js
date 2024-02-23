@@ -40,61 +40,56 @@ function principal() {
     formulario.appendChild(inputObservaciones);
     formulario.appendChild(botonDeMierda);
 
-    let parametros = {
-        claveUsuarioInicioSolicitud: true
-    };
-    $.ajax({
-        //Ubicacion del archivo php que va a manejar los valores.
-        url: "./php/consultaUsuario.php",
-        //Metodo en que los va a recibir.
-        type: "GET",
-        data: parametros,
-        dataType: "json",
-        success: mostrarSolicitudesInicio,
-        error: function (jqXHR, textStatus, errorThrown) {
-            console.error("Error en la solicitud AJAX: " + textStatus, errorThrown);
-        }
-    });
-}
-
-function insertado()
-{   
-    let contenedor = document.querySelector("#contenedor");
-    let mensaje = crearElemento("div","SE HA INSERTADO CORRECTAMENTE",{id:"mensajeInsertado",style:"color: green"})
-    contenedor.appendChild(mensaje);
+    // let parametros = {
+    //     claveUsuarioInicioSolicitud: true
+    // };
+    // $.ajax({
+    //     //Ubicacion del archivo php que va a manejar los valores.
+    //     url: "./php/consultaUsuario.php",
+    //     //Metodo en que los va a recibir.
+    //     type: "GET",
+    //     data: parametros,
+    //     dataType: "json",
+    //     success: mostrarSolicitudesInicio,
+    //     error: function (jqXHR, textStatus, errorThrown) {
+    //         console.error("Error en la solicitud AJAX: " + textStatus, errorThrown);
+    //     }
+    // });
 }
 
 function botonMierda()
-{
+{   
     let descripcion = document.querySelectorAll("#descripcionCategoria")[1].value;
     let imagen = document.querySelectorAll("#imagenesCategoria")[1].value;
     let observacion = document.querySelectorAll("#observacionesCategoria")[1].value;
     formNewCategoria(descripcion,imagen,observacion);
 }
- 
 
-// function formNewCategoria(descripcion,imagen,observacion)
-// {   
-//     console.log("MONDONGO");
-//     let parametros = {
-//         descripcion: descripcion,
-//         imagen: imagen,
-//         observacion: observacion
-//     };
-//     $.ajax({
-//         //Ubicacion del archivo php que va a manejar los valores.
-//         url: "./php/consultaUsuario.php",
-//         //Metodo en que los va a recibir.
-//         type: "POST",
-//         data: {parametros},
-//         dataType: 'json',
-//         success: console.log(parametros),
-//         error: function (jqXHR, textStatus, errorThrown) {
-//             console.error("Error en la solicitud AJAX: " + textStatus, errorThrown);
-//         }
-//     });
-// }
 function formNewCategoria(descripcion,imagen,observacion)
+{   
+    let parametros = {
+        descripcion: descripcion,
+        imagenes: imagen,
+        observaciones: observacion
+    };
+    console.log(parametros);
+    $.ajax({
+        type: "POST",
+        url: "./php/consultaUsuario.php",
+        // data: {
+        //   datos: parametros
+        // },
+        data: "datos=" + JSON.stringify(parametros),
+        error: function(a,b,errorMsg) {
+            console.log(errorMsg);
+        }
+      }).done(function (a) {
+        console.log(a);
+        console.log("hecho");
+      });
+}
+
+function newSolicitud()
 {   
     let parametros = {
         descripcion: descripcion,
@@ -126,19 +121,19 @@ function cerrarSesion() {
     }, 500);
 }
 
-function mostrarSolicitudesInicio() {
+function mostrarSolicitudesInicio(solicitudesInicio) {
     
     let contenedor = document.querySelector("#contenedor");
     let contador = 0;
     contenedor.innerHTML = "";
     let contenedorSolicitudesInicio = crearElemento("div",undefined,{id:"ContProveedores",class:"col-3",style:"border:2px black solid; padding:5px"});
-    proveedores.forEach(fila => {
-        let proveedor = crearElemento("p",undefined,{id:contenedor});
+    solicitudesInicio.forEach(fila => {
+        let solicitud = crearElemento("p",undefined,{id:contenedor});
         for (let i = 0; i < Object.keys(fila).length/2; i++) 
         {   
-            proveedor.innerHTML += fila[i] + " ";
+            solicitud.innerHTML += fila[i] + " ";
         }
-        contenedorSolicitudesInicio.appendChild(proveedor);
+        contenedorSolicitudesInicio.appendChild(solicitud);
         contenedor.appendChild(contenedorSolicitudesInicio);
         contador++;
 
