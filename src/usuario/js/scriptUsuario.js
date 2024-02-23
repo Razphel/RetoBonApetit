@@ -293,57 +293,6 @@ function navPedidos() {
     });
 }
 
-function pagPedidos(respuesta) {
-    let contenedor = document.querySelector("#contenedor");
-    contenedor.innerHTML = "";
-
-    let pedidosTopUser = crearElemento("div", undefined, undefined);
-    let h1Pedidos = crearElemento("h1", "Pedidos", {
-        id: "tituloApartado",
-        class: "py-3 mb-3 mt-4"
-    });
-
-    pedidosTopUser.appendChild(h1Pedidos);
-    contenedor.appendChild(pedidosTopUser);
-
-    //Se comprueba primero que exista algo en el historial de solicitudes.
-    if (respuesta[0] != null) {
-        let historial = crearElemento("table", undefined, {
-            id: "historial",
-            style: "border-collapse: collapse;"
-        });
-
-        //Creo los titulos de las tablas.
-        let titulos = crearElemento("tr", undefined, undefined);
-        //Segun el formato en el que se recibe el objeto, tengo que usar sus elementos de la mitad al final.
-        let prueba = Object.keys(respuesta[0]);
-        for (let i = prueba.length / 2; i < prueba.length; i++) {
-            //Creo cada elemento y lo agrego a la fila del titulo.
-            let filaTitulo = crearElemento("th", prueba[i], {
-                style: "padding:5px 30px;"
-            });
-            titulos.appendChild(filaTitulo);
-        }
-
-        //Agrego el titulo a la tabla.
-        historial.appendChild(titulos);
-
-        //Ahora agrego el contenido.
-        respuesta.forEach(fila => {
-            let filaNormal = crearElemento("tr", undefined, undefined);
-            for (let i = 0; i < Object.keys(fila).length / 2; i++) {
-                let elementoFila = crearElemento("td", fila[i], undefined);
-                filaNormal.appendChild(elementoFila);
-            }
-            historial.appendChild(filaNormal);
-        });
-        contenedor.appendChild(historial);
-    } else {
-        let sinHistorial = crearElemento("p", "Historial Vacio.", undefined)
-        contenedor.appendChild(sinHistorial);
-    }
-}
-
 // Página proveedores_________________________________________________________________
 function navProveedores() {
     let parametros = {
@@ -396,6 +345,57 @@ function pagProveedores(proveedores) {
         contador++;
 
     });
+}
+
+function pagPedidos(respuesta) {
+    let contenedor = document.querySelector("#contenedor");
+    contenedor.innerHTML = "";
+
+    let pedidosTopUser = crearElemento("div", undefined, undefined);
+    let h1Pedidos = crearElemento("h1", "Pedidos", {
+        id: "tituloApartado",
+        class: "py-3 mb-3 mt-4"
+    });
+
+    pedidosTopUser.appendChild(h1Pedidos);
+    contenedor.appendChild(pedidosTopUser);
+
+    //Se comprueba primero que exista algo en el historial de solicitudes.
+    if (respuesta[0] != null) {
+        let historial = crearElemento("table", undefined, {
+            id: "historial",
+            style: "border-collapse: collapse;"
+        });
+
+        //Creo los titulos de las tablas.
+        let titulos = crearElemento("tr", undefined, undefined);
+        //Segun el formato en el que se recibe el objeto, tengo que usar sus elementos de la mitad al final.
+        let prueba = Object.keys(respuesta[0]);
+        for (let i = prueba.length / 2; i < prueba.length; i++) {
+            //Creo cada elemento y lo agrego a la fila del titulo.
+            let filaTitulo = crearElemento("th", prueba[i], {
+                style: "padding:5px 30px;"
+            });
+            titulos.appendChild(filaTitulo);
+        }
+
+        //Agrego el titulo a la tabla.
+        historial.appendChild(titulos);
+
+        //Ahora agrego el contenido.
+        respuesta.forEach(fila => {
+            let filaNormal = crearElemento("tr", undefined, undefined);
+            for (let i = 0; i < Object.keys(fila).length / 2; i++) {
+                let elementoFila = crearElemento("td", fila[i], undefined);
+                filaNormal.appendChild(elementoFila);
+            }
+            historial.appendChild(filaNormal);
+        });
+        contenedor.appendChild(historial);
+    } else {
+        let sinHistorial = crearElemento("p", "Historial Vacio.", undefined)
+        contenedor.appendChild(sinHistorial);
+    }
 }
 
 // Página residuos____________________________________________________________________
@@ -790,6 +790,5 @@ function agregarCesta(e) {
     // Guardar la cesta actualizada en el almacenamiento local
     localStorage.setItem("cesta", JSON.stringify(cesta));
 
-    // Aquí puedes realizar otras acciones, como actualizar la visualización de la cesta, etc.
-    console.log(cesta);
+    //Despues de agregar elementos en la cesta, compruebo
 }

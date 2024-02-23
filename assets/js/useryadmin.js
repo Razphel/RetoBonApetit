@@ -41,11 +41,12 @@ function principal() {
 
 function cerrarSesion() {
     localStorage.removeItem("usuario");
-
-    setTimeout(function () {
-        window.location.replace("../../../sesion.html");
-    }, 500);
+    window.location.replace("../../../sesion.html");
 }
+
+
+
+
 
 function crearElemento(etiqueta, contenido, atributos) {
     let elementoNuevo = document.createElement(etiqueta);
@@ -118,35 +119,35 @@ function consultarProductos() {
         }
     });
 
-    function guardarProductos(listaProdutos) {
-        //Creo un array donde guardo todos los productos como objetos literales.
-        let todosProductos = [];
-
-        // Formato de los navProductos.
-        // producto = {
-        //     id_categoria: Id_categoria,
-        //     imagen_categoria: Imagen_categoria,
-        //     nombre_producto: nombre_producto,
-        //     nombre_categoria: nombre_categoria,
-        //     nombre_unidades: nombre_unidades,
-        //     nombre_observaciones: nombre_observaciones
-        // }
-
-        for (let i = 0; i < listaProdutos.length; i++) {
-            //Creo un objeto literal con los datos de cada producto.
-            let producto = {
-                id_categoria: listaProdutos[i].Id_categoria,
-                imagen_categoria: listaProdutos[i].Imagen_categoria,
-                nombre_producto: listaProdutos[i].nombre_producto,
-                nombre_categoria: listaProdutos[i].nombre_categoria,
-                nombre_unidades: listaProdutos[i].nombre_unidades,
-                nombre_observaciones: listaProdutos[i].nombre_observaciones
-            }
-            //Lo agrego al array de productos.
-            todosProductos.push(producto);
-        }
-
-        localStorage.setItem("todosProductos", JSON.stringify(todosProductos));
-    }
 }
 
+function guardarProductos(listaProdutos) {
+    //Creo un array donde guardo todos los productos como objetos literales.
+    let todosProductos = [];
+
+    // Formato de los navProductos.
+    // producto = {
+    //     id_categoria: Id_categoria,
+    //     imagen_categoria: Imagen_categoria,
+    //     nombre_producto: nombre_producto,
+    //     nombre_categoria: nombre_categoria,
+    //     nombre_unidades: nombre_unidades,
+    //     nombre_observaciones: nombre_observaciones
+    // }
+
+    for (let i = 0; i < listaProdutos.length; i++) {
+        //Creo un objeto literal con los datos de cada producto.
+        let producto = {
+            id_categoria: listaProdutos[i].Id_categoria,
+            imagen_categoria: listaProdutos[i].Imagen_categoria,
+            nombre_producto: listaProdutos[i].nombre_producto,
+            nombre_categoria: listaProdutos[i].nombre_categoria,
+            nombre_unidades: listaProdutos[i].nombre_unidades,
+            nombre_observaciones: listaProdutos[i].nombre_observaciones
+        }
+        //Lo agrego al array de productos.
+        todosProductos.push(producto);
+    }
+
+    localStorage.setItem("todosProductos", JSON.stringify(todosProductos));
+}
