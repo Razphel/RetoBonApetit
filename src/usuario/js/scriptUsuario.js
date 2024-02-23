@@ -601,11 +601,27 @@ function imprimirFiltroTabla(nombre = null, categoria = null, unidades = null) {
         class: "contenedorFiltroRight"
     });
 
-    let contenedorBuscador = createElement("div", undefined, {
+    let contenedorBuscador = crearElemento("div", undefined, {
         id: "contenedorBuscador",
         class: "contenedorBuscador input-group"
     });
-    
+
+    let contenedorBuscadorIcon = crearElemento("div", undefined, {
+        id: "contenedorBuscadorIcon",
+        class: "contenedorBuscadorIcon input-group-prepend"
+    });
+
+    let contenedorIconBuscador = crearElemento("span", undefined, {
+        class: "input-group-text"
+    });
+
+    let iconBuscador = crearElemento("i", undefined, {
+        class: "bi bi-search"
+    });
+
+    contenedorIconBuscador.appendChild(iconBuscador); 
+    contenedorBuscadorIcon.appendChild(contenedorIconBuscador);
+    contenedorBuscador.appendChild(contenedorBuscadorIcon); 
 
     // Crear el campo de texto para el nombre
     let inputNombre = crearElemento("input", undefined, {
@@ -624,7 +640,8 @@ function imprimirFiltroTabla(nombre = null, categoria = null, unidades = null) {
     });
 
     inputNombre.addEventListener("input", manejadorFiltro);
-    contenedorFiltroRight.appendChild(inputNombre);
+    contenedorBuscador.appendChild(inputNombre); 
+    contenedorFiltroRight.appendChild(contenedorBuscador);
     contenedorFiltroRight.appendChild(botonSolicitud);
 
     contenedorFiltro.appendChild(contenedorFiltroRight);
