@@ -136,8 +136,12 @@ h5 {
     font-size: var(--head-h5);
 }
 
-p {
+p, a {
     font-size: var(--size-p);
+}
+
+a {
+    text-decoration: none;
 }
 
 /* Botones...................................... gen_btn */ 
@@ -252,7 +256,7 @@ td:hover {
     gap: 20px;
 }
 
-.contenedorFiltroSelect {
+.contenedorFiltroLeft {
     width: fit-content;
     display: flex;
     flex-direction: row;
@@ -263,13 +267,22 @@ td:hover {
 
 .filtroBuscador {
     display: inline;
-    width: 20%;
+    width: 100%;
 }
 
 .selectFiltros {
     font-size: var(--size-p);
     display: inline;
     width: fit-content;
+}
+
+.contenedorFiltroRight {
+    width: fit-content; 
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+    align-items: center;
+    gap: 20px;
 }
 
 /* Formularios................................... gen_forms */
@@ -501,6 +514,10 @@ body {
     gap: 10px;
 }
 
+.topbar_profile:hover {
+    cursor: pointer;
+}
+
 .topbar_profile_info {
     display: flex;
     flex-direction: column;
@@ -513,6 +530,14 @@ body {
 
 .topbar_profile_account {
     font-size: var(--head-h5);
+}
+
+.dropdown-menu {
+    display: none;
+}
+
+.dropdown:hover .dropdown-menu {
+    display: block;
 }
 
 /* Main............................................ gen_main */

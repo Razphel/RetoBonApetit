@@ -509,7 +509,7 @@ function imprimirFiltroTabla(nombre = null, categoria = null, unidades = null) {
     let todosProductos = JSON.parse(localStorage.getItem("todosProductos"));
     let parteInferior = document.querySelector("#parteInferior");
 
-    let contenedorFiltroLabelySelect = crearElemento("div", undefined, { // contiene el div contenedorFiltroLabel y contenedorFiltroSelect
+    let contenedorFiltroLabelySelect = crearElemento("div", undefined, { // contiene el div contenedorFiltroLabel y contenedorFiltroLeft
         id: "contenedorFiltroLabelySelect",
         class: "contenedorFiltroLabelySelect"
     });
@@ -530,9 +530,9 @@ function imprimirFiltroTabla(nombre = null, categoria = null, unidades = null) {
     contenedorFiltroLabel.appendChild(iconoFiltros);
     contenedorFiltroLabel.appendChild(labelFiltros);
 
-    let contenedorFiltroSelect = crearElemento("div", undefined, {
-        id: "contenedorFiltroSelect",
-        class: "contenedorFiltroSelect"
+    let contenedorFiltroLeft = crearElemento("div", undefined, {
+        id: "contenedorFiltroLeft",
+        class: "contenedorFiltroLeft"
     });
 
     // Crear el contenedor del filtro
@@ -552,6 +552,7 @@ function imprimirFiltroTabla(nombre = null, categoria = null, unidades = null) {
         id: "filtroDesplegableCategoria",
         class: "form-select selectFiltros"
     });
+
     selectCategoria.addEventListener("change", manejadorFiltro);
     let optionDefaultCategoria = document.createElement("option");
     optionDefaultCategoria.text = "Categorías";
@@ -566,13 +567,15 @@ function imprimirFiltroTabla(nombre = null, categoria = null, unidades = null) {
         }
         selectCategoria.add(optionCategoria);
     });
-    contenedorFiltroSelect.appendChild(selectCategoria);
+
+    contenedorFiltroLeft.appendChild(selectCategoria);
 
     // Crear el desplegable para las unidades
     let selectUnidades = crearElemento("select", undefined, {
         id: "filtroDesplegableUnidades",
         class: "form-select selectFiltros"
     });
+
     selectUnidades.addEventListener("change", manejadorFiltro);
     let optionDefaultUnidades = document.createElement("option");
     optionDefaultUnidades.text = "Ud. de medida";
@@ -586,12 +589,23 @@ function imprimirFiltroTabla(nombre = null, categoria = null, unidades = null) {
         }
         selectUnidades.add(optionUnidad);
     });
-    contenedorFiltroSelect.appendChild(selectUnidades);
+    contenedorFiltroLeft.appendChild(selectUnidades);
 
     contenedorFiltroLabelySelect.appendChild(contenedorFiltroLabel);
-    contenedorFiltroLabelySelect.appendChild(contenedorFiltroSelect);
+    contenedorFiltroLabelySelect.appendChild(contenedorFiltroLeft);
 
     contenedorFiltro.appendChild(contenedorFiltroLabelySelect);
+
+    let contenedorFiltroRight = crearElemento("div", undefined, {
+        id: "contenedorFiltroRight",
+        class: "contenedorFiltroRight"
+    });
+
+    let contenedorBuscador = createElement("div", undefined, {
+        id: "contenedorBuscador",
+        class: "contenedorBuscador input-group"
+    });
+    
 
     // Crear el campo de texto para el nombre
     let inputNombre = crearElemento("input", undefined, {
@@ -601,8 +615,19 @@ function imprimirFiltroTabla(nombre = null, categoria = null, unidades = null) {
         class: "form-control filtroBuscador",
         value: nombre || ""
     });
+
+    let botonSolicitud = crearElemento("input", undefined, {
+        type: "submit",
+        id: "botonSolicitud",
+        class: "btn btn_custom_1",
+        value: "Hacer solicitud"
+    });
+
     inputNombre.addEventListener("input", manejadorFiltro);
-    contenedorFiltro.appendChild(inputNombre);
+    contenedorFiltroRight.appendChild(inputNombre);
+    contenedorFiltroRight.appendChild(botonSolicitud);
+
+    contenedorFiltro.appendChild(contenedorFiltroRight);
 
     // Añadir el contenedor del filtro al DOM
     parteInferior.appendChild(contenedorFiltro);
