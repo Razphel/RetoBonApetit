@@ -6,7 +6,7 @@ function principal() {
         let usuarioActual = JSON.parse(localStorage.getItem("usuario"));
         //Si es admin, redirecciona a la pagina de administradores.
         if (usuarioActual.tipo == 1) {
-            window.location.replace("./src/admin/inicioAdmin.html");
+            window.location.replace("./src/administrador/inicioAdmin.html");
         }
         //Si no, te lleva a los usuarios.
         if (usuarioActual.tipo == 0) {

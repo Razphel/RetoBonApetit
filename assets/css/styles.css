@@ -384,6 +384,14 @@ body {
     background-color: var(--aside-back);
 }
 
+.sidebar_user {
+    width: 200px;
+}
+
+.sidebar_admin {
+    width: 230px;
+}
+
 .sidebar_top {
     padding-left: 10px;
     background-color: white;
