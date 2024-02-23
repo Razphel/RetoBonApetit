@@ -8,13 +8,11 @@
         cada script (user y admin) y se sobreescribe para adaptarlo 
         a cada perfil
 
-        //! función dinámica para consultar cualquier dato de la BBDD
         - consultarCategorias()
         - consultarProductos()
         - consultarPedidos()
         - consultarProveedores()
 
-        //! función dinámica para mostrar cualquier dato de la BBDD
         - mostrarCategorias()
         - mostrarProductos()
         - mostrarPedidos()
@@ -58,7 +56,10 @@ function crearElemento(etiqueta, contenido, atributos) {
     return elementoNuevo;
 }
 
-
+/* Función dinámica para crear formularios
+    - elementoPadre (se especifica el elemento HTML en el cual se va a insertar el formulario)
+    - campos(recibe un array de objetos con todos los elementos a incluir en el formulario)
+*/
 function crearFormulario(campos, contenedor) {
     const formulario = document.createElement('form');
 

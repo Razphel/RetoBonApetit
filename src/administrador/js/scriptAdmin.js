@@ -1,19 +1,31 @@
 /*
-    Páginas del usuario:
-        - Inicio 
-        - Categorías (navCategorias)
-        - Productos (navProductos)
-        - Solicitudes (navSolicitudes)
-        - Pedidos (navPedidos)
-        - Proveedores (navProveedores)
-        - Residuos (navResiduos)
+    Páginas del administrador:
+        - Inicio________________________________________________ navInicio() -> pagInicio()
+        - Categorías____________________________________________ navCategorias() -> pagCategorias()
+            - Listar categorías................... navListarCategorias() -> pagListarCategorias()
+            - Añadir categoría.................... navAñadirCategoria() -> pagAñadirCategoria()
+        - Productos_____________________________________________ navProductos() -> pagProductos()
+            - Listar productos.................... navListarProductos() -> pagListarProductos()
+            - Añadir producto..................... navAñadirProducto() -> pagAñadirProducto()
+            - Ud. de medida....................... navUdMedida() -> pagUdMedida()
+        - Solicitudes___________________________________________ navSolicitudes() -> pagSolicitudes()
+        - Pedidos_______________________________________________ navPedidos() -> pagPedidos()
+            - Listar pedidos...................... navListarPedidos() -> pagListarPedidos()
+            - Añadir pedido....................... navAñadirPedido() -> pagAñadirPedido()
+        - Usuarios______________________________________________ navUsuarios() -> pagUsuarios()
+            - Listar usuarios..................... navListarUsuarios() -> pagListarUsuarios()
+            - Añadir usuario...................... navAñadirUsuario() -> pagAñadirUsuario()
+        - Proveedores___________________________________________ navProveedores() -> pagProveedores()
+            - Listar proveedores.................. navListarProveedores() -> pagListarProveedores()
+            - Añadir proveedor.................... navAñadirProveedor() -> pagAñadirProveedor()
+        - Residuos______________________________________________ navResiduos() -> pagResiduos()
 
-    Funciones comunes para el admin y el usuario (deberían ir en el js de assets):
+    Funciones comunes para el admin y el usuario (useryadmin.js):
+        - cerrarSesion()
         - crearElemento()
         - crearFormulario()
         - consultarProductos()
         - guardarProductos()
-        - pagProductos()
 */
 
 window.addEventListener("load", principal);
@@ -35,7 +47,7 @@ function principal() {
     // Apartado pedidos
     document.querySelector("#navPedidos").addEventListener("click", navPedidos);
         document.querySelector("#navListarPedidos").addEventListener("click", navListarPedidos);
-        document.querySelector("#navAñadirPedido").addEventListener("click", navAñadirPedido);
+        document.querySelector("#navNuevoPedido").addEventListener("click", navNuevoPedido);
         document.querySelector("#navEstadosPedido").addEventListener("click", navEstadosPedido);
     // Apartado usuarios
     document.querySelector("#navUsuarios").addEventListener("click", navUsuarios);
@@ -47,8 +59,6 @@ function principal() {
         document.querySelector("#navAñadirProveedor").addEventListener("click", navAñadirProveedor);
     // Apartado residuos
     document.querySelector("#navResiduos").addEventListener("click", navResiduos);
-
-
 }
 
 function mostrarUsuarios(respuesta) {
@@ -75,140 +85,128 @@ function mostrarUsuarios(respuesta) {
     });
 }
 
+// Apartado INICIO____________________________________________________________________
 function navInicio() {
-
+    pagInicio(); 
 }
 
-function pagInicio(respuesta) {
-
+function pagInicio() {
 }
 
-function pagUsuarios(respuesta) {
-}
-
-// LAURA FORMULARIOS........................................................................................
-/* Plantilla para crear campos del formulario:
-    let camposFormulario = [
-        { etiqueta: 'label', contenido: 'Label 1', atributos: { for: 'input1', class: 'form-label' }},
-        { etiqueta: 'input', atributos: { type: 'text', id: 'input1', class: '' }},
-        { etiqueta: 'input', contenido: 'Crear', atributos: { type: 'submit', onclick: 'crear()', class: 'submit-class' }},
-    ]
-*/
-
-// ADMIN
-// Formulario 1. Crear categorías
+// Apartado CATEGORÍAS________________________________________________________________
 function navCategorias() { 
-    let camposNewCategoria = [
-        { etiqueta: 'label', contenido: 'Nombre', atributos: {
-            for: 'newNombreCategoria',
-            class: 'form-label'
-        }},
-        { etiqueta: 'input', atributos: { 
-            type: 'text', 
-            id: 'newNombreCategoria',
-            class: '' 
-        }},
-        { etiqueta: 'label', contenido: 'Observaciones', atributos: {
-            for: 'newObservacionCategoria',
-            class: 'form-label'
-        }},
-        { etiqueta: 'input', atributos: { 
-            type: 'text', 
-            id: 'newObservacionCategoria',
-            class: '' 
-        }},
-        // Botones................................................
-        { etiqueta: 'input', contenido: 'Cancelar', atributos: { //! revisar tipo de botones y sus eventos
-            type: 'submit', 
-            class: 'btn btn_custom_3', 
-            onclick: '' 
-        }},
-        { etiqueta: 'input', contenido: 'Limpiar datos', atributos: { 
-            type: 'submit', 
-            class: 'btn btn_custom_2',
-            onclick: '' }},
-        { etiqueta: 'input', contenido: 'Crear categoría', atributos: { 
-            type: 'submit', 
-            class: 'btn btn_custom_1',
-            onclick: '' }}
-    ];
-
-    // Obtener el contenedor donde se agregará el formulario
-    let contenedorFormCategorias = aux; //! crear el contenedor donde insertar el formulario
-    crearFormulario(camposNewCategoria, contenedorFormCategorias);
+    pagAñadirCategoria(); //! cambiar a pagCategorias() 
 }
 
-// Formulario 2. Crear ud. de medida
-function navUdMedida() { // ud. de medida es un apartado del menú "productos"
-    pagUdMedida()
+function pagCategorias() { 
 }
 
-function pagUdMedida() {
+function navListarCategorias() {
+    pagListarCategorias();
+}
+
+function pagListarCategorias() {
+}
+
+function navAñadirCategoria() {
+    pagAñadirCategoria();
+}
+
+// Formulario 1. Crear categorías...................
+function pagAñadirCategoria() { 
     // Contenedor general de la pagina
     let contenedor = document.querySelector("#contenedor");
 
     contenedor.innerHTML = "";
 
     // Título de la página
-    let h1Inicio = crearElemento("h1", "Nueva unidad de medida", {
+    let h1Inicio = crearElemento("h1", "Nueva categoría", {
         id: "tituloApartado",
         class: "py-3 mb-3 mt-4"
     });
 
     contenedor.appendChild(h1Inicio);
 
-    let camposNewMedida = {
+    let camposNewCategoria = {
         nombre: {
             etiqueta: 'label',
             contenido: 'Nombre',
-            atributos: { 
-                for: 'newUdMedida',
+            atributos: {
+                for: 'newNombreCategoria',
                 class: 'form-label'
             }
         },
         inputNombre: {
             etiqueta: 'input',
-            atributos: { 
-                type: 'text', 
-                id: 'newUdMedida',
+            atributos: {
+                type: 'text',
+                id: 'newNombreCategoria',
                 class: 'form-control',
-                placeholder: 'Nombre de la nueva unidad de medida' 
+                placeholder: 'Nombre de la nueva categoría'
             }
         },
         observaciones: {
             etiqueta: 'label',
             contenido: 'Observaciones',
-            atributos: { 
-                for: 'newObservacionesMedida',
+            atributos: {
+                for: 'newObservacionCategoria',
                 class: 'form-label'
             }
         },
         inputObservaciones: {
             etiqueta: 'input',
-            atributos: { 
-                type: 'text', 
-                id: 'newObservacionesMedida',
+            atributos: {
+                type: 'text',
+                id: 'newObservacionCategoria',
                 class: 'form-control',
-                placeholder: 'Observaciones de la nueva unidad de medida' 
+                placeholder: 'Observación de la nueva categoría'
             }
         },
-        btnCrearMedida: {
+        btnCancelar: {
             etiqueta: 'input',
-            atributos: { 
-                type: 'submit', 
-                value: 'Crear ud. de medida',
-                class: 'btn btn_custom_1' 
+            atributos: {
+                type: 'submit',
+                value: 'Cancelar',
+                class: 'btn btn_custom_3'
+            }
+        },
+        btnLimpiarDatos: {
+            etiqueta: 'input',
+            atributos: {
+                type: 'submit',
+                value: 'Limpiar datos',
+                class: 'btn btn_custom_2'
+            }
+        },
+        btnCrearCategoria: {
+            etiqueta: 'input',
+            atributos: {
+                type: 'submit',
+                value: 'Crear categoría',
+                class: 'btn btn_custom_1'
             }
         }
     };
-    crearFormulario(camposNewMedida, contenedor);
+    crearFormulario(camposNewCategoria, contenedor);
 }
-// Formulario 3. Crear producto
+
+// Apartado PRODUCTOS__________________________________________________________________
 function navProductos() {
-    pagProductos();
+    pagAñadirProducto(); //! cambiar a pagProductos()
 }
 
 function pagProductos() {
+}
+
+function navListarProductos() {
+    pagListarProductos(); 
+}
+
+function pagListarProductos() {
+}
+
+// Formulario 2. Crear producto.......................
+function pagAñadirProducto() {
     // Contenedor general de la pagina
     let contenedor = document.querySelector("#contenedor");
 
@@ -334,17 +332,107 @@ function pagProductos() {
             }
         }
     };
-   crearFormulario(camposNewProductos, contenedor);
+    crearFormulario(camposNewProductos, contenedor);
 }
-// Formulario 4. Hacer pedido
+
+// Formulario 3. Crear ud. de medida...................
+function navUdMedida() { 
+    pagUdMedida()
+}
+
+function pagUdMedida() {
+    // Contenedor general de la pagina
+    let contenedor = document.querySelector("#contenedor");
+
+    contenedor.innerHTML = "";
+
+    // Título de la página
+    let h1Inicio = crearElemento("h1", "Nueva unidad de medida", {
+        id: "tituloApartado",
+        class: "py-3 mb-3 mt-4"
+    });
+
+    contenedor.appendChild(h1Inicio);
+
+    let camposNewMedida = {
+        nombre: {
+            etiqueta: 'label',
+            contenido: 'Nombre',
+            atributos: { 
+                for: 'newUdMedida',
+                class: 'form-label'
+            }
+        },
+        inputNombre: {
+            etiqueta: 'input',
+            atributos: { 
+                type: 'text', 
+                id: 'newUdMedida',
+                class: 'form-control',
+                placeholder: 'Nombre de la nueva unidad de medida' 
+            }
+        },
+        observaciones: {
+            etiqueta: 'label',
+            contenido: 'Observaciones',
+            atributos: { 
+                for: 'newObservacionesMedida',
+                class: 'form-label'
+            }
+        },
+        inputObservaciones: {
+            etiqueta: 'input',
+            atributos: { 
+                type: 'text', 
+                id: 'newObservacionesMedida',
+                class: 'form-control',
+                placeholder: 'Observaciones de la nueva unidad de medida' 
+            }
+        },
+        btnCrearMedida: {
+            etiqueta: 'input',
+            atributos: { 
+                type: 'submit', 
+                value: 'Crear ud. de medida',
+                class: 'btn btn_custom_1' 
+            }
+        }
+    };
+    crearFormulario(camposNewMedida, contenedor);
+}
+
+// Apartado PEDIDOS____________________________________________________________________
 function navPedidos() {
-
+    pagNuevoPedido(); //! cambiar a pagPedidos()
 }
 
-function pagPedidos(respuesta) {
-
+function pagPedidos() {
 }
-// Formulario 5. Crear usuario
+
+function navListarPedidos() {
+    pagListarPedidos(); 
+}
+
+function pagListarPedidos() {
+}
+
+// Formulario 4. Hacer pedido...........................
+function navNuevoPedido() {
+    pagNuevoPedido();
+}
+
+function pagNuevoPedido() {
+}
+
+function navEstadosPedido() {
+    pagEstadosPedido(); 
+}
+
+// Formulario 5. Estados de pedido.....................
+function pagEstadosPedido() {
+}
+
+// Apartado USUARIOS____________________________________________________________________
 function navUsuarios() {
     let parametros = {
         claveTodosUsuarios: true
@@ -363,63 +451,136 @@ function navUsuarios() {
     });
 }
 
-function pagUsuarios(respuesta) {
-    let camposNewUsuario = [
-        { etiqueta: 'label', contenido: 'Nombre', atributos: { 
-            for: 'newUsername',
-            class: 'form-label'
-        }},
-        { etiqueta: 'input', atributos: { 
-            type: 'text', 
-            id: 'newUsername',
-            class: '' }},
-        { etiqueta: 'label', contenido: 'Activo', atributos: { 
-            for: 'userActive',
-            class: 'form-label'
-        }},
-        { etiqueta: 'input', atributos: { 
-            type: 'text', //! revisar tipo de input del toggle de usuario activo
-            id: 'userActive',
-            class: '' }},
-        { etiqueta: 'label', contenido: 'Teléfono', atributos: { 
-            for: 'newUserTelefono',
-            class: 'form-label'
-        }},
-        { etiqueta: 'input', atributos: { 
-            type: 'text', 
-            id: 'newUserTelefono',
-            class: '' }},
-        { etiqueta: 'label', contenido: 'Email', atributos: { 
-            for: 'newUserEmail',
-            class: 'form-label'
-        }},
-        { etiqueta: 'input', atributos: { 
-            type: 'email', 
-            id: 'newUserEmail',
-            class: '' }},
-        { etiqueta: 'label', contenido: 'Observaciones', atributos: { 
-            for: 'newObservacionUser',
-            class: 'form-label'
-        }},
-        { etiqueta: 'input', atributos: { 
-            type: 'text', 
-            id: 'newObservacionUser',
-            class: '' }},
-        { etiqueta: 'input', contenido: 'Crear ud. de medida', atributos: { 
-            type: 'submit', 
-            onclick: '', 
-            class: 'btn btn_custom_1' 
-        }},
-    ]
-    // Obtener el contenedor donde se agregará el formulario
-    let contenedorFormUsuario = aux; //! crear el contenedor donde insertar el formulario
-    crearFormulario(camposNewUsuario, contenedorFormUsuario);
-}
-// Formulario 6. Crear proveedor
-function navProveedores() {
+function pagUsuarios() {
 }
 
-function pagProveedores(respuesta) {
+function navListarUsuarios() {
+    pagListarUsuarios(); 
+}
+
+function pagListarUsuarios() {
+}
+
+// Formulario 6. Añadir usuario.....................
+function navAñadirUsuario() {
+    pagAñadirUsuario(); 
+}
+
+function pagAñadirUsuario() {
+    // Contenedor general de la pagina
+    let contenedor = document.querySelector("#contenedor");
+
+    contenedor.innerHTML = "";
+
+    // Título de la página
+    let h1Inicio = crearElemento("h1", "Nuevo producto", {
+        id: "tituloApartado",
+        class: "py-3 mb-3 mt-4"
+    });
+
+    contenedor.appendChild(h1Inicio);
+
+    let camposNewUsuario = {
+        nombre: {
+            etiqueta: 'label',
+            contenido: 'Nombre',
+            atributos: { 
+                for: 'newUsername',
+                class: 'form-label'
+            }
+        },
+        inputNombre: {
+            etiqueta: 'input',
+            atributos: { 
+                type: 'text', 
+                id: 'newUsername',
+                class: 'form-control',
+                placeholder: 'Nombre del nuevo usuario' 
+            }
+        },
+        activo: {
+            etiqueta: 'label',
+            contenido: 'Activo',
+            atributos: { 
+                for: 'userActive',
+                class: 'form-label'
+            }
+        },
+        inputActivo: {
+            etiqueta: 'input',
+            atributos: { 
+                type: 'text', //! revisar tipo de input del toggle de usuario activo
+                id: 'userActive',
+                class: '' 
+            }
+        },
+        telefono: {
+            etiqueta: 'label',
+            contenido: 'Teléfono',
+            atributos: { 
+                for: 'newUserTelefono',
+                class: 'form-label'
+            }
+        },
+        inputTelefono: {
+            etiqueta: 'input',
+            atributos: { 
+                type: 'text', 
+                id: 'newUserTelefono',
+                class: '' 
+            }
+        },
+        email: {
+            etiqueta: 'label',
+            contenido: 'Email',
+            atributos: { 
+                for: 'newUserEmail',
+                class: 'form-label'
+            }
+        },
+        inputEmail: {
+            etiqueta: 'input',
+            atributos: { 
+                type: 'email', 
+                id: 'newUserEmail',
+                class: '' 
+            }
+        },
+        observaciones: {
+            etiqueta: 'label',
+            contenido: 'Observaciones',
+            atributos: { 
+                for: 'newObservacionUser',
+                class: 'form-label'
+            }
+        },
+        inputObservaciones: {
+            etiqueta: 'input',
+            atributos: { 
+                type: 'text', 
+                id: 'newObservacionUser',
+                class: '' 
+            }
+        },
+        btnCrearUsuario: {
+            etiqueta: 'input',
+            contenido: 'Crear ud. de medida',
+            atributos: { 
+                type: 'submit', 
+                onclick: '', 
+                class: 'btn btn_custom_1' 
+            }
+        }
+    };
+    crearFormulario(camposNewUsuario, contenedor);
+}
+
+// Apartado PROVEEDORES___________________________________________________________________
+function navProveedores() {
+    pagAñadirProveedor(); //! cambiar a pagProveedores
+}
+
+function pagProveedores() {
     let camposNewProveedor = [
         { etiqueta: 'label', contenido: 'Nombre', atributos: { 
             for: 'newProvName',
@@ -472,18 +633,25 @@ function pagProveedores(respuesta) {
     crearFormulario(camposNewProveedor, contenedorFormProveedor);
 }
 
+function navListarProveedores() {
+}
+
+function pagListarProveedores() {
+}
+
+function navAñadirProveedor() {
+    pagAñadirProveedor();
+}
+
+// Formulario 7. Añadir proveedor.....................
+function pagAñadirProveedor() {
+
+}
+
+// Apartado RESIDUOS_______________________________________________________________________
 function navResiduos() {
+    pagResiduos(); 
 }
 
-function pagResiduos(respuesta) {
+function pagResiduos() {
 }
-
-// USER
-// Formulario 1. Cesta/Carrito
-// Formulario 2. Enviar solicitud
-
-// HERRAMIENTAS_____________________________________________________________________________________
-/* Función dinámica para crear formularios
-    - elementoPadre (se especifica el elemento HTML en el cual se va a insertar el formulario)
-    - campos(recibe un array de objetos con todos los elementos a incluir en el formulario)
-*/

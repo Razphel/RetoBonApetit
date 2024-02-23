@@ -6,12 +6,12 @@
         - Proveedores (navProveedores)
         - Residuos (navResiduos)
 
-    Funciones comunes para el admin y el usuario (deberían ir en el js de assets):
+    Funciones comunes para el admin y el usuario (useryadmin.js):
+        - cerrarSesion()
         - crearElemento()
         - crearFormulario()
         - consultarProductos()
         - guardarProductos()
-        - pagProductos()
 */
 
 window.addEventListener("load", principal);
@@ -844,3 +844,9 @@ function agregarCesta(e) {
 
     //Despues de agregar elementos en la cesta, compruebo
 }
+
+// FORMULARIOS_____________________________________________________________________________________
+// Formulario 1. Cesta/Carrito
+
+
+// Formulario 2. Enviar solicitud
