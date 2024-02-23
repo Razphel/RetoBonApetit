@@ -236,12 +236,20 @@ td:hover {
 
 .contenedorFiltroLabel {
     width: fit-content;
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+    align-items: center;
+    gap: 10px;
 }
 
 .contenedorFiltroLabelySelect {
+    width: fit-content; 
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    align-items: center;
+    gap: 20px;
 }
 
 .contenedorFiltroSelect {
@@ -422,6 +430,7 @@ body {
     height: 70px;
     width: 100%;
     border-bottom: solid thin rgb(221, 221, 221);
+
     background-color: var(--accent-03);
 }
 
