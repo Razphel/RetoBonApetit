@@ -19,12 +19,15 @@
 window.addEventListener("load", principal);
 
 function principal() {
+    document.querySelector("#navInicio").addEventListener("click", navInicio);
     document.querySelector("#navCategorias").addEventListener("click", navCategorias);
     document.querySelector("#navProductos").addEventListener("click", navProductos);
     document.querySelector("#navSolicitudes").addEventListener("click", navSolicitudes);
     document.querySelector("#navPedidos").addEventListener("click", navPedidos);
     document.querySelector("#navProveedores").addEventListener("click", navProveedores);
     document.querySelector("#navResiduos").addEventListener("click", navResiduos);
+
+
 }
 
 function mostrarUsuarios(respuesta) {
@@ -51,22 +54,15 @@ function mostrarUsuarios(respuesta) {
     });
 }
 
-function navUsuarios() {
-    let parametros = {
-        claveTodosUsuarios: true
-    };
-    $.ajax({
-        //Ubicacion del archivo php que va a manejar los valores.
-        url: "./php/consultaUsuario.php",
-        //Metodo en que los va a recibir.
-        type: "GET",
-        data: parametros,
-        dataType: "json",
-        success: mostrarUsuarios,
-        error: function (jqXHR, textStatus, errorThrown) {
-            console.error("Error en la solicitud AJAX: " + textStatus, errorThrown);
-        }
-    });
+function navInicio() {
+
+}
+
+function pagInicio(respuesta) {
+
+}
+
+function pagUsuarios(respuesta) {
 }
 
 // LAURA FORMULARIOS........................................................................................
@@ -123,6 +119,10 @@ function navCategorias() {
 
 // Formulario 2. Crear ud. de medida
 function navUdMedida() { // ud. de medida es un apartado del menú "productos"
+
+}
+
+function pagUdMedida(respuesta) {
     let camposNewMedida = [
         { etiqueta: 'label', contenido: 'Nombre', atributos: { 
             for: 'newUdMedida',
@@ -152,6 +152,24 @@ function navUdMedida() { // ud. de medida es un apartado del menú "productos"
 }
 // Formulario 3. Crear producto
 function navProductos() {
+    pagProductos();
+}
+
+function pagProductos() {
+    // Contenedor general de la pagina.
+    let contenedor = document.querySelector("#contenedor");
+
+    // Antes que nada, se limpia el contenedor.
+    contenedor.innerHTML = "";
+
+    // Contenedor de botones de categorias y h1 con el titulo de la vista inicio.
+    let h1Inicio = crearElemento("h1", "Nuevo producto", {
+        id: "tituloApartado",
+        class: "py-3 mb-3 mt-4"
+    });
+
+    contenedor.appendChild(h1Inicio);
+
     let camposNewProductos = [
         { etiqueta: 'label', contenido: 'Nombre', atributos: {
             for: 'newNombreProducto',
@@ -160,7 +178,7 @@ function navProductos() {
         { etiqueta: 'input', atributos: { 
             type: 'text', 
             id: 'newNombreProducto',
-            class: '' 
+            class: 'form-control' 
         }},
         { etiqueta: 'label', contenido: 'Categoría', atributos: {
             for: 'newCategoriaAsociada',
@@ -169,7 +187,7 @@ function navProductos() {
         { etiqueta: 'input', atributos: { 
             type: 'text', 
             id: 'newCategoriaAsociada',
-            class: '' 
+            class: 'form-control' 
         }},
         { etiqueta: 'label', contenido: 'Unidad de medida', atributos: {
             for: 'newUnidadAsociada',
@@ -178,7 +196,7 @@ function navProductos() {
         { etiqueta: 'input', atributos: { 
             type: 'text', 
             id: 'newUnidadAsociada',
-            class: '' 
+            class: 'form-control' 
         }},
         { etiqueta: 'label', contenido: 'Residuos', atributos: {
             for: 'newResiduosAsociados',
@@ -187,7 +205,7 @@ function navProductos() {
         { etiqueta: 'input', atributos: { 
             type: 'text', 
             id: 'newResiduosAsociados',
-            class: '' 
+            class: 'form-control' 
         }},
         { etiqueta: 'label', contenido: 'Observaciones', atributos: {
             for: 'newObservacionProducto',
@@ -196,33 +214,54 @@ function navProductos() {
         { etiqueta: 'input', atributos: { 
             type: 'text', 
             id: 'newObservacionProducto',
-            class: '' 
+            class: 'form-control' 
         }},
         // Botones................................................
-        { etiqueta: 'button', contenido: 'Cancelar', atributos: { //! revisar tipo de botones y sus eventos
-            type: 'button', 
+        { etiqueta: 'input', contenido: 'Cancelar', atributos: { //! revisar tipo de botones y sus eventos
+            type: 'submit', 
             class: 'btn btn_custom_3', 
             onclick: '' 
         }},
-        { etiqueta: 'button', contenido: 'Limpiar datos', atributos: { 
-            type: 'button', 
+        { etiqueta: 'input', contenido: 'Limpiar datos', atributos: { 
+            type: 'submit', 
             class: 'btn btn_custom_2',
             onclick: '' }},
-        { etiqueta: 'button', contenido: 'Crear categoría', atributos: { 
-            type: 'button', 
+        { etiqueta: 'input', contenido: 'Crear producto', atributos: { 
+            type: 'submit', 
             class: 'btn btn_custom_1',
             onclick: '' }}
     ]
-    // Obtener el contenedor donde se agregará el formulario
-    let contenedorFormProductos = aux; //! crear el contenedor donde insertar el formulario
-    crearFormulario(camposNewProductos, contenedorFormProductos);
+    // Obtener el contenedor donde se agregará el formulario/! crear el contenedor donde insertar el formulario
+   crearFormulario(camposNewProductos, contenedor);
 }
 // Formulario 4. Hacer pedido
 function navPedidos() {
 
 }
+
+function pagPedidos(respuesta) {
+
+}
 // Formulario 5. Crear usuario
 function navUsuarios() {
+    let parametros = {
+        claveTodosUsuarios: true
+    };
+    $.ajax({
+        //Ubicacion del archivo php que va a manejar los valores.
+        url: "./php/consultaUsuario.php",
+        //Metodo en que los va a recibir.
+        type: "GET",
+        data: parametros,
+        dataType: "json",
+        success: mostrarUsuarios,
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.error("Error en la solicitud AJAX: " + textStatus, errorThrown);
+        }
+    });
+}
+
+function pagUsuarios(respuesta) {
     let camposNewUsuario = [
         { etiqueta: 'label', contenido: 'Nombre', atributos: { 
             for: 'newUsername',
@@ -276,6 +315,9 @@ function navUsuarios() {
 }
 // Formulario 6. Crear proveedor
 function navProveedores() {
+}
+
+function pagProveedores(respuesta) {
     let camposNewProveedor = [
         { etiqueta: 'label', contenido: 'Nombre', atributos: { 
             for: 'newProvName',
@@ -326,6 +368,12 @@ function navProveedores() {
     // Obtener el contenedor donde se agregará el formulario
     let contenedorFormProveedor = aux; //! crear el contenedor donde insertar el formulario
     crearFormulario(camposNewProveedor, contenedorFormProveedor);
+}
+
+function navResiduos() {
+}
+
+function pagResiduos(respuesta) {
 }
 
 // USER

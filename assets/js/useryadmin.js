@@ -78,6 +78,15 @@ function crearFormulario(campos, contenedor) {
         if (contenido !== '') {
             input.value = contenido;
         }
+
+        // Crear etiqueta si el campo lo requiere
+        if (etiqueta !== 'input' && atributos.for) {
+            let label = crearElemento('label');
+            label.textContent = contenido;
+            label.setAttribute('for', atributos.for);
+            formulario.appendChild(label);
+        }
+
         formulario.appendChild(input);
     });
 
@@ -87,6 +96,7 @@ function crearFormulario(campos, contenedor) {
         console.error('El contenedor especificado no es un elemento HTML válido.');
     }
 }
+
 
 //Consulta general para recibir productos. La funcion devuelve un array de objetos literales con los datos de los productos.
 function consultarProductos() {

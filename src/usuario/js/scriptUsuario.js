@@ -72,6 +72,15 @@ function principal() {
 }
 
 // Página de inicio___________________________________________________________________
+function navInicio() {
+    // Poner el AJAX de inicio
+}
+
+function pagInicio() {
+    
+}
+
+
 function inicioCategorias(respuesta) {
     //Contenedor general de la pagina.
     let contenedor = document.querySelector("#contenedor");
