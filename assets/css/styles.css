@@ -457,14 +457,17 @@ body {
 
 /* Header.......................................... gen_header */
 .topbar {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
     height: 70px;
     width: 100%;
     border-bottom: solid thin rgb(221, 221, 221);
-
     background-color: var(--accent-03);
 }
 
 .topbar_container {
+    width: 100%;
     padding: 0 35px 0 40px;
     display: flex;
     flex-direction: row;
