@@ -90,6 +90,17 @@ function crearFormulario(campos, contenedor) {
 
 //Consulta general para recibir productos. La funcion devuelve un array de objetos literales con los datos de los productos.
 function consultarProductos() {
+
+    // Formato de los productos
+    // producto = {
+    //     id_categoria: Id_categoria,
+    //     imagen_categoria: Imagen_categoria,
+    //     nombre_producto: nombre_producto,
+    //     nombre_categoria: nombre_categoria,
+    //     nombre_unidades: nombre_unidades,
+    //     nombre_observaciones: nombre_observaciones
+    // }
+
     let parametros = {
         pedirProductos: true
     };
@@ -110,6 +121,16 @@ function consultarProductos() {
     function guardarProductos(listaProdutos) {
         //Creo un array donde guardo todos los productos como objetos literales.
         let todosProductos = [];
+
+        // Formato de los navProductos.
+        // producto = {
+        //     id_categoria: Id_categoria,
+        //     imagen_categoria: Imagen_categoria,
+        //     nombre_producto: nombre_producto,
+        //     nombre_categoria: nombre_categoria,
+        //     nombre_unidades: nombre_unidades,
+        //     nombre_observaciones: nombre_observaciones
+        // }
 
         for (let i = 0; i < listaProdutos.length; i++) {
             //Creo un objeto literal con los datos de cada producto.
