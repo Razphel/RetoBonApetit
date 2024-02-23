@@ -61,42 +61,20 @@ function crearElemento(etiqueta, contenido, atributos) {
     return elementoNuevo;
 }
 
+
 function crearFormulario(campos, contenedor) {
-    let formulario = crearElemento('form');
+    const formulario = document.createElement('form');
 
-    campos.forEach(campo => {
-        let etiqueta = campo.etiqueta || 'input';
-        let atributos = campo.atributos || {};
-        let contenido = campo.contenido || '';
+    // Recorrer las claves del objeto campos
+    for (const nombreCampo in campos) {
+        const campo = campos[nombreCampo];
+        const elemento = crearElemento(campo.etiqueta, campo.contenido, campo.atributos);
 
-        let input = crearElemento(etiqueta);
-
-        for (let clave in atributos) {
-            input.setAttribute(clave, atributos[clave]);
-        }
-
-        if (contenido !== '') {
-            input.value = contenido;
-        }
-
-        // Crear etiqueta si el campo lo requiere
-        if (etiqueta !== 'input' && atributos.for) {
-            let label = crearElemento('label');
-            label.textContent = contenido;
-            label.setAttribute('for', atributos.for);
-            formulario.appendChild(label);
-        }
-
-        formulario.appendChild(input);
-    });
-
-    if (contenedor instanceof HTMLElement) {
-        contenedor.appendChild(formulario);
-    } else {
-        console.error('El contenedor especificado no es un elemento HTML válido.');
+        // Agregar el elemento al formulario
+        formulario.appendChild(elemento);
     }
+    contenedor.appendChild(formulario);
 }
-
 
 //Consulta general para recibir productos. La funcion devuelve un array de objetos literales con los datos de los productos.
 function consultarProductos() {
