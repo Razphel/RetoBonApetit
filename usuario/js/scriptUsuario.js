@@ -50,12 +50,11 @@ function principal() {
         type: "GET",
         data: parametros,
         dataType: "json",
-        success: mostrarSolicitudes,
+        success: mostrarSolicitudesInicio,
         error: function (jqXHR, textStatus, errorThrown) {
             console.error("Error en la solicitud AJAX: " + textStatus, errorThrown);
         }
     });
-
 }
 
 function insertado()
@@ -95,13 +94,12 @@ function botonMierda()
 //         }
 //     });
 // }
-
 function formNewCategoria(descripcion,imagen,observacion)
 {   
     let parametros = {
         descripcion: descripcion,
-        imagen: imagen,
-        observacion: observacion
+        imagenes: imagen,
+        observaciones: observacion
     };
     console.log(parametros);
     $.ajax({
@@ -110,7 +108,10 @@ function formNewCategoria(descripcion,imagen,observacion)
         // data: {
         //   datos: parametros
         // },
-        data: "datos=" + JSON.stringify(parametros)
+        data: "datos=" + JSON.stringify(parametros),
+        error: function(a,b,errorMsg) {
+            console.log(errorMsg);
+        }
       }).done(function (a) {
         console.log(a);
         console.log("hecho");
@@ -123,6 +124,26 @@ function cerrarSesion() {
     setTimeout(function () {
         window.location.replace("../../html/sesion.html");
     }, 500);
+}
+
+function mostrarSolicitudesInicio() {
+    
+    let contenedor = document.querySelector("#contenedor");
+    let contador = 0;
+    contenedor.innerHTML = "";
+    let contenedorSolicitudesInicio = crearElemento("div",undefined,{id:"ContProveedores",class:"col-3",style:"border:2px black solid; padding:5px"});
+    proveedores.forEach(fila => {
+        let proveedor = crearElemento("p",undefined,{id:contenedor});
+        for (let i = 0; i < Object.keys(fila).length/2; i++) 
+        {   
+            proveedor.innerHTML += fila[i] + " ";
+        }
+        contenedorSolicitudesInicio.appendChild(proveedor);
+        contenedor.appendChild(contenedorSolicitudesInicio);
+        contador++;
+
+    });
+
 }
 
 function mostrarProveedores(proveedores) {

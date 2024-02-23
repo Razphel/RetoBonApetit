@@ -167,7 +167,8 @@ class BD
     //el array_key serán los campos del registro y el valor asociado serán los datos que queremos introducir en la base de datos
     public static function insertarRegistro($tabla,$datos)
     {   
-        try {
+        try 
+        {
             $conexion = self::conexionBD();
             $columnas = implode(', ', array_keys($datos));
             // var_dump(array_keys($datos));
@@ -218,18 +219,18 @@ class BD
         }
     }
     }
-    // $datos1 = [
-    //     "admin" => "1",
-    //     "nombre_usuario" => "Coral",
-    //     "nombre" => "Corey",
-    //     "apellido" => "Isbell",
-    //     "email" => "coreyisbell22@gmail.com",
-    //     "password" => "0000",
-    //     "activo" => 1,
-    //     "observaciones" => "es un friki",
-    //     "telefono" => "666666666"
-    // ];
-    // BD::insertarRegistro("usuarios",$datos1);
+    $datos1 = [
+        "admin" => "1",
+        "nombre_usuario" => "Coral",
+        "nombre" => "Corey",
+        "apellido" => "Isbell",
+        "email" => "coreyisbell22@gmail.com",
+        "password" => "0000",
+        "activo" => 1,
+        "observaciones" => "es un friki",
+        "telefono" => "666666666"
+    ];
+    BD::insertarRegistro("usuarios",$datos1);
     // $datos2 = [
     //     "descripcion" => "marisco",
     //     "imagenes" => "pesacado.png",

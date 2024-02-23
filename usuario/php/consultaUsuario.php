@@ -5,7 +5,6 @@ header('Cache-Control: no-cache, must-revalidate');
 header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
 
 // Indicamos  al navegador que va a recibir contenido JSON
-header("Content-Type: application/json");
 
 if (isset($_REQUEST['claveUsuario'])) {
     $id_usuario = $_REQUEST['claveUsuario'];
@@ -42,10 +41,12 @@ if (isset($_REQUEST['claveTodosUsuarios']))
     $usuarios = BD::imprimirConsultas('usuarios');
     echo json_encode($usuarios);
 }
+
 if(isset($_POST['datos']))
 {   
-    echo("HOLA");
     // echo var_dump($_REQUEST['datos']);
-    // $parametros = $_REQUEST['datos'];
-    // $add = BD::insertarRegistro("categorias",$parametros);
+    //Debemos colocar el true delante para asegurarnos que los datos que le pasmos a la funcion se interpreten como un array asociativo
+    $datosInsertar = json_decode($_REQUEST['datos'],true);
+    // echo var_dump($datosInsertar);
+    $add = BD::insertarRegistro("categorias",$datosInsertar);
 } 

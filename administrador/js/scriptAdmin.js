@@ -53,3 +53,29 @@ function newCategoria()
         }
     });
 }
+function crearFormulario(campos, contenedor) {
+    let formulario = crearElemento('form');
+
+    campos.forEach(campo => {
+        let etiqueta = campo.etiqueta || 'input';
+        let atributos = campo.atributos || {};
+        let contenido = campo.contenido || '';
+
+        let input = crearElemento(etiqueta);
+
+        for (let clave in atributos) {
+            input.setAttribute(clave, atributos[clave]);
+        }
+
+        if (contenido !== '') {
+            input.value = contenido;
+        }
+        formulario.appendChild(input);
+    });
+
+    if (contenedor instanceof HTMLElement) {
+        contenedor.appendChild(formulario);
+    } else {
+        console.error('El contenedor especificado no es un elemento HTML válido.');
+    }
+}
