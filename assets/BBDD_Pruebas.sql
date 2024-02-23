@@ -158,10 +158,14 @@ INSERT INTO residuos (descripcion,observaciones) VALUES ('bolsa de plastico','ob
 INSERT INTO residuos (descripcion,observaciones) VALUES ('botellas de cristal','observacion adolin');
 INSERT INTO residuos (descripcion,observaciones) VALUES ('malla de frutas/hortalizas','observacion sagaz');
 INSERT INTO productos (descripcion,fk_unidad,observaciones) VALUES ('carne de ternera',2,'observacion kaladin');
+INSERT INTO productos (descripcion,fk_unidad,observaciones) VALUES ('chuleton de vaca',2,'chuleton buenardo');
+INSERT INTO productos (descripcion,fk_unidad,observaciones) VALUES ('costillas de cerdo',2,'costillas sabrosongas');
 INSERT INTO productos (descripcion,fk_unidad,observaciones) VALUES ('huevos',1,'observacion dalinar');
 INSERT INTO productos (descripcion,fk_unidad,observaciones) VALUES ('patatas',2,'observacion adolin');
 INSERT INTO productos (descripcion,fk_unidad,observaciones) VALUES ('tomate frito',1,'observacion sagaz');
 INSERT INTO producto_categoria (fk_producto,fk_categoria) VALUES (1,1);
-INSERT INTO producto_categoria (fk_producto,fk_categoria) VALUES (2,4);
-INSERT INTO producto_categoria (fk_producto,fk_categoria) VALUES (3,2);
-INSERT INTO producto_categoria (fk_producto,fk_categoria) VALUES (4,5);
+INSERT INTO producto_categoria (fk_producto,fk_categoria) VALUES (2,1);
+INSERT INTO producto_categoria (fk_producto,fk_categoria) VALUES (3,1);
+INSERT INTO producto_categoria (fk_producto,fk_categoria) VALUES (4,2);
+INSERT INTO producto_categoria (fk_producto,fk_categoria) VALUES (5,3);
+INSERT INTO producto_categoria (fk_producto,fk_categoria) VALUES (6,4);

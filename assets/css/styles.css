@@ -313,6 +313,14 @@ input::placeholder {
     background-color: yellow;
 }
 
+.form_left {
+    width: 100%;
+}
+
+.form_right {
+    width: 100%;
+}
+
 /* Contenedores.................................. gen_cont */
 .card {
     border: none;
@@ -368,6 +376,7 @@ body {
 }
 
 .sidebar {
+    width: fit-content;
     height: 100vh;
     padding: 20px 15px 15px 15px;
     margin: 0;

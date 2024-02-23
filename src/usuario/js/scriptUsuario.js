@@ -459,15 +459,17 @@ function manejadorCategoria(e) {
 
 function manejadorFiltro(e) {
     let nombre = document.getElementById("filtroBuscadorNombre").value.trim();
-    nombre = nombre === "" ? null : nombre;
-
     let categoria = document.getElementById("filtroDesplegableCategoria").value;
-    categoria = categoria === "" ? null : categoria;
-
     let unidades = document.getElementById("filtroDesplegableUnidades").value;
-    unidades = unidades === "" ? null : unidades;
 
-    imprimirFiltroTabla(nombre, categoria, unidades);
+    // Si la opción por defecto está seleccionada, asigna null
+    if (categoria === "Categorías") {
+        categoria = null;
+    }
+    if (unidades === "Ud. de medida") {
+        unidades = null;
+    }
+
     imprimirTablaProductos(nombre, categoria, unidades);
 }
 
@@ -517,18 +519,18 @@ function imprimirFiltroTabla(nombre = null, categoria = null, unidades = null) {
         class: "contenedorFiltroLabel"
     });
 
-    // Crear el ícono de filtros
+    // Crear el icono de filtros
     let iconoFiltros = document.createElement("i");
     iconoFiltros.classList.add("bi", "bi-sliders");
 
-    let labelFiltros = crearElemento("p", "Filtrar por", { 
+    let labelFiltros = crearElemento("p", "Filtrar por", {
         id: "labelFiltro"
     });
 
     contenedorFiltroLabel.appendChild(iconoFiltros);
     contenedorFiltroLabel.appendChild(labelFiltros);
 
-    let contenedorFiltroSelect = crearElemento("div", undefined, { // contiene los select de los filtros
+    let contenedorFiltroSelect = crearElemento("div", undefined, {
         id: "contenedorFiltroSelect",
         class: "contenedorFiltroSelect"
     });
@@ -539,6 +541,7 @@ function imprimirFiltroTabla(nombre = null, categoria = null, unidades = null) {
     if (contenedorFiltro != null) {
         contenedorFiltro.remove();
     }
+
     contenedorFiltro = crearElemento("div", undefined, {
         id: "filtro",
         class: "row contenedorFiltros"
@@ -585,8 +588,8 @@ function imprimirFiltroTabla(nombre = null, categoria = null, unidades = null) {
     });
     contenedorFiltroSelect.appendChild(selectUnidades);
 
-    contenedorFiltroLabelySelect.appendChild(contenedorFiltroLabel); 
-    contenedorFiltroLabelySelect.appendChild(contenedorFiltroSelect); 
+    contenedorFiltroLabelySelect.appendChild(contenedorFiltroLabel);
+    contenedorFiltroLabelySelect.appendChild(contenedorFiltroSelect);
 
     contenedorFiltro.appendChild(contenedorFiltroLabelySelect);
 
@@ -606,20 +609,8 @@ function imprimirFiltroTabla(nombre = null, categoria = null, unidades = null) {
 }
 
 function imprimirTablaProductos(nombre = null, categoria = null, unidades = null) {
-    // Esta variable es un array de objetos literales, cada objeto tiene los datos del producto y categorias.
-    // Cada producto tiene este formato:
-    // producto = {
-    //     id_categoria: Id_categoria,
-    //     imagen_categoria: Imagen_categoria,
-    //     nombre_producto: nombre_producto,
-    //     nombre_categoria: nombre_categoria,
-    //     nombre_unidades: nombre_unidades,
-    //     nombre_observaciones: nombre_observaciones
-    // }
     let todosProductos = JSON.parse(localStorage.getItem("todosProductos"));
 
-    //Contenedor para la tabla de productos
-    //Se crea el contenedor principal si no existe, si existe se limpia su conotenido.
     let contenedorTablaProductos = document.querySelector("#contenedorTablaProductos");
     if (contenedorTablaProductos == null) {
         contenedorTablaProductos = crearElemento("div", undefined, {
@@ -630,7 +621,6 @@ function imprimirTablaProductos(nombre = null, categoria = null, unidades = null
         contenedorTablaProductos.innerHTML = "";
     }
 
-    // Crear la tabla
     let tabla = crearElemento("table", undefined, {
         id: "tabla",
         class: "table table-responsive table-hover mt-4"
@@ -638,10 +628,7 @@ function imprimirTablaProductos(nombre = null, categoria = null, unidades = null
     let tablaHead = crearElemento("thead");
     let tablaBody = crearElemento("tbody");
 
-    // Crear la fila de encabezado
     let filaHead = crearElemento("tr");
-
-    // Crear el checkbox en la primera celda de encabezado
     let celdaCheckbox = crearElemento("th");
     let inputCheckbox = crearElemento("input", undefined, {
         type: "checkbox",
@@ -650,42 +637,39 @@ function imprimirTablaProductos(nombre = null, categoria = null, unidades = null
     celdaCheckbox.appendChild(inputCheckbox);
     filaHead.appendChild(celdaCheckbox);
 
-    // Crear las celdas de encabezado restantes
     let titulos = ["Producto", "Categoría", "Unidades", "Observaciones", ""];
+    let productosEncontrados = false;
+
     titulos.forEach(titulo => {
         let celdaHead = crearElemento("th", titulo);
         filaHead.appendChild(celdaHead);
     });
 
-    let productosEncontrados = false;
-
-    // Recorrer todos los productos y agregarlos a la tabla si son de la misma categoría recibida
     for (let i = 0; i < todosProductos.length; i++) {
-        // Filtrar los productos basado en los argumentos
-        if ((nombre == null || todosProductos[i]["nombre_producto"] == nombre) &&
-            (categoria == null || todosProductos[i]["id_categoria"] == categoria) &&
-            (unidades == null || todosProductos[i]["nombre_unidades"] == unidades)) {
+        let filaBody = crearElemento("tr");
 
-            let filaBody = crearElemento("tr");
+        let celdaCheckbox = crearElemento("td");
+        let inputCheckbox = crearElemento("input", undefined, {
+            type: "checkbox",
+            class: "genericoCheck"
+        });
+        celdaCheckbox.appendChild(inputCheckbox);
+        filaBody.appendChild(celdaCheckbox);
 
-            let celdaCheckbox = crearElemento("td");
-            let inputCheckbox = crearElemento("input", undefined, {
-                type: "checkbox",
-                class: "genericoCheck"
-            });
-            celdaCheckbox.appendChild(inputCheckbox);
-            filaBody.appendChild(celdaCheckbox);
+        let datosProducto = [
+            todosProductos[i]["nombre_producto"],
+            todosProductos[i]["nombre_categoria"],
+            todosProductos[i]["nombre_unidades"],
+            todosProductos[i]["nombre_observaciones"]
+        ];
 
-            let datosProducto = [
-                todosProductos[i]["nombre_producto"],
-                todosProductos[i]["nombre_categoria"],
-                todosProductos[i]["nombre_unidades"],
-                todosProductos[i]["nombre_observaciones"]
-            ];
+        if ((nombre === null || todosProductos[i]["nombre_producto"].toLowerCase().includes(nombre.toLowerCase())) &&
+            (categoria === null || todosProductos[i]["id_categoria"] == categoria) &&
+            (unidades === null || todosProductos[i]["nombre_unidades"] == unidades)) {
+
             datosProducto.forEach((dato, index) => {
                 let celdaBody = crearElemento("td");
 
-                // Si estamos en la columna "nombre_categoria", agregamos la imagen de la categoría
                 if (index === 1) {
                     let imagenCategoria = crearElemento("img", undefined, {
                         src: `../../../assets/img/categorias/${todosProductos[i]["imagen_categoria"]}`,
@@ -705,6 +689,7 @@ function imprimirTablaProductos(nombre = null, categoria = null, unidades = null
                 class: "form-control form-control-sm"
             });
             let botonAñadir = crearElemento("input", undefined, {
+                id: "botonAñadir_" + todosProductos[i]["id_producto"],
                 type: "submit",
                 class: "btn btn_custom_1 btn_sm",
                 value: "Añadir"
@@ -718,30 +703,18 @@ function imprimirTablaProductos(nombre = null, categoria = null, unidades = null
         }
     }
 
-    // Si la tabla está vacía llamar a la función mostrarMensajeVacio
-    if (!productosEncontrados) {
-        parteInferior.innerHTML = "";
-        let mensajeVacio = mostrarMensajeVacio("No hay productos", "¿Hacer una solicitud de producto?", "Hacer solicitud");
-        parteInferior.appendChild(mensajeVacio);
-    } else {
-        contenedorTablaProductos.innerHTML = "";
-    }
-
-    let contenedor = document.getElementById("contenedor");
-    contenedor.appendChild(contenedorTablaProductos);
-
-    // Agregar la fila de encabezado a la sección de encabezado de la tabla
     tablaHead.appendChild(filaHead);
-
-    // Agregar las secciones de encabezado y cuerpo a la tabla
     tabla.appendChild(tablaHead);
     tabla.appendChild(tablaBody);
 
-    // Agregar la tabla al contenedor de contenido de categoría
     contenedorTablaProductos.appendChild(tabla);
-
-    // Agregar el contenido de categoría al contenedor principal
     contenedor.appendChild(contenedorTablaProductos);
+
+    if (!productosEncontrados) {
+        contenedorTablaProductos.innerHTML = "";
+        let mensajeVacio = mostrarMensajeVacio("No hay productos", "¿Hacer una solicitud de producto?", "Hacer solicitud");
+        contenedorTablaProductos.appendChild(mensajeVacio);
+    } 
 }
 
 // Contenedor con borde punteado que aparece cuando una tabla está vacía o no tiene contenido

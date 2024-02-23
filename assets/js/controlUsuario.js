@@ -91,7 +91,7 @@ function manejarRespuesta(respuesta) {
             //Ahora hay que comprobar si es administrador.
             if (respuesta.admin == 1) {
                 //Si es administrador o usuario, impirmo si mensaje correspondiente y hago una redireccion a los dos segundos.
-                window.location.replace("./src/admin/inicioAdmin.html");
+                window.location.replace("./src/administrador/inicioAdmin.html");
             } else {
                 window.location.replace("./src/usuario/inicioUsuario.html");
             }
