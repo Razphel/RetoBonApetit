@@ -619,11 +619,11 @@ function imprimirFiltroTabla(nombre = null, categoria = null, unidades = null) {
 
     let contenedorBuscadorIcon = crearElemento("div", undefined, {
         id: "contenedorBuscadorIcon",
-        class: "contenedorBuscadorIcon input-group-prepend"
+        class: "contenedorBuscadorIcon input-group-prepend input-group"
     });
 
     let contenedorIconBuscador = crearElemento("span", undefined, {
-        class: "input-group-text"
+        class: "input-group-text searchbar"
     });
 
     let iconBuscador = crearElemento("i", undefined, {
@@ -639,7 +639,7 @@ function imprimirFiltroTabla(nombre = null, categoria = null, unidades = null) {
         id: "filtroBuscadorNombre",
         type: "text",
         placeholder: "Buscar por nombre de producto...",
-        class: "form-control filtroBuscador",
+        class: "form-control searchbar filtroBuscador",
         value: nombre || ""
     });
 
@@ -651,7 +651,7 @@ function imprimirFiltroTabla(nombre = null, categoria = null, unidades = null) {
     });
 
     inputNombre.addEventListener("input", manejadorFiltro);
-    contenedorBuscador.appendChild(inputNombre); 
+    contenedorBuscadorIcon.appendChild(inputNombre); 
     contenedorFiltroRight.appendChild(contenedorBuscador);
     contenedorFiltroRight.appendChild(botonSolicitud);
 
