@@ -165,6 +165,10 @@ i:hover {
     color: var(--accent-01);
 }
 
+.nav_container_left i {
+    font-size: 20px;
+}
+
 /* chevron del sidebar */
 .nav_container i.bi-chevron-right {
     font-size: 10px;
@@ -381,7 +385,7 @@ body {
 }
 
 .sidebar {
-    width: 230px;
+    width: 240px;
     height: 100vh;
     overflow-y: scroll;
     margin: 0;
@@ -391,7 +395,7 @@ body {
 
 .sidebar_top {
     height: 70px;
-    width: 230px;
+    width: 240px;
     position: fixed;
     padding: 20px 15px 15px 25px;
     background-color: white;
@@ -402,7 +406,7 @@ body {
 }
 
 .sidebar_bottom {
-    padding: 100px 15px 15px 15px;
+    padding: 100px 10px 15px 15px;
 }
 
 .sidebar_container {
@@ -462,11 +466,12 @@ body {
     flex-direction: column;
     justify-content: left;
     align-items: left;
-    gap: 5px;
+    gap: 10px;
+    padding-top: 10px !important;
 }
 
 .collapse li {
-    margin-left: 40px;
+    margin-left: 45px;
 }
 
 .collapse li a:hover {
@@ -564,4 +569,8 @@ body {
     overflow-y: auto;
     padding-left: 40px;
     padding-right: 30px;
+}
+
+#navInicio:active {
+    background-color: gray; /* Cambia el color a gris cuando se hace clic en el enlace */
 }

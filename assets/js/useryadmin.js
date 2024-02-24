@@ -126,7 +126,6 @@ function crearFormulario(campos, contenedor) {
         // Agregar el elemento al formulario
         formulario.appendChild(elemento);
     }
-    console.log(formulario);
     contenedor.appendChild(formulario);
 }
 
