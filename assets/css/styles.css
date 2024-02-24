@@ -491,11 +491,16 @@ body {
 
 .topbar_container {
     width: 100%;
+    height: 100%;
     padding: 0 35px 0 40px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+}
+
+.topbar_container i {
+    font-size: 18px;
 }
 
 .topbar_left {
@@ -507,11 +512,12 @@ body {
 }
 
 .topbar_right {
+    height: 100%;
     display: flex;
     flex-direction: row;
     justify-content: left;
     align-items: center;
-    gap: 20px;
+    gap: 30px;
 }
 
 .topbar_icons {
@@ -519,18 +525,100 @@ body {
     flex-direction: row;
     justify-content: left;
     align-items: center;
+    gap: 10px;
 }
 
 .topbar_icons i {
     padding: 10px;
 }
 
+.dropdown-menu {
+    border: solid thin var(--accent-02); 
+} 
+
+.admin_shortcuts_container {
+    padding: 0;
+    margin-left: -100px;
+}
+
+.admin_shortcuts_grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(3, auto);
+    gap: 10px;
+    padding: 10px; 
+}
+
+.caja_shortcuts {
+    position: relative; 
+    width: 130px; /* Define la anchura deseada para las cajas */
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px 10px;
+    border-radius: 6px;
+    border: solid thin var(--accent-03);
+}
+
+.caja_shortcuts i {
+    font-size: 20px;
+}
+
+.admin_shortcuts_grid .dropdown-item {
+    width: 100%;
+    height: 100%;
+    padding: 0;
+}
+
+.caja_shortcuts:hover .icono_hover {
+    opacity: 1; 
+}
+
+.caja_shortcuts:hover::before {
+    content: ""; 
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.842); 
+    border-radius: 6px; 
+    z-index: 0; 
+}
+
+.icono_hover {
+    position: absolute;
+    top: 50%; 
+    left: 50%; 
+    transform: translate(-50%, -50%);
+    opacity: 0; 
+    transition: opacity 0.3s ease; 
+}
+
+.caja_shortcuts > i:first-child {
+    font-size: 35px;
+}
+
+.icon_container {
+    height: 70px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.profile_container {
+    height: 70px;
+}
+
 .topbar_profile {
+    height: 100%;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    gap: 10px;
+    gap: 20px;
 }
 
 .topbar_profile:hover {
@@ -571,6 +659,10 @@ body {
     padding-right: 30px;
 }
 
-#navInicio:active {
-    background-color: gray; /* Cambia el color a gris cuando se hace clic en el enlace */
+.dropdown_inline {
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+    align-items: center;
+    gap: 10px;
 }

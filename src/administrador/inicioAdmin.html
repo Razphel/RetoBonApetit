@@ -12,6 +12,7 @@
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <!-- Enlace a la hoja de estilos CSS -->
     <link rel="stylesheet" href="../../assets/css/styles.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <!-- Enlace al archivo CSS de Perfect Scrollbar -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/1.5.5/css/perfect-scrollbar.min.css" integrity="sha512-ygIxOy3hmN2fzGeNqys7ymuBgwSCet0LVfqQbWY10AszPMn2rB9JY0eoG0m1pySicu+nvORrBmhHVSt7+GI9VA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <!-- Enlace a iconos de Bootstrap CSS -->
@@ -219,27 +220,101 @@
 
                             <div class="topbar_right">
                                 <div class="topbar_icons">
-                                    <i class="bi bi-grid"></i>
-                                    <i class="bi bi-brightness-high"></i>
-                                </div>
+                                    <div class="dropdown">
+                                        <a  href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <div class="icon_container">
+                                                <i class="bi bi-grid"></i>
+                                            </div>
+                                        </a>
+                                
+                                        <div class="dropdown-menu admin_shortcuts_container" aria-labelledby="gridDropdown">
+                                            <div class="admin_shortcuts_grid">
+                                                <a class="dropdown-item" href="#">
+                                                    <div class="caja_shortcuts shadow-sm">
+                                                        <i class="bi bi-plus-lg icono_hover"></i>
+                                                        <i class="bx bx-category"></i> 
+                                                        <p>Categoría</p>
+                                                    </div>
+                                                </a>
+                                                <a class="dropdown-item" href="#">
+                                                    <div class="caja_shortcuts shadow-sm">
+                                                        <i class="bi bi-plus-lg icono_hover"></i>
+                                                        <i class="bx bx-cookie"></i> 
+                                                        <p>Producto</p>
+                                                    </div>
+                                                </a>
+                                                <a class="dropdown-item" href="#">
+                                                    <div class="caja_shortcuts shadow-sm">
+                                                        <i class="bi bi-plus-lg icono_hover"></i>
+                                                        <i class="bi bi-bucket"></i> 
+                                                        <p>Ud. de medida</p>
+                                                    </div>
+                                                </a>
+                                                <a class="dropdown-item" href="#">
+                                                    <div class="caja_shortcuts shadow-sm">
+                                                        <i class="bi bi-plus-lg icono_hover"></i>
+                                                        <i class="bi bi-person-plus-fill"></i> 
+                                                        <p>Usuario</p>
+                                                    </div>
+                                                </a>
+                                                <a class="dropdown-item" href="#">
+                                                    <div class="caja_shortcuts shadow-sm">
+                                                        <i class="bi bi-plus-lg icono_hover"></i>
+                                                        <i class="bi bi-shop"></i> 
+                                                        <p>Proveedor</p>
+                                                    </div>
+                                                </a>
+                                                <a class="dropdown-item" href="#">
+                                                    <div class="caja_shortcuts shadow-sm">
+                                                        <i class="bi bi-plus-lg icono_hover"></i>
+                                                        <i class="bi bi-basket3"></i> 
+                                                        <p>Pedido</p>
+                                                    </div>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
 
-                                <div class="dropdown show">
+                                    <div class="dropdown">
+                                        <a href="#" role="button" id="brightnessDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <div class="icon_container">
+                                                <i class="bi bi-brightness-high"></i>
+                                            </div>
+                                        </a>
+                            
+                                        <ul class="dropdown-menu" aria-labelledby="brightnessDropdown">
+                                            <!-- Contenido para el segundo desplegable -->
+                                            <li><a class="dropdown-item" href="#">Modo oscuro</a></li>
+                                            <li><a class="dropdown-item" href="#">Modo de contraste</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                                     
+
+                                <div class="dropdown show profile_container">
                                     <a class="" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         <div class="topbar_profile">
                                             <div class="profile_icon">
                                                 <i class="bi bi-person-fill"></i>
                                             </div>
                                             <div class="topbar_profile_info">
-                                                <p class="topbar_profile_name">Nombre y apellido</p>
-                                                <p class="topbar_profile_account">Usuario</p>
+                                                <p id="nombrecompleto" class="topbar_profile_name">Nombre y apellido</p>
+                                                <p id="username" class="topbar_profile_account">Usuario</p>
                                             </div>
                                         </div>
                                     </a>
                                   
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                      <a class="dropdown-item" id="verPerfil" href="#">Ver perfil</a>
-                                      <a class="dropdown-item" id="cerrarSesion" href="#">Cerrar sesión</a>
+                                        <a id="verPerfil" class="dropdown-item dropdown_inline" href="#">
+                                            <i class="bi bi-person-fill"></i>
+                                            <p>Ver perfil</p> 
+                                        </a>
+                                        <a id="cerrarSesion" class="dropdown-item dropdown_inline" href="#">
+                                            <i class="bi bi-box-arrow-right"></i> 
+                                            <p>Cerrar sesión</p>
+                                        </a>
                                     </div>
+                                    
                                 </div>
                             </div>
                         </div>

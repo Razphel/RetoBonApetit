@@ -30,13 +30,6 @@
 
 window.addEventListener("load", principal);
 
-// Menú dropdown 
-$(document).ready(function () {
-    $('#sidebarCollapse').on('click', function () {
-        $('#sidebar').toggleClass('active');
-    });
-});
-
 document.addEventListener('DOMContentLoaded', function () {
     const sidebar = document.querySelector('.sidebar_container');
     new PerfectScrollbar(sidebar);
@@ -69,7 +62,8 @@ function principal() {
         document.querySelector("#navListarProveedores").addEventListener("click", navListarProveedores);
         document.querySelector("#navAñadirProveedor").addEventListener("click", navAñadirProveedor);
     // Apartado residuos
-    document.querySelector("#navResiduos").addEventListener("click", navResiduos);
+    document.querySelector("#navResiduos").addEventListener("click", navResiduos); 
+
 }
 
 function mostrarUsuarios(respuesta) {
