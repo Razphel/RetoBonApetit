@@ -75,7 +75,12 @@ function crearPlantillaFormularios(tituloPagina, tituloLeft, tituloRight) {
     let titulo_container_left = crearElemento('h4', tituloLeft, {
         class: 'mb-5' 
     });
+    let contenedorForm = crearElemento('div', undefined, {
+        id: 'contenedorForm'
+    });
+
     container_left.appendChild(titulo_container_left); 
+    container_left.appendChild(contenedorForm); 
 
     let container_right = crearElemento('div', undefined, {
         class: 'container_right card p-4 col-12 col-lg-4'
@@ -87,6 +92,9 @@ function crearPlantillaFormularios(tituloPagina, tituloLeft, tituloRight) {
 
     parteInferior.appendChild(container_left);
     parteInferior.appendChild(container_right);
+
+    contenedor.appendChild(parteSuperior);
+    contenedor.appendChild(parteInferior);
 }
 
 function crearElemento(etiqueta, contenido, atributos) {
@@ -118,6 +126,7 @@ function crearFormulario(campos, contenedor) {
         // Agregar el elemento al formulario
         formulario.appendChild(elemento);
     }
+    console.log(formulario);
     contenedor.appendChild(formulario);
 }
 

@@ -114,7 +114,8 @@ function navAñadirCategoria() {
 
 // Formulario 1. Crear categorías...................
 function pagAñadirCategoria() { 
-    crearPlantilla("Nueva categoría");
+    crearPlantillaFormularios('Nueva categoría', 'Datos de la nueva categoría', 'Categorías existentes');
+    contenedorForm = document.querySelector('#contenedorForm');
 
     let camposNewCategoria = {
         nombre: {
@@ -179,7 +180,7 @@ function pagAñadirCategoria() {
             }
         }
     };
-    crearFormulario(camposNewCategoria, contenedor);
+    crearFormulario(camposNewCategoria, contenedorForm);
 }
 
 // Apartado PRODUCTOS__________________________________________________________________

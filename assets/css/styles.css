@@ -537,7 +537,7 @@ body {
 }
 
 .dropdown-menu {
-    display: none;
+    display: block;
 }
 
 .dropdown:hover .dropdown-menu {
