@@ -95,7 +95,7 @@ function pagInicio() {
 
 // Apartado CATEGORÍAS________________________________________________________________
 function navCategorias() { 
-    pagAñadirCategoria(); //! cambiar a pagCategorias() 
+    pagCategorias(); //! cambiar a pagCategorias() 
 }
 
 function pagCategorias() { // página general de categorías
@@ -185,7 +185,7 @@ function pagAñadirCategoria() {
 
 // Apartado PRODUCTOS__________________________________________________________________
 function navProductos() {
-    pagAñadirProducto(); //! cambiar a pagProductos()
+    pagProductos(); 
 }
 
 function pagProductos() {
@@ -198,20 +198,14 @@ function navListarProductos() {
 function pagListarProductos() { // mostrar tabla con todos los productos y sus datos
 }
 
+function navAñadirProducto() {
+    pagAñadirProducto();
+}
+
 // Formulario 2. Crear producto.......................
 function pagAñadirProducto() {
-    // Contenedor general de la pagina
-    let contenedor = document.querySelector("#contenedor");
-
-    contenedor.innerHTML = "";
-
-    // Título de la página
-    let h1Inicio = crearElemento("h1", "Nuevo producto", {
-        id: "tituloApartado",
-        class: "py-3 mb-3 mt-4"
-    });
-
-    contenedor.appendChild(h1Inicio);
+    crearPlantillaFormularios('Nuevo producto', 'Datos del nuevo producto', 'Productos existentes');
+    contenedorForm = document.querySelector('#contenedorForm');
 
     let camposNewProductos = {
         nombre: {
@@ -328,7 +322,7 @@ function pagAñadirProducto() {
             }
         }
     };
-    crearFormulario(camposNewProductos, contenedor);
+    crearFormulario(camposNewProductos, contenedorForm);
 }
 
 // Formulario 3. Crear ud. de medida...................
@@ -337,18 +331,8 @@ function navUdMedida() {
 }
 
 function pagUdMedida() {
-    // Contenedor general de la pagina
-    let contenedor = document.querySelector("#contenedor");
-
-    contenedor.innerHTML = "";
-
-    // Título de la página
-    let h1Inicio = crearElemento("h1", "Nueva unidad de medida", {
-        id: "tituloApartado",
-        class: "py-3 mb-3 mt-4"
-    });
-
-    contenedor.appendChild(h1Inicio);
+    crearPlantillaFormularios('Nueva unidad de medida', 'Datos de la nueva ud. de medida', 'Ud. de medida existentes');
+    contenedorForm = document.querySelector('#contenedorForm');
 
     let camposNewMedida = {
         nombre: {
@@ -377,12 +361,12 @@ function pagUdMedida() {
             }
         },
         inputObservaciones: {
-            etiqueta: 'input',
-            atributos: { 
-                type: 'text', 
+            etiqueta: 'textarea',
+            atributos: {
+                type: 'text',
                 id: 'newUdMedidaObservaciones',
                 class: 'form-control',
-                placeholder: 'Observaciones de la nueva unidad de medida' 
+                placeholder: 'Observaciones de la nueva unidad de medida'
             }
         },
         // Botones
@@ -413,12 +397,12 @@ function pagUdMedida() {
             }
         }
     };
-    crearFormulario(camposNewMedida, contenedor);
+    crearFormulario(camposNewMedida, contenedorForm);
 }
 
 // Apartado PEDIDOS____________________________________________________________________
 function navPedidos() {
-    pagNuevoPedido(); //! cambiar a pagPedidos()
+    pagPedidos(); 
 }
 
 function pagPedidos() {
@@ -441,6 +425,8 @@ function pagNuevoPedido() {
 
 // Apartado USUARIOS____________________________________________________________________
 function navUsuarios() {
+    pagUsuarios();
+
     let parametros = {
         claveTodosUsuarios: true
     };
@@ -474,18 +460,8 @@ function navAñadirUsuario() {
 }
 
 function pagAñadirUsuario() {
-    // Contenedor general de la pagina
-    let contenedor = document.querySelector("#contenedor");
-
-    contenedor.innerHTML = "";
-
-    // Título de la página
-    let h1Inicio = crearElemento("h1", "Nuevo usuario", {
-        id: "tituloApartado",
-        class: "py-3 mb-3 mt-4"
-    });
-
-    contenedor.appendChild(h1Inicio);
+    crearPlantillaFormularios('Nuevo usuario', 'Datos del nuevo usuario', 'Usuarios existentes');
+    contenedorForm = document.querySelector('#contenedorForm');
 
     let camposNewUsuario = {
         nombre: {
@@ -564,12 +540,12 @@ function pagAñadirUsuario() {
             }
         },
         inputObservaciones: {
-            etiqueta: 'input',
-            atributos: { 
-                type: 'text', 
+            etiqueta: 'textarea',
+            atributos: {
+                type: 'text',
                 id: 'newUserObservacion',
                 class: 'form-control',
-                placeholder: 'Observaciones del nuevo usuario' 
+                placeholder: 'Observaciones del nuevo usuario'
             }
         },
         // Botones
@@ -601,65 +577,15 @@ function pagAñadirUsuario() {
             }
         }
     };
-    crearFormulario(camposNewUsuario, contenedor);
+    crearFormulario(camposNewUsuario, contenedorForm);
 }
 
 // Apartado PROVEEDORES___________________________________________________________________
 function navProveedores() {
-    pagAñadirProveedor(); //! cambiar a pagProveedores
+    pagProveedores(); //! cambiar a pagProveedores
 }
 
 function pagProveedores() {
-    let camposNewProveedor = [
-        { etiqueta: 'label', contenido: 'Nombre', atributos: { 
-            for: 'newProvName',
-            class: 'form-label'
-        }},
-        { etiqueta: 'input', atributos: { 
-            type: 'text', 
-            id: 'newProvName',
-            class: '' }},
-        { etiqueta: 'label', contenido: 'Teléfono', atributos: { 
-            for: 'newProvTelefono',
-            class: 'form-label'
-        }},
-        { etiqueta: 'input', atributos: { 
-            type: 'int', 
-            id: 'newProvTelefono',
-            class: '' }},
-        { etiqueta: 'label', contenido: 'Email', atributos: { 
-            for: 'newProvEmail',
-            class: 'form-label'
-        }},
-        { etiqueta: 'input', atributos: { 
-            type: 'email', 
-            id: 'newProvEmail',
-            class: '' }},
-        { etiqueta: 'label', contenido: 'Dirección', atributos: { 
-            for: 'newProvDirec',
-            class: 'form-label'
-        }},
-        { etiqueta: 'input', atributos: { 
-            type: 'text', 
-            id: 'newProvDirec',
-            class: '' }},
-        { etiqueta: 'label', contenido: 'Observaciones', atributos: { 
-            for: 'newObservacionesProv',
-            class: 'form-label'
-        }},
-        { etiqueta: 'input', atributos: { 
-            type: 'text', 
-            id: 'newObservacionesProv',
-            class: '' }},
-        { etiqueta: 'input', contenido: 'Crear ud. de medida', atributos: { 
-            type: 'submit', 
-            onclick: '', 
-            class: 'btn btn_custom_1' 
-        }},
-    ]
-    // Obtener el contenedor donde se agregará el formulario
-    let contenedorFormProveedor = aux; //! crear el contenedor donde insertar el formulario
-    crearFormulario(camposNewProveedor, contenedorFormProveedor);
 }
 
 function navListarProveedores() {
@@ -765,12 +691,12 @@ function pagAñadirProveedor() {
             }
         },
         inputObservaciones: {
-            etiqueta: 'input',
-            atributos: { 
-                type: 'text', 
+            etiqueta: 'textarea',
+            atributos: {
+                type: 'text',
                 id: 'newProvObservacion',
                 class: 'form-control',
-                placeholder: 'Observaciones del nuevo proveedor' 
+                placeholder: 'Observaciones del nuevo proveedor'
             }
         },
         // Botones
