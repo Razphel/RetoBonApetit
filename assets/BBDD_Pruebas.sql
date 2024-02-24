@@ -5,8 +5,10 @@ USE webreto;
  
 CREATE TABLE usuarios(
 id_usuarios INT AUTO_INCREMENT PRIMARY KEY,
-admin BOOLEAN DEFAULT FALSE,
+admin BOOLEAN DEFAULT FALSE, 
+nombre_usuario VARCHAR(50),
 nombre VARCHAR(50),
+apellido VARCHAR(50),
 email VARCHAR(50) NOT NULL,
 password VARCHAR(20),
 activo BOOLEAN DEFAULT FALSE,
@@ -134,9 +136,9 @@ INSERT INTO estados (descripcion) VALUES ('En reparto'),('Entregado'),('En prepa
 INSERT INTO proveedores (descripcion,telefono,email,direccion,observaciones) VALUES ('CARREFOUR','111111111','carrefour@gmail.com','Calle prueba 1, 22','observaciones pruebas');
 INSERT INTO proveedores (descripcion,telefono,email,direccion,observaciones) VALUES ('EL CORTE INGLES','222222222','elcorteingles@gmail.com','Calle prueba 2, 32','observaciones prueba');
 INSERT INTO proveedores (descripcion,telefono,email,direccion,observaciones) VALUES ('MERCADONA','333333333','mercadona@gmail.com','Calle prueba 3, 12','observaciones prueba');
-INSERT INTO usuarios (admin,nombre,email,password,activo,observaciones,telefono) VALUES (1,'ADMINISTRADOR1','admin1@gmail.com','1234',1,'observaciones pruebas','888888888');
-INSERT INTO usuarios (admin,nombre,email,password,activo,observaciones,telefono) VALUES (0,'USUARIO1','usuario1@gmail.com','1235',1,'observaciones prueba','99999999');
-INSERT INTO usuarios (admin,nombre,email,password,activo,observaciones,telefono) VALUES (0,'sagaz','usuario1@gmail.com','1235',1,'observaciones prueba','99999999');
+INSERT INTO usuarios (admin,nombre_usuario,nombre,apellido,email,password,activo,observaciones,telefono) VALUES (1,'ADMINISTRADOR1','Yris','Guti','admin1@gmail.com','1234',1,'observaciones pruebas','888888888');
+INSERT INTO usuarios (admin,nombre_usuario,nombre,apellido,email,password,activo,observaciones,telefono) VALUES (0,'USUARIO1','Laura','Perez','usuario1@gmail.com','1235',1,'observaciones prueba','99999999');
+INSERT INTO usuarios (admin,nombre_usuario,nombre,apellido,email,password,activo,observaciones,telefono) VALUES (0,'sagaz','Hoid','Raphael','usuario1@gmail.com','1235',1,'observaciones prueba','99999999');
 INSERT INTO solicitudes (fecha_solicitud,descripcion,unidades,cantidad,observaciones,tramitado,fk_usuario) VALUES ('2024/02/07','huevos','cajas',6,'observaciones prueba',1,2);
 INSERT INTO solicitudes (fecha_solicitud,descripcion,unidades,cantidad,observaciones,tramitado,fk_usuario) VALUES ('2024/02/07','carne','kilogramos',3.4,'observaciones prueba',0,2);
 INSERT INTO pedidos (fecha_pedido,fk_proveedor,fk_estado,fk_usuario,observaciones) VALUES ('2024/02/07',1,3,2,'observacion kaladin');

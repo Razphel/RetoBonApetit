@@ -86,7 +86,7 @@ function manejarRespuesta(respuesta) {
             salida.innerHTML = "Error. Usuario dado de baja.";
         } else {
             //Si todo va bien guardo el usuario en la sesion.
-            localStorage.setItem("usuario", JSON.stringify({ nombre: respuesta.nombre, tipo: respuesta.admin, activo: respuesta.activo, clavePrimaria: respuesta.id_usuarios }));
+            localStorage.setItem("usuario", JSON.stringify({ id_usuario: respuesta.nombre_usuario, nombre: respuesta.nombre, apellido: respuesta.apellido, tipo: respuesta.admin, activo: respuesta.activo, clavePrimaria: respuesta.id_usuarios }));
 
             //Ahora hay que comprobar si es administrador.
             if (respuesta.admin == 1) {
