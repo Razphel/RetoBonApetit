@@ -21,6 +21,7 @@ function principal() {
     document.querySelector("#navPedidos").addEventListener("click", navPedidos);
     document.querySelector("#navProveedores").addEventListener("click", navProveedores);
     document.querySelector("#navResiduos").addEventListener("click", navResiduos);
+    document.querySelector("#cerrarSesion").addEventListener("click", cerrarSesion);
 
     //Aqui es necesario que las consultas se ejecuten en el orden correcto.
     //Para eso hay que evitar que el ajax funcione de forma asincrona agregando async: false.
