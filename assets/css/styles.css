@@ -373,7 +373,7 @@ body {
 }
 
 .sidebar {
-    width: 240px;
+    width: 230px;
     height: 100vh;
     overflow-y: scroll;
     margin: 0;
@@ -382,13 +382,19 @@ body {
 }
 
 .sidebar_top {
+    height: 70px;
+    width: 230px;
     position: fixed;
     padding: 20px 15px 15px 25px;
+    background-color: white;
+}
+
+.logo_container img {
+    width: 70%;
 }
 
 .sidebar_bottom {
-    padding: 40px 15px 15px 15px;
-    padding-top: 60px;
+    padding: 100px 15px 15px 15px;
 }
 
 .sidebar_container {
