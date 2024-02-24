@@ -48,7 +48,6 @@ function principal() {
     document.querySelector("#navPedidos").addEventListener("click", navPedidos);
         document.querySelector("#navListarPedidos").addEventListener("click", navListarPedidos);
         document.querySelector("#navNuevoPedido").addEventListener("click", navNuevoPedido);
-        document.querySelector("#navEstadosPedido").addEventListener("click", navEstadosPedido);
     // Apartado usuarios
     document.querySelector("#navUsuarios").addEventListener("click", navUsuarios);
         document.querySelector("#navListarUsuarios").addEventListener("click", navListarUsuarios);
@@ -98,14 +97,14 @@ function navCategorias() {
     pagAñadirCategoria(); //! cambiar a pagCategorias() 
 }
 
-function pagCategorias() { 
+function pagCategorias() { // página general de categorías
 }
 
 function navListarCategorias() {
     pagListarCategorias();
 }
 
-function pagListarCategorias() {
+function pagListarCategorias() { // mostrar tabla con todas las categorías y sus datos
 }
 
 function navAñadirCategoria() {
@@ -167,7 +166,8 @@ function pagAñadirCategoria() {
             atributos: {
                 type: 'submit',
                 value: 'Cancelar',
-                class: 'btn btn_custom_3'
+                class: 'btn btn_custom_3',
+                onclick: 'cancelar()'
             }
         },
         btnLimpiarDatos: {
@@ -175,7 +175,8 @@ function pagAñadirCategoria() {
             atributos: {
                 type: 'submit',
                 value: 'Limpiar datos',
-                class: 'btn btn_custom_2'
+                class: 'btn btn_custom_2',
+                onclick: 'limpiarDatos()'
             }
         },
         btnCrearCategoria: {
@@ -183,7 +184,8 @@ function pagAñadirCategoria() {
             atributos: {
                 type: 'submit',
                 value: 'Crear categoría',
-                class: 'btn btn_custom_1'
+                class: 'btn btn_custom_1',
+                onclick: 'crearCategoria()'
             }
         }
     };
@@ -198,11 +200,11 @@ function navProductos() {
 function pagProductos() {
 }
 
-function navListarProductos() {
+function navListarProductos() { 
     pagListarProductos(); 
 }
 
-function pagListarProductos() {
+function pagListarProductos() { // mostrar tabla con todos los productos y sus datos
 }
 
 // Formulario 2. Crear producto.......................
@@ -225,7 +227,7 @@ function pagAñadirProducto() {
             etiqueta: 'label',
             contenido: 'Nombre',
             atributos: {
-                for: 'newNombreProducto',
+                for: 'newProductName',
                 class: 'form-label'
             }
         },
@@ -233,7 +235,7 @@ function pagAñadirProducto() {
             etiqueta: 'input',
             atributos: {
                 type: 'text',
-                id: 'newNombreProducto',
+                id: 'newProductName',
                 class: 'form-control',
                 placeholder: "Nombre del producto"
             }
@@ -242,7 +244,7 @@ function pagAñadirProducto() {
             etiqueta: 'label',
             contenido: 'Categoría',
             atributos: {
-                for: 'newCategoriaAsociada',
+                for: 'newProductCategoria',
                 class: 'form-label'
             }
         },
@@ -250,7 +252,7 @@ function pagAñadirProducto() {
             etiqueta: 'input',
             atributos: {
                 type: 'text',
-                id: 'newCategoriaAsociada',
+                id: 'newProductCategoria',
                 class: 'form-control',
                 placeholder: 'Categoría asociada al nuevo producto'
             }
@@ -259,7 +261,7 @@ function pagAñadirProducto() {
             etiqueta: 'label',
             contenido: 'Unidad de medida',
             atributos: {
-                for: 'newUnidadAsociada',
+                for: 'newProductUdMedida',
                 class: 'form-label'
             }
         },
@@ -267,7 +269,7 @@ function pagAñadirProducto() {
             etiqueta: 'input',
             atributos: {
                 type: 'text',
-                id: 'newUnidadAsociada',
+                id: 'newProductUdMedida',
                 class: 'form-control',
                 placeholder: 'Unidad de medida del nuevo producto'
             }
@@ -276,7 +278,7 @@ function pagAñadirProducto() {
             etiqueta: 'label',
             contenido: 'Residuos',
             atributos: {
-                for: 'newResiduosAsociados',
+                for: 'newProductResiduos',
                 class: 'form-label'
             }
         },
@@ -284,7 +286,7 @@ function pagAñadirProducto() {
             etiqueta: 'input',
             atributos: {
                 type: 'text',
-                id: 'newResiduosAsociados',
+                id: 'newProductResiduos',
                 class: 'form-control',
                 placeholder: 'Residuos del nuevo producto'
             }
@@ -293,7 +295,7 @@ function pagAñadirProducto() {
             etiqueta: 'label',
             contenido: 'Observaciones',
             atributos: {
-                for: 'newObservacionProducto',
+                for: 'newProductObservaciones',
                 class: 'form-label'
             }
         },
@@ -301,7 +303,7 @@ function pagAñadirProducto() {
             etiqueta: 'textarea',
             atributos: {
                 type: 'text',
-                id: 'newObservacionProducto',
+                id: 'newProductObservaciones',
                 class: 'form-control',
                 placeholder: 'Observaciones del nuevo producto'
             }
@@ -312,7 +314,8 @@ function pagAñadirProducto() {
             atributos: {
                 type: 'submit',
                 value: 'Cancelar',
-                class: 'btn btn_custom_3'
+                class: 'btn btn_custom_3',
+                onclick: 'cancelar()'
             }
         },
         btnLimpiarDatos: {
@@ -320,7 +323,8 @@ function pagAñadirProducto() {
             atributos: {
                 type: 'submit',
                 value: 'Limpiar datos',
-                class: 'btn btn_custom_2'
+                class: 'btn btn_custom_2',
+                onclick: 'limpiarDatos()'
             }
         },
         btnCrearProducto: {
@@ -328,7 +332,8 @@ function pagAñadirProducto() {
             atributos: {
                 type: 'submit',
                 value: 'Crear producto', 
-                class: 'btn btn_custom_1'
+                class: 'btn btn_custom_1',
+                onclick: 'crearProducto()'
             }
         }
     };
@@ -359,7 +364,7 @@ function pagUdMedida() {
             etiqueta: 'label',
             contenido: 'Nombre',
             atributos: { 
-                for: 'newUdMedida',
+                for: 'newUdMedidaName',
                 class: 'form-label'
             }
         },
@@ -367,7 +372,7 @@ function pagUdMedida() {
             etiqueta: 'input',
             atributos: { 
                 type: 'text', 
-                id: 'newUdMedida',
+                id: 'newUdMedidaName',
                 class: 'form-control',
                 placeholder: 'Nombre de la nueva unidad de medida' 
             }
@@ -376,7 +381,7 @@ function pagUdMedida() {
             etiqueta: 'label',
             contenido: 'Observaciones',
             atributos: { 
-                for: 'newObservacionesMedida',
+                for: 'newUdMedidaObservaciones',
                 class: 'form-label'
             }
         },
@@ -384,9 +389,28 @@ function pagUdMedida() {
             etiqueta: 'input',
             atributos: { 
                 type: 'text', 
-                id: 'newObservacionesMedida',
+                id: 'newUdMedidaObservaciones',
                 class: 'form-control',
                 placeholder: 'Observaciones de la nueva unidad de medida' 
+            }
+        },
+        // Botones
+        btnCancelar: {
+            etiqueta: 'input',
+            atributos: {
+                type: 'submit',
+                value: 'Cancelar',
+                class: 'btn btn_custom_3',
+                onclick: 'cancelar()'
+            }
+        },
+        btnLimpiarDatos: {
+            etiqueta: 'input',
+            atributos: {
+                type: 'submit',
+                value: 'Limpiar datos',
+                class: 'btn btn_custom_2',
+                onclick: 'limpiarDatos()'
             }
         },
         btnCrearMedida: {
@@ -413,23 +437,15 @@ function navListarPedidos() {
     pagListarPedidos(); 
 }
 
-function pagListarPedidos() {
+function pagListarPedidos() { // mostrar el historial de pedidos del admin
 }
 
-// Formulario 4. Hacer pedido...........................
 function navNuevoPedido() {
     pagNuevoPedido();
 }
 
+// Formulario 4. Nuevo pedido...........................
 function pagNuevoPedido() {
-}
-
-function navEstadosPedido() {
-    pagEstadosPedido(); 
-}
-
-// Formulario 5. Estados de pedido.....................
-function pagEstadosPedido() {
 }
 
 // Apartado USUARIOS____________________________________________________________________
@@ -458,10 +474,10 @@ function navListarUsuarios() {
     pagListarUsuarios(); 
 }
 
-function pagListarUsuarios() {
+function pagListarUsuarios() { // mostrar tabla con los usuarios y sus datos
 }
 
-// Formulario 6. Añadir usuario.....................
+// Formulario 5. Añadir usuario.....................
 function navAñadirUsuario() {
     pagAñadirUsuario(); 
 }
@@ -473,7 +489,7 @@ function pagAñadirUsuario() {
     contenedor.innerHTML = "";
 
     // Título de la página
-    let h1Inicio = crearElemento("h1", "Nuevo producto", {
+    let h1Inicio = crearElemento("h1", "Nuevo usuario", {
         id: "tituloApartado",
         class: "py-3 mb-3 mt-4"
     });
@@ -485,7 +501,7 @@ function pagAñadirUsuario() {
             etiqueta: 'label',
             contenido: 'Nombre',
             atributos: { 
-                for: 'newUsername',
+                for: 'newUserName',
                 class: 'form-label'
             }
         },
@@ -493,7 +509,7 @@ function pagAñadirUsuario() {
             etiqueta: 'input',
             atributos: { 
                 type: 'text', 
-                id: 'newUsername',
+                id: 'newUserName',
                 class: 'form-control',
                 placeholder: 'Nombre del nuevo usuario' 
             }
@@ -511,7 +527,7 @@ function pagAñadirUsuario() {
             atributos: { 
                 type: 'text', //! revisar tipo de input del toggle de usuario activo
                 id: 'userActive',
-                class: '' 
+                class: 'form-control' 
             }
         },
         telefono: {
@@ -527,7 +543,8 @@ function pagAñadirUsuario() {
             atributos: { 
                 type: 'text', 
                 id: 'newUserTelefono',
-                class: '' 
+                class: 'form-control',
+                placeholder: 'Teléfono del nuevo usuario' 
             }
         },
         email: {
@@ -543,14 +560,15 @@ function pagAñadirUsuario() {
             atributos: { 
                 type: 'email', 
                 id: 'newUserEmail',
-                class: '' 
+                class: 'form-control',
+                placeholder: 'Email del nuevo usuario' 
             }
         },
         observaciones: {
             etiqueta: 'label',
             contenido: 'Observaciones',
             atributos: { 
-                for: 'newObservacionUser',
+                for: 'newUserObservacion',
                 class: 'form-label'
             }
         },
@@ -558,8 +576,28 @@ function pagAñadirUsuario() {
             etiqueta: 'input',
             atributos: { 
                 type: 'text', 
-                id: 'newObservacionUser',
-                class: '' 
+                id: 'newUserObservacion',
+                class: 'form-control',
+                placeholder: 'Observaciones del nuevo usuario' 
+            }
+        },
+        // Botones
+        btnCancelar: {
+            etiqueta: 'input',
+            atributos: {
+                type: 'submit',
+                value: 'Cancelar',
+                class: 'btn btn_custom_3',
+                onclick: 'cancelar()'
+            }
+        },
+        btnLimpiarDatos: {
+            etiqueta: 'input',
+            atributos: {
+                type: 'submit',
+                value: 'Limpiar datos',
+                class: 'btn btn_custom_2',
+                onclick: 'limpiarDatos()'
             }
         },
         btnCrearUsuario: {
@@ -567,8 +605,8 @@ function pagAñadirUsuario() {
             contenido: 'Crear ud. de medida',
             atributos: { 
                 type: 'submit', 
-                onclick: '', 
-                class: 'btn btn_custom_1' 
+                class: 'btn btn_custom_1',
+                onclick: 'crearUsuario()' 
             }
         }
     };
@@ -643,9 +681,137 @@ function navAñadirProveedor() {
     pagAñadirProveedor();
 }
 
-// Formulario 7. Añadir proveedor.....................
+// Formulario 6. Añadir proveedor.....................
 function pagAñadirProveedor() {
+    // Contenedor general de la pagina
+    let contenedor = document.querySelector("#contenedor");
 
+    contenedor.innerHTML = "";
+
+    // Título de la página
+    let h1Inicio = crearElemento("h1", "Nuevo proveedor", {
+        id: "tituloApartado",
+        class: "py-3 mb-3 mt-4"
+    });
+
+    contenedor.appendChild(h1Inicio);
+
+    let camposNewProveedor = {
+        nombre: {
+            etiqueta: 'label',
+            contenido: 'Nombre',
+            atributos: { 
+                for: 'newProvName',
+                class: 'form-label'
+            }
+        },
+        inputNombre: {
+            etiqueta: 'input',
+            atributos: { 
+                type: 'text', 
+                id: 'newProvName',
+                class: 'form-control',
+                placeholder: 'Nombre del nuevo proveedor' 
+            }
+        },
+        telefono: {
+            etiqueta: 'label',
+            contenido: 'Teléfono',
+            atributos: { 
+                for: 'newProvTelefono',
+                class: 'form-label'
+            }
+        },
+        inputTelefono: {
+            etiqueta: 'input',
+            atributos: { 
+                type: 'text', 
+                id: 'newProvTelefono',
+                class: 'form-control',
+                placeholder: 'Teléfono del nuevo proveedor' 
+            }
+        },
+        email: {
+            etiqueta: 'label',
+            contenido: 'Email',
+            atributos: { 
+                for: 'newProvEmail',
+                class: 'form-label'
+            }
+        },
+        inputEmail: {
+            etiqueta: 'input',
+            atributos: { 
+                type: 'email', 
+                id: 'newProvEmail',
+                class: 'form-control',
+                placeholder: 'Email del nuevo proveedor' 
+            }
+        },
+        direccion: {
+            etiqueta: 'label',
+            contenido: 'Dirección',
+            atributos: { 
+                for: 'newProvDireccion',
+                class: 'form-label'
+            }
+        },
+        inputDireccion: {
+            etiqueta: 'input',
+            atributos: { 
+                type: 'text', 
+                id: 'newProvDireccion',
+                class: 'form-control',
+                placeholder: 'Dirección del nuevo proveedor' 
+            }
+        },
+        observaciones: {
+            etiqueta: 'label',
+            contenido: 'Observaciones',
+            atributos: { 
+                for: 'newProvObservacion',
+                class: 'form-label'
+            }
+        },
+        inputObservaciones: {
+            etiqueta: 'input',
+            atributos: { 
+                type: 'text', 
+                id: 'newProvObservacion',
+                class: 'form-control',
+                placeholder: 'Observaciones del nuevo proveedor' 
+            }
+        },
+        // Botones
+        btnCancelar: {
+            etiqueta: 'input',
+            atributos: {
+                type: 'submit',
+                value: 'Cancelar',
+                class: 'btn btn_custom_3',
+                onclick: 'cancelar()'
+            }
+        },
+        btnLimpiarDatos: {
+            etiqueta: 'input',
+            atributos: {
+                type: 'submit',
+                value: 'Limpiar datos',
+                class: 'btn btn_custom_2',
+                onclick: 'limpiarDatos()'
+            }
+        },
+        btnCrearProveedor: {
+            etiqueta: 'input',
+            contenido: 'Crear proveedor',
+            atributos: { 
+                type: 'submit', 
+                class: 'btn btn_custom_1',
+                onclick: 'crearProveedor()' 
+            }
+        }
+    };
+    crearFormulario(camposNewProveedor, contenedor);
 }
 
 // Apartado RESIDUOS_______________________________________________________________________
