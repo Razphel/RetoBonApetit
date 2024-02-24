@@ -30,6 +30,18 @@
 
 window.addEventListener("load", principal);
 
+// Menú dropdown 
+$(document).ready(function () {
+    $('#sidebarCollapse').on('click', function () {
+        $('#sidebar').toggleClass('active');
+    });
+});
+
+document.addEventListener('DOMContentLoaded', function () {
+    const sidebar = document.querySelector('.sidebar_container');
+    new PerfectScrollbar(sidebar);
+});
+
 function principal() {
     // Apartado inicio
     document.querySelector("#navInicio").addEventListener("click", navInicio);
@@ -90,7 +102,6 @@ function navInicio() {
 }
 
 function pagInicio() {
-
 }
 
 // Apartado CATEGORÍAS________________________________________________________________

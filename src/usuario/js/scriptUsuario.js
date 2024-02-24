@@ -737,6 +737,7 @@ function imprimirTablaProductos(nombre = null, categoria = null, unidades = null
             let celdaBoton = crearElemento("td");
             let inputCantidad = crearElemento("input", undefined, {
                 type: "number",
+                min: "0",
                 value: "0",
                 id: "inputCantidad",
                 class: "form-control form-control-sm"

@@ -16,45 +16,6 @@
             - Aside....................... gen_aside
             - Header...................... gen_header
             - Main........................ gen_main
-
-        - Páginas individuales_____________________________________________________________ total: 17
-            Comunes_____________________________________________________________________ pag_00
-                1. Inicio sesión...................................... pag_inicio
-
-            Administrador_______________________________________________________________ pag_admin
-                2. Index................................................. pag_admin_index
-                3. Categorías............................................ pag_admin_cat
-                    3.1. Nueva categoría.................. pag_admin_cat_new 
-                    . Pop up vista previa categorías 
-                    . Pop up editar categoría
-                4. Productos............................................. pag_admin_prod
-                    4.1. Nuevo producto................... pag_admin_prod_new 
-                    . Pop up vista previa producto 
-                    . Pop up editar producto
-                    4.2. Ud. de medida.................... pag_admin_prod_ud
-                5. Solicitudes........................................... pag_admin_soli
-                6. Pedidos............................................... pag_admin_ped
-                    6.1. Nuevo pedido..................... pag_admin_ped_new
-                    !Falta pedidos
-                    6.2. Estados de pedido................ pag_admin_ped_estados
-                7. Facturas.............................................. pag_admin_fact
-                8. Usuarios.............................................. pag_admin_users
-                    8.1. Nuevo usuario.................... pag_admin_users_new
-                    . Pop up vista previa usuario
-                    . Pop up editar usuario
-                9. Proveedores........................................... pag_admin_prov
-                    9.1. Nuevo proveedor.................. pag_admin_prov_new
-                    . Pop up vista previa proveedor
-                    . Pop up editar proveedor
-                10. Residuos............................................. pag_admin_res
-                    ! Falta residuos
-
-            Usuario_____________________________________________________________________ pag_user
-                2. Index................................................. pag_user_index
-                3. Productos............................................. pag_user_prod
-                4. Pedidos............................................... pag_user_ped
-                5. Proveedores........................................... pag_user_prov
-                6. Residuos.............................................. pag_user_res
 */
 
 /* ETIQUETAS GENERALES________________________________________________gen_00 */
@@ -105,7 +66,6 @@
     --bs-gutter-y: 0;
 }
 
-
 /* Bootstrap....................*/
 .bg-primary {
     background-color: transparent !important;
@@ -147,6 +107,7 @@ p, a {
 }
 
 a {
+    color: var(--text-dark-color); 
     text-decoration: none;
 }
 
@@ -190,6 +151,10 @@ a {
 i:hover {
     cursor: pointer;
     color:#ee2f7f;
+}
+
+.bi-search {
+    color: var(--accent-01);
 }
 
 /* chevron del sidebar */
@@ -327,7 +292,16 @@ textarea::placeholder {
     font-size: 14px;
 }
 
-.search_bar input {
+.searchbar.input-group-text {
+    padding-right: 0;
+}
+
+.searchbar.form-control {
+    border-left: none;
+}
+
+.searchbar {
+    background-color: white;
     border-radius: 30px;
 }
 
@@ -337,6 +311,11 @@ textarea::placeholder {
     justify-content: right;
     align-items: center;
     gap: 15px;
+}
+
+.form-control:focus {
+    border-color: #ced4da; 
+    box-shadow: none;
 }
 
 /* Contenedores.................................. gen_cont */
@@ -394,28 +373,21 @@ body {
 }
 
 .sidebar {
-    width: fit-content;
+    width: 240px;
     height: 100vh;
-    padding: 20px 15px 15px 15px;
+    overflow-y: scroll;
     margin: 0;
     border-right: solid thin rgb(238, 238, 238);
     background-color: var(--aside-back);
 }
 
-.sidebar_user {
-    width: 200px;
-}
-
-.sidebar_admin {
-    width: 230px;
-}
-
 .sidebar_top {
-    padding-left: 10px;
-    background-color: white;
+    position: fixed;
+    padding: 20px 15px 15px 25px;
 }
 
 .sidebar_bottom {
+    padding: 40px 15px 15px 15px;
     padding-top: 60px;
 }
 
@@ -432,10 +404,18 @@ body {
     margin: 0; 
 }
 
-.nav_link {
+.dropdown_toggle {
     width: 100%;
     text-decoration: none;
     color: var(--text-dark-color);
+}
+
+.dropdown-toggle::after {
+    display: block;
+    position: absolute;
+    top: 50%;
+    right: 20px;
+    transform: translateY(-50%);
 }
 
 .nav_container {
@@ -461,6 +441,22 @@ body {
     justify-content: left;
     align-items: center;
     gap: 15px;
+}
+
+.collapse {
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+    align-items: left;
+    gap: 5px;
+}
+
+.collapse li {
+    margin-left: 40px;
+}
+
+.collapse li a:hover {
+    font-weight: 500;
 }
 
 /* Header.......................................... gen_header */
@@ -537,7 +533,7 @@ body {
 }
 
 .dropdown-menu {
-    display: block;
+    display: none;
 }
 
 .dropdown:hover .dropdown-menu {
@@ -555,9 +551,3 @@ body {
     padding-left: 40px;
     padding-right: 30px;
 }
-
-/* PÁGINAS____________________________________________________________ pag_00 */
-/* Administrador_________________________________________ pag_admin */
-/* 2. Index.............................. pag_admin_index */
-
-/* Usuario_______________________________________________ pag_user */

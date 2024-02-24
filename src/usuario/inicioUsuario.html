@@ -14,10 +14,6 @@
     <link rel="stylesheet" href="../../assets/css/styles.css">
     <!-- Enlace a iconos de Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
-    <!-- Scripts -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <script src="../../assets/js/useryadmin.js"></script>
-    <script src="../../src/usuario/js/scriptUsuario.js"></script>
 </head>
 
 <body>
@@ -25,9 +21,11 @@
         <!-- layout_container se divide en dos: aside y contenedor principal -->
         <div class="layout_container row">
             <!-- sidebar -->
-            <div class="sidebar sidebar_user col-auto">
+            <div class="sidebar col-auto">
                 <div class="sidebar_top">
-                    <p>Logotipo</p>
+                    <div class="sidebar_content">
+                        <p>Logotipo</p>
+                    </div>
                 </div>
                 <div class="sidebar_bottom">
                     <!-- ! ps es de la biblioteca Perfect Scrollbar -->
@@ -106,7 +104,9 @@
                                 <div class="dropdown show">
                                     <a class="" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         <div class="topbar_profile">
-                                            <div class="profile_icon" id="userProfileIcon"></div>
+                                            <div class="profile_icon">
+                                                <i class="bi bi-person-fill"></i>
+                                            </div>
                                             <div class="topbar_profile_info">
                                                 <p class="topbar_profile_name">Nombre y apellido</p>
                                                 <p class="topbar_profile_account">Usuario</p>
@@ -136,10 +136,9 @@
         <!-- fin del layout_wrapper -->
     </div>
 
-    <!-- Enlace al archivo CSS de Perfect Scrollbar -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/1.5.2/css/perfect-scrollbar.min.css" rel="stylesheet">
-    <!-- Enlace al archivo JavaScript de Perfect Scrollbar -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/1.5.2/perfect-scrollbar.min.js"></script>
+    <!-- Scripts -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="../../assets/js/useryadmin.js"></script>
+    <script src="../../src/usuario/js/scriptUsuario.js"></script>
 </body>
-
 </html>
