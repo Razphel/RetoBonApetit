@@ -42,6 +42,53 @@ function cerrarSesion() {
     }, 500);
 }
 
+/* Función dinámica para crear plantillas para las páginas de formularios de 2 columnas
+    - tituloPagina (se especifica el nombre de la página. Ej.: Nuevo producto)
+    - tituloLeft (título del contenedor izquierdo de la plantilla, el que contiene el form)
+    - tituloRight (título del contenedor derecho de la plantilla)
+*/
+function crearPlantillaFormularios(tituloPagina, tituloLeft, tituloRight) {
+    let contenedor = document.querySelector("#contenedor");
+    contenedor.innerHTML = "";
+
+    // Crear el título de la página
+    let h1Inicio = crearElemento("h1", tituloPagina, {
+        id: "tituloApartado",
+        class: "py-3 mb-3 mt-4"
+    });
+
+    // Crear la parte superior de la página
+    let parteSuperior = crearElemento('div', undefined, {
+        class: 'row'
+    });
+    parteSuperior.appendChild(h1Inicio);
+    contenedor.appendChild(parteSuperior);
+
+    // Crear la parte inferior de la página con container_left y container_right
+    let parteInferior = crearElemento('div', undefined, {
+        class: 'row'
+    });
+
+    let container_left = crearElemento('div', undefined, {
+        class: 'container_left card p-4 col-12 col-lg-8 mb-sm-4 mb-lg-0'
+    });
+    let titulo_container_left = crearElemento('h4', tituloLeft, {
+        class: 'mb-5' 
+    });
+    container_left.appendChild(titulo_container_left); 
+
+    let container_right = crearElemento('div', undefined, {
+        class: 'container_right card p-4 col-12 col-lg-4'
+    });
+    let titulo_container_right = crearElemento('div', tituloRight, {
+        class: 'mb-5'
+    });
+    container_right.appendChild(titulo_container_right); 
+
+    parteInferior.appendChild(container_left);
+    parteInferior.appendChild(container_right);
+}
+
 function crearElemento(etiqueta, contenido, atributos) {
     let elementoNuevo = document.createElement(etiqueta);
     if (contenido !== undefined) {
