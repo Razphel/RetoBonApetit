@@ -90,6 +90,7 @@ function navInicio() {
 }
 
 function pagInicio() {
+
 }
 
 // Apartado CATEGORÍAS________________________________________________________________
@@ -113,18 +114,38 @@ function navAñadirCategoria() {
 
 // Formulario 1. Crear categorías...................
 function pagAñadirCategoria() { 
-    // Contenedor general de la pagina
+    // Contenedor general de la pagina al que incluir el contenedor superior e inferior
     let contenedor = document.querySelector("#contenedor");
 
     contenedor.innerHTML = "";
+
+    // Crear la estructura o plantilla general para las páginas con formulario
+    let parteSuperior = crearElemento('div', undefined, {
+        class: 'row'
+    });
+
+    parteSuperior.appendChild(h1Inicio);
+
+    let parteInferior = crearElemento('div', undefined, {
+        class: 'row'
+    });
+    let container_left = crearElemento('div', undefined, {
+        class: 'container_left card p-4 col-12 col-lg-8 mb-sm-4 mb-lg-0'
+    });
+    let form_container = crearElemento('div', undefined, {
+        class: 'form_container'
+    });
+    let container_right = crearElemento('div', undefined, {
+        class: 'container_right card p-4 col-12 col-lg-4'
+    });
+
+
 
     // Título de la página
     let h1Inicio = crearElemento("h1", "Nueva categoría", {
         id: "tituloApartado",
         class: "py-3 mb-3 mt-4"
     });
-
-    contenedor.appendChild(h1Inicio);
 
     let camposNewCategoria = {
         nombre: {
