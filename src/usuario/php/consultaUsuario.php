@@ -39,11 +39,6 @@ if (isset($_REQUEST['claveResiduos'])) {
     echo json_encode($categorias);
 }
 
-if (isset($_REQUEST['claveUsuarioInicioSolicitud'])) {
-    $claveUsuarioInicioSolicitud = BD::imprimirSolicitudesInicio('claveUsuarioInicioSolicitud');
-    echo json_encode($claveUsuarioInicioSolicitud);
-}
-
 //Esto es para el admin.
 //Devuelve la consulta con todos los datos de usuarios, recibe el nombre de tabla.
 if (isset($_REQUEST['claveTodosUsuarios'])) {

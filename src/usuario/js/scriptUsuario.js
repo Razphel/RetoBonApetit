@@ -1,15 +1,17 @@
 /*
     Páginas del usuario:
+        - Inicio
         - Productos (navProductos)
         - Pedidos (navPedidos)
         - Proveedores (navProveedores)
         - Residuos (navResiduos)
 
-    Funciones comunes para el admin y el usuario (deberían ir en el js de assets):
+    Funciones comunes para el admin y el usuario (useryadmin.js):
+        - cerrarSesion()
         - crearElemento()
+        - crearFormulario()
         - consultarProductos()
         - guardarProductos()
-        - pagProductos()
 */
 
 window.addEventListener("load", principal);
@@ -70,6 +72,15 @@ function principal() {
 }
 
 // Página de inicio___________________________________________________________________
+function navInicio() {
+    // Poner el AJAX de inicio
+}
+
+function pagInicio() {
+
+}
+
+
 function inicioCategorias(respuesta) {
     //Contenedor general de la pagina.
     let contenedor = document.querySelector("#contenedor");
@@ -293,6 +304,57 @@ function navPedidos() {
     });
 }
 
+function pagPedidos(respuesta) {
+    let contenedor = document.querySelector("#contenedor");
+    contenedor.innerHTML = "";
+
+    let pedidosTopUser = crearElemento("div", undefined, undefined);
+    let h1Pedidos = crearElemento("h1", "Pedidos", {
+        id: "tituloApartado",
+        class: "py-3 mb-3 mt-4"
+    });
+
+    pedidosTopUser.appendChild(h1Pedidos);
+    contenedor.appendChild(pedidosTopUser);
+
+    //Se comprueba primero que exista algo en el historial de solicitudes.
+    if (respuesta[0] != null) {
+        let historial = crearElemento("table", undefined, {
+            id: "historial",
+            style: "border-collapse: collapse;"
+        });
+
+        //Creo los titulos de las tablas.
+        let titulos = crearElemento("tr", undefined, undefined);
+        //Segun el formato en el que se recibe el objeto, tengo que usar sus elementos de la mitad al final.
+        let prueba = Object.keys(respuesta[0]);
+        for (let i = prueba.length / 2; i < prueba.length; i++) {
+            //Creo cada elemento y lo agrego a la fila del titulo.
+            let filaTitulo = crearElemento("th", prueba[i], {
+                style: "padding:5px 30px;"
+            });
+            titulos.appendChild(filaTitulo);
+        }
+
+        //Agrego el titulo a la tabla.
+        historial.appendChild(titulos);
+
+        //Ahora agrego el contenido.
+        respuesta.forEach(fila => {
+            let filaNormal = crearElemento("tr", undefined, undefined);
+            for (let i = 0; i < Object.keys(fila).length / 2; i++) {
+                let elementoFila = crearElemento("td", fila[i], undefined);
+                filaNormal.appendChild(elementoFila);
+            }
+            historial.appendChild(filaNormal);
+        });
+        contenedor.appendChild(historial);
+    } else {
+        let sinHistorial = crearElemento("p", "Historial Vacio.", undefined)
+        contenedor.appendChild(sinHistorial);
+    }
+}
+
 // Página proveedores_________________________________________________________________
 function navProveedores() {
     let parametros = {
@@ -345,57 +407,6 @@ function pagProveedores(proveedores) {
         contador++;
 
     });
-}
-
-function pagPedidos(respuesta) {
-    let contenedor = document.querySelector("#contenedor");
-    contenedor.innerHTML = "";
-
-    let pedidosTopUser = crearElemento("div", undefined, undefined);
-    let h1Pedidos = crearElemento("h1", "Pedidos", {
-        id: "tituloApartado",
-        class: "py-3 mb-3 mt-4"
-    });
-
-    pedidosTopUser.appendChild(h1Pedidos);
-    contenedor.appendChild(pedidosTopUser);
-
-    //Se comprueba primero que exista algo en el historial de solicitudes.
-    if (respuesta[0] != null) {
-        let historial = crearElemento("table", undefined, {
-            id: "historial",
-            style: "border-collapse: collapse;"
-        });
-
-        //Creo los titulos de las tablas.
-        let titulos = crearElemento("tr", undefined, undefined);
-        //Segun el formato en el que se recibe el objeto, tengo que usar sus elementos de la mitad al final.
-        let prueba = Object.keys(respuesta[0]);
-        for (let i = prueba.length / 2; i < prueba.length; i++) {
-            //Creo cada elemento y lo agrego a la fila del titulo.
-            let filaTitulo = crearElemento("th", prueba[i], {
-                style: "padding:5px 30px;"
-            });
-            titulos.appendChild(filaTitulo);
-        }
-
-        //Agrego el titulo a la tabla.
-        historial.appendChild(titulos);
-
-        //Ahora agrego el contenido.
-        respuesta.forEach(fila => {
-            let filaNormal = crearElemento("tr", undefined, undefined);
-            for (let i = 0; i < Object.keys(fila).length / 2; i++) {
-                let elementoFila = crearElemento("td", fila[i], undefined);
-                filaNormal.appendChild(elementoFila);
-            }
-            historial.appendChild(filaNormal);
-        });
-        contenedor.appendChild(historial);
-    } else {
-        let sinHistorial = crearElemento("p", "Historial Vacio.", undefined)
-        contenedor.appendChild(sinHistorial);
-    }
 }
 
 // Página residuos____________________________________________________________________
@@ -509,7 +520,7 @@ function imprimirFiltroTabla(nombre = null, categoria = null, unidades = null) {
     let todosProductos = JSON.parse(localStorage.getItem("todosProductos"));
     let parteInferior = document.querySelector("#parteInferior");
 
-    let contenedorFiltroLabelySelect = crearElemento("div", undefined, { // contiene el div contenedorFiltroLabel y contenedorFiltroSelect
+    let contenedorFiltroLabelySelect = crearElemento("div", undefined, { // contiene el div contenedorFiltroLabel y contenedorFiltroLeft
         id: "contenedorFiltroLabelySelect",
         class: "contenedorFiltroLabelySelect"
     });
@@ -530,9 +541,9 @@ function imprimirFiltroTabla(nombre = null, categoria = null, unidades = null) {
     contenedorFiltroLabel.appendChild(iconoFiltros);
     contenedorFiltroLabel.appendChild(labelFiltros);
 
-    let contenedorFiltroSelect = crearElemento("div", undefined, {
-        id: "contenedorFiltroSelect",
-        class: "contenedorFiltroSelect"
+    let contenedorFiltroLeft = crearElemento("div", undefined, {
+        id: "contenedorFiltroLeft",
+        class: "contenedorFiltroLeft"
     });
 
     // Crear el contenedor del filtro
@@ -552,6 +563,7 @@ function imprimirFiltroTabla(nombre = null, categoria = null, unidades = null) {
         id: "filtroDesplegableCategoria",
         class: "form-select selectFiltros"
     });
+
     selectCategoria.addEventListener("change", manejadorFiltro);
     let optionDefaultCategoria = document.createElement("option");
     optionDefaultCategoria.text = "Categorías";
@@ -566,13 +578,15 @@ function imprimirFiltroTabla(nombre = null, categoria = null, unidades = null) {
         }
         selectCategoria.add(optionCategoria);
     });
-    contenedorFiltroSelect.appendChild(selectCategoria);
+
+    contenedorFiltroLeft.appendChild(selectCategoria);
 
     // Crear el desplegable para las unidades
     let selectUnidades = crearElemento("select", undefined, {
         id: "filtroDesplegableUnidades",
         class: "form-select selectFiltros"
     });
+
     selectUnidades.addEventListener("change", manejadorFiltro);
     let optionDefaultUnidades = document.createElement("option");
     optionDefaultUnidades.text = "Ud. de medida";
@@ -586,23 +600,62 @@ function imprimirFiltroTabla(nombre = null, categoria = null, unidades = null) {
         }
         selectUnidades.add(optionUnidad);
     });
-    contenedorFiltroSelect.appendChild(selectUnidades);
+    contenedorFiltroLeft.appendChild(selectUnidades);
 
     contenedorFiltroLabelySelect.appendChild(contenedorFiltroLabel);
-    contenedorFiltroLabelySelect.appendChild(contenedorFiltroSelect);
+    contenedorFiltroLabelySelect.appendChild(contenedorFiltroLeft);
 
     contenedorFiltro.appendChild(contenedorFiltroLabelySelect);
+
+    let contenedorFiltroRight = crearElemento("div", undefined, {
+        id: "contenedorFiltroRight",
+        class: "contenedorFiltroRight"
+    });
+
+    let contenedorBuscador = crearElemento("div", undefined, {
+        id: "contenedorBuscador",
+        class: "contenedorBuscador input-group"
+    });
+
+    let contenedorBuscadorIcon = crearElemento("div", undefined, {
+        id: "contenedorBuscadorIcon",
+        class: "contenedorBuscadorIcon input-group-prepend input-group"
+    });
+
+    let contenedorIconBuscador = crearElemento("span", undefined, {
+        class: "input-group-text searchbar"
+    });
+
+    let iconBuscador = crearElemento("i", undefined, {
+        class: "bi bi-search"
+    });
+
+    contenedorIconBuscador.appendChild(iconBuscador); 
+    contenedorBuscadorIcon.appendChild(contenedorIconBuscador);
+    contenedorBuscador.appendChild(contenedorBuscadorIcon); 
 
     // Crear el campo de texto para el nombre
     let inputNombre = crearElemento("input", undefined, {
         id: "filtroBuscadorNombre",
         type: "text",
         placeholder: "Buscar por nombre de producto...",
-        class: "form-control filtroBuscador",
+        class: "form-control searchbar filtroBuscador",
         value: nombre || ""
     });
+
+    let botonSolicitud = crearElemento("input", undefined, {
+        type: "submit",
+        id: "botonSolicitud",
+        class: "btn btn_custom_1",
+        value: "Hacer solicitud"
+    });
+
     inputNombre.addEventListener("input", manejadorFiltro);
-    contenedorFiltro.appendChild(inputNombre);
+    contenedorBuscadorIcon.appendChild(inputNombre); 
+    contenedorFiltroRight.appendChild(contenedorBuscador);
+    contenedorFiltroRight.appendChild(botonSolicitud);
+
+    contenedorFiltro.appendChild(contenedorFiltroRight);
 
     // Añadir el contenedor del filtro al DOM
     parteInferior.appendChild(contenedorFiltro);
@@ -684,17 +737,17 @@ function imprimirTablaProductos(nombre = null, categoria = null, unidades = null
             let celdaBoton = crearElemento("td");
             let inputCantidad = crearElemento("input", undefined, {
                 type: "number",
+                min: "0",
                 value: "0",
-                id: "inputCantidad_" + i,
+                id: "inputCantidad",
                 class: "form-control form-control-sm"
             });
             let botonAñadir = crearElemento("input", undefined, {
-                id: "botonAñadir_" + i,
+                id: "botonAñadir_" + todosProductos[i]["id_producto"],
                 type: "submit",
                 class: "btn btn_custom_1 btn_sm",
                 value: "Añadir"
             })
-            botonAñadir.addEventListener("click", agregarCesta);
             celdaBoton.appendChild(inputCantidad);
             celdaBoton.appendChild(botonAñadir);
             filaBody.appendChild(celdaBoton);
@@ -715,7 +768,7 @@ function imprimirTablaProductos(nombre = null, categoria = null, unidades = null
         contenedorTablaProductos.innerHTML = "";
         let mensajeVacio = mostrarMensajeVacio("No hay productos", "¿Hacer una solicitud de producto?", "Hacer solicitud");
         contenedorTablaProductos.appendChild(mensajeVacio);
-    }
+    } 
 }
 
 // Contenedor con borde punteado que aparece cuando una tabla está vacía o no tiene contenido
@@ -792,3 +845,9 @@ function agregarCesta(e) {
 
     //Despues de agregar elementos en la cesta, compruebo
 }
+
+// FORMULARIOS_____________________________________________________________________________________
+// Formulario 1. Cesta/Carrito
+
+
+// Formulario 2. Enviar solicitud

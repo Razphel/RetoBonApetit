@@ -1,23 +1,75 @@
+/*
+    Páginas del administrador:
+        - Inicio________________________________________________ navInicio() -> pagInicio()
+        - Categorías____________________________________________ navCategorias() -> pagCategorias()
+            - Listar categorías................... navListarCategorias() -> pagListarCategorias()
+            - Añadir categoría.................... navAñadirCategoria() -> pagAñadirCategoria()
+        - Productos_____________________________________________ navProductos() -> pagProductos()
+            - Listar productos.................... navListarProductos() -> pagListarProductos()
+            - Añadir producto..................... navAñadirProducto() -> pagAñadirProducto()
+            - Ud. de medida....................... navUdMedida() -> pagUdMedida()
+        - Solicitudes___________________________________________ navSolicitudes() -> pagSolicitudes()
+        - Pedidos_______________________________________________ navPedidos() -> pagPedidos()
+            - Listar pedidos...................... navListarPedidos() -> pagListarPedidos()
+            - Añadir pedido....................... navAñadirPedido() -> pagAñadirPedido()
+        - Usuarios______________________________________________ navUsuarios() -> pagUsuarios()
+            - Listar usuarios..................... navListarUsuarios() -> pagListarUsuarios()
+            - Añadir usuario...................... navAñadirUsuario() -> pagAñadirUsuario()
+        - Proveedores___________________________________________ navProveedores() -> pagProveedores()
+            - Listar proveedores.................. navListarProveedores() -> pagListarProveedores()
+            - Añadir proveedor.................... navAñadirProveedor() -> pagAñadirProveedor()
+        - Residuos______________________________________________ navResiduos() -> pagResiduos()
+
+    Funciones comunes para el admin y el usuario (useryadmin.js):
+        - cerrarSesion()
+        - crearElemento()
+        - crearFormulario()
+        - consultarProductos()
+        - guardarProductos()
+*/
+
 window.addEventListener("load", principal);
 
+// Menú dropdown 
+$(document).ready(function () {
+    $('#sidebarCollapse').on('click', function () {
+        $('#sidebar').toggleClass('active');
+    });
+});
+
+document.addEventListener('DOMContentLoaded', function () {
+    const sidebar = document.querySelector('.sidebar_container');
+    new PerfectScrollbar(sidebar);
+});
+
 function principal() {
-    if (localStorage.getItem("usuario")) {
-        let usuarioActual = JSON.parse(localStorage.getItem("usuario"));
-        if (usuarioActual.nombre === "") {
-            window.location.replace("../../../sesion.html");
-        }
-    } else {
-        //Redirige al usuario a la pÃ¡gina de sesion no existen datos en el localStorage.
-        window.location.replace("../../../sesion.html");
-    }
-}
-
-function cerrarSesion() {
-    localStorage.removeItem("usuario");
-
-    setTimeout(function () {
-        window.location.replace("../../../sesion.html");
-    }, 500);
+    // Apartado inicio
+    document.querySelector("#navInicio").addEventListener("click", navInicio);
+    // Apartado categorías
+    document.querySelector("#navCategorias").addEventListener("click", navCategorias);
+        document.querySelector("#navListarCategorias").addEventListener("click", navListarCategorias);
+        document.querySelector("#navAñadirCategoria").addEventListener("click", navAñadirCategoria);
+    // Apartado productos
+    document.querySelector("#navProductos").addEventListener("click", navProductos);
+        document.querySelector("#navListarProductos").addEventListener("click", navListarProductos);
+        document.querySelector("#navAñadirProducto").addEventListener("click", navAñadirProducto);
+        document.querySelector("#navUdMedida").addEventListener("click", navUdMedida);
+    // Apartado solicitudes
+    document.querySelector("#navSolicitudes").addEventListener("click", navSolicitudes);
+    // Apartado pedidos
+    document.querySelector("#navPedidos").addEventListener("click", navPedidos);
+        document.querySelector("#navListarPedidos").addEventListener("click", navListarPedidos);
+        document.querySelector("#navNuevoPedido").addEventListener("click", navNuevoPedido);
+    // Apartado usuarios
+    document.querySelector("#navUsuarios").addEventListener("click", navUsuarios);
+        document.querySelector("#navListarUsuarios").addEventListener("click", navListarUsuarios);
+        document.querySelector("#navAñadirUsuario").addEventListener("click", navAñadirUsuario);
+    // Apartado proveedores
+    document.querySelector("#navProveedores").addEventListener("click", navProveedores);
+        document.querySelector("#navListarProveedores").addEventListener("click", navListarProveedores);
+        document.querySelector("#navAñadirProveedor").addEventListener("click", navAñadirProveedor);
+    // Apartado residuos
+    document.querySelector("#navResiduos").addEventListener("click", navResiduos);
 }
 
 function mostrarUsuarios(respuesta) {
@@ -42,10 +94,350 @@ function mostrarUsuarios(respuesta) {
         contenedor.appendChild(contenedorResiduos);
         contador++;
     });
-
 }
 
+// Apartado INICIO____________________________________________________________________
+function navInicio() {
+    pagInicio(); 
+}
+
+function pagInicio() {
+}
+
+// Apartado CATEGORÍAS________________________________________________________________
+function navCategorias() { 
+    pagCategorias(); //! cambiar a pagCategorias() 
+}
+
+function pagCategorias() { // página general de categorías
+}
+
+function navListarCategorias() {
+    pagListarCategorias();
+}
+
+function pagListarCategorias() { // mostrar tabla con todas las categorías y sus datos
+}
+
+function navAñadirCategoria() {
+    pagAñadirCategoria();
+}
+
+// Formulario 1. Crear categorías...................
+function pagAñadirCategoria() { 
+    crearPlantillaFormularios('Nueva categoría', 'Datos de la nueva categoría', 'Categorías existentes');
+    contenedorForm = document.querySelector('#contenedorForm');
+
+    let camposNewCategoria = {
+        nombre: {
+            etiqueta: 'label',
+            contenido: 'Nombre',
+            atributos: {
+                for: 'newNombreCategoria',
+                class: 'form-label'
+            }
+        },
+        inputNombre: {
+            etiqueta: 'input',
+            atributos: {
+                type: 'text',
+                id: 'newNombreCategoria',
+                class: 'form-control',
+                placeholder: 'Nombre de la nueva categoría'
+            }
+        },
+        observaciones: {
+            etiqueta: 'label',
+            contenido: 'Observaciones',
+            atributos: {
+                for: 'newObservacionCategoria',
+                class: 'form-label'
+            }
+        },
+        inputObservaciones: {
+            etiqueta: 'input',
+            atributos: {
+                type: 'text',
+                id: 'newObservacionCategoria',
+                class: 'form-control',
+                placeholder: 'Observación de la nueva categoría'
+            }
+        },
+        btnCancelar: {
+            etiqueta: 'input',
+            atributos: {
+                type: 'submit',
+                value: 'Cancelar',
+                class: 'btn btn_custom_3',
+                onclick: 'cancelar()'
+            }
+        },
+        btnLimpiarDatos: {
+            etiqueta: 'input',
+            atributos: {
+                type: 'submit',
+                value: 'Limpiar datos',
+                class: 'btn btn_custom_2',
+                onclick: 'limpiarDatos()'
+            }
+        },
+        btnCrearCategoria: {
+            etiqueta: 'input',
+            atributos: {
+                type: 'submit',
+                value: 'Crear categoría',
+                class: 'btn btn_custom_1',
+                onclick: 'crearCategoria()'
+            }
+        }
+    };
+    crearFormulario(camposNewCategoria, contenedorForm);
+}
+
+// Apartado PRODUCTOS__________________________________________________________________
+function navProductos() {
+    pagProductos(); 
+}
+
+function pagProductos() {
+}
+
+function navListarProductos() { 
+    pagListarProductos(); 
+}
+
+function pagListarProductos() { // mostrar tabla con todos los productos y sus datos
+}
+
+function navAñadirProducto() {
+    pagAñadirProducto();
+}
+
+// Formulario 2. Crear producto.......................
+function pagAñadirProducto() {
+    crearPlantillaFormularios('Nuevo producto', 'Datos del nuevo producto', 'Productos existentes');
+    contenedorForm = document.querySelector('#contenedorForm');
+
+    let camposNewProductos = {
+        nombre: {
+            etiqueta: 'label',
+            contenido: 'Nombre',
+            atributos: {
+                for: 'newProductName',
+                class: 'form-label'
+            }
+        },
+        inputNombre: {
+            etiqueta: 'input',
+            atributos: {
+                type: 'text',
+                id: 'newProductName',
+                class: 'form-control',
+                placeholder: "Nombre del producto"
+            }
+        },
+        categoria: {
+            etiqueta: 'label',
+            contenido: 'Categoría',
+            atributos: {
+                for: 'newProductCategoria',
+                class: 'form-label'
+            }
+        },
+        inputCategoria: {
+            etiqueta: 'input',
+            atributos: {
+                type: 'text',
+                id: 'newProductCategoria',
+                class: 'form-control',
+                placeholder: 'Categoría asociada al nuevo producto'
+            }
+        },
+        unidadDeMedida: {
+            etiqueta: 'label',
+            contenido: 'Unidad de medida',
+            atributos: {
+                for: 'newProductUdMedida',
+                class: 'form-label'
+            }
+        },
+        inputUnidadDeMedida: {
+            etiqueta: 'input',
+            atributos: {
+                type: 'text',
+                id: 'newProductUdMedida',
+                class: 'form-control',
+                placeholder: 'Unidad de medida del nuevo producto'
+            }
+        },
+        residuos: {
+            etiqueta: 'label',
+            contenido: 'Residuos',
+            atributos: {
+                for: 'newProductResiduos',
+                class: 'form-label'
+            }
+        },
+        inputResiduos: {
+            etiqueta: 'input',
+            atributos: {
+                type: 'text',
+                id: 'newProductResiduos',
+                class: 'form-control',
+                placeholder: 'Residuos del nuevo producto'
+            }
+        },
+        observaciones: {
+            etiqueta: 'label',
+            contenido: 'Observaciones',
+            atributos: {
+                for: 'newProductObservaciones',
+                class: 'form-label'
+            }
+        },
+        inputObservaciones: {
+            etiqueta: 'textarea',
+            atributos: {
+                type: 'text',
+                id: 'newProductObservaciones',
+                class: 'form-control',
+                placeholder: 'Observaciones del nuevo producto'
+            }
+        },
+        // Botones
+        btnCancelar: {
+            etiqueta: 'input',
+            atributos: {
+                type: 'submit',
+                value: 'Cancelar',
+                class: 'btn btn_custom_3',
+                onclick: 'cancelar()'
+            }
+        },
+        btnLimpiarDatos: {
+            etiqueta: 'input',
+            atributos: {
+                type: 'submit',
+                value: 'Limpiar datos',
+                class: 'btn btn_custom_2',
+                onclick: 'limpiarDatos()'
+            }
+        },
+        btnCrearProducto: {
+            etiqueta: 'input',
+            atributos: {
+                type: 'submit',
+                value: 'Crear producto', 
+                class: 'btn btn_custom_1',
+                onclick: 'crearProducto()'
+            }
+        }
+    };
+    crearFormulario(camposNewProductos, contenedorForm);
+}
+
+// Formulario 3. Crear ud. de medida...................
+function navUdMedida() { 
+    pagUdMedida()
+}
+
+function pagUdMedida() {
+    crearPlantillaFormularios('Nueva unidad de medida', 'Datos de la nueva ud. de medida', 'Ud. de medida existentes');
+    contenedorForm = document.querySelector('#contenedorForm');
+
+    let camposNewMedida = {
+        nombre: {
+            etiqueta: 'label',
+            contenido: 'Nombre',
+            atributos: { 
+                for: 'newUdMedidaName',
+                class: 'form-label'
+            }
+        },
+        inputNombre: {
+            etiqueta: 'input',
+            atributos: { 
+                type: 'text', 
+                id: 'newUdMedidaName',
+                class: 'form-control',
+                placeholder: 'Nombre de la nueva unidad de medida' 
+            }
+        },
+        observaciones: {
+            etiqueta: 'label',
+            contenido: 'Observaciones',
+            atributos: { 
+                for: 'newUdMedidaObservaciones',
+                class: 'form-label'
+            }
+        },
+        inputObservaciones: {
+            etiqueta: 'textarea',
+            atributos: {
+                type: 'text',
+                id: 'newUdMedidaObservaciones',
+                class: 'form-control',
+                placeholder: 'Observaciones de la nueva unidad de medida'
+            }
+        },
+        // Botones
+        btnCancelar: {
+            etiqueta: 'input',
+            atributos: {
+                type: 'submit',
+                value: 'Cancelar',
+                class: 'btn btn_custom_3',
+                onclick: 'cancelar()'
+            }
+        },
+        btnLimpiarDatos: {
+            etiqueta: 'input',
+            atributos: {
+                type: 'submit',
+                value: 'Limpiar datos',
+                class: 'btn btn_custom_2',
+                onclick: 'limpiarDatos()'
+            }
+        },
+        btnCrearMedida: {
+            etiqueta: 'input',
+            atributos: { 
+                type: 'submit', 
+                value: 'Crear ud. de medida',
+                class: 'btn btn_custom_1' 
+            }
+        }
+    };
+    crearFormulario(camposNewMedida, contenedorForm);
+}
+
+// Apartado PEDIDOS____________________________________________________________________
+function navPedidos() {
+    pagPedidos(); 
+}
+
+function pagPedidos() {
+}
+
+function navListarPedidos() {
+    pagListarPedidos(); 
+}
+
+function pagListarPedidos() { // mostrar el historial de pedidos del admin
+}
+
+function navNuevoPedido() {
+    pagNuevoPedido();
+}
+
+// Formulario 4. Nuevo pedido...........................
+function pagNuevoPedido() {
+}
+
+// Apartado USUARIOS____________________________________________________________________
 function navUsuarios() {
+    pagUsuarios();
+
     let parametros = {
         claveTodosUsuarios: true
     };
@@ -63,382 +455,297 @@ function navUsuarios() {
     });
 }
 
-// LAURA FORMULARIOS........................................................................................
-/* Plantilla para crear campos del formulario:
-    let camposFormulario = [
-        { etiqueta: 'label', contenido: 'Label 1', atributos: { for: 'input1', class: 'form-label' }},
-        { etiqueta: 'input', atributos: { type: 'text', id: 'input1', class: '' }},
-        { etiqueta: 'button', contenido: 'Crear', atributos: { type: 'button', onclick: 'crear()', class: 'button-class' }},
-    ]
-*/
-
-// ADMIN
-// Formulario 1. Crear categorías
-function navCategorias() {
-    let camposNewCategoria = [
-        {
-            etiqueta: 'label', contenido: 'Nombre', atributos: {
-                for: 'newNombreCategoria',
-                class: 'form-label'
-            }
-        },
-        {
-            etiqueta: 'input', atributos: {
-                type: 'text',
-                id: 'newNombreCategoria',
-                class: ''
-            }
-        },
-        {
-            etiqueta: 'label', contenido: 'Observaciones', atributos: {
-                for: 'newObservacionCategoria',
-                class: 'form-label'
-            }
-        },
-        {
-            etiqueta: 'input', atributos: {
-                type: 'text',
-                id: 'newObservacionCategoria',
-                class: ''
-            }
-        },
-        // Botones................................................
-        {
-            etiqueta: 'button', contenido: 'Cancelar', atributos: { //! revisar tipo de botones y sus eventos
-                type: 'button',
-                class: 'btn btn_custom_3',
-                onclick: ''
-            }
-        },
-        {
-            etiqueta: 'button', contenido: 'Limpiar datos', atributos: {
-                type: 'button',
-                class: 'btn btn_custom_2',
-                onclick: ''
-            }
-        },
-        {
-            etiqueta: 'button', contenido: 'Crear categoría', atributos: {
-                type: 'button',
-                class: 'btn btn_custom_1',
-                onclick: ''
-            }
-        }
-    ];
-
-    // Obtener el contenedor donde se agregará el formulario
-    let contenedorFormCategorias = aux; //! crear el contenedor donde insertar el formulario
-    crearFormulario(camposNewCategoria, contenedorFormCategorias);
+function pagUsuarios() {
 }
 
-// Formulario 2. Crear ud. de medida
-function navUdMedida() { // ud. de medida es un apartado del menú "productos"
-    let camposNewMedida = [
-        {
-            etiqueta: 'label', contenido: 'Nombre', atributos: {
-                for: 'newUdMedida',
-                class: 'form-label'
-            }
-        },
-        {
-            etiqueta: 'input', atributos: {
-                type: 'text',
-                id: 'newUdMedida',
-                class: ''
-            }
-        },
-        {
-            etiqueta: 'label', contenido: 'Observaciones', atributos: {
-                for: 'newObservacionesMedida',
-                class: 'form-label'
-            }
-        },
-        {
-            etiqueta: 'input', atributos: {
-                type: 'text',
-                id: 'newObservacionesMedida',
-                class: ''
-            }
-        },
-        {
-            etiqueta: 'button', contenido: 'Crear ud. de medida', atributos: {
-                type: 'button',
-                onclick: '',
-                class: 'btn btn_custom_1'
-            }
-        },
-    ]
-    // Obtener el contenedor donde se agregará el formulario
-    let contenedorFormMedidas = aux; //! crear el contenedor donde insertar el formulario
-    crearFormulario(camposNewMedida, contenedorFormMedidas);
+function navListarUsuarios() {
+    pagListarUsuarios(); 
 }
-// Formulario 3. Crear producto
-function navProductos() {
-    let camposNewProductos = [
-        {
-            etiqueta: 'label', contenido: 'Nombre', atributos: {
-                for: 'newNombreProducto',
-                class: 'form-label'
-            }
-        },
-        {
-            etiqueta: 'input', atributos: {
-                type: 'text',
-                id: 'newNombreProducto',
-                class: ''
-            }
-        },
-        {
-            etiqueta: 'label', contenido: 'Categoría', atributos: {
-                for: 'newCategoriaAsociada',
-                class: 'form-label'
-            }
-        },
-        {
-            etiqueta: 'input', atributos: {
-                type: 'text',
-                id: 'newCategoriaAsociada',
-                class: ''
-            }
-        },
-        {
-            etiqueta: 'label', contenido: 'Unidad de medida', atributos: {
-                for: 'newUnidadAsociada',
-                class: 'form-label'
-            }
-        },
-        {
-            etiqueta: 'input', atributos: {
-                type: 'text',
-                id: 'newUnidadAsociada',
-                class: ''
-            }
-        },
-        {
-            etiqueta: 'label', contenido: 'Residuos', atributos: {
-                for: 'newResiduosAsociados',
-                class: 'form-label'
-            }
-        },
-        {
-            etiqueta: 'input', atributos: {
-                type: 'text',
-                id: 'newResiduosAsociados',
-                class: ''
-            }
-        },
-        {
-            etiqueta: 'label', contenido: 'Observaciones', atributos: {
-                for: 'newObservacionProducto',
-                class: 'form-label'
-            }
-        },
-        {
-            etiqueta: 'input', atributos: {
-                type: 'text',
-                id: 'newObservacionProducto',
-                class: ''
-            }
-        },
-        // Botones................................................
-        {
-            etiqueta: 'button', contenido: 'Cancelar', atributos: { //! revisar tipo de botones y sus eventos
-                type: 'button',
-                class: 'btn btn_custom_3',
-                onclick: ''
-            }
-        },
-        {
-            etiqueta: 'button', contenido: 'Limpiar datos', atributos: {
-                type: 'button',
-                class: 'btn btn_custom_2',
-                onclick: ''
-            }
-        },
-        {
-            etiqueta: 'button', contenido: 'Crear categoría', atributos: {
-                type: 'button',
-                class: 'btn btn_custom_1',
-                onclick: ''
-            }
-        }
-    ]
-    // Obtener el contenedor donde se agregará el formulario
-    let contenedorFormProductos = aux; //! crear el contenedor donde insertar el formulario
-    crearFormulario(camposNewProductos, contenedorFormProductos);
-}
-// Formulario 4. Hacer pedido
-function navPedidos() {
 
+function pagListarUsuarios() { // mostrar tabla con los usuarios y sus datos
 }
-// Formulario 5. Crear usuario
-function navUsuarios() {
-    let camposNewUsuario = [
-        {
-            etiqueta: 'label', contenido: 'Nombre', atributos: {
-                for: 'newUsername',
+
+// Formulario 5. Añadir usuario.....................
+function navAñadirUsuario() {
+    pagAñadirUsuario(); 
+}
+
+function pagAñadirUsuario() {
+    crearPlantillaFormularios('Nuevo usuario', 'Datos del nuevo usuario', 'Usuarios existentes');
+    contenedorForm = document.querySelector('#contenedorForm');
+
+    let camposNewUsuario = {
+        nombre: {
+            etiqueta: 'label',
+            contenido: 'Nombre',
+            atributos: { 
+                for: 'newUserName',
                 class: 'form-label'
             }
         },
-        {
-            etiqueta: 'input', atributos: {
-                type: 'text',
-                id: 'newUsername',
-                class: ''
+        inputNombre: {
+            etiqueta: 'input',
+            atributos: { 
+                type: 'text', 
+                id: 'newUserName',
+                class: 'form-control',
+                placeholder: 'Nombre del nuevo usuario' 
             }
         },
-        {
-            etiqueta: 'label', contenido: 'Activo', atributos: {
+        activo: {
+            etiqueta: 'label',
+            contenido: 'Activo',
+            atributos: { 
                 for: 'userActive',
                 class: 'form-label'
             }
         },
-        {
-            etiqueta: 'input', atributos: {
+        inputActivo: {
+            etiqueta: 'input',
+            atributos: { 
                 type: 'text', //! revisar tipo de input del toggle de usuario activo
                 id: 'userActive',
-                class: ''
+                class: 'form-control' 
             }
         },
-        {
-            etiqueta: 'label', contenido: 'Teléfono', atributos: {
+        telefono: {
+            etiqueta: 'label',
+            contenido: 'Teléfono',
+            atributos: { 
                 for: 'newUserTelefono',
                 class: 'form-label'
             }
         },
-        {
-            etiqueta: 'input', atributos: {
-                type: 'text',
+        inputTelefono: {
+            etiqueta: 'input',
+            atributos: { 
+                type: 'text', 
                 id: 'newUserTelefono',
-                class: ''
+                class: 'form-control',
+                placeholder: 'Teléfono del nuevo usuario' 
             }
         },
-        {
-            etiqueta: 'label', contenido: 'Email', atributos: {
+        email: {
+            etiqueta: 'label',
+            contenido: 'Email',
+            atributos: { 
                 for: 'newUserEmail',
                 class: 'form-label'
             }
         },
-        {
-            etiqueta: 'input', atributos: {
-                type: 'email',
+        inputEmail: {
+            etiqueta: 'input',
+            atributos: { 
+                type: 'email', 
                 id: 'newUserEmail',
-                class: ''
+                class: 'form-control',
+                placeholder: 'Email del nuevo usuario' 
             }
         },
-        {
-            etiqueta: 'label', contenido: 'Observaciones', atributos: {
-                for: 'newObservacionUser',
+        observaciones: {
+            etiqueta: 'label',
+            contenido: 'Observaciones',
+            atributos: { 
+                for: 'newUserObservacion',
                 class: 'form-label'
             }
         },
-        {
-            etiqueta: 'input', atributos: {
+        inputObservaciones: {
+            etiqueta: 'textarea',
+            atributos: {
                 type: 'text',
-                id: 'newObservacionUser',
-                class: ''
+                id: 'newUserObservacion',
+                class: 'form-control',
+                placeholder: 'Observaciones del nuevo usuario'
             }
         },
-        {
-            etiqueta: 'button', contenido: 'Crear ud. de medida', atributos: {
-                type: 'button',
-                onclick: '',
-                class: 'btn btn_custom_1'
+        // Botones
+        btnCancelar: {
+            etiqueta: 'input',
+            atributos: {
+                type: 'submit',
+                value: 'Cancelar',
+                class: 'btn btn_custom_3',
+                onclick: 'cancelar()'
             }
         },
-    ]
-    // Obtener el contenedor donde se agregará el formulario
-    let contenedorFormUsuario = aux; //! crear el contenedor donde insertar el formulario
-    crearFormulario(camposNewUsuario, contenedorFormUsuario);
+        btnLimpiarDatos: {
+            etiqueta: 'input',
+            atributos: {
+                type: 'submit',
+                value: 'Limpiar datos',
+                class: 'btn btn_custom_2',
+                onclick: 'limpiarDatos()'
+            }
+        },
+        btnCrearUsuario: {
+            etiqueta: 'input',
+            contenido: 'Crear ud. de medida',
+            atributos: { 
+                type: 'submit', 
+                class: 'btn btn_custom_1',
+                onclick: 'crearUsuario()' 
+            }
+        }
+    };
+    crearFormulario(camposNewUsuario, contenedorForm);
 }
-// Formulario 6. Crear proveedor
+
+// Apartado PROVEEDORES___________________________________________________________________
 function navProveedores() {
-    let camposNewProveedor = [
-        {
-            etiqueta: 'label', contenido: 'Nombre', atributos: {
+    pagProveedores(); //! cambiar a pagProveedores
+}
+
+function pagProveedores() {
+}
+
+function navListarProveedores() {
+}
+
+function pagListarProveedores() {
+}
+
+function navAñadirProveedor() {
+    pagAñadirProveedor();
+}
+
+// Formulario 6. Añadir proveedor.....................
+function pagAñadirProveedor() {
+    // Contenedor general de la pagina
+    let contenedor = document.querySelector("#contenedor");
+
+    contenedor.innerHTML = "";
+
+    // Título de la página
+    let h1Inicio = crearElemento("h1", "Nuevo proveedor", {
+        id: "tituloApartado",
+        class: "py-3 mb-3 mt-4"
+    });
+
+    contenedor.appendChild(h1Inicio);
+
+    let camposNewProveedor = {
+        nombre: {
+            etiqueta: 'label',
+            contenido: 'Nombre',
+            atributos: { 
                 for: 'newProvName',
                 class: 'form-label'
             }
         },
-        {
-            etiqueta: 'input', atributos: {
-                type: 'text',
+        inputNombre: {
+            etiqueta: 'input',
+            atributos: { 
+                type: 'text', 
                 id: 'newProvName',
-                class: ''
+                class: 'form-control',
+                placeholder: 'Nombre del nuevo proveedor' 
             }
         },
-        {
-            etiqueta: 'label', contenido: 'Teléfono', atributos: {
+        telefono: {
+            etiqueta: 'label',
+            contenido: 'Teléfono',
+            atributos: { 
                 for: 'newProvTelefono',
                 class: 'form-label'
             }
         },
-        {
-            etiqueta: 'input', atributos: {
-                type: 'int',
+        inputTelefono: {
+            etiqueta: 'input',
+            atributos: { 
+                type: 'text', 
                 id: 'newProvTelefono',
-                class: ''
+                class: 'form-control',
+                placeholder: 'Teléfono del nuevo proveedor' 
             }
         },
-        {
-            etiqueta: 'label', contenido: 'Email', atributos: {
+        email: {
+            etiqueta: 'label',
+            contenido: 'Email',
+            atributos: { 
                 for: 'newProvEmail',
                 class: 'form-label'
             }
         },
-        {
-            etiqueta: 'input', atributos: {
-                type: 'email',
+        inputEmail: {
+            etiqueta: 'input',
+            atributos: { 
+                type: 'email', 
                 id: 'newProvEmail',
-                class: ''
+                class: 'form-control',
+                placeholder: 'Email del nuevo proveedor' 
             }
         },
-        {
-            etiqueta: 'label', contenido: 'Dirección', atributos: {
-                for: 'newProvDirec',
+        direccion: {
+            etiqueta: 'label',
+            contenido: 'Dirección',
+            atributos: { 
+                for: 'newProvDireccion',
                 class: 'form-label'
             }
         },
-        {
-            etiqueta: 'input', atributos: {
-                type: 'text',
-                id: 'newProvDirec',
-                class: ''
+        inputDireccion: {
+            etiqueta: 'input',
+            atributos: { 
+                type: 'text', 
+                id: 'newProvDireccion',
+                class: 'form-control',
+                placeholder: 'Dirección del nuevo proveedor' 
             }
         },
-        {
-            etiqueta: 'label', contenido: 'Observaciones', atributos: {
-                for: 'newObservacionesProv',
+        observaciones: {
+            etiqueta: 'label',
+            contenido: 'Observaciones',
+            atributos: { 
+                for: 'newProvObservacion',
                 class: 'form-label'
             }
         },
-        {
-            etiqueta: 'input', atributos: {
+        inputObservaciones: {
+            etiqueta: 'textarea',
+            atributos: {
                 type: 'text',
-                id: 'newObservacionesProv',
-                class: ''
+                id: 'newProvObservacion',
+                class: 'form-control',
+                placeholder: 'Observaciones del nuevo proveedor'
             }
         },
-        {
-            etiqueta: 'button', contenido: 'Crear ud. de medida', atributos: {
-                type: 'button',
-                onclick: '',
-                class: 'btn btn_custom_1'
+        // Botones
+        btnCancelar: {
+            etiqueta: 'input',
+            atributos: {
+                type: 'submit',
+                value: 'Cancelar',
+                class: 'btn btn_custom_3',
+                onclick: 'cancelar()'
             }
         },
-    ]
-    // Obtener el contenedor donde se agregará el formulario
-    let contenedorFormProveedor = aux; //! crear el contenedor donde insertar el formulario
-    crearFormulario(camposNewProveedor, contenedorFormProveedor);
+        btnLimpiarDatos: {
+            etiqueta: 'input',
+            atributos: {
+                type: 'submit',
+                value: 'Limpiar datos',
+                class: 'btn btn_custom_2',
+                onclick: 'limpiarDatos()'
+            }
+        },
+        btnCrearProveedor: {
+            etiqueta: 'input',
+            contenido: 'Crear proveedor',
+            atributos: { 
+                type: 'submit', 
+                class: 'btn btn_custom_1',
+                onclick: 'crearProveedor()' 
+            }
+        }
+    };
+    crearFormulario(camposNewProveedor, contenedor);
 }
 
-// USER
-// Formulario 1. Cesta/Carrito
-// Formulario 2. Enviar solicitud
+// Apartado RESIDUOS_______________________________________________________________________
+function navResiduos() {
+    pagResiduos(); 
+}
 
-// HERRAMIENTAS_____________________________________________________________________________________
-/* Función dinámica para crear formularios
-    - elementoPadre (se especifica el elemento HTML en el cual se va a insertar el formulario)
-    - campos(recibe un array de objetos con todos los elementos a incluir en el formulario)
-*/
-
+function pagResiduos() {
+}
