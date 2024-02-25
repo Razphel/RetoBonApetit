@@ -52,6 +52,25 @@ function cerrarSesion() {
     }, 500);
 }
 
+// Contenedor con borde punteado que aparece cuando una tabla está vacía o no tiene contenido
+function mostrarMensajeVacio(titulo, texto, textoBoton) {
+    let divRow = crearElemento("div", undefined, { class: "row" });
+    let divCol = crearElemento("div", undefined, { class: "col-6 col-sm-3 col-md-3 col-lg-12" });
+    let divLabelEmpty = crearElemento("div", undefined, { class: "label_empty card p-4 align-items-center mt-4" });
+    let h4 = crearElemento("h4", titulo);
+    let p = crearElemento("p", texto);
+    let button = crearElemento("button", textoBoton, { type: "button", class: "btn btn_custom_1 mt-3" });
+
+    // Construir la estructura
+    divLabelEmpty.appendChild(h4);
+    divLabelEmpty.appendChild(p);
+    divLabelEmpty.appendChild(button);
+    divCol.appendChild(divLabelEmpty);
+    divRow.appendChild(divCol);
+
+    return divRow;
+}
+
 function crearElemento(etiqueta, contenido, atributos) {
     let elementoNuevo = document.createElement(etiqueta);
     if (contenido !== undefined) {

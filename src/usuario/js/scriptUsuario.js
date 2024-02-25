@@ -765,39 +765,6 @@ function imprimirTablaProductos(nombre = null, categoria = null, unidades = null
     }
 }
 
-// Contenedor con borde punteado que aparece cuando una tabla está vacía o no tiene contenido
-function mostrarMensajeVacio(titulo, texto, textoBoton) {
-    let divRow = document.createElement("div");
-    divRow.classList.add("row");
-
-    let divCol = document.createElement("div");
-    divCol.classList.add("col-6", "col-sm-3", "col-md-3", "col-lg-12");
-
-    let divLabelEmpty = document.createElement("div");
-    divLabelEmpty.classList.add("label_empty", "card", "p-4", "align-items-center", "mt-4");
-
-    let h4 = document.createElement("h4");
-    h4.textContent = titulo;
-
-    let p = document.createElement("p");
-    p.textContent = texto;
-
-    let button = document.createElement("button");
-    button.setAttribute("type", "button");
-    button.classList.add("btn", "btn_custom_1", "mt-3");
-    button.textContent = textoBoton;
-
-    // Construir la estructura
-    divLabelEmpty.appendChild(h4);
-    divLabelEmpty.appendChild(p);
-    divLabelEmpty.appendChild(button);
-
-    divCol.appendChild(divLabelEmpty);
-    divRow.appendChild(divCol);
-
-    return divRow;
-}
-
 function agregarCesta(e) {
     let todosProductos = JSON.parse(localStorage.getItem("todosProductos"));
 
