@@ -21,6 +21,7 @@ function principal() {
     document.querySelector("#navPedidos").addEventListener("click", navPedidos);
     document.querySelector("#navProveedores").addEventListener("click", navProveedores);
     document.querySelector("#navResiduos").addEventListener("click", navResiduos);
+    document.querySelector("#cerrarSesion").addEventListener("click", cerrarSesion);
 
     pagInicio(); // cargar la página de inicio por defecto al entrar
 }

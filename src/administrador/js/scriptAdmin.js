@@ -67,9 +67,11 @@ function principal() {
         document.querySelector("#navListarProveedores").addEventListener("click", navListarProveedores);
         document.querySelector("#navAñadirProveedor").addEventListener("click", navAñadirProveedor);
         document.querySelector("#shortcut_proveedor").addEventListener("click", navAñadirProveedor);
+        document.querySelector("#cerrarSesion").addEventListener("click", cerrarSesion);
+        
     // Apartado residuos
     document.querySelector("#navResiduos").addEventListener("click", navResiduos); 
-    
+
     pagInicio(); 
 }
 
