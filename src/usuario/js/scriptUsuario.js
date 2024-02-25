@@ -72,16 +72,6 @@ function principal() {
     consultarProductos();
 }
 
-// Página de inicio___________________________________________________________________
-function navInicio() {
-    // Poner el AJAX de inicio
-}
-
-function pagInicio() {
-
-}
-
-
 function inicioCategorias(respuesta) {
     //Contenedor general de la pagina.
     let contenedor = document.querySelector("#contenedor");
@@ -847,9 +837,3 @@ function agregarCesta(e) {
     // Guardar la cesta actualizada en el almacenamiento local
     localStorage.setItem("cesta", JSON.stringify(cesta));
 }
-
-// FORMULARIOS_____________________________________________________________________________________
-// Formulario 1. Cesta/Carrito
-
-
-// Formulario 2. Enviar solicitud

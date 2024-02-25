@@ -22,9 +22,9 @@
 window.addEventListener("load", principal);
 
 function principal() {
+    let usuarioActual = JSON.parse(localStorage.getItem("usuario"));
     //Antes de cargar la pagina del usuario, se comprueba que no se haya accedido sin una sesion valida.
-    if (localStorage.getItem("usuario")) {
-        let usuarioActual = JSON.parse(localStorage.getItem("usuario"));
+    if (usuarioActual != null) {
         if (usuarioActual.nombre === "") {
             window.location.replace("../../../sesion.html");
         }
@@ -32,6 +32,16 @@ function principal() {
         //Redirige al usuario a la página de sesion no existen datos en el localStorage.
         window.location.replace("../../../sesion.html");
     }
+
+    //Agregar el nombre del usuario a la barra superior.
+    //Se usa el selector de clase, pero solo hay un elemento con esta clase.
+    let nombreApellido = document.querySelector(".topbar_profile_name");
+    let nombreCuenta = document.querySelector(".topbar_profile_account");
+
+    console.log(usuarioActual);
+
+    nombreApellido.innerHTML = usuarioActual.nombre + " " + usuarioActual.apellido;
+    nombreCuenta.innerHTML = usuarioActual.id_usuario;
 }
 
 function cerrarSesion() {
@@ -73,14 +83,14 @@ function crearPlantillaFormularios(tituloPagina, tituloLeft, tituloRight) {
         class: 'container_left card p-4 col-12 col-lg-8 mb-sm-4 mb-lg-0'
     });
     let titulo_container_left = crearElemento('h4', tituloLeft, {
-        class: 'mb-5' 
+        class: 'mb-5'
     });
     let contenedorForm = crearElemento('div', undefined, {
         id: 'contenedorForm'
     });
 
-    container_left.appendChild(titulo_container_left); 
-    container_left.appendChild(contenedorForm); 
+    container_left.appendChild(titulo_container_left);
+    container_left.appendChild(contenedorForm);
 
     let container_right = crearElemento('div', undefined, {
         class: 'container_right card p-4 col-12 col-lg-4'
@@ -88,7 +98,7 @@ function crearPlantillaFormularios(tituloPagina, tituloLeft, tituloRight) {
     let titulo_container_right = crearElemento('div', tituloRight, {
         class: 'mb-5'
     });
-    container_right.appendChild(titulo_container_right); 
+    container_right.appendChild(titulo_container_right);
 
     parteInferior.appendChild(container_left);
     parteInferior.appendChild(container_right);
