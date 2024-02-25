@@ -38,8 +38,6 @@ function principal() {
     let nombreApellido = document.querySelector(".topbar_profile_name");
     let nombreCuenta = document.querySelector(".topbar_profile_account");
 
-    console.log(usuarioActual);
-
     nombreApellido.innerHTML = usuarioActual.nombre + " " + usuarioActual.apellido;
     nombreCuenta.innerHTML = usuarioActual.id_usuario;
 }
