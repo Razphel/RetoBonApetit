@@ -22,6 +22,15 @@ function principal() {
     document.querySelector("#navProveedores").addEventListener("click", navProveedores);
     document.querySelector("#navResiduos").addEventListener("click", navResiduos);
 
+    pagInicio(); // cargar la página de inicio por defecto al entrar
+}
+
+// Página de inicio___________________________________________________________________
+function navInicio() {
+    pagInicio();
+}
+
+function pagInicio() {
     //Aqui es necesario que las consultas se ejecuten en el orden correcto.
     //Para eso hay que evitar que el ajax funcione de forma asincrona agregando async: false.
     let parametros = {
@@ -71,26 +80,17 @@ function principal() {
     consultarProductos();
 }
 
-// Página de inicio___________________________________________________________________
-function navInicio() {
-    // Poner el AJAX de inicio
-}
-
-function pagInicio() {
-
-}
-
-
 function inicioCategorias(respuesta) {
-    //Contenedor general de la pagina.
+    // Contenedor general de la pagina
     let contenedor = document.querySelector("#contenedor");
 
-    //Contenedor de botones de categorias y h1 con el titulo de la vista inicio.
+    // Contenedor de botones de categorias y h1 con el titulo de la vista inicio.
     let parteSuperior = crearElemento("div", undefined, {
+        id: "parteSuperior",
         class: "row"
     });
 
-    //Busco el nombre del usuario.
+    // Busco el nombre del usuario.
     let nombreUsuario = JSON.parse(localStorage.getItem("usuario"));
     nombreUsuario = nombreUsuario.nombre;
 
@@ -108,17 +108,17 @@ function inicioCategorias(respuesta) {
 
     respuesta.forEach(fila => {
         let carta = crearElemento("div", undefined, {
-            class: "col-6 col-sm-3 col-md-3 col-lg-3 d-flex justify-content-between"
+            class: "col-6 col-sm-3 col-md-3 col-lg-3"
         });
 
-        //Le doy un id al contenedor para usarlo en el manejador.
+        // Le doy un id al contenedor para usarlo en el manejador.
         let divCarta = crearElemento("div", undefined, {
             id: "idCategoria_" + fila.id_categorias,
             class: "label_effect card card_margin p-3 mb-3",
             "data-toggle": "tooltip"
         });
 
-        //Le doy un manejador a cada boton que usa el id para consultar las categorias.
+        // Le doy un manejador a cada boton que usa el id para consultar las categorias.
         divCarta.addEventListener("click", manejadorCategoria);
 
         let p = crearElemento("p", fila.descripcion, undefined);
@@ -127,22 +127,27 @@ function inicioCategorias(respuesta) {
             alt: fila.descripcion
         });
 
-        //Organizo los elementos y los agrego al div row.
+        // Organizo los elementos y los agrego al div row.
         divCarta.appendChild(img);
         divCarta.appendChild(p);
         carta.appendChild(divCarta);
         categorias.appendChild(carta);
     });
 
-    //Agrego el div con la lista de cartas al contenedor superior de la pagina.
+    // Agrego el div con la lista de cartas al contenedor superior de la pagina.
     parteSuperior.appendChild(categorias);
 
-    //Agrego el contenedor superior a la pagina.
+    // Agrego el contenedor superior a la pagina.
     contenedor.appendChild(parteSuperior);
 }
 
 function inicioSolicitudes(respuesta) {
     let contenedor = document.querySelector("#contenedor");
+
+    let parteInferior = crearElemento('div', undefined, {
+        id: 'parteInferior',
+        class: 'parteInferior mt-5'
+    });
 
     let historial = crearElemento("table", undefined, {
         id: "historial",
@@ -176,15 +181,19 @@ function inicioSolicitudes(respuesta) {
             }
             historial.appendChild(filaNormal);
         });
-        contenedor.appendChild(historial);
-    }
-    else {
+        parteInferior.appendChild(historial); 
+    } else { 
+        parteInferior.innerHTML = "";
+        let mensajeVacio = mostrarMensajeVacio("No hay solicitudes", "¿Hacer una solicitud de producto?", "Hacer solicitud");
+        parteInferior.appendChild(mensajeVacio);
+        /*
         historial = crearElemento("p", "Historial Vacio.", {
             id: "historial"
         });
         contenedor.appendChild(historial);
+        */
     }
-
+    contenedor.appendChild(parteInferior);
 }
 
 // Página productos___________________________________________________________________
@@ -208,23 +217,10 @@ function navProductos() {
 }
 
 function pagProductos(respuesta) {
-    // Contenedor general de la pagina.
-    let contenedor = document.querySelector("#contenedor");
-
-    // Antes que nada, se limpia el contenedor.
-    contenedor.innerHTML = "";
-
-    // Contenedor de botones de categorias y h1 con el titulo de la vista inicio.
-    let parteSuperior = crearElemento("div", undefined, undefined);
-    let h1Inicio = crearElemento("h1", "Productos", {
-        id: "tituloApartado",
-        class: "py-3 mb-3 mt-4"
-    });
-
-    parteSuperior.appendChild(h1Inicio);
-
-    let categorias = crearElemento("div", undefined, {
-        class: "row",
+    // Contenido para la parte superior
+    let tituloPagina = "Productos";
+    let contenidoSuperior = crearElemento("div", undefined, {
+        class: "row contenidoSuperior",
         id: "categorias"
     });
 
@@ -240,7 +236,7 @@ function pagProductos(respuesta) {
             "data-toggle": "tooltip"
         });
 
-        // Le doy un manejador a cada boton que usa el id para consultar las categorias.
+        // Le doy un manejador a cada botón que usa el id para consultar las categorías.
         divCarta.addEventListener("click", manejadorCategoria);
 
         let p = crearElemento("p", fila.descripcion, undefined);
@@ -253,28 +249,25 @@ function pagProductos(respuesta) {
         divCarta.appendChild(img);
         divCarta.appendChild(p);
         carta.appendChild(divCarta);
-        categorias.appendChild(carta);
+        contenidoSuperior.appendChild(carta);
     });
 
-    //Agrego el div con la lista de cartas al contenedor superior de la pagina.
-    parteSuperior.appendChild(categorias);
+    // Contenido para la parte inferior
+    let contenidoInferior = document.createElement("div", undefined, {
+        id: 'row contenidoInferior',
+        class: 'contenidoInferior'
+    });
 
-    //Agrego el contenedor superior a la pagina.
-    contenedor.appendChild(parteSuperior);
+    // Agregar contenido de imprimirFiltroTabla
+    let filtroTabla = imprimirFiltroTabla();
+    contenidoInferior.appendChild(filtroTabla);
 
-    // Contenedor inferior de la pagina. La tabla se crea por separado del inicio y las categorias.
-    // Este contenedor se crea si no existe todavia.
-    let parteInferior = document.querySelector("#parteInferior");
-    if (document.querySelector("#parteInferior") == null) {
-        parteInferior = crearElemento("div", undefined, {
-            id: "parteInferior",
-            class: "mt-5"
-        });
-    }
-    contenedor.appendChild(parteInferior);
-    imprimirFiltroTabla();
-    imprimirTablaProductos();
-
+    // Agregar contenido de imprimirTablaProductos
+    let tablaProductos = imprimirTablaProductos();
+    contenidoInferior.appendChild(tablaProductos);
+    
+    // Crear la plantilla genérica
+    crearPlantillaGenerica1(tituloPagina, contenidoSuperior, contenidoInferior);
 }
 
 // Página pedidos_____________________________________________________________________
@@ -518,7 +511,6 @@ function filtroCategoria(id_categoriaRecibido) {
 
 function imprimirFiltroTabla(nombre = null, categoria = null, unidades = null) {
     let todosProductos = JSON.parse(localStorage.getItem("todosProductos"));
-    let parteInferior = document.querySelector("#parteInferior");
 
     let contenedorFiltroLabelySelect = crearElemento("div", undefined, { // contiene el div contenedorFiltroLabel y contenedorFiltroLeft
         id: "contenedorFiltroLabelySelect",
@@ -657,8 +649,8 @@ function imprimirFiltroTabla(nombre = null, categoria = null, unidades = null) {
 
     contenedorFiltro.appendChild(contenedorFiltroRight);
 
-    // Añadir el contenedor del filtro al DOM
-    parteInferior.appendChild(contenedorFiltro);
+    // Devolver el contenedor principal
+    return contenedorFiltro;
 }
 
 function imprimirTablaProductos(nombre = null, categoria = null, unidades = null) {
@@ -769,39 +761,9 @@ function imprimirTablaProductos(nombre = null, categoria = null, unidades = null
         let mensajeVacio = mostrarMensajeVacio("No hay productos", "¿Hacer una solicitud de producto?", "Hacer solicitud");
         contenedorTablaProductos.appendChild(mensajeVacio);
     } 
-}
 
-// Contenedor con borde punteado que aparece cuando una tabla está vacía o no tiene contenido
-function mostrarMensajeVacio(titulo, texto, textoBoton) {
-    let divRow = document.createElement("div");
-    divRow.classList.add("row");
-
-    let divCol = document.createElement("div");
-    divCol.classList.add("col-6", "col-sm-3", "col-md-3", "col-lg-12");
-
-    let divLabelEmpty = document.createElement("div");
-    divLabelEmpty.classList.add("label_empty", "card", "p-4", "align-items-center", "mt-4");
-
-    let h4 = document.createElement("h4");
-    h4.textContent = titulo;
-
-    let p = document.createElement("p");
-    p.textContent = texto;
-
-    let button = document.createElement("button");
-    button.setAttribute("type", "button");
-    button.classList.add("btn", "btn_custom_1", "mt-3");
-    button.textContent = textoBoton;
-
-    // Construir la estructura
-    divLabelEmpty.appendChild(h4);
-    divLabelEmpty.appendChild(p);
-    divLabelEmpty.appendChild(button);
-
-    divCol.appendChild(divLabelEmpty);
-    divRow.appendChild(divCol);
-
-    return divRow;
+    // Devolver el contenedor de la tabla
+    return contenedorTablaProductos;
 }
 
 function agregarCesta(e) {
@@ -845,9 +807,3 @@ function agregarCesta(e) {
 
     //Despues de agregar elementos en la cesta, compruebo
 }
-
-// FORMULARIOS_____________________________________________________________________________________
-// Formulario 1. Cesta/Carrito
-
-
-// Formulario 2. Enviar solicitud

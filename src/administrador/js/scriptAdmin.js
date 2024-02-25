@@ -1,21 +1,21 @@
 /*
     Páginas del administrador:
         - Inicio________________________________________________ navInicio() -> pagInicio()
-        - Categorías____________________________________________ navCategorias() -> pagCategorias()
+        - Categorías____________________________________________ navCategorias() -> pagListarCategorias()
             - Listar categorías................... navListarCategorias() -> pagListarCategorias()
             - Añadir categoría.................... navAñadirCategoria() -> pagAñadirCategoria()
-        - Productos_____________________________________________ navProductos() -> pagProductos()
+        - Productos_____________________________________________ navProductos() -> pagListarProductos()
             - Listar productos.................... navListarProductos() -> pagListarProductos()
             - Añadir producto..................... navAñadirProducto() -> pagAñadirProducto()
             - Ud. de medida....................... navUdMedida() -> pagUdMedida()
         - Solicitudes___________________________________________ navSolicitudes() -> pagSolicitudes()
-        - Pedidos_______________________________________________ navPedidos() -> pagPedidos()
+        - Pedidos_______________________________________________ navPedidos() -> pagListarPedidos()
             - Listar pedidos...................... navListarPedidos() -> pagListarPedidos()
             - Añadir pedido....................... navAñadirPedido() -> pagAñadirPedido()
-        - Usuarios______________________________________________ navUsuarios() -> pagUsuarios()
+        - Usuarios______________________________________________ navUsuarios() -> pagListarUsuarios()
             - Listar usuarios..................... navListarUsuarios() -> pagListarUsuarios()
             - Añadir usuario...................... navAñadirUsuario() -> pagAñadirUsuario()
-        - Proveedores___________________________________________ navProveedores() -> pagProveedores()
+        - Proveedores___________________________________________ navProveedores() -> pagListarProveedores()
             - Listar proveedores.................. navListarProveedores() -> pagListarProveedores()
             - Añadir proveedor.................... navAñadirProveedor() -> pagAñadirProveedor()
         - Residuos______________________________________________ navResiduos() -> pagResiduos()
@@ -42,28 +42,35 @@ function principal() {
     document.querySelector("#navCategorias").addEventListener("click", navCategorias);
         document.querySelector("#navListarCategorias").addEventListener("click", navListarCategorias);
         document.querySelector("#navAñadirCategoria").addEventListener("click", navAñadirCategoria);
+        document.querySelector("#shortcut_categoria").addEventListener("click", navAñadirCategoria);
     // Apartado productos
     document.querySelector("#navProductos").addEventListener("click", navProductos);
         document.querySelector("#navListarProductos").addEventListener("click", navListarProductos);
         document.querySelector("#navAñadirProducto").addEventListener("click", navAñadirProducto);
+        document.querySelector("#shortcut_producto").addEventListener("click", navAñadirProducto);
         document.querySelector("#navUdMedida").addEventListener("click", navUdMedida);
+        document.querySelector("#shortcut_medida").addEventListener("click", navUdMedida);
     // Apartado solicitudes
     document.querySelector("#navSolicitudes").addEventListener("click", navSolicitudes);
     // Apartado pedidos
     document.querySelector("#navPedidos").addEventListener("click", navPedidos);
         document.querySelector("#navListarPedidos").addEventListener("click", navListarPedidos);
         document.querySelector("#navNuevoPedido").addEventListener("click", navNuevoPedido);
+        document.querySelector("#shortcut_pedido").addEventListener("click", navNuevoPedido);
     // Apartado usuarios
     document.querySelector("#navUsuarios").addEventListener("click", navUsuarios);
         document.querySelector("#navListarUsuarios").addEventListener("click", navListarUsuarios);
         document.querySelector("#navAñadirUsuario").addEventListener("click", navAñadirUsuario);
+        document.querySelector("#shortcut_usuario").addEventListener("click", navAñadirUsuario);
     // Apartado proveedores
     document.querySelector("#navProveedores").addEventListener("click", navProveedores);
         document.querySelector("#navListarProveedores").addEventListener("click", navListarProveedores);
         document.querySelector("#navAñadirProveedor").addEventListener("click", navAñadirProveedor);
+        document.querySelector("#shortcut_proveedor").addEventListener("click", navAñadirProveedor);
     // Apartado residuos
     document.querySelector("#navResiduos").addEventListener("click", navResiduos); 
-
+    
+    pagInicio(); 
 }
 
 function mostrarUsuarios(respuesta) {
@@ -96,14 +103,12 @@ function navInicio() {
 }
 
 function pagInicio() {
+
 }
 
 // Apartado CATEGORÍAS________________________________________________________________
 function navCategorias() { 
-    pagCategorias(); //! cambiar a pagCategorias() 
-}
-
-function pagCategorias() { // página general de categorías
+    navListarCategorias(); 
 }
 
 function navListarCategorias() {
@@ -111,6 +116,20 @@ function navListarCategorias() {
 }
 
 function pagListarCategorias() { // mostrar tabla con todas las categorías y sus datos
+    // Contenido para la parte superior
+    let tituloPagina = "Categorías";
+    let contenidoSuperior = crearElemento("div", undefined, {
+        class: "row contenidoSuperior"
+    });
+
+    // Contenido para la parte inferior
+    let contenidoInferior = document.createElement("div", undefined, {
+        id: 'row contenidoInferior',
+        class: 'contenidoInferior'
+    });
+
+    // Crear la plantilla genérica
+    crearPlantillaGenerica1(tituloPagina, contenidoSuperior, contenidoInferior);
 }
 
 function navAñadirCategoria() {
@@ -190,10 +209,7 @@ function pagAñadirCategoria() {
 
 // Apartado PRODUCTOS__________________________________________________________________
 function navProductos() {
-    pagProductos(); 
-}
-
-function pagProductos() {
+    navListarProductos(); 
 }
 
 function navListarProductos() { 
@@ -201,6 +217,20 @@ function navListarProductos() {
 }
 
 function pagListarProductos() { // mostrar tabla con todos los productos y sus datos
+    // Contenido para la parte superior
+    let tituloPagina = "Productos";
+    let contenidoSuperior = crearElemento("div", undefined, {
+        class: "row contenidoSuperior"
+    });
+
+    // Contenido para la parte inferior
+    let contenidoInferior = document.createElement("div", undefined, {
+        id: 'row contenidoInferior',
+        class: 'contenidoInferior'
+    });
+
+    // Crear la plantilla genérica
+    crearPlantillaGenerica1(tituloPagina, contenidoSuperior, contenidoInferior);
 }
 
 function navAñadirProducto() {
@@ -407,10 +437,7 @@ function pagUdMedida() {
 
 // Apartado PEDIDOS____________________________________________________________________
 function navPedidos() {
-    pagPedidos(); 
-}
-
-function pagPedidos() {
+    navListarPedidos();
 }
 
 function navListarPedidos() {
@@ -430,7 +457,7 @@ function pagNuevoPedido() {
 
 // Apartado USUARIOS____________________________________________________________________
 function navUsuarios() {
-    pagUsuarios();
+    navListarUsuarios();
 
     let parametros = {
         claveTodosUsuarios: true
@@ -449,14 +476,26 @@ function navUsuarios() {
     });
 }
 
-function pagUsuarios() {
-}
-
 function navListarUsuarios() {
     pagListarUsuarios(); 
 }
 
 function pagListarUsuarios() { // mostrar tabla con los usuarios y sus datos
+    // Contenido para la parte superior
+    let tituloPagina = "Usuarios";
+    let contenidoSuperior = crearElemento("div", undefined, {
+        class: "row contenidoSuperior",
+        id: "categorias"
+    });
+
+    // Contenido para la parte inferior
+    let contenidoInferior = document.createElement("div", undefined, {
+        id: 'row contenidoInferior',
+        class: 'contenidoInferior'
+    });
+
+    // Crear la plantilla genérica
+    crearPlantillaGenerica1(tituloPagina, contenidoSuperior, contenidoInferior);
 }
 
 // Formulario 5. Añadir usuario.....................
@@ -587,16 +626,29 @@ function pagAñadirUsuario() {
 
 // Apartado PROVEEDORES___________________________________________________________________
 function navProveedores() {
-    pagProveedores(); //! cambiar a pagProveedores
-}
-
-function pagProveedores() {
+    pagListarProveedores();
 }
 
 function navListarProveedores() {
+    pagListarProveedores();
 }
 
 function pagListarProveedores() {
+    // Contenido para la parte superior
+    let tituloPagina = "Proveedores";
+    let contenidoSuperior = crearElemento("div", undefined, {
+        class: "row contenidoSuperior",
+        id: "categorias"
+    });
+
+    // Contenido para la parte inferior
+    let contenidoInferior = document.createElement("div", undefined, {
+        id: 'row contenidoInferior',
+        class: 'contenidoInferior'
+    });
+
+    // Crear la plantilla genérica
+    crearPlantillaGenerica1(tituloPagina, contenidoSuperior, contenidoInferior);
 }
 
 function navAñadirProveedor() {
