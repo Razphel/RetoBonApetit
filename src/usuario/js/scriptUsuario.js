@@ -631,9 +631,9 @@ function imprimirFiltroTabla(nombre = null, categoria = null, unidades = null) {
         class: "bi bi-search"
     });
 
-    contenedorIconBuscador.appendChild(iconBuscador); 
+    contenedorIconBuscador.appendChild(iconBuscador);
     contenedorBuscadorIcon.appendChild(contenedorIconBuscador);
-    contenedorBuscador.appendChild(contenedorBuscadorIcon); 
+    contenedorBuscador.appendChild(contenedorBuscadorIcon);
 
     // Crear el campo de texto para el nombre
     let inputNombre = crearElemento("input", undefined, {
@@ -652,7 +652,7 @@ function imprimirFiltroTabla(nombre = null, categoria = null, unidades = null) {
     });
 
     inputNombre.addEventListener("input", manejadorFiltro);
-    contenedorBuscadorIcon.appendChild(inputNombre); 
+    contenedorBuscadorIcon.appendChild(inputNombre);
     contenedorFiltroRight.appendChild(contenedorBuscador);
     contenedorFiltroRight.appendChild(botonSolicitud);
 
@@ -735,20 +735,23 @@ function imprimirTablaProductos(nombre = null, categoria = null, unidades = null
                 filaBody.appendChild(celdaBody);
             });
 
+            //Los id de inputCantidad y botonAñadir concuerdan con la posicion del producto en el array.
+            //Esto se va a utilizar para identificar que producto se va a guardar en la cesta.
             let celdaBoton = crearElemento("td");
             let inputCantidad = crearElemento("input", undefined, {
                 type: "number",
                 min: "0",
                 value: "0",
-                id: "inputCantidad",
+                id: "inputCantidad_" + i,
                 class: "form-control form-control-sm"
             });
             let botonAñadir = crearElemento("input", undefined, {
-                id: "botonAñadir_" + todosProductos[i]["id_producto"],
+                id: "botonAñadir_" + i,
                 type: "submit",
                 class: "btn btn_custom_1 btn_sm",
                 value: "Añadir"
             })
+            botonAñadir.addEventListener("click", agregarCesta)
             celdaBoton.appendChild(inputCantidad);
             celdaBoton.appendChild(botonAñadir);
             filaBody.appendChild(celdaBoton);
@@ -769,7 +772,7 @@ function imprimirTablaProductos(nombre = null, categoria = null, unidades = null
         contenedorTablaProductos.innerHTML = "";
         let mensajeVacio = mostrarMensajeVacio("No hay productos", "¿Hacer una solicitud de producto?", "Hacer solicitud");
         contenedorTablaProductos.appendChild(mensajeVacio);
-    } 
+    }
 }
 
 // Contenedor con borde punteado que aparece cuando una tabla está vacía o no tiene contenido
@@ -815,7 +818,7 @@ function agregarCesta(e) {
     // Busco la cantidad de productos a añadir.
     let cantidadRecibida = parseInt(document.querySelector("#inputCantidad_" + productoSeleccionado).value);
 
-    // Si la cantidad es 0 o menor, no hacemos nada
+    // Si la cantidad es 0 o menor, no hacemos nada.
     if (cantidadRecibida <= 0) {
         return;
     }
@@ -830,21 +833,19 @@ function agregarCesta(e) {
     );
 
     if (productoEnCestaIndex === -1) {
-        // Si el producto no está en la cesta, agregarlo con la cantidad recibida
+        // Si el producto no está en la cesta, agregarlo con la cantidad recibida.
         let nuevoProducto = {
             ...todosProductos[productoSeleccionado],
             cantidad: cantidadRecibida
         };
         cesta.push(nuevoProducto);
     } else {
-        // Si el producto ya está en la cesta, sumar la cantidad recibida a la cantidad existente
+        // Si el producto ya está en la cesta, sumar la cantidad recibida a la cantidad existente.
         cesta[productoEnCestaIndex].cantidad += cantidadRecibida;
     }
 
     // Guardar la cesta actualizada en el almacenamiento local
     localStorage.setItem("cesta", JSON.stringify(cesta));
-
-    //Despues de agregar elementos en la cesta, compruebo
 }
 
 // FORMULARIOS_____________________________________________________________________________________
