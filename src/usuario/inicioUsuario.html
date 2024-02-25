@@ -95,7 +95,24 @@
 
                             <div class="topbar_right">
                                 <div class="topbar_icons">
-                                    <i class="bi bi-brightness-high"></i>
+                                    <div class="dropdown">
+                                        <a href="#" role="button" id="brightnessDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <div class="icon_container">
+                                                <i id="iconoPrincipal" class="bi bi-brightness-high"></i>
+                                            </div>
+                                        </a>
+                            
+                                        <div class="dropdown-menu" aria-labelledby="brightnessDropdown">
+                                            <a id="modoOscuro" class="dropdown-item dropdown_inline" href="#">
+                                                <span id="iconoModoOscuro" class="bi bi-moon dropdown_icon_margin"></span>
+                                                <p>Modo oscuro</p> 
+                                            </a>
+                                            <a id="modoClaro" class="dropdown-item dropdown_inline" href="#">
+                                                <span id="iconoModoClaro" class="bi bi-brightness-high dropdown_icon_margin"></span>
+                                                <p>Modo claro</p>
+                                            </a>
+                                        </div>
+                                    </div>
                                     <i class="bi bi-cart2"></i>
                                 </div>
 
@@ -111,10 +128,16 @@
                                             </div>
                                         </div>
                                     </a>
-                                  
+                                   
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                      <a class="dropdown-item" id="verPerfil" href="#">Ver perfil</a>
-                                      <a class="dropdown-item" id="cerrarSesion" href="#">Cerrar sesión</a>
+                                        <a id="verPerfil" class="dropdown-item dropdown_inline" href="#">
+                                            <i class="bi bi-person-fill dropdown_icon_margin"></i>
+                                            <p>Ver perfil</p> 
+                                        </a>
+                                        <a id="cerrarSesion" class="dropdown-item dropdown_inline" href="#">
+                                            <i class="bi bi-box-arrow-right dropdown_icon_margin"></i> 
+                                            <p>Cerrar sesión</p>
+                                        </a>
                                     </div>
                                 </div>
                             </div>

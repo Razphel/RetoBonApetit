@@ -33,16 +33,31 @@ function principal() {
         window.location.replace("../../../sesion.html");
     }
 
-    //Agregar el nombre del usuario a la barra superior.
-    //Se usa el selector de clase, pero solo hay un elemento con esta clase.
-    let nombreApellido = document.querySelector(".topbar_profile_name");
-    let nombreCuenta = document.querySelector(".topbar_profile_account");
-
-    console.log(usuarioActual);
-
-    nombreApellido.innerHTML = usuarioActual.nombre + " " + usuarioActual.apellido;
-    nombreCuenta.innerHTML = usuarioActual.id_usuario;
+    modoColor(); 
 }
+
+function modoColor() {
+    const iconoPrincipal = document.getElementById("iconoPrincipal");
+
+    // Event listener para cambiar entre los modos oscuro y claro
+    document.getElementById("modoOscuro").addEventListener("click", function() {
+        // Cambiar la clase del icono principal al modo oscuro
+        iconoPrincipal.classList.replace("bi-brightness-high", "bi-moon");
+
+        // Agregar la clase "darkMode" al cuerpo del documento
+        document.body.classList.add("darkMode");
+    });
+
+    // Event listener para cambiar entre los modos oscuro y claro
+    document.getElementById("modoClaro").addEventListener("click", function() {
+        // Cambiar la clase del icono principal al modo claro
+        iconoPrincipal.classList.replace("bi-moon", "bi-brightness-high");
+
+        // Eliminar la clase "darkMode" del cuerpo del documento
+        document.body.classList.remove("darkMode");
+    });
+}
+
 
 function cerrarSesion() {
     localStorage.removeItem("usuario");
