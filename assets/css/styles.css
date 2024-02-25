@@ -36,6 +36,13 @@
     --aside-back: white;
     --light-color: white; 
 
+    --danger-dark: #FF3E1D;
+    --danger-light: #fff0ee;
+    --warning-dark: #FFAC02;
+    --warning-light: #FFF5E3;
+    --success-dark: #60B400;
+    --success-light: #F0FBE8;
+
     /* Textos...........................*/
     --font: 'Inter', sans-serif;
     --text-dark-color: #0f0c09;
@@ -113,6 +120,30 @@ p, a {
 a {
     color: var(--text-dark-color); 
     text-decoration: none;
+}
+
+/* Textos mensajes predefinidos Bootstrap */
+.alert {
+    font-weight: 500;
+    font-size: var(--size-p);
+}
+
+.alert-danger {
+    color: var(--danger-dark);
+    border: solid thin var(--danger-dark); 
+    background-color: var(--danger-light);
+}
+
+.alert-warning {
+    color: var(--warning-dark);
+    border: solid thin var(--warning-dark); 
+    background-color: var(--danger-light);
+}
+
+.alert-success {
+    color: var(--success-dark);
+    border: solid thin var(--success-dark); 
+    background-color: var(--success-light);
 }
 
 /* Botones...................................... gen_btn */ 
@@ -401,7 +432,7 @@ body {
     height: 70px;
     width: 240px;
     position: fixed;
-    padding: 20px 15px 15px 25px;
+    padding: 20px 15px 15px 30px;
     background-color: white;
 }
 
@@ -410,7 +441,7 @@ body {
 }
 
 .sidebar_bottom {
-    padding: 100px 10px 15px 15px;
+    padding: 100px 10px 15px 20px;
 }
 
 .sidebar_container {

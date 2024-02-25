@@ -32,6 +32,16 @@ function principal() {
         //Redirige al usuario a la página de sesion no existen datos en el localStorage.
         window.location.replace("../../../sesion.html");
     }
+
+    //Agregar el nombre del usuario a la barra superior.
+    //Se usa el selector de clase, pero solo hay un elemento con esta clase.
+    let nombreApellido = document.querySelector(".topbar_profile_name");
+    let nombreCuenta = document.querySelector(".topbar_profile_account");
+
+    console.log(usuarioActual);
+
+    nombreApellido.innerHTML = usuarioActual.nombre + " " + usuarioActual.apellido;
+    nombreCuenta.innerHTML = usuarioActual.id_usuario;
 }
 
 function cerrarSesion() {
@@ -145,7 +155,7 @@ function crearPlantillaGenerica1(tituloSuperior, contenidoSuperior, contenidoInf
     });
 
     parteInferior.innerHTML = "";
-    
+
     // Si hay contenido para la parte inferior, lo añadimos
     if (contenidoInferior) {
         parteInferior.appendChild(contenidoInferior);
