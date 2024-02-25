@@ -831,6 +831,14 @@ body {
     color: var(--accent-02);
 }
 
-.darkMode table {
+.darkMode th {
+    border-bottom: solid thin rgb(100, 100, 100); 
     background: var(--darkMode-light) !important;
 }
+
+.darkMode td {
+    color: var(--accent-02);
+    border-bottom: solid thin rgb(77, 77, 77); 
+    background: rgb(56, 56, 56) !important;
+}
+
