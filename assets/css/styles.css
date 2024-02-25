@@ -31,7 +31,7 @@
     /* Escala de grises */
     --accent-01: #DCDCDC; /* fondo cajas, barras scroll, líneas horizontales...*/
     --accent-02: #ECECEC; /* Fondo de botones */
-    --accent-03: #F9FAFB; /* Fondo de página */
+    --accent-03: #f7f7f7; /* Fondo de página */
     --accent-04: #F9F9FA; /* Fondo de etiquetas y marcador de sección menú */
     --aside-back: white;
     --light-color: white; 
@@ -419,6 +419,16 @@ body {
     padding: 0; 
 }
 
+::-webkit-scrollbar {
+    width: 5px;
+    background-color: var(--accent-03);
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: var(--accent-01); /* Color del "pulgar" */
+    border-radius: 5px; /* Borde redondeado del "pulgar" */
+}
+
 .sidebar {
     width: 240px;
     height: 100vh;
@@ -433,6 +443,7 @@ body {
     width: 240px;
     position: fixed;
     padding: 20px 15px 15px 30px;
+    border-right: solid thin rgb(238, 238, 238);
     background-color: white;
 }
 
@@ -476,6 +487,15 @@ body {
     border-radius: 4px;
 }
 
+.nav_container.gray-bg {
+    font-weight: 500;
+    background-color: var(--accent-03);
+}
+
+.nav_container.gray-bg i {
+    color: var(--primary-color);
+}
+
 .nav_content {
     width: 100%;
     display: flex;
@@ -503,6 +523,7 @@ body {
     align-items: left;
     gap: 10px;
     padding-top: 10px !important;
+    padding-bottom: 20px !important;
 }
 
 .collapse li {
@@ -607,6 +628,7 @@ body {
 }
 
 .caja_shortcuts i {
+    color: var(--primary-color);
     font-size: 20px;
 }
 
@@ -615,35 +637,6 @@ body {
     height: 100%;
     padding: 0;
     border-radius: 6px;
-}
-
-.caja_shortcuts:hover .icono_hover {
-    opacity: 1; 
-}
-
-.caja_shortcuts:hover::before {
-    content: ""; 
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(255, 255, 255, 0.842); 
-    border-radius: 6px; 
-    z-index: 0; 
-}
-
-.icono_hover {
-    position: absolute;
-    top: 50%; 
-    left: 50%; 
-    transform: translate(-50%, -50%);
-    opacity: 0; 
-    transition: opacity 0.3s ease; 
-}
-
-.caja_shortcuts > i:first-child {
-    font-size: 35px;
 }
 
 .icon_container {

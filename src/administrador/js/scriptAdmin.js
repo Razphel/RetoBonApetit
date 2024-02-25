@@ -30,11 +30,6 @@
 
 window.addEventListener("load", principal);
 
-document.addEventListener('DOMContentLoaded', function () {
-    const sidebar = document.querySelector('.sidebar_container');
-    new PerfectScrollbar(sidebar);
-});
-
 function principal() {
     // Apartado inicio
     document.querySelector("#navInicio").addEventListener("click", navInicio);
@@ -68,9 +63,29 @@ function principal() {
         document.querySelector("#navAñadirProveedor").addEventListener("click", navAñadirProveedor);
         document.querySelector("#shortcut_proveedor").addEventListener("click", navAñadirProveedor);
         document.querySelector("#cerrarSesion").addEventListener("click", cerrarSesion);
-        
     // Apartado residuos
     document.querySelector("#navResiduos").addEventListener("click", navResiduos); 
+
+
+// Seleccionar los elementos clickeables del menú
+const menuItems = document.querySelectorAll('.active');
+
+// Iterar sobre cada elemento y agregar un manejador de eventos 'click'
+menuItems.forEach(item => {
+    item.addEventListener('click', function() {
+        // Remover la clase 'gray-bg' de todos los contenedores 'nav_container'
+        document.querySelectorAll('.nav_container').forEach(container => {
+            container.classList.remove('gray-bg');
+        });
+
+        // Obtener el contenedor 'nav_container' del elemento clickeado
+        const navContainer = this.querySelector('.nav_container');
+        
+        // Agregar la clase 'gray-bg' al contenedor 'nav_container' del elemento clickeado
+        navContainer.classList.add('gray-bg');
+    });
+});
+
 
     pagInicio(); 
 }
