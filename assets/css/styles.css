@@ -425,14 +425,14 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-    background-color: var(--accent-01); /* Color del "pulgar" */
-    border-radius: 5px; /* Borde redondeado del "pulgar" */
+    background-color: var(--accent-01); 
+    border-radius: 5px; 
 }
 
 .sidebar {
     width: 240px;
     height: 100vh;
-    overflow-y: scroll;
+    overflow-y: auto;
     margin: 0;
     border-right: solid thin rgb(238, 238, 238);
     background-color: var(--aside-back);

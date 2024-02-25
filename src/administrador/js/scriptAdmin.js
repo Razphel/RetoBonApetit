@@ -67,25 +67,24 @@ function principal() {
     document.querySelector("#navResiduos").addEventListener("click", navResiduos); 
 
 
-// Seleccionar los elementos clickeables del menú
-const menuItems = document.querySelectorAll('.active');
+    // Seleccionar los elementos clickeables del menú
+    const menuItems = document.querySelectorAll('.active');
 
-// Iterar sobre cada elemento y agregar un manejador de eventos 'click'
-menuItems.forEach(item => {
-    item.addEventListener('click', function() {
-        // Remover la clase 'gray-bg' de todos los contenedores 'nav_container'
-        document.querySelectorAll('.nav_container').forEach(container => {
-            container.classList.remove('gray-bg');
+    // Iterar sobre cada elemento y agregar un manejador de eventos 'click'
+    menuItems.forEach(item => {
+        item.addEventListener('click', function() {
+            // Remover la clase 'gray-bg' de todos los contenedores 'nav_container'
+            document.querySelectorAll('.nav_container').forEach(container => {
+                container.classList.remove('gray-bg');
+            });
+
+            // Obtener el contenedor 'nav_container' del elemento clickeado
+            const navContainer = this.querySelector('.nav_container');
+            
+            // Agregar la clase 'gray-bg' al contenedor 'nav_container' del elemento clickeado
+            navContainer.classList.add('gray-bg');
         });
-
-        // Obtener el contenedor 'nav_container' del elemento clickeado
-        const navContainer = this.querySelector('.nav_container');
-        
-        // Agregar la clase 'gray-bg' al contenedor 'nav_container' del elemento clickeado
-        navContainer.classList.add('gray-bg');
     });
-});
-
 
     pagInicio(); 
 }
