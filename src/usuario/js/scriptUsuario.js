@@ -23,6 +23,13 @@ function principal() {
     document.querySelector("#navResiduos").addEventListener("click", navResiduos);
     document.querySelector("#cerrarSesion").addEventListener("click", cerrarSesion);
 
+    // Funciones para el carrito.
+    // Asigna la función de cerrar al botón X
+    $("#cerrarCarrito").on("click", abrirCerrarCarrito);
+
+    // Asigna la función de abrir al ícono del carrito en la topbar
+    $("#abrirCarrito").on("click", abrirCerrarCarrito);
+
     //Aqui es necesario que las consultas se ejecuten en el orden correcto.
     //Para eso hay que evitar que el ajax funcione de forma asincrona agregando async: false.
     let parametros = {
@@ -769,11 +776,11 @@ function agregarCesta(e) {
     let todosProductos = JSON.parse(localStorage.getItem("todosProductos"));
 
     // Separar el id del botón, el índice del producto seleccionado está después del guion bajo.
-    let textoDividido = this.id.split("");
+    let textoDividido = this.id.split("_");
     let productoSeleccionado = parseInt(textoDividido[1]);
 
     // Busco la cantidad de productos a añadir.
-    let cantidadRecibida = parseFloat(document.querySelector("#inputCantidad" + productoSeleccionado).value);
+    let cantidadRecibida = parseFloat(document.querySelector("#inputCantidad_" + productoSeleccionado).value);
 
     // Si la cantidad no es un número o es menor o igual a 0, no hacemos nada.
     if (isNaN(cantidadRecibida) || cantidadRecibida <= 0) {
@@ -800,8 +807,32 @@ function agregarCesta(e) {
         // Si el producto ya está en la cesta, sumar la cantidad recibida a la cantidad existente.
         cesta[productoEnCestaIndex].cantidad += cantidadRecibida;
     }
-    console.log(cesta);
 
     // Guardar la cesta actualizada en el almacenamiento local
     localStorage.setItem("cesta", JSON.stringify(cesta));
+}
+
+// Carrito.
+function abrirCerrarCarrito() {
+    //Controlador para desplecar o cerrar el carrito.
+    $(".carritoLateral").fadeToggle();
+}
+
+function manejadorCarrito(e) {
+    //Primero verifico si ya el carrito esta desplegado.
+    if (!$(".carritoLateral").is(":visible")) {
+        abrirCerrarCarrito();
+    }
+
+    //Recibo la cesta y la guardo en un array.
+    //La cesta es un array de objetos literales con los datos del producto.
+    let cesta = JSON.parse(localStorage.getItem("cesta"));
+    let listaCarrito = crearElemento("ul", undefined, {
+        id: "listaCarrito"
+    });
+
+    for (let i = 0; i < cesta.length; i++) {
+
+
+    }
 }

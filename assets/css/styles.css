@@ -847,10 +847,10 @@ body {
 
 /* ETIQUETAS INDIVIDUALES________________________________________________gen_01 */
 /* Cesta.......................................gen_cesta */
-.cart_container {
-    width: 20%;
-    height: 100vh; 
+.carritoLateral {
+    display: none;
     padding: 20px;
+    height: calc(100vh - 70px);
     background-color: var(--light-color); 
 }
 
