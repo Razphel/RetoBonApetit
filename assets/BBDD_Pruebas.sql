@@ -132,6 +132,16 @@ fecha_desechado DATE,
 CONSTRAINT fk_residuos_generados_estadoresiduos FOREIGN KEY (fk_estadoresiduo) REFERENCES estadoresiduos(id_estadoresiduos)
 );
 
+CREATE TABLE mensajes(
+id_mensajes INT AUTO_INCREMENT PRIMARY KEY,
+descripcion VARCHAR(200),
+fecha_mensaje DATE,
+observaciones TEXT,
+fk_usuario INT,
+
+CONSTRAINT fk_usuario_mensajes FOREIGN KEY (fk_usuario) REFERENCES usuarios(id_usuarios)
+);
+
 INSERT INTO estados (descripcion) VALUES ('En reparto'),('Entregado'),('En preparacion'),('Problemas con el envio');
 INSERT INTO proveedores (descripcion,telefono,email,direccion,observaciones) VALUES ('CARREFOUR','111111111','carrefour@gmail.com','Calle prueba 1, 22','observaciones pruebas');
 INSERT INTO proveedores (descripcion,telefono,email,direccion,observaciones) VALUES ('EL CORTE INGLES','222222222','elcorteingles@gmail.com','Calle prueba 2, 32','observaciones prueba');
@@ -153,12 +163,12 @@ INSERT INTO linea_pedido (fk_pedido,descripcion,cantidad,unidades,observaciones)
 INSERT INTO unidades (descripcion,observar) VALUES ('cajas','observacion kaladin');
 INSERT INTO unidades (descripcion,observar) VALUES ('kilogramos','observacion dalinar');
 INSERT INTO unidades (descripcion,observar) VALUES ('sacos','observacion adolin');
-INSERT INTO categorias (descripcion,observaciones,imagenes) VALUES ('carne','observacion kaladin','carniceria.png');
-INSERT INTO categorias (descripcion,observaciones,imagenes) VALUES ('pasteleria','observacion dalinar','pasteleria.png');
-INSERT INTO categorias (descripcion,observaciones,imagenes) VALUES ('pescado','observacion adolin','pescaderia.png');
-INSERT INTO categorias (descripcion,observaciones,imagenes) VALUES ('panaderia','observacion sagaz','panaderia.png');
-INSERT INTO categorias (descripcion,observaciones,imagenes) VALUES ('fruteria','observacion eshonai','fruteria.png');
-INSERT INTO categorias (descripcion,observaciones,imagenes) VALUES ('Cubiertos, servilletas...','observacion szeth','utiles.png');
+INSERT INTO categorias (descripcion,observaciones,imagenes) VALUES ('carne','observacion kaladin','carniceria.jpg');
+INSERT INTO categorias (descripcion,observaciones,imagenes) VALUES ('pasteleria','observacion dalinar','pasteleria.jpg');
+INSERT INTO categorias (descripcion,observaciones,imagenes) VALUES ('pescado','observacion adolin','pescaderia.jpg');
+INSERT INTO categorias (descripcion,observaciones,imagenes) VALUES ('panaderia','observacion sagaz','panaderia.jpg');
+INSERT INTO categorias (descripcion,observaciones,imagenes) VALUES ('fruteria','observacion eshonai','fruteria.jpg');
+INSERT INTO categorias (descripcion,observaciones,imagenes) VALUES ('Cubiertos, servilletas...','observacion szeth','utiles.jpg');
 INSERT INTO residuos (descripcion,observaciones) VALUES ('caja de papel','observacion kaladin');
 INSERT INTO residuos (descripcion,observaciones) VALUES ('bolsa de plastico','observacion dalinar');
 INSERT INTO residuos (descripcion,observaciones) VALUES ('botellas de cristal','observacion adolin');
@@ -171,3 +181,7 @@ INSERT INTO producto_categoria (fk_producto,fk_categoria) VALUES (1,1);
 INSERT INTO producto_categoria (fk_producto,fk_categoria) VALUES (2,4);
 INSERT INTO producto_categoria (fk_producto,fk_categoria) VALUES (3,2);
 INSERT INTO producto_categoria (fk_producto,fk_categoria) VALUES (4,5);
+INSERT INTO mensajes (descripcion,fecha_mensaje,observaciones,fk_usuario) VALUES ('Brayan eres un friki','2025/02/27','observacion kaladin',1);
+INSERT INTO mensajes (descripcion,fecha_mensaje,observaciones,fk_usuario) VALUES ('Mensaje random','2023/02/27','observacion dalinar',1);
+INSERT INTO mensajes (descripcion,fecha_mensaje,observaciones,fk_usuario) VALUES ('Bombardeeen php','2022/02/27','observacion sagaz',1);
+INSERT INTO mensajes (descripcion,fecha_mensaje,observaciones,fk_usuario) VALUES ('Mensaje 4','2024/02/27','observacion adolin',1);

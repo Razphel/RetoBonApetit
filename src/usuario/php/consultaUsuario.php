@@ -1,5 +1,6 @@
 <?php
-include_once '../../../assets/php/BD.php';// Para que el navegador no haga cache (fecha de expiración menor a la actual)
+include_once '../../../assets/php/BD.php';
+// Para que el navegador no haga cache (fecha de expiración menor a la actual)
 header('Cache-Control: no-cache, must-revalidate');
 header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
 
@@ -28,6 +29,7 @@ if (isset($_REQUEST['categoria']))
     $categorias = BD::imprimirConsultas('categorias');
     echo json_encode($categorias);
 }
+
 
 if (isset($_REQUEST['claveResiduos'])) 
 {
