@@ -23,8 +23,10 @@ window.addEventListener("load", principal);
 
 function principal() {
     let usuarioActual = JSON.parse(localStorage.getItem("usuario"));
+
     //Antes de cargar la pagina del usuario, se comprueba que no se haya accedido sin una sesion valida.
-    if (usuarioActual != null) {
+    if (localStorage.getItem("usuario")) {
+        let usuarioActual = JSON.parse(localStorage.getItem("usuario"));
         if (usuarioActual.nombre === "") {
             window.location.replace("../../../sesion.html");
         }
@@ -40,7 +42,32 @@ function principal() {
 
     nombreApellido.innerHTML = usuarioActual.nombre + " " + usuarioActual.apellido;
     nombreCuenta.innerHTML = usuarioActual.id_usuario;
+
+    modoColor();
 }
+
+function modoColor() {
+    const iconoPrincipal = document.getElementById("iconoPrincipal");
+
+    // Event listener para cambiar entre los modos oscuro y claro
+    document.getElementById("modoOscuro").addEventListener("click", function () {
+        // Cambiar la clase del icono principal al modo oscuro
+        iconoPrincipal.classList.replace("bi-brightness-high", "bi-moon");
+
+        // Agregar la clase "darkMode" al cuerpo del documento
+        document.body.classList.add("darkMode");
+    });
+
+    // Event listener para cambiar entre los modos oscuro y claro
+    document.getElementById("modoClaro").addEventListener("click", function () {
+        // Cambiar la clase del icono principal al modo claro
+        iconoPrincipal.classList.replace("bi-moon", "bi-brightness-high");
+
+        // Eliminar la clase "darkMode" del cuerpo del documento
+        document.body.classList.remove("darkMode");
+    });
+}
+
 
 function cerrarSesion() {
     localStorage.removeItem("usuario");
@@ -48,6 +75,187 @@ function cerrarSesion() {
     setTimeout(function () {
         window.location.replace("../../../sesion.html");
     }, 500);
+}
+
+// Contenedor con borde punteado que aparece cuando una tabla está vacía o no tiene contenido
+function mostrarMensajeVacio(titulo, texto, textoBoton) {
+    let divRow = crearElemento("div", undefined, { class: "row" });
+    let divCol = crearElemento("div", undefined, { class: "col-6 col-sm-3 col-md-3 col-lg-12" });
+    let divLabelEmpty = crearElemento("div", undefined, { class: "label_empty card p-4 align-items-center mt-4" });
+    let h4 = crearElemento("h4", titulo);
+    let p = crearElemento("p", texto);
+    let button = crearElemento("button", textoBoton, { type: "button", class: "btn btn_custom_1 mt-3" });
+
+    // Construir la estructura
+    divLabelEmpty.appendChild(h4);
+    divLabelEmpty.appendChild(p);
+    divLabelEmpty.appendChild(button);
+    divCol.appendChild(divLabelEmpty);
+    divRow.appendChild(divCol);
+
+    return divRow;
+}
+
+function crearElemento(etiqueta, contenido, atributos) {
+    let elementoNuevo = document.createElement(etiqueta);
+    if (contenido !== undefined) {
+        let contenidoNuevo = document.createTextNode(contenido);
+        elementoNuevo.appendChild(contenidoNuevo);
+    }
+    if (atributos !== undefined) {
+        for (let clave in atributos) {
+            elementoNuevo.setAttribute(clave, atributos[clave]);
+        }
+    }
+    return elementoNuevo;
+}
+
+/* Función dinámica para crear formularios
+    - elementoPadre (se especifica el elemento HTML en el cual se va a insertar el formulario)
+    - campos(recibe un array de objetos con todos los elementos a incluir en el formulario)
+*/
+function crearFormulario(campos, contenedor) {
+    const formulario = document.createElement('form');
+
+    // Recorrer las claves del objeto campos
+    for (const nombreCampo in campos) {
+        const campo = campos[nombreCampo];
+        const elemento = crearElemento(campo.etiqueta, campo.contenido, campo.atributos);
+
+        // Agregar el elemento al formulario
+        formulario.appendChild(elemento);
+    }
+    contenedor.appendChild(formulario);
+}
+
+// Contenedor con borde punteado que aparece cuando una tabla está vacía o no tiene contenido
+function mostrarMensajeVacio(titulo, texto, textoBoton) {
+    let divRow = document.createElement("div");
+    divRow.classList.add("row");
+
+    let divCol = document.createElement("div");
+    divCol.classList.add("col-6", "col-sm-3", "col-md-3", "col-lg-12");
+
+    let divLabelEmpty = document.createElement("div");
+    divLabelEmpty.classList.add("label_empty", "card", "p-4", "align-items-center", "mt-4");
+
+    let h4 = document.createElement("h4");
+    h4.textContent = titulo;
+
+    let p = document.createElement("p");
+    p.textContent = texto;
+
+    let button = document.createElement("button");
+    button.setAttribute("type", "button");
+    button.classList.add("btn", "btn_custom_1", "mt-3");
+    button.textContent = textoBoton;
+
+    // Construir la estructura
+    divLabelEmpty.appendChild(h4);
+    divLabelEmpty.appendChild(p);
+    divLabelEmpty.appendChild(button);
+
+    divCol.appendChild(divLabelEmpty);
+    divRow.appendChild(divCol);
+
+    return divRow;
+}
+
+/*
+    Función dinámica para crear las plantilla de tipo 1 y 2 (un título de página y resto contenido)
+        - parteSuperior: contiene un h1 y un div row (opcional)
+        - parteInferior: contiene un h1 y un div row con el contenido que se le pase por parámetro
+*/
+function crearPlantillaGenerica1(tituloSuperior, contenidoSuperior, contenidoInferior) {
+    // Crear el contenedor principal
+    let contenedor = document.querySelector("#contenedor");
+    contenedor.innerHTML = ""; // Limpiar el contenedor
+
+    // Crear la parte superior de la página
+    let parteSuperior = crearElemento("div", undefined, {
+        id: 'parteSuperior',
+        class: 'parteSuperior'
+    });
+
+    // Crear el título h1 y añadirlo a la parte superior
+    let h1Superior = crearElemento("h1", tituloSuperior, {
+        class: "py-3 mb-3 mt-4"
+    });
+    parteSuperior.appendChild(h1Superior);
+
+    // Si hay contenido para la parte superior, lo añadimos
+    if (contenidoSuperior) {
+        let divRowSuperior = crearElemento('div', undefined, {
+            class: 'row'
+        });
+        divRowSuperior.appendChild(contenidoSuperior);
+        parteSuperior.appendChild(divRowSuperior);
+    }
+
+    // Crear la parte inferior de la página
+    let parteInferior = crearElemento('div', undefined, {
+        id: 'parteInferior',
+        class: 'parteInferior mt-5'
+    });
+
+    parteInferior.innerHTML = "";
+
+    // Si hay contenido para la parte inferior, lo añadimos
+    if (contenidoInferior) {
+        parteInferior.appendChild(contenidoInferior);
+    }
+
+    // Agregar partes al contenedor principal
+    contenedor.appendChild(parteSuperior);
+    contenedor.appendChild(parteInferior);
+}
+
+/*
+    Función dinámica para crear la plantilla tipo 2 (dos secciones y dos títulos h1)
+        - parteSuperior: contiene un h1 y un div row con el contenido que se le pase por parámetro
+        - parteInferior: contiene un h1 y un div row con el contenido que se le pase por parámetro
+*/
+function crearPlantillaGenerica2(tituloSuperior, contenidoSuperior, tituloInferior, contenidoInferior) {
+    let contenedor = document.querySelector("#contenedor");
+    contenedor.innerHTML = "";
+
+    // Crear la parte superior de la página
+    let parteSuperior = crearElemento('div', undefined, {
+        class: 'parteSuperior'
+    });
+
+    let h1Superior = crearElemento("h1", tituloSuperior, {
+        class: "py-3 mb-3 mt-4"
+    });
+
+    let divRowSuperior = crearElemento('div', undefined, {
+        class: 'row'
+    });
+    divRowSuperior.appendChild(contenidoSuperior);
+
+    parteSuperior.appendChild(h1Superior);
+    parteSuperior.appendChild(divRowSuperior);
+
+    // Crear la parte inferior de la página
+    let parteInferior = crearElemento('div', undefined, {
+        class: 'parteInferior'
+    });
+
+    let h1Inferior = crearElemento("h1", tituloInferior, {
+        class: "py-3 mb-3 mt-4"
+    });
+
+    let divRowInferior = crearElemento('div', undefined, {
+        class: 'row'
+    });
+    divRowInferior.appendChild(contenidoInferior);
+
+    parteInferior.appendChild(h1Inferior);
+    parteInferior.appendChild(divRowInferior);
+
+    // Agregar partes al contenedor principal
+    contenedor.appendChild(parteSuperior);
+    contenedor.appendChild(parteInferior);
 }
 
 /* Función dinámica para crear plantillas para las páginas de formularios de 2 columnas
@@ -103,38 +311,6 @@ function crearPlantillaFormularios(tituloPagina, tituloLeft, tituloRight) {
 
     contenedor.appendChild(parteSuperior);
     contenedor.appendChild(parteInferior);
-}
-
-function crearElemento(etiqueta, contenido, atributos) {
-    let elementoNuevo = document.createElement(etiqueta);
-    if (contenido !== undefined) {
-        let contenidoNuevo = document.createTextNode(contenido);
-        elementoNuevo.appendChild(contenidoNuevo);
-    }
-    if (atributos !== undefined) {
-        for (let clave in atributos) {
-            elementoNuevo.setAttribute(clave, atributos[clave]);
-        }
-    }
-    return elementoNuevo;
-}
-
-/* Función dinámica para crear formularios
-    - elementoPadre (se especifica el elemento HTML en el cual se va a insertar el formulario)
-    - campos(recibe un array de objetos con todos los elementos a incluir en el formulario)
-*/
-function crearFormulario(campos, contenedor) {
-    const formulario = document.createElement('form');
-
-    // Recorrer las claves del objeto campos
-    for (const nombreCampo in campos) {
-        const campo = campos[nombreCampo];
-        const elemento = crearElemento(campo.etiqueta, campo.contenido, campo.atributos);
-
-        // Agregar el elemento al formulario
-        formulario.appendChild(elemento);
-    }
-    contenedor.appendChild(formulario);
 }
 
 // Consulta general para recibir productos. La funcion devuelve un array de objetos literales con los datos de los productos.

@@ -28,7 +28,7 @@ function principal() {
     $("#cerrarCarrito").on("click", abrirCerrarCarrito);
 
     // Asigna la función de abrir al ícono del carrito en la topbar
-    $(".abrirCarrito").on("click", abrirCerrarCarrito);
+    $("#abrirCarrito").on("click", abrirCerrarCarrito);
 
     //Aqui es necesario que las consultas se ejecuten en el orden correcto.
     //Para eso hay que evitar que el ajax funcione de forma asincrona agregando async: false.
@@ -818,15 +818,15 @@ function agregarCesta(e) {
 // Carrito.
 function abrirCerrarCarrito() {
     //Controlador para desplecar o cerrar el carrito.
-    $(".cart").fadeToggle();
+    $("#cart").fadeToggle();
 }
 
 function manejadorCarrito(e) {
     //Primero verifico si ya el carrito esta desplegado.
-    if (!$(".cart").is(":visible")) {
+    if (!$("#cart").is(":visible")) {
         abrirCerrarCarrito();
     }
-    let carrito = document.querySelector(".cart");
+    let carrito = document.querySelector("#cart");
 
     //Recibo la cesta y la guardo en un array.
     //La cesta es un array de objetos literales con los datos del producto.

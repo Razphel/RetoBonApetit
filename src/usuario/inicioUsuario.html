@@ -85,7 +85,7 @@
 
             <!-- page_container (contenido particular de cada página) -->
             <div class="page_container col bg-secondary">
-                <div class="page_layout mb-5 h-100">
+                <div class="page_layout h-100">
                     <!-- header superior -->
                     <div class="topbar static-top">
                         <div class="topbar_container">
@@ -116,10 +116,10 @@
                                             </a>
                                         </div>
                                     </div>
-                                    <i class="bi bi-cart2 abrirCarrito"></i>
+                                    <i id="abrirCarrito" class="bi bi-cart2"></i>
                                 </div>
 
-                                <div class="dropdown show">
+                                <div class="dropdown show profile_general">
                                     <a class="" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
                                         aria-haspopup="true" aria-expanded="false">
                                         <div class="topbar_profile">
@@ -127,13 +127,13 @@
                                                 <i class="bi bi-person-fill"></i>
                                             </div>
                                             <div class="topbar_profile_info">
-                                                <p class="topbar_profile_name">Nombre y apellido</p>
-                                                <p class="topbar_profile_account">Usuario</p>
+                                                <p class="topbar_profile_name"></p>
+                                                <p class="topbar_profile_account"></p>
                                             </div>
                                         </div>
                                     </a>
 
-                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                    <div class="dropdown-menu dropdown_profile" aria-labelledby="dropdownMenuLink">
                                         <a id="verPerfil" class="dropdown-item dropdown_inline" href="#">
                                             <i class="bi bi-person-fill dropdown_icon_margin"></i>
                                             <p>Ver perfil</p>
@@ -149,16 +149,32 @@
                     </div>
                     <!-- contenedor -->
                     <div class="row">
-                        <div id="contenedor" class="content_wrapper col">
-                        </div>
+                        <div id="contenedor" class="content_wrapper col"></div>
                         <!-- Carrito -->
-                        <div class="col-3 carritoLateral" style="display: none;">
-                            <div class="cabeceraCarritoLateral">
-                                <p><i class="bi bi-cart2"> X</i> Items</p>
-                                <button type="button" class="btn btn-danger btn-sm cerrarCarrito">X</button>
+                        <div id="cart" class="carritoLateral col-3">
+                            <div class="carrito_container">
+                                <div class="cart_top_container">
+                                    <div class="cart_top_info">
+                                        <span id="numProdCesta"></span>
+                                        <span>productos en la cesta</span>
+                                    </div>
+                                    <i id="cerrarCarrito" class="bi bi-x"></i>
+                                </div>
+                                <div class="cart_bottom_container">
+                                    <div class="cart_bottom_product">
+                                        <div id="cesta_item" class="cesta_item"></div>
+                                    </div>
+                                    <div class="cart_bottom_buttons_container">
+                                        <div class="cart_bottom_buttons">
+                                            <input id="btn_limpiarCesta" class="btn btn_custom_2" type="button"
+                                                value="Vaciar cesta">
+                                            <input id="btn_verPedido" class="btn btn_custom_1" type="button"
+                                                value="Hacer pedido">
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <!-- fin del div carrito -->
                     </div>
                     <!-- fin del page_layout -->
                 </div>
