@@ -66,7 +66,6 @@ function principal() {
     // Apartado residuos
     document.querySelector("#navResiduos").addEventListener("click", navResiduos); 
 
-
     // Seleccionar los elementos clickeables del menú
     const menuItems = document.querySelectorAll('.active');
 
