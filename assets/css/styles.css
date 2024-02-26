@@ -16,6 +16,9 @@
             - Aside....................... gen_aside
             - Header...................... gen_header
             - Main........................ gen_main
+
+        - Elementos individuales_____________________________ gen_01
+            - Cesta....................... gen_cesta
 */
 
 /* ETIQUETAS GENERALES________________________________________________gen_00 */
@@ -842,3 +845,41 @@ body {
     background: rgb(56, 56, 56) !important;
 }
 
+/* ETIQUETAS INDIVIDUALES________________________________________________gen_01 */
+/* Cesta.......................................gen_cesta */
+.cart_container {
+    width: 20%;
+    height: 100vh; 
+    padding: 20px;
+    background-color: var(--light-color); 
+}
+
+.cart_top_container {
+    width: 100%;
+    padding-bottom: 15px;
+    border-bottom: solid thin var(--accent-03);
+}
+
+.cart_bottom_container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.cart_bottom_buttons_container {
+    width: 100%;
+}
+
+.card_bottom_buttons {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+.cart_bottom_buttons .btn {
+    width: 100%; 
+}

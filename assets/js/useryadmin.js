@@ -22,6 +22,8 @@
 window.addEventListener("load", principal);
 
 function principal() {
+    let usuarioActual = JSON.parse(localStorage.getItem("usuario"));
+    
     //Antes de cargar la pagina del usuario, se comprueba que no se haya accedido sin una sesion valida.
     if (localStorage.getItem("usuario")) {
         let usuarioActual = JSON.parse(localStorage.getItem("usuario"));
@@ -32,6 +34,14 @@ function principal() {
         //Redirige al usuario a la página de sesion no existen datos en el localStorage.
         window.location.replace("../../../sesion.html");
     }
+
+    //Agregar el nombre del usuario a la barra superior.
+    //Se usa el selector de clase, pero solo hay un elemento con esta clase.
+    let nombreApellido = document.querySelector(".topbar_profile_name");
+    let nombreCuenta = document.querySelector(".topbar_profile_account");
+
+    nombreApellido.innerHTML = usuarioActual.nombre + " " + usuarioActual.apellido;
+    nombreCuenta.innerHTML = usuarioActual.id_usuario;
 
     modoColor(); 
 }

@@ -67,7 +67,7 @@ function iniciarSesion() {
         let salida = document.querySelector("#salida");
         //Agrego la clase para resaltar en rojo el mensaje de error.
         salida.classList.add('alert', 'alert-danger');
-        salida.innerHTML = "Error. Debes rellenar todos los campos";
+        salida.innerHTML = "Error. Debes rellenar todos los campos.";
     }
 }
 
@@ -77,16 +77,16 @@ function manejarRespuesta(respuesta) {
         //El usuario no existe.
         //Agrego la clase para resaltar en rojo el mensaje de error.
         salida.classList.add('alert', 'alert-danger');
-        salida.innerHTML = "Error. Comprueba los datos";
+        salida.innerHTML = "Error. Comprueba los datos.";
     } else {
         //Compruebo que el usuario no este dado de baja.
         if (respuesta.activo == 0) {
             //Agrego la clase para resaltar en rojo el mensaje de error.
             salida.classList.add('alert', 'alert-danger');
-            salida.innerHTML = "Error. Usuario dado de baja";
+            salida.innerHTML = "Error. Usuario dado de baja.";
         } else {
             //Si todo va bien guardo el usuario en la sesion.
-            localStorage.setItem("usuario", JSON.stringify({ nombre: respuesta.nombre, tipo: respuesta.admin, activo: respuesta.activo, clavePrimaria: respuesta.id_usuarios }));
+            localStorage.setItem("usuario", JSON.stringify({ id_usuario: respuesta.nombre_usuario, nombre: respuesta.nombre, apellido: respuesta.apellido, tipo: respuesta.admin, activo: respuesta.activo, clavePrimaria: respuesta.id_usuarios }));
 
             //Ahora hay que comprobar si es administrador.
             if (respuesta.admin == 1) {

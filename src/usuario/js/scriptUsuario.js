@@ -769,14 +769,14 @@ function agregarCesta(e) {
     let todosProductos = JSON.parse(localStorage.getItem("todosProductos"));
 
     // Separar el id del botón, el índice del producto seleccionado está después del guion bajo.
-    let textoDividido = this.id.split("_");
+    let textoDividido = this.id.split("");
     let productoSeleccionado = parseInt(textoDividido[1]);
 
     // Busco la cantidad de productos a añadir.
-    let cantidadRecibida = parseInt(document.querySelector("#inputCantidad_" + productoSeleccionado).value);
+    let cantidadRecibida = parseFloat(document.querySelector("#inputCantidad" + productoSeleccionado).value);
 
-    // Si la cantidad es 0 o menor, no hacemos nada.
-    if (cantidadRecibida <= 0) {
+    // Si la cantidad no es un número o es menor o igual a 0, no hacemos nada.
+    if (isNaN(cantidadRecibida) || cantidadRecibida <= 0) {
         return;
     }
 
@@ -800,6 +800,7 @@ function agregarCesta(e) {
         // Si el producto ya está en la cesta, sumar la cantidad recibida a la cantidad existente.
         cesta[productoEnCestaIndex].cantidad += cantidadRecibida;
     }
+    console.log(cesta);
 
     // Guardar la cesta actualizada en el almacenamiento local
     localStorage.setItem("cesta", JSON.stringify(cesta));
