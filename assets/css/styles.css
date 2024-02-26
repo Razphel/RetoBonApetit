@@ -659,7 +659,7 @@ body {
 }
 
 .topbar_profile {
-    height: 100%;
+    height: 100% !important;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -691,6 +691,10 @@ body {
 
 .dropdown:hover .dropdown-menu {
     display: block;
+}
+
+.dropdown_profile {
+    margin-left: -30px;
 }
 
 /* Main............................................ gen_main */
@@ -745,7 +749,7 @@ body {
 }
 
 .darkMode .cart_top_container {
-    border-bottom: solid thin var(--darkMode-light);
+    border-bottom: solid thin var(--darkMode-medium);
 }
 
 .darkMode .nav_container:hover {
@@ -810,7 +814,7 @@ body {
 
 .darkMode .dropdown-menu {
     background-color: var(--darkMode-light);
-    border: none;
+    border: solid thin var(--darkMode-dark);
 }
 
 .darkMode .dropdown-menu .dropdown-item:hover {
