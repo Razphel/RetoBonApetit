@@ -25,7 +25,7 @@ function principal() {
 
     // Funciones para el carrito.
     // Asigna la función de cerrar al botón X
-    $(".cerrarCarrito").on("click", abrirCerrarCarrito);
+    $("#cerrarCarrito").on("click", abrirCerrarCarrito);
 
     // Asigna la función de abrir al ícono del carrito en la topbar
     $(".abrirCarrito").on("click", abrirCerrarCarrito);
