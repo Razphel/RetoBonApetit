@@ -829,7 +829,7 @@ function manejadorCarrito(e) {
     if (!$("#cart").is(":visible")) {
         abrirCerrarCarrito();
     }
-    let carrito = document.querySelector("#cesta_item");
+    let carrito = document.querySelector("#cart_bottom_product");
     let numProdCesta = document.querySelector("#numProdCesta");
 
     //Recibo la cesta y la guardo en un array.
@@ -850,20 +850,40 @@ function manejadorCarrito(e) {
 
     //Se crea el div con cada elemento del carrito.
     for (let i = 0; i < cesta.length; i++) {
-        let contenedorProductoCarrito = crearElemento("div");
+        let contenedorProductoCarrito = crearElemento("div", undefined, {
+            class: "cesta_item"
+        });
+
+        let contenedorCestaProdNombre = crearElemento("div", undefined, {
+            class: "contenedorCestaProdNombre"
+        })
+
+        let contenedorCestaItemTexto = crearElemento("div", undefined, {
+            class: "contenedorCestaItemTexto"
+        });
+
+        let contenedorCestaItemLeft = crearElemento("div", undefined, {
+            class: "contenedorCestaItemLeft"
+        })
 
         //Boton para quitar el producto del carrito. Guarda el indice en el id.
         let botonQuitarProductoCarrito = crearElemento("i", undefined, {
             id: "elementoListaCarrito_" + i,
-            class: "bi bi-x"
+            class: "bi bi-x iconoEliminarProducto"
         });
         botonQuitarProductoCarrito.addEventListener("click", eliminarDeCarrito);
+        contenedorCestaItemLeft.appendChild(botonQuitarProductoCarrito);
 
         //Parrafo donde se muestra el nombre del producto.
         let productoCarrito = crearElemento("p", cesta[i].nombre_producto, undefined);
+        contenedorCestaProdNombre.appendChild(productoCarrito); 
+        contenedorCestaItemTexto.appendChild(contenedorCestaProdNombre);
 
         //Parrafo que muestra la unidad del producto.
-        let unidadProductoCarrito = crearElemento("p", cesta[i].nombre_unidades)
+        let unidadProductoCarrito = crearElemento("p", cesta[i].nombre_unidades, {
+            class: "cestaItemUnidad"
+        });
+        contenedorCestaItemTexto.appendChild(unidadProductoCarrito);
 
         //Input para mostrar y modificar la cantidad de productos.
         // Dentro del bucle for donde creas los elementos del carrito
@@ -877,10 +897,9 @@ function manejadorCarrito(e) {
 
         cantidadProductosCarrito.addEventListener("change", modificarDesdeCarrito);
 
+        contenedorCestaItemLeft.appendChild(contenedorCestaItemTexto);
         //Se agrega cada elemento al contenedor del producto.
-        contenedorProductoCarrito.appendChild(botonQuitarProductoCarrito);
-        contenedorProductoCarrito.appendChild(productoCarrito);
-        contenedorProductoCarrito.appendChild(unidadProductoCarrito);
+        contenedorProductoCarrito.appendChild(contenedorCestaItemLeft);
         contenedorProductoCarrito.appendChild(cantidadProductosCarrito);
 
         //Por ultimo, se agrega el contenedor al carrito.

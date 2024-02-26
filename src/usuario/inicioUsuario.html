@@ -96,22 +96,19 @@
                             <div class="topbar_right">
                                 <div class="topbar_icons">
                                     <div class="dropdown">
-                                        <a href="#" role="button" id="brightnessDropdown" data-bs-toggle="dropdown"
-                                            aria-expanded="false">
+                                        <a href="#" role="button" id="brightnessDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                                             <div class="icon_container">
                                                 <i id="iconoPrincipal" class="bi bi-brightness-high"></i>
                                             </div>
                                         </a>
-
+                            
                                         <div class="dropdown-menu" aria-labelledby="brightnessDropdown">
                                             <a id="modoOscuro" class="dropdown-item dropdown_inline" href="#">
-                                                <span id="iconoModoOscuro"
-                                                    class="bi bi-moon dropdown_icon_margin"></span>
-                                                <p>Modo oscuro</p>
+                                                <span id="iconoModoOscuro" class="bi bi-moon dropdown_icon_margin"></span>
+                                                <p>Modo oscuro</p> 
                                             </a>
                                             <a id="modoClaro" class="dropdown-item dropdown_inline" href="#">
-                                                <span id="iconoModoClaro"
-                                                    class="bi bi-brightness-high dropdown_icon_margin"></span>
+                                                <span id="iconoModoClaro" class="bi bi-brightness-high dropdown_icon_margin"></span>
                                                 <p>Modo claro</p>
                                             </a>
                                         </div>
@@ -120,8 +117,7 @@
                                 </div>
 
                                 <div class="dropdown show profile_general">
-                                    <a class="" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
-                                        aria-haspopup="true" aria-expanded="false">
+                                    <a class="" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         <div class="topbar_profile">
                                             <div class="profile_icon">
                                                 <i class="bi bi-person-fill"></i>
@@ -132,14 +128,14 @@
                                             </div>
                                         </div>
                                     </a>
-
+                                   
                                     <div class="dropdown-menu dropdown_profile" aria-labelledby="dropdownMenuLink">
                                         <a id="verPerfil" class="dropdown-item dropdown_inline" href="#">
                                             <i class="bi bi-person-fill dropdown_icon_margin"></i>
-                                            <p>Ver perfil</p>
+                                            <p>Ver perfil</p> 
                                         </a>
                                         <a id="cerrarSesion" class="dropdown-item dropdown_inline" href="#">
-                                            <i class="bi bi-box-arrow-right dropdown_icon_margin"></i>
+                                            <i class="bi bi-box-arrow-right dropdown_icon_margin"></i> 
                                             <p>Cerrar sesión</p>
                                         </a>
                                     </div>
@@ -152,24 +148,20 @@
                         <div id="contenedor" class="content_wrapper col"></div>
                         <!-- Carrito -->
                         <div id="cart" class="carritoLateral col-3">
-                            <div class="carrito_container">
+                            <div class="carrito_container">                            
                                 <div class="cart_top_container">
                                     <div class="cart_top_info">
-                                        <span id="numProdCesta"></span>
-                                        <span>productos en la cesta</span>
+                                        <span id="numProdCesta" class="numProdCesta"></span>
+                                        <span class="texto_topCart">productos en la cesta</span>
                                     </div>
-                                    <i id="cerrarCarrito" class="bi bi-x"></i>
+                                    <i id="cerrarCarrito" class="bi bi-x cerrarCarrito"></i>
                                 </div>
                                 <div class="cart_bottom_container">
-                                    <div class="cart_bottom_product">
-                                        <div id="cesta_item" class="cesta_item"></div>
-                                    </div>
+                                    <div id="cart_bottom_product" class="cart_bottom_product"></div>
                                     <div class="cart_bottom_buttons_container">
                                         <div class="cart_bottom_buttons">
-                                            <input id="btn_limpiarCesta" class="btn btn_custom_2" type="button"
-                                                value="Vaciar cesta">
-                                            <input id="btn_verPedido" class="btn btn_custom_1" type="button"
-                                                value="Hacer pedido">
+                                            <input id="btn_limpiarCesta" class="btn btn_custom_2" type="submit" value="Vaciar cesta">
+                                            <input id="btn_verPedido" class="btn btn_custom_1" type="submit" value="Hacer pedido">
                                         </div>
                                     </div>
                                 </div>
@@ -190,5 +182,4 @@
     <script src="../../src/usuario/js/scriptUsuario.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 </body>
-
 </html>
