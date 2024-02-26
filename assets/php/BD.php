@@ -170,10 +170,9 @@ class BD
 
     //Con la intencionalidad de que la siguiente funcion sea capaz de insertar datos en cualquier tabla, pasaremos por parametro el nombre de la tabla y un array asociativo en el cual 
     //el array_key serán los campos del registro y el valor asociado serán los datos que queremos introducir en la base de datos
-    public static function insertarRegistro($tabla,$datos)
-    {   
-        try 
-        {
+    public static function insertarRegistro($tabla, $datos)
+    {
+        try {
             $conexion = self::conexionBD();
             $columnas = implode(', ', array_keys($datos));
             // var_dump(array_keys($datos));
@@ -183,7 +182,7 @@ class BD
 
             $sql = "INSERT INTO $tabla ($columnas) VALUES ($valores)";
             $consulta = $conexion->prepare($sql);
-    
+
             // Ejecutar la consulta preparada con los valores
             $consulta->execute(array_values($datos));
             return true;
@@ -192,11 +191,11 @@ class BD
         }
     }
 
-    public static function eliminarRegistro($tabla,$id)
+    public static function eliminarRegistro($tabla, $id)
     {
         try {
             $conexion = self::conexionBD();
-            $sql = "DELETE FROM $tabla where id_$tabla =".$id;
+            $sql = "DELETE FROM $tabla where id_$tabla =" . $id;
             $resultado = $conexion->exec($sql);
             return true;
         } catch (PDOException  $e) {
@@ -204,18 +203,17 @@ class BD
         }
     }
 
-    public static function actualizarRegistro($tabla,$datos,$id)
-    {   
+    public static function actualizarRegistro($tabla, $datos, $id)
+    {
         try {
             $conexion = self::conexionBD();
-            foreach ($datos as $columna => $value) 
-            {
+            foreach ($datos as $columna => $value) {
                 $columnas_valores[] = "$columna = ?";
             }
             $columnas_valores = implode(",", $columnas_valores);
             $sql = "UPDATE $tabla SET $columnas_valores WHERE id_$tabla = $id";
             $consulta = $conexion->prepare($sql);
-    
+
             // Ejecutar la consulta preparada con los valores
             $consulta->execute(array_values($datos));
             return true;
@@ -223,7 +221,7 @@ class BD
             throw new Exception("ERROR: " . $e->getMessage());
         }
     }
-    }
+
     // $datos1 = [
     //     "admin" => "1",
     //     "nombre_usuario" => "Coral",
@@ -251,7 +249,7 @@ class BD
     // $id = 7;
     // BD::actualizarRegistro("categorias",$datos3,$id);
     //CREAR CONSULTA QUE IMPRIME LAS TRES ULTIMAS SOLICITUDES PARA EL ADMINISTRADOR
-    
+
     public static function imprimirMensajesInicio()
     {
         try {
@@ -275,5 +273,4 @@ class BD
         //Esta consulta te devuelve un array de arrays con todos los datos de la tabla producto.
         return $filas;
     }
-
-?>  
+}
