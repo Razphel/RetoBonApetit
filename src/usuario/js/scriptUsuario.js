@@ -22,6 +22,8 @@ function principal() {
     document.querySelector("#navProveedores").addEventListener("click", navProveedores);
     document.querySelector("#navResiduos").addEventListener("click", navResiduos);
     document.querySelector("#cerrarSesion").addEventListener("click", cerrarSesion);
+    document.querySelector("#btn_limpiarCesta").addEventListener("click", vaciarCarrito);
+
 
     // Funciones para el carrito.
     // Asigna la función de cerrar al botón X
@@ -77,6 +79,7 @@ function principal() {
 
     //Guardo en el localStorage el listado con todos los productos.
     consultarProductos();
+    manejadorCarrito();
 }
 
 function inicioCategorias(respuesta) {
@@ -748,7 +751,8 @@ function imprimirTablaProductos(nombre = null, categoria = null, unidades = null
                 class: "btn btn_custom_1 btn_sm",
                 value: "Añadir"
             })
-            botonAñadir.addEventListener("click", agregarCesta)
+            botonAñadir.addEventListener("click", agregarCesta);
+            botonAñadir.addEventListener("click", manejadorCarrito);
             celdaBoton.appendChild(inputCantidad);
             celdaBoton.appendChild(botonAñadir);
             filaBody.appendChild(celdaBoton);
@@ -808,6 +812,8 @@ function agregarCesta(e) {
         cesta[productoEnCestaIndex].cantidad += cantidadRecibida;
     }
 
+    console.log(cesta);
+
     // Guardar la cesta actualizada en el almacenamiento local
     localStorage.setItem("cesta", JSON.stringify(cesta));
 }
@@ -815,24 +821,140 @@ function agregarCesta(e) {
 // Carrito.
 function abrirCerrarCarrito() {
     //Controlador para desplecar o cerrar el carrito.
-    $(".carritoLateral").fadeToggle();
+    $("#cart").fadeToggle();
 }
 
 function manejadorCarrito(e) {
     //Primero verifico si ya el carrito esta desplegado.
-    if (!$(".carritoLateral").is(":visible")) {
+    if (!$("#cart").is(":visible")) {
         abrirCerrarCarrito();
     }
+    let carrito = document.querySelector("#cart_bottom_product");
+    let numProdCesta = document.querySelector("#numProdCesta");
 
     //Recibo la cesta y la guardo en un array.
     //La cesta es un array de objetos literales con los datos del producto.
     let cesta = JSON.parse(localStorage.getItem("cesta"));
-    let listaCarrito = crearElemento("ul", undefined, {
-        id: "listaCarrito"
-    });
 
+    //Limpio el contenido para actualizarlo.
+    carrito.innerHTML = "";
+
+    //Controlo el error si la cesta esta vacia.
+    if (cesta == null) {
+        numProdCesta.innerHTML = 0;
+        return;
+    }
+
+    //Se actualiza el numero de productos en la cesta.
+    numProdCesta.innerHTML = cesta.length;
+
+    //Se crea el div con cada elemento del carrito.
     for (let i = 0; i < cesta.length; i++) {
+        let contenedorProductoCarrito = crearElemento("div", undefined, {
+            class: "cesta_item"
+        });
 
+        let contenedorCestaProdNombre = crearElemento("div", undefined, {
+            class: "contenedorCestaProdNombre"
+        })
 
+        let contenedorCestaItemTexto = crearElemento("div", undefined, {
+            class: "contenedorCestaItemTexto"
+        });
+
+        let contenedorCestaItemLeft = crearElemento("div", undefined, {
+            class: "contenedorCestaItemLeft"
+        })
+
+        //Boton para quitar el producto del carrito. Guarda el indice en el id.
+        let botonQuitarProductoCarrito = crearElemento("i", undefined, {
+            id: "elementoListaCarrito_" + i,
+            class: "bi bi-x iconoEliminarProducto"
+        });
+        botonQuitarProductoCarrito.addEventListener("click", eliminarDeCarrito);
+        contenedorCestaItemLeft.appendChild(botonQuitarProductoCarrito);
+
+        //Parrafo donde se muestra el nombre del producto.
+        let productoCarrito = crearElemento("p", cesta[i].nombre_producto, undefined);
+        contenedorCestaProdNombre.appendChild(productoCarrito); 
+        contenedorCestaItemTexto.appendChild(contenedorCestaProdNombre);
+
+        //Parrafo que muestra la unidad del producto.
+        let unidadProductoCarrito = crearElemento("p", cesta[i].nombre_unidades, {
+            class: "cestaItemUnidad"
+        });
+        contenedorCestaItemTexto.appendChild(unidadProductoCarrito);
+
+        //Input para mostrar y modificar la cantidad de productos.
+        // Dentro del bucle for donde creas los elementos del carrito
+        let cantidadProductosCarrito = crearElemento("input", undefined, {
+            id: "cantidadProductosCarrito_" + i,
+            class: "form-control form-control-sm",
+            type: "number",
+            min: 0,
+            value: cesta[i].cantidad
+        });
+
+        cantidadProductosCarrito.addEventListener("change", modificarDesdeCarrito);
+
+        contenedorCestaItemLeft.appendChild(contenedorCestaItemTexto);
+        //Se agrega cada elemento al contenedor del producto.
+        contenedorProductoCarrito.appendChild(contenedorCestaItemLeft);
+        contenedorProductoCarrito.appendChild(cantidadProductosCarrito);
+
+        //Por ultimo, se agrega el contenedor al carrito.
+        carrito.appendChild(contenedorProductoCarrito);
+    }
+}
+
+function vaciarCarrito(e) {
+    //Limpio la cesta del almacenamiento.
+    localStorage.removeItem("cesta");
+
+    //Actualizo el carrito.
+    manejadorCarrito();
+}
+
+function eliminarDeCarrito(e) {
+    // En el id del elemento, después del _ está el índice del producto asociado.
+    let textoDividido = this.id.split("_");
+    let indiceProducto = textoDividido[1];
+
+    // Obtener la cesta del almacenamiento local
+    let cesta = JSON.parse(localStorage.getItem("cesta"));
+
+    // Eliminar el elemento correspondiente al índice del producto
+    cesta.splice(indiceProducto, 1);
+
+    // Guardar la cesta actualizada en el almacenamiento local
+    localStorage.setItem("cesta", JSON.stringify(cesta));
+
+    //Se imprime la cesta actualizada.
+    manejadorCarrito();
+}
+
+function modificarDesdeCarrito(e) {
+    // Obtener el índice del producto del ID del input
+    let indiceProducto = parseInt(this.id.split("_")[1]);
+
+    // Obtener la cesta del almacenamiento local
+    let cesta = JSON.parse(localStorage.getItem("cesta"));
+
+    // Validar si el valor ingresado es un número válido
+    let valorIngresado = parseFloat(this.value);
+
+    // Verificar si el valor ingresado es un número y no es NaN
+    if (!isNaN(valorIngresado)) {
+        // Actualizar la cantidad de productos en la cesta
+        cesta[indiceProducto].cantidad = valorIngresado;
+
+        // Guardar la cesta actualizada en el almacenamiento local
+        localStorage.setItem("cesta", JSON.stringify(cesta));
+
+        // Actualizar el carrito
+        manejadorCarrito();
+    } else {
+        // Si el valor ingresado no es un número válido, restaurar el valor original en el input
+        this.value = cesta[indiceProducto].cantidad;
     }
 }

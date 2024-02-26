@@ -57,12 +57,14 @@
     --text-light-color: #ABABAB;
 
     /* Tamaños...........................*/
-    --head-h1: 22px; 
-    --head-h2: 20px; 
-    --head-h3: 18px; 
-    --head-h4: 16px; 
-    --size-p: 14px;
-    --head-h5: 12px;
+    font-size: 16px; /* Tamaño de fuente base */
+
+    --head-h1: 1.375rem; /* 22px / 16px = 1.375rem */
+    --head-h2: 1.25rem; /* 20px / 16px = 1.25rem */
+    --head-h3: 1.125rem; /* 18px / 16px = 1.125rem */
+    --head-h4: 1rem; /* 16px / 16px = 1rem */
+    --size-p: 0.875rem; /* 14px / 16px = 0.875rem */
+    --head-h5: 0.75rem; /* 12px / 16px = 0.75rem */
     --size-span: ; 
     --line-height: ;
 }
@@ -335,7 +337,7 @@ td:hover {
 
 input[type="number"] {
     display: inline;
-    width: 80px;
+    width: 70px;
 }  
 
 .form-control {
@@ -589,7 +591,8 @@ body {
     flex-direction: row;
     justify-content: left;
     align-items: center;
-    gap: 10px;
+    gap: 7px;
+    padding-left: 20px;
 }
 
 .topbar_icons i {
@@ -789,6 +792,10 @@ body {
     color: var(--accent-01); 
 }
 
+.darkMode h5 {
+    color: var(--accent-01); 
+}
+
 .darkMode p {
     color: var(--accent-01); 
 }
@@ -807,6 +814,10 @@ body {
 
 .darkMode .bi {
     color: var(--light-color); 
+}
+
+.darkMode .iconoEliminarProducto {
+    color: var(--primary-color);
 }
 
 .darkMode .searchbar {
@@ -860,6 +871,10 @@ body {
     background: rgb(56, 56, 56) !important;
 }
 
+.darkMode .contenedorCestaProdNombre::after {
+    background: linear-gradient(to right, rgba(255, 255, 255, 0) 50%, rgba(49, 49, 49, 0.726) 80%);
+}
+
 /* ETIQUETAS INDIVIDUALES________________________________________________gen_01 */
 /* Cesta.......................................gen_cesta */
 .carritoLateral {
@@ -873,35 +888,121 @@ body {
     height: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
     align-items: center;
 }
 
 .cart_top_container {
     width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
     padding-bottom: 15px;
     border-bottom: solid thin var(--accent-03);
 }
 
+.numProdCesta {
+    font-weight: 500;
+}
+
+.texto_topCart {
+    font-size: var(--size-p);
+}
+
+.cerrarCarrito {
+    padding: 5px;
+    line-height: 0;
+    font-size: var(--head-h1);
+}
+
+.cerrarCarrito:hover {
+    border-radius: 4px;
+    background-color: var(--secondary-color);
+}
+
 .cart_bottom_container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto; 
+    padding-top: 10px;
+}
+
+.cart_bottom_product {
+    flex-grow: 1; 
+    overflow-y: auto;
+}
+
+.cesta_item {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+}
+
+.contenedorCestaItemTexto {
     width: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+.contenedorCestaProdNombre {
+    width: 130px;
+    position: relative; 
+}
+  
+.contenedorCestaProdNombre p {
+    white-space: nowrap;
+    overflow: hidden; 
+    position: relative;
+    text-overflow: ellipsis;
+}
+  
+.contenedorCestaProdNombre::after {
+    content: ''; 
+    position: absolute; 
+    bottom: 0;
+    left: 0; 
+    width: 100%; 
+    height: 100%; 
+    background: linear-gradient(to right, rgba(255, 255, 255, 0) 50%, rgba(255, 255, 255, 0.726) 80%);
+    pointer-events: none; 
+}
+
+.cestaItemUnidad {
+    color: gray;
+}
+
+.iconoEliminarProducto {
+    color: var(--primary-color);
+}
+
+.contenedorCestaItemLeft {
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+    align-items: flex-start;
+    gap: 10px;
 }
 
 .cart_bottom_buttons_container {
     width: 100%;
-    padding-bottom: 20px;
+    position: sticky;
+    bottom: 0; 
+    padding: 30px 0 10px 0;
 }
 
 .cart_bottom_buttons {
+    width: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 10px;
+    gap: 15px;
 }
 
 .cart_bottom_buttons .btn {

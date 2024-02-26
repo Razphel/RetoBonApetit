@@ -156,70 +156,97 @@ function pagAñadirCategoria() {
     crearPlantillaFormularios('Nueva categoría', 'Datos de la nueva categoría', 'Categorías existentes');
     contenedorForm = document.querySelector('#contenedorForm');
 
-    let camposNewCategoria = {
-        nombre: {
-            etiqueta: 'label',
-            contenido: 'Nombre',
-            atributos: {
-                for: 'newNombreCategoria',
-                class: 'form-label'
-            }
-        },
-        inputNombre: {
-            etiqueta: 'input',
-            atributos: {
-                type: 'text',
-                id: 'newNombreCategoria',
-                class: 'form-control',
-                placeholder: 'Nombre de la nueva categoría'
-            }
-        },
-        observaciones: {
-            etiqueta: 'label',
-            contenido: 'Observaciones',
-            atributos: {
-                for: 'newObservacionCategoria',
-                class: 'form-label'
-            }
-        },
-        inputObservaciones: {
-            etiqueta: 'input',
-            atributos: {
-                type: 'text',
-                id: 'newObservacionCategoria',
-                class: 'form-control',
-                placeholder: 'Observación de la nueva categoría'
-            }
-        },
-        btnCancelar: {
-            etiqueta: 'input',
-            atributos: {
-                type: 'submit',
-                value: 'Cancelar',
-                class: 'btn btn_custom_3',
-                onclick: 'cancelar()'
-            }
-        },
-        btnLimpiarDatos: {
-            etiqueta: 'input',
-            atributos: {
-                type: 'submit',
-                value: 'Limpiar datos',
-                class: 'btn btn_custom_2',
-                onclick: 'limpiarDatos()'
-            }
-        },
-        btnCrearCategoria: {
-            etiqueta: 'input',
-            atributos: {
-                type: 'submit',
-                value: 'Crear categoría',
-                class: 'btn btn_custom_1',
-                onclick: 'crearCategoria()'
-            }
-        }
-    };
-    crearFormulario(camposNewCategoria, contenedorForm);
+    let formCategorias = crearElemento('form', undefined, []);
+
+    //. BLOQUE 1....................................................
+
+
+    //. BLOQUE 2....................................................
+    let labelNombre = crearElemento('label', 'Nombre', {
+        for: 'newNombreCategoria',
+        class: 'form-label'
+    });
+    formCategorias.appendChild(labelNombre);
+
+    let inputNombre = crearElemento('input', undefined, {
+        type: 'text',
+        id: 'newNombreCategoria',
+        class: 'form-control',
+        placeholder: 'Nombre de la nueva categoría'
+    });
+    formCategorias.appendChild(inputNombre); 
+
+    //. BLOQUE 3....................................................
+    let labelObservaciones = crearElemento('label', 'Nombre', {
+        for: 'newObservacionCategoria',
+        class: 'form-label'
+    });
+    formCategorias.appendChild(labelObservaciones);
+
+    let inputObservaciones = crearElemento('input', undefined, {
+        type: 'text',
+        id: 'newObservacionCategoria',
+        class: 'form-control',
+        placeholder: 'Observación de la nueva categoría'
+    });
+    formCategorias.appendChild(inputObservaciones); 
+
+    //. BLOQUE 4....................................................
+    let contenedorBuscador = crearElemento("div", undefined, {
+        id: "contenedorBuscador",
+        class: "contenedorBuscador input-group"
+    });
+
+    let contenedorBuscadorIcon = crearElemento("div", undefined, {
+        id: "contenedorBuscadorIcon",
+        class: "contenedorBuscadorIcon input-group-prepend input-group"
+    });
+
+    let contenedorIconBuscador = crearElemento("span", undefined, {
+        class: "input-group-text searchbar"
+    });
+
+    let iconBuscador = crearElemento("i", undefined, {
+        class: "bi bi-search"
+    });
+
+    contenedorIconBuscador.appendChild(iconBuscador);
+    contenedorBuscadorIcon.appendChild(contenedorIconBuscador);
+    contenedorBuscador.appendChild(contenedorBuscadorIcon);
+
+    let inputNombreProducto = crearElemento("input", undefined, {
+        id: "filtroBuscadorNombre",
+        type: "text",
+        placeholder: "Buscar por nombre de producto...",
+        class: "form-control searchbar filtroBuscador",
+        value: nombre || ""
+    });
+
+    contenedorBuscadorIcon.appendChild(inputNombreProducto);
+    
+    //. BOTONES......................................................
+    let btnCancelar = crearElemento("input", undefined, {
+        type: 'submit',
+        value: 'Cancelar',
+        class: 'btn btn_custom_3',
+        onclick: 'cancelar()'
+    });
+
+    let botonVaciar = crearElemento("input", undefined, {
+        type: 'submit',
+        value: 'Limpiar datos',
+        class: 'btn btn_custom_2',
+        onclick: 'limpiarDatos()'
+    });
+
+    let btnCrearCategoria = crearElemento("input", undefined, {
+        type: 'submit',
+        value: 'Crear categoría',
+        class: 'btn btn_custom_1',
+        onclick: 'crearCategoria()'
+    });
+
+    contenedorForm.appendChild(form)
 }
 
 // Apartado PRODUCTOS__________________________________________________________________

@@ -23,7 +23,7 @@ window.addEventListener("load", principal);
 
 function principal() {
     let usuarioActual = JSON.parse(localStorage.getItem("usuario"));
-    
+
     //Antes de cargar la pagina del usuario, se comprueba que no se haya accedido sin una sesion valida.
     if (localStorage.getItem("usuario")) {
         let usuarioActual = JSON.parse(localStorage.getItem("usuario"));
@@ -67,7 +67,6 @@ function modoColor() {
         document.body.classList.remove("darkMode");
     });
 }
-
 
 function cerrarSesion() {
     localStorage.removeItem("usuario");
@@ -301,7 +300,7 @@ function crearPlantillaFormularios(tituloPagina, tituloLeft, tituloRight) {
     let container_right = crearElemento('div', undefined, {
         class: 'container_right card p-4 col-12 col-lg-4'
     });
-    let titulo_container_right = crearElemento('div', tituloRight, {
+    let titulo_container_right = crearElemento('h4', tituloRight, {
         class: 'mb-5'
     });
     container_right.appendChild(titulo_container_right); 
