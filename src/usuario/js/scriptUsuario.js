@@ -23,6 +23,7 @@ function principal() {
     document.querySelector("#navResiduos").addEventListener("click", navResiduos);
     document.querySelector("#cerrarSesion").addEventListener("click", cerrarSesion);
     document.querySelector("#btn_limpiarCesta").addEventListener("click", vaciarCarrito);
+    // document.querySelector("#btn_verPedido").addEventListener("click", hacerSolicitud);
 
 
     // Funciones para el carrito.
