@@ -23,12 +23,15 @@ window.addEventListener("load", principal);
 
 function principal() {
     let usuarioActual = JSON.parse(localStorage.getItem("usuario"));
-
+    // let nombre = usuarioActual.nombre;
+    // let apellido = usuarioActual.apellido;
+    // let siglas = nombre.substring(0, 1) + apellido.substring(0, 1);
+    // document.write(siglas);
     //Antes de cargar la pagina del usuario, se comprueba que no se haya accedido sin una sesion valida.
     if (localStorage.getItem("usuario")) {
         let usuarioActual = JSON.parse(localStorage.getItem("usuario"));
         if (usuarioActual.nombre === "") {
-            window.location.replace("../../../sesion.html");
+            window.location.replace("   ../../../sesion.html");
         }
     } else {
         //Redirige al usuario a la página de sesion no existen datos en el localStorage.
