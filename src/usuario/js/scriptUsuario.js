@@ -79,7 +79,6 @@ function principal() {
 
     //Guardo en el localStorage el listado con todos los productos.
     consultarProductos();
-    manejadorCarrito();
 }
 
 function inicioCategorias(respuesta) {
@@ -822,6 +821,9 @@ function agregarCesta(e) {
 function abrirCerrarCarrito() {
     //Controlador para desplecar o cerrar el carrito.
     $("#cart").fadeToggle();
+
+    //Se vuelve a cargar el carrito para que no este vacio la primera vez que cargue la pagina y existan productos en local.
+    manejadorCarrito();
 }
 
 function manejadorCarrito(e) {
@@ -876,7 +878,7 @@ function manejadorCarrito(e) {
 
         //Parrafo donde se muestra el nombre del producto.
         let productoCarrito = crearElemento("p", cesta[i].nombre_producto, undefined);
-        contenedorCestaProdNombre.appendChild(productoCarrito); 
+        contenedorCestaProdNombre.appendChild(productoCarrito);
         contenedorCestaItemTexto.appendChild(contenedorCestaProdNombre);
 
         //Parrafo que muestra la unidad del producto.
