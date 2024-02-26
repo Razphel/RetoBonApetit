@@ -14,10 +14,6 @@
     <link rel="stylesheet" href="../../assets/css/styles.css">
     <!-- Enlace a iconos de Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
-    <!-- Scripts -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <script src="../../assets/js/useryadmin.js"></script>
-    <script src="../../src/usuario/js/scriptUsuario.js"></script>
 </head>
 
 <body>
@@ -27,16 +23,17 @@
             <!-- sidebar -->
             <div class="sidebar col-auto">
                 <div class="sidebar_top">
-                    <p>Logotipo</p>
+                    <div class="logo_container">
+                        <img src="../../assets/img/logo/logotipo.png" alt="Bon Appétit">
+                    </div>
                 </div>
                 <div class="sidebar_bottom">
-                    <!-- ! ps es de la biblioteca Perfect Scrollbar -->
-                    <ul class="sidebar_container py-1 ps ps--active-y">
+                    <ul class="sidebar_container py-1">
                         <li>
                             <a href="./inicioUsuario.html" class="nav_link" id="navInicio">
                                 <div class="nav_container">
                                     <div class="nav_container_left">
-                                        <i class='bx bxs-home'></i>
+                                        <i class='bx bx-home-alt-2'></i>
                                         <p>Inicio</p>
                                     </div>
                                 </div>
@@ -46,7 +43,7 @@
                             <a href="#" class="nav_link" id="navProductos">
                                 <div class="nav_container">
                                     <div class="nav_container_left">
-                                        <i class='bx bxs-cookie'></i>
+                                        <i class='bx bx-cookie'></i>
                                         <p>Productos</p>
                                     </div>
                                 </div>
@@ -56,7 +53,7 @@
                             <a href="#" class="nav_link" id="navPedidos">
                                 <div class="nav_container">
                                     <div class="nav_container_left">
-                                        <i class='bx bxs-receipt'></i>
+                                        <i class='bx bx-receipt'></i>
                                         <p>Pedidos</p>
                                     </div>
                                 </div>
@@ -66,7 +63,7 @@
                             <a href="#" class="nav_link" id="navProveedores">
                                 <div class="nav_container">
                                     <div class="nav_container_left">
-                                        <i class='bx bxs-store'></i>
+                                        <i class='bx bx-store'></i>
                                         <p>Proveedores</p>
                                     </div>
                                 </div>
@@ -76,7 +73,7 @@
                             <a href="#" class="nav_link" id="navResiduos">
                                 <div class="nav_container">
                                     <div class="nav_container_left">
-                                        <i class='bx bxs-trash'></i>
+                                        <i class='bx bx-trash'></i>
                                         <p>Residuos</p>
                                     </div>
                                 </div>
@@ -90,28 +87,61 @@
             <div class="page_container col bg-secondary">
                 <div class="page_layout mb-5 h-100">
                     <!-- header superior -->
-                    <div class="topbar mg-4 static-top">
+                    <div class="topbar static-top">
                         <div class="topbar_container">
                             <div class="topbar_left">
                                 <i class="bi bi-list"></i>
-                                <div class="search_bar">
-                                    <i class='bx bx-search'></i>
-                                    <input type="text" class="form-control" placeholder="Buscar..." />
-                                </div>
                             </div>
 
                             <div class="topbar_right">
                                 <div class="topbar_icons">
-                                    <i class="bi bi-grid"></i>
-                                    <i class="bi bi-brightness-high"></i>
+                                    <div class="dropdown">
+                                        <a href="#" role="button" id="brightnessDropdown" data-bs-toggle="dropdown"
+                                            aria-expanded="false">
+                                            <div class="icon_container">
+                                                <i id="iconoPrincipal" class="bi bi-brightness-high"></i>
+                                            </div>
+                                        </a>
+
+                                        <div class="dropdown-menu" aria-labelledby="brightnessDropdown">
+                                            <a id="modoOscuro" class="dropdown-item dropdown_inline" href="#">
+                                                <span id="iconoModoOscuro"
+                                                    class="bi bi-moon dropdown_icon_margin"></span>
+                                                <p>Modo oscuro</p>
+                                            </a>
+                                            <a id="modoClaro" class="dropdown-item dropdown_inline" href="#">
+                                                <span id="iconoModoClaro"
+                                                    class="bi bi-brightness-high dropdown_icon_margin"></span>
+                                                <p>Modo claro</p>
+                                            </a>
+                                        </div>
+                                    </div>
                                     <i class="bi bi-cart2"></i>
                                 </div>
-                                <div class="topbar_profile">
-                                    <i class="bi bi-person-fill"></i>
-                                    <div class="topbar_profile_info">
-                                        <p class="topbar_profile_name">Nombre y apellido</p>
-                                        <p class="topbar_profile_account">Usuario</p>
-                                        <a href="#" id="cerrarSesion">Cerrar sesión</a>
+
+                                <div class="dropdown show">
+                                    <a class="" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
+                                        aria-haspopup="true" aria-expanded="false">
+                                        <div class="topbar_profile">
+                                            <div class="profile_icon">
+                                                <i class="bi bi-person-fill"></i>
+                                            </div>
+                                            <div class="topbar_profile_info">
+                                                <p class="topbar_profile_name">Nombre y apellido</p>
+                                                <p class="topbar_profile_account">Usuario</p>
+                                            </div>
+                                        </div>
+                                    </a>
+
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                        <a id="verPerfil" class="dropdown-item dropdown_inline" href="#">
+                                            <i class="bi bi-person-fill dropdown_icon_margin"></i>
+                                            <p>Ver perfil</p>
+                                        </a>
+                                        <a id="cerrarSesion" class="dropdown-item dropdown_inline" href="#">
+                                            <i class="bi bi-box-arrow-right dropdown_icon_margin"></i>
+                                            <p>Cerrar sesión</p>
+                                        </a>
                                     </div>
                                 </div>
                             </div>
@@ -119,11 +149,17 @@
                     </div>
                     <!-- contenedor -->
                     <div class="row">
-                        <div id="contenedor" class="content_wrapper col">
-
+                        <div id="contenedor" class="content_wrapper">
                         </div>
+                        <!-- Carrito -->
+                        <div class="col-3 carritoLateral">
+                            <div class="cabeceraCarritoLateral">
+                                <p><i class="bi bi-cart2"> X</i> Items</p>
+                                <button type="button" class="btn btn-danger btn-sm cerrarCarrito">X</button>
+                            </div>
+                        </div>
+                        <!-- fin del div carrito -->
                     </div>
-
                     <!-- fin del page_layout -->
                 </div>
                 <!-- fin del page_container -->
@@ -133,12 +169,10 @@
         <!-- fin del layout_wrapper -->
     </div>
 
-    <!-- Enlace al archivo CSS de Perfect Scrollbar -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/1.5.2/css/perfect-scrollbar.min.css"
-        rel="stylesheet">
-    <!-- Enlace al archivo JavaScript de Perfect Scrollbar -->
-    <script
-        src="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/1.5.2/perfect-scrollbar.min.js"></script>
+    <!-- Scripts -->
+    <script src="../../assets/js/useryadmin.js"></script>
+    <script src="../../src/usuario/js/scriptUsuario.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 </body>
 
 </html>
