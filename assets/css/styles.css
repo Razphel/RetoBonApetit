@@ -658,8 +658,11 @@ body {
     height: 70px;
 }
 
+.profile_general, #dropdownMenuLink, .topbar_profile {
+    height: 100%;
+}
+
 .topbar_profile {
-    height: 100% !important;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
