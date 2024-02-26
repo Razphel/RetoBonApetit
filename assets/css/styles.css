@@ -25,16 +25,22 @@
 /* Propiedades generales............................gen_prop */
 :root {
     /* Colores.........................*/
-    --primary-color: #EE2F7F; /* fondos, textos, iconos... */
-    --secondary-color: #F8EBF0; /* solo usar para fondos */
-    
+    --primary-color: #EE2F7F;
+    /* fondos, textos, iconos... */
+    --secondary-color: #F8EBF0;
+    /* solo usar para fondos */
+
     /* Escala de grises */
-    --accent-01: #DCDCDC; /* fondo cajas, barras scroll, líneas horizontales...*/
-    --accent-02: #ECECEC; /* Fondo de botones */
-    --accent-03: #f7f7f7; /* Fondo de página */
-    --accent-04: #F9F9FA; /* Fondo de etiquetas y marcador de sección menú */
+    --accent-01: #DCDCDC;
+    /* fondo cajas, barras scroll, líneas horizontales...*/
+    --accent-02: #ECECEC;
+    /* Fondo de botones */
+    --accent-03: #f7f7f7;
+    /* Fondo de página */
+    --accent-04: #F9F9FA;
+    /* Fondo de etiquetas y marcador de sección menú */
     --aside-back: white;
-    --light-color: white; 
+    --light-color: white;
 
     --danger-dark: #FF3E1D;
     --danger-light: #fff0ee;
@@ -54,13 +60,13 @@
     --text-light-color: #ABABAB;
 
     /* Tamaños...........................*/
-    --head-h1: 22px; 
-    --head-h2: 20px; 
-    --head-h3: 18px; 
-    --head-h4: 16px; 
+    --head-h1: 22px;
+    --head-h2: 20px;
+    --head-h3: 18px;
+    --head-h4: 16px;
     --size-p: 14px;
     --head-h5: 12px;
-    --size-span: ; 
+    --size-span: ;
     --line-height: ;
 }
 
@@ -73,7 +79,7 @@
     --bs-gutter-y: 0;
 }
 
-.row > .custom_gutter {
+.row>.custom_gutter {
     --bs-gutter-x: 1.5rem;
     --bs-gutter-y: 0;
 }
@@ -85,11 +91,16 @@
 }
 
 .dropdown-item:active {
-    background-color: transparent; 
+    background-color: transparent;
 }
 
 /* Headings y textos............................gen_head */
-h1, h2, h3, h4, h5, p {
+h1,
+h2,
+h3,
+h4,
+h5,
+p {
     padding: 0;
     margin: 0;
 }
@@ -110,7 +121,7 @@ h3 {
 
 h4 {
     font-weight: 400;
-    font-size: var(--head-h4); 
+    font-size: var(--head-h4);
 }
 
 h5 {
@@ -118,12 +129,13 @@ h5 {
     font-size: var(--head-h5);
 }
 
-p, a {
+p,
+a {
     font-size: var(--size-p);
 }
 
 a {
-    color: var(--text-dark-color); 
+    color: var(--text-dark-color);
     text-decoration: none;
 }
 
@@ -135,28 +147,28 @@ a {
 
 .alert-danger {
     color: var(--danger-dark);
-    border: solid thin var(--danger-dark); 
+    border: solid thin var(--danger-dark);
     background-color: var(--danger-light);
 }
 
 .alert-warning {
     color: var(--warning-dark);
-    border: solid thin var(--warning-dark); 
+    border: solid thin var(--warning-dark);
     background-color: var(--danger-light);
 }
 
 .alert-success {
     color: var(--success-dark);
-    border: solid thin var(--success-dark); 
+    border: solid thin var(--success-dark);
     background-color: var(--success-light);
 }
 
-/* Botones...................................... gen_btn */ 
-.btn {  
-    font-size: var(--size-p);  
+/* Botones...................................... gen_btn */
+.btn {
+    font-size: var(--size-p);
     border-radius: 4px;
-    width: fit-content; 
-}  
+    width: fit-content;
+}
 
 .btn:hover {
     transform: translateY(-1px);
@@ -172,7 +184,8 @@ a {
 
 /* Botón principal. Fondo color principal */
 /* <button type="button" class="btn btn_custom_1">Ver pedido</button> */
-.btn_custom_1, .btn_custom_1:hover {
+.btn_custom_1,
+.btn_custom_1:hover {
     color: white;
     border: solid thin var(--primary-color);
     background-color: var(--primary-color);
@@ -180,7 +193,8 @@ a {
 
 /* Botón secundario. Fondo color secundario */
 /* <button type="button" class="btn btn_custom_2">Ver pedido</button> */
-.btn_custom_2, .btn_custom_2:hover {
+.btn_custom_2,
+.btn_custom_2:hover {
     color: var(--primary-color);
     font-weight: 500;
     border: solid thin var(--secondary-color);
@@ -189,16 +203,17 @@ a {
 
 /* Botón extra. Escala de grises. Usos: "Limpiar formulario" */
 /* <button type="button" class="btn btn_custom_3">Limpiar</button> */
-.btn_custom_3, .btn_custom_3:hover {
+.btn_custom_3,
+.btn_custom_3:hover {
     color: var(--text-dark-color);
     border: solid thin var(--accent-02);
     background-color: var(--accent-02);
 }
 
-/* Iconos........................................ gen_icon */ 
+/* Iconos........................................ gen_icon */
 i:hover {
     cursor: pointer;
-    color:#ee2f7f;
+    color: #ee2f7f;
 }
 
 .bi-search {
@@ -212,7 +227,7 @@ i:hover {
 /* chevron del sidebar */
 .nav_container i.bi-chevron-right {
     font-size: 10px;
-}   
+}
 
 .nav_container .bx {
     color: rgb(167, 167, 167);
@@ -241,13 +256,14 @@ td {
     font-size: var(--size-p);
 }
 
-td:first-child, th:first-child {
-    padding-left: 15px; 
-  }
+td:first-child,
+th:first-child {
+    padding-left: 15px;
+}
 
 td:last-child {
     padding-right: 20px;
-    text-align: right; 
+    text-align: right;
 }
 
 td:hover {
@@ -271,7 +287,7 @@ td:hover {
 }
 
 .contenedorFiltroLabelySelect {
-    width: fit-content; 
+    width: fit-content;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -300,7 +316,7 @@ td:hover {
 }
 
 .contenedorFiltroRight {
-    width: 45%; 
+    width: 45%;
     display: flex;
     flex-direction: row;
     justify-content: left;
@@ -333,7 +349,7 @@ td:hover {
 input[type="number"] {
     display: inline;
     width: 80px;
-}  
+}
 
 .form-control {
     font-size: 14px;
@@ -366,7 +382,7 @@ textarea::placeholder {
 }
 
 .form-control:focus {
-    border-color: #ced4da; 
+    border-color: #ced4da;
     box-shadow: none;
 }
 
@@ -380,7 +396,8 @@ textarea::placeholder {
     width: 93%;
 }
 
-.label_effect { /* contenedor con hover */
+.label_effect {
+    /* contenedor con hover */
     display: flex;
     flex-direction: row;
     justify-content: left;
@@ -392,15 +409,16 @@ textarea::placeholder {
 .label_effect:hover {
     cursor: pointer;
     box-shadow: 0 2px 6px 0 rgba(138, 138, 138, 0.151);
-}   
+}
 
 .label_effect img {
     width: 35px;
 }
 
-.label_empty { /* contenedor sin elementos dentro */
+.label_empty {
+    /* contenedor sin elementos dentro */
     border: dashed thin rgb(179, 179, 179);
-    background-color: transparent; 
+    background-color: transparent;
 }
 
 /* Body............................................ gen_body */
@@ -411,8 +429,8 @@ html {
 body {
     font-family: var(--font);
     height: 100vh;
-    margin: 0; 
-    background-color: var(--accent-03);  
+    margin: 0;
+    background-color: var(--accent-03);
 }
 
 * {
@@ -421,7 +439,7 @@ body {
 
 /* Aside........................................... gen_aside */
 .col-auto {
-    padding: 0; 
+    padding: 0;
 }
 
 ::-webkit-scrollbar {
@@ -430,8 +448,8 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-    background-color: var(--accent-01); 
-    border-radius: 5px; 
+    background-color: var(--accent-01);
+    border-radius: 5px;
 }
 
 .sidebar {
@@ -464,13 +482,13 @@ body {
     display: flex;
     flex-direction: column;
     gap: 10px;
-    padding: 0; 
+    padding: 0;
 }
 
 .sidebar ul {
     list-style: none;
-    padding: 0; 
-    margin: 0; 
+    padding: 0;
+    margin: 0;
 }
 
 .dropdown_toggle {
@@ -598,8 +616,8 @@ body {
 }
 
 .dropdown-menu {
-    border: solid thin var(--accent-02); 
-} 
+    border: solid thin var(--accent-02);
+}
 
 .admin_shortcuts_container {
     padding: 0;
@@ -616,12 +634,13 @@ body {
     grid-template-columns: repeat(2, 1fr);
     grid-template-rows: repeat(3, auto);
     gap: 10px;
-    padding: 20px 10px 10px 10px; 
+    padding: 20px 10px 10px 10px;
 }
 
 .caja_shortcuts {
-    position: relative; 
-    width: 130px; /* Define la anchura deseada para las cajas */
+    position: relative;
+    width: 130px;
+    /* Define la anchura deseada para las cajas */
     min-width: 0;
     display: flex;
     flex-direction: column;
@@ -692,11 +711,12 @@ body {
 
 /* Main............................................ gen_main */
 .page_layout {
-    background-color: var(--accent-03);  
+    background-color: var(--accent-03);
 }
 
 .content_wrapper {
-    max-height: 80vh; /* Establece la altura máxima como el 100% de la altura de la ventana menos 100px para otros elementos fijos */
+    max-height: 80vh;
+    /* Establece la altura máxima como el 100% de la altura de la ventana menos 100px para otros elementos fijos */
     overflow-y: auto;
     padding-left: 40px;
     padding-right: 30px;
@@ -733,7 +753,7 @@ body {
 
 .darkMode .sidebar {
     background-color: var(--darkMode-dark);
-    color: var(--light-color); 
+    color: var(--light-color);
     border-right: solid thin var(--darkMode-light);
 }
 
@@ -743,7 +763,7 @@ body {
 
 .darkMode .topbar {
     background-color: var(--darkMode-dark);
-    color: var(--light-color); 
+    color: var(--light-color);
     border-bottom: solid thin var(--darkMode-light);
 }
 
@@ -755,45 +775,45 @@ body {
 
 .darkMode .page_layout {
     background-color: var(--darkMode-dark);
-    color: var(--light-color); 
+    color: var(--light-color);
 }
 
 .darkMode .nav_container.gray-bg {
     background-color: var(--darkMode-light);
-    color: var(--light-color); 
+    color: var(--light-color);
 }
 
 .darkMode h1 {
-    color: var(--accent-01); 
+    color: var(--accent-01);
 }
 
 .darkMode h4 {
-    color: var(--accent-01); 
+    color: var(--accent-01);
 }
 
 .darkMode p {
-    color: var(--accent-01); 
+    color: var(--accent-01);
 }
 
 .darkMode a {
-    color: var(--darkMode-medium); 
+    color: var(--darkMode-medium);
 }
 
 .darkMode ::placeholder {
-    color: var(--darkMode-medium); 
+    color: var(--darkMode-medium);
 }
 
 .darkMode i {
-    color: var(--light-color); 
+    color: var(--light-color);
 }
 
 .darkMode .bi {
-    color: var(--light-color); 
+    color: var(--light-color);
 }
 
 .darkMode .searchbar {
     background-color: var(--darkMode-light) !important;
-    color: var(--light-color); 
+    color: var(--light-color);
     border: none;
 }
 
@@ -832,12 +852,12 @@ body {
 }
 
 .darkMode th {
-    border-bottom: solid thin rgb(100, 100, 100); 
+    border-bottom: solid thin rgb(100, 100, 100);
     background: var(--darkMode-light) !important;
 }
 
 .darkMode td {
     color: var(--accent-02);
-    border-bottom: solid thin rgb(77, 77, 77); 
+    border-bottom: solid thin rgb(77, 77, 77);
     background: rgb(56, 56, 56) !important;
 }
