@@ -809,6 +809,8 @@ function agregarCesta(e) {
         cesta[productoEnCestaIndex].cantidad += cantidadRecibida;
     }
 
+    console.log(cesta);
+
     // Guardar la cesta actualizada en el almacenamiento local
     localStorage.setItem("cesta", JSON.stringify(cesta));
 }
@@ -816,24 +818,37 @@ function agregarCesta(e) {
 // Carrito.
 function abrirCerrarCarrito() {
     //Controlador para desplecar o cerrar el carrito.
-    $(".carritoLateral").fadeToggle();
+    $(".cart").fadeToggle();
 }
 
 function manejadorCarrito(e) {
     //Primero verifico si ya el carrito esta desplegado.
-    if (!$(".carritoLateral").is(":visible")) {
+    if (!$(".cart").is(":visible")) {
         abrirCerrarCarrito();
     }
+    let carrito = document.querySelector(".cart");
 
     //Recibo la cesta y la guardo en un array.
     //La cesta es un array de objetos literales con los datos del producto.
     let cesta = JSON.parse(localStorage.getItem("cesta"));
+
+    //Se crea la lista de productos.
     let listaCarrito = crearElemento("ul", undefined, {
         id: "listaCarrito"
     });
 
+    //Se crea el contenido de la lista.
     for (let i = 0; i < cesta.length; i++) {
+        let elementoLista = crearElemento("li", undefined, {
+            id: "elementoListaCarrito_" + cesta[i]
+        });
 
+        elementoLista.innerHTML = cesta[i].nombre_producto
 
+        //Se agregan los elementos a la lista.
+        listaCarrito.appendChild(elementoLista);
     }
+
+    //Se agrega la lista completa al carrito.
+    carrito.appendChild(listaCarrito);
 }
