@@ -23,6 +23,13 @@ function principal() {
     document.querySelector("#navResiduos").addEventListener("click", navResiduos);
     document.querySelector("#cerrarSesion").addEventListener("click", cerrarSesion);
 
+    // Funciones para el carrito.
+    // Asigna la función de cerrar al botón X
+    $(".cerrarCarrito").on("click", abrirCerrarCarrito);
+
+    // Asigna la función de abrir al ícono del carrito en la topbar
+    $(".abrirCarrito").on("click", abrirCerrarCarrito);
+
     //Aqui es necesario que las consultas se ejecuten en el orden correcto.
     //Para eso hay que evitar que el ajax funcione de forma asincrona agregando async: false.
     let parametros = {
@@ -741,7 +748,8 @@ function imprimirTablaProductos(nombre = null, categoria = null, unidades = null
                 class: "btn btn_custom_1 btn_sm",
                 value: "Añadir"
             })
-            botonAñadir.addEventListener("click", agregarCesta)
+            botonAñadir.addEventListener("click", agregarCesta);
+            botonAñadir.addEventListener("click", manejadorCarrito);
             celdaBoton.appendChild(inputCantidad);
             celdaBoton.appendChild(botonAñadir);
             filaBody.appendChild(celdaBoton);
@@ -765,39 +773,6 @@ function imprimirTablaProductos(nombre = null, categoria = null, unidades = null
     }
 }
 
-// Contenedor con borde punteado que aparece cuando una tabla está vacía o no tiene contenido
-function mostrarMensajeVacio(titulo, texto, textoBoton) {
-    let divRow = document.createElement("div");
-    divRow.classList.add("row");
-
-    let divCol = document.createElement("div");
-    divCol.classList.add("col-6", "col-sm-3", "col-md-3", "col-lg-12");
-
-    let divLabelEmpty = document.createElement("div");
-    divLabelEmpty.classList.add("label_empty", "card", "p-4", "align-items-center", "mt-4");
-
-    let h4 = document.createElement("h4");
-    h4.textContent = titulo;
-
-    let p = document.createElement("p");
-    p.textContent = texto;
-
-    let button = document.createElement("button");
-    button.setAttribute("type", "button");
-    button.classList.add("btn", "btn_custom_1", "mt-3");
-    button.textContent = textoBoton;
-
-    // Construir la estructura
-    divLabelEmpty.appendChild(h4);
-    divLabelEmpty.appendChild(p);
-    divLabelEmpty.appendChild(button);
-
-    divCol.appendChild(divLabelEmpty);
-    divRow.appendChild(divCol);
-
-    return divRow;
-}
-
 function agregarCesta(e) {
     let todosProductos = JSON.parse(localStorage.getItem("todosProductos"));
 
@@ -806,10 +781,10 @@ function agregarCesta(e) {
     let productoSeleccionado = parseInt(textoDividido[1]);
 
     // Busco la cantidad de productos a añadir.
-    let cantidadRecibida = parseInt(document.querySelector("#inputCantidad_" + productoSeleccionado).value);
+    let cantidadRecibida = parseFloat(document.querySelector("#inputCantidad_" + productoSeleccionado).value);
 
-    // Si la cantidad es 0 o menor, no hacemos nada.
-    if (cantidadRecibida <= 0) {
+    // Si la cantidad no es un número o es menor o igual a 0, no hacemos nada.
+    if (isNaN(cantidadRecibida) || cantidadRecibida <= 0) {
         return;
     }
 
@@ -836,4 +811,29 @@ function agregarCesta(e) {
 
     // Guardar la cesta actualizada en el almacenamiento local
     localStorage.setItem("cesta", JSON.stringify(cesta));
+}
+
+// Carrito.
+function abrirCerrarCarrito() {
+    //Controlador para desplecar o cerrar el carrito.
+    $(".carritoLateral").fadeToggle();
+}
+
+function manejadorCarrito(e) {
+    //Primero verifico si ya el carrito esta desplegado.
+    if (!$(".carritoLateral").is(":visible")) {
+        abrirCerrarCarrito();
+    }
+
+    //Recibo la cesta y la guardo en un array.
+    //La cesta es un array de objetos literales con los datos del producto.
+    let cesta = JSON.parse(localStorage.getItem("cesta"));
+    let listaCarrito = crearElemento("ul", undefined, {
+        id: "listaCarrito"
+    });
+
+    for (let i = 0; i < cesta.length; i++) {
+
+
+    }
 }

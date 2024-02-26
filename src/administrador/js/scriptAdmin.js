@@ -1,21 +1,21 @@
 /*
     Páginas del administrador:
         - Inicio________________________________________________ navInicio() -> pagInicio()
-        - Categorías____________________________________________ navCategorias() -> pagCategorias()
+        - Categorías____________________________________________ navCategorias() -> pagListarCategorias()
             - Listar categorías................... navListarCategorias() -> pagListarCategorias()
             - Añadir categoría.................... navAñadirCategoria() -> pagAñadirCategoria()
-        - Productos_____________________________________________ navProductos() -> pagProductos()
+        - Productos_____________________________________________ navProductos() -> pagListarProductos()
             - Listar productos.................... navListarProductos() -> pagListarProductos()
             - Añadir producto..................... navAñadirProducto() -> pagAñadirProducto()
             - Ud. de medida....................... navUdMedida() -> pagUdMedida()
         - Solicitudes___________________________________________ navSolicitudes() -> pagSolicitudes()
-        - Pedidos_______________________________________________ navPedidos() -> pagPedidos()
+        - Pedidos_______________________________________________ navPedidos() -> pagListarPedidos()
             - Listar pedidos...................... navListarPedidos() -> pagListarPedidos()
             - Añadir pedido....................... navAñadirPedido() -> pagAñadirPedido()
-        - Usuarios______________________________________________ navUsuarios() -> pagUsuarios()
+        - Usuarios______________________________________________ navUsuarios() -> pagListarUsuarios()
             - Listar usuarios..................... navListarUsuarios() -> pagListarUsuarios()
             - Añadir usuario...................... navAñadirUsuario() -> pagAñadirUsuario()
-        - Proveedores___________________________________________ navProveedores() -> pagProveedores()
+        - Proveedores___________________________________________ navProveedores() -> pagListarProveedores()
             - Listar proveedores.................. navListarProveedores() -> pagListarProveedores()
             - Añadir proveedor.................... navAñadirProveedor() -> pagAñadirProveedor()
         - Residuos______________________________________________ navResiduos() -> pagResiduos()
@@ -30,46 +30,62 @@
 
 window.addEventListener("load", principal);
 
-// Menú dropdown 
-$(document).ready(function () {
-    $('#sidebarCollapse').on('click', function () {
-        $('#sidebar').toggleClass('active');
-    });
-});
-
-document.addEventListener('DOMContentLoaded', function () {
-    const sidebar = document.querySelector('.sidebar_container');
-    new PerfectScrollbar(sidebar);
-});
-
 function principal() {
     // Apartado inicio
     document.querySelector("#navInicio").addEventListener("click", navInicio);
     // Apartado categorías
     document.querySelector("#navCategorias").addEventListener("click", navCategorias);
-        document.querySelector("#navListarCategorias").addEventListener("click", navListarCategorias);
-        document.querySelector("#navAñadirCategoria").addEventListener("click", navAñadirCategoria);
+    document.querySelector("#navListarCategorias").addEventListener("click", navListarCategorias);
+    document.querySelector("#navAñadirCategoria").addEventListener("click", navAñadirCategoria);
+    document.querySelector("#shortcut_categoria").addEventListener("click", navAñadirCategoria);
     // Apartado productos
     document.querySelector("#navProductos").addEventListener("click", navProductos);
-        document.querySelector("#navListarProductos").addEventListener("click", navListarProductos);
-        document.querySelector("#navAñadirProducto").addEventListener("click", navAñadirProducto);
-        document.querySelector("#navUdMedida").addEventListener("click", navUdMedida);
+    document.querySelector("#navListarProductos").addEventListener("click", navListarProductos);
+    document.querySelector("#navAñadirProducto").addEventListener("click", navAñadirProducto);
+    document.querySelector("#shortcut_producto").addEventListener("click", navAñadirProducto);
+    document.querySelector("#navUdMedida").addEventListener("click", navUdMedida);
+    document.querySelector("#shortcut_medida").addEventListener("click", navUdMedida);
     // Apartado solicitudes
     document.querySelector("#navSolicitudes").addEventListener("click", navSolicitudes);
     // Apartado pedidos
     document.querySelector("#navPedidos").addEventListener("click", navPedidos);
-        document.querySelector("#navListarPedidos").addEventListener("click", navListarPedidos);
-        document.querySelector("#navNuevoPedido").addEventListener("click", navNuevoPedido);
+    document.querySelector("#navListarPedidos").addEventListener("click", navListarPedidos);
+    document.querySelector("#navNuevoPedido").addEventListener("click", navNuevoPedido);
+    document.querySelector("#shortcut_pedido").addEventListener("click", navNuevoPedido);
     // Apartado usuarios
     document.querySelector("#navUsuarios").addEventListener("click", navUsuarios);
-        document.querySelector("#navListarUsuarios").addEventListener("click", navListarUsuarios);
-        document.querySelector("#navAñadirUsuario").addEventListener("click", navAñadirUsuario);
+    document.querySelector("#navListarUsuarios").addEventListener("click", navListarUsuarios);
+    document.querySelector("#navAñadirUsuario").addEventListener("click", navAñadirUsuario);
+    document.querySelector("#shortcut_usuario").addEventListener("click", navAñadirUsuario);
     // Apartado proveedores
     document.querySelector("#navProveedores").addEventListener("click", navProveedores);
-        document.querySelector("#navListarProveedores").addEventListener("click", navListarProveedores);
-        document.querySelector("#navAñadirProveedor").addEventListener("click", navAñadirProveedor);
+    document.querySelector("#navListarProveedores").addEventListener("click", navListarProveedores);
+    document.querySelector("#navAñadirProveedor").addEventListener("click", navAñadirProveedor);
+    document.querySelector("#shortcut_proveedor").addEventListener("click", navAñadirProveedor);
+    document.querySelector("#cerrarSesion").addEventListener("click", cerrarSesion);
     // Apartado residuos
     document.querySelector("#navResiduos").addEventListener("click", navResiduos);
+
+    // Seleccionar los elementos clickeables del menú
+    const menuItems = document.querySelectorAll('.active');
+
+    // Iterar sobre cada elemento y agregar un manejador de eventos 'click'
+    menuItems.forEach(item => {
+        item.addEventListener('click', function () {
+            // Remover la clase 'gray-bg' de todos los contenedores 'nav_container'
+            document.querySelectorAll('.nav_container').forEach(container => {
+                container.classList.remove('gray-bg');
+            });
+
+            // Obtener el contenedor 'nav_container' del elemento clickeado
+            const navContainer = this.querySelector('.nav_container');
+
+            // Agregar la clase 'gray-bg' al contenedor 'nav_container' del elemento clickeado
+            navContainer.classList.add('gray-bg');
+        });
+    });
+
+    pagInicio();
 }
 
 function mostrarUsuarios(respuesta) {
@@ -98,18 +114,16 @@ function mostrarUsuarios(respuesta) {
 
 // Apartado INICIO____________________________________________________________________
 function navInicio() {
-    pagInicio(); 
+    pagInicio();
 }
 
 function pagInicio() {
+
 }
 
 // Apartado CATEGORÍAS________________________________________________________________
-function navCategorias() { 
-    pagCategorias(); //! cambiar a pagCategorias() 
-}
-
-function pagCategorias() { // página general de categorías
+function navCategorias() {
+    navListarCategorias();
 }
 
 function navListarCategorias() {
@@ -117,6 +131,20 @@ function navListarCategorias() {
 }
 
 function pagListarCategorias() { // mostrar tabla con todas las categorías y sus datos
+    // Contenido para la parte superior
+    let tituloPagina = "Categorías";
+    let contenidoSuperior = crearElemento("div", undefined, {
+        class: "row contenidoSuperior"
+    });
+
+    // Contenido para la parte inferior
+    let contenidoInferior = document.createElement("div", undefined, {
+        id: 'row contenidoInferior',
+        class: 'contenidoInferior'
+    });
+
+    // Crear la plantilla genérica
+    crearPlantillaGenerica1(tituloPagina, contenidoSuperior, contenidoInferior);
 }
 
 function navAñadirCategoria() {
@@ -124,7 +152,7 @@ function navAñadirCategoria() {
 }
 
 // Formulario 1. Crear categorías...................
-function pagAñadirCategoria() { 
+function pagAñadirCategoria() {
     crearPlantillaFormularios('Nueva categoría', 'Datos de la nueva categoría', 'Categorías existentes');
     contenedorForm = document.querySelector('#contenedorForm');
 
@@ -196,17 +224,28 @@ function pagAñadirCategoria() {
 
 // Apartado PRODUCTOS__________________________________________________________________
 function navProductos() {
-    pagProductos(); 
+    navListarProductos();
 }
 
-function pagProductos() {
-}
-
-function navListarProductos() { 
-    pagListarProductos(); 
+function navListarProductos() {
+    pagListarProductos();
 }
 
 function pagListarProductos() { // mostrar tabla con todos los productos y sus datos
+    // Contenido para la parte superior
+    let tituloPagina = "Productos";
+    let contenidoSuperior = crearElemento("div", undefined, {
+        class: "row contenidoSuperior"
+    });
+
+    // Contenido para la parte inferior
+    let contenidoInferior = document.createElement("div", undefined, {
+        id: 'row contenidoInferior',
+        class: 'contenidoInferior'
+    });
+
+    // Crear la plantilla genérica
+    crearPlantillaGenerica1(tituloPagina, contenidoSuperior, contenidoInferior);
 }
 
 function navAñadirProducto() {
@@ -327,7 +366,7 @@ function pagAñadirProducto() {
             etiqueta: 'input',
             atributos: {
                 type: 'submit',
-                value: 'Crear producto', 
+                value: 'Crear producto',
                 class: 'btn btn_custom_1',
                 onclick: 'crearProducto()'
             }
@@ -337,7 +376,7 @@ function pagAñadirProducto() {
 }
 
 // Formulario 3. Crear ud. de medida...................
-function navUdMedida() { 
+function navUdMedida() {
     pagUdMedida()
 }
 
@@ -349,24 +388,24 @@ function pagUdMedida() {
         nombre: {
             etiqueta: 'label',
             contenido: 'Nombre',
-            atributos: { 
+            atributos: {
                 for: 'newUdMedidaName',
                 class: 'form-label'
             }
         },
         inputNombre: {
             etiqueta: 'input',
-            atributos: { 
-                type: 'text', 
+            atributos: {
+                type: 'text',
                 id: 'newUdMedidaName',
                 class: 'form-control',
-                placeholder: 'Nombre de la nueva unidad de medida' 
+                placeholder: 'Nombre de la nueva unidad de medida'
             }
         },
         observaciones: {
             etiqueta: 'label',
             contenido: 'Observaciones',
-            atributos: { 
+            atributos: {
                 for: 'newUdMedidaObservaciones',
                 class: 'form-label'
             }
@@ -401,10 +440,10 @@ function pagUdMedida() {
         },
         btnCrearMedida: {
             etiqueta: 'input',
-            atributos: { 
-                type: 'submit', 
+            atributos: {
+                type: 'submit',
                 value: 'Crear ud. de medida',
-                class: 'btn btn_custom_1' 
+                class: 'btn btn_custom_1'
             }
         }
     };
@@ -413,14 +452,11 @@ function pagUdMedida() {
 
 // Apartado PEDIDOS____________________________________________________________________
 function navPedidos() {
-    pagPedidos(); 
-}
-
-function pagPedidos() {
+    navListarPedidos();
 }
 
 function navListarPedidos() {
-    pagListarPedidos(); 
+    pagListarPedidos();
 }
 
 function pagListarPedidos() { // mostrar el historial de pedidos del admin
@@ -436,7 +472,7 @@ function pagNuevoPedido() {
 
 // Apartado USUARIOS____________________________________________________________________
 function navUsuarios() {
-    pagUsuarios();
+    navListarUsuarios();
 
     let parametros = {
         claveTodosUsuarios: true
@@ -455,19 +491,31 @@ function navUsuarios() {
     });
 }
 
-function pagUsuarios() {
-}
-
 function navListarUsuarios() {
-    pagListarUsuarios(); 
+    pagListarUsuarios();
 }
 
 function pagListarUsuarios() { // mostrar tabla con los usuarios y sus datos
+    // Contenido para la parte superior
+    let tituloPagina = "Usuarios";
+    let contenidoSuperior = crearElemento("div", undefined, {
+        class: "row contenidoSuperior",
+        id: "categorias"
+    });
+
+    // Contenido para la parte inferior
+    let contenidoInferior = document.createElement("div", undefined, {
+        id: 'row contenidoInferior',
+        class: 'contenidoInferior'
+    });
+
+    // Crear la plantilla genérica
+    crearPlantillaGenerica1(tituloPagina, contenidoSuperior, contenidoInferior);
 }
 
 // Formulario 5. Añadir usuario.....................
 function navAñadirUsuario() {
-    pagAñadirUsuario(); 
+    pagAñadirUsuario();
 }
 
 function pagAñadirUsuario() {
@@ -478,74 +526,74 @@ function pagAñadirUsuario() {
         nombre: {
             etiqueta: 'label',
             contenido: 'Nombre',
-            atributos: { 
+            atributos: {
                 for: 'newUserName',
                 class: 'form-label'
             }
         },
         inputNombre: {
             etiqueta: 'input',
-            atributos: { 
-                type: 'text', 
+            atributos: {
+                type: 'text',
                 id: 'newUserName',
                 class: 'form-control',
-                placeholder: 'Nombre del nuevo usuario' 
+                placeholder: 'Nombre del nuevo usuario'
             }
         },
         activo: {
             etiqueta: 'label',
             contenido: 'Activo',
-            atributos: { 
+            atributos: {
                 for: 'userActive',
                 class: 'form-label'
             }
         },
         inputActivo: {
             etiqueta: 'input',
-            atributos: { 
+            atributos: {
                 type: 'text', //! revisar tipo de input del toggle de usuario activo
                 id: 'userActive',
-                class: 'form-control' 
+                class: 'form-control'
             }
         },
         telefono: {
             etiqueta: 'label',
             contenido: 'Teléfono',
-            atributos: { 
+            atributos: {
                 for: 'newUserTelefono',
                 class: 'form-label'
             }
         },
         inputTelefono: {
             etiqueta: 'input',
-            atributos: { 
-                type: 'text', 
+            atributos: {
+                type: 'text',
                 id: 'newUserTelefono',
                 class: 'form-control',
-                placeholder: 'Teléfono del nuevo usuario' 
+                placeholder: 'Teléfono del nuevo usuario'
             }
         },
         email: {
             etiqueta: 'label',
             contenido: 'Email',
-            atributos: { 
+            atributos: {
                 for: 'newUserEmail',
                 class: 'form-label'
             }
         },
         inputEmail: {
             etiqueta: 'input',
-            atributos: { 
-                type: 'email', 
+            atributos: {
+                type: 'email',
                 id: 'newUserEmail',
                 class: 'form-control',
-                placeholder: 'Email del nuevo usuario' 
+                placeholder: 'Email del nuevo usuario'
             }
         },
         observaciones: {
             etiqueta: 'label',
             contenido: 'Observaciones',
-            atributos: { 
+            atributos: {
                 for: 'newUserObservacion',
                 class: 'form-label'
             }
@@ -581,10 +629,10 @@ function pagAñadirUsuario() {
         btnCrearUsuario: {
             etiqueta: 'input',
             contenido: 'Crear ud. de medida',
-            atributos: { 
-                type: 'submit', 
+            atributos: {
+                type: 'submit',
                 class: 'btn btn_custom_1',
-                onclick: 'crearUsuario()' 
+                onclick: 'crearUsuario()'
             }
         }
     };
@@ -593,16 +641,29 @@ function pagAñadirUsuario() {
 
 // Apartado PROVEEDORES___________________________________________________________________
 function navProveedores() {
-    pagProveedores(); //! cambiar a pagProveedores
-}
-
-function pagProveedores() {
+    pagListarProveedores();
 }
 
 function navListarProveedores() {
+    pagListarProveedores();
 }
 
 function pagListarProveedores() {
+    // Contenido para la parte superior
+    let tituloPagina = "Proveedores";
+    let contenidoSuperior = crearElemento("div", undefined, {
+        class: "row contenidoSuperior",
+        id: "categorias"
+    });
+
+    // Contenido para la parte inferior
+    let contenidoInferior = document.createElement("div", undefined, {
+        id: 'row contenidoInferior',
+        class: 'contenidoInferior'
+    });
+
+    // Crear la plantilla genérica
+    crearPlantillaGenerica1(tituloPagina, contenidoSuperior, contenidoInferior);
 }
 
 function navAñadirProveedor() {
@@ -628,75 +689,75 @@ function pagAñadirProveedor() {
         nombre: {
             etiqueta: 'label',
             contenido: 'Nombre',
-            atributos: { 
+            atributos: {
                 for: 'newProvName',
                 class: 'form-label'
             }
         },
         inputNombre: {
             etiqueta: 'input',
-            atributos: { 
-                type: 'text', 
+            atributos: {
+                type: 'text',
                 id: 'newProvName',
                 class: 'form-control',
-                placeholder: 'Nombre del nuevo proveedor' 
+                placeholder: 'Nombre del nuevo proveedor'
             }
         },
         telefono: {
             etiqueta: 'label',
             contenido: 'Teléfono',
-            atributos: { 
+            atributos: {
                 for: 'newProvTelefono',
                 class: 'form-label'
             }
         },
         inputTelefono: {
             etiqueta: 'input',
-            atributos: { 
-                type: 'text', 
+            atributos: {
+                type: 'text',
                 id: 'newProvTelefono',
                 class: 'form-control',
-                placeholder: 'Teléfono del nuevo proveedor' 
+                placeholder: 'Teléfono del nuevo proveedor'
             }
         },
         email: {
             etiqueta: 'label',
             contenido: 'Email',
-            atributos: { 
+            atributos: {
                 for: 'newProvEmail',
                 class: 'form-label'
             }
         },
         inputEmail: {
             etiqueta: 'input',
-            atributos: { 
-                type: 'email', 
+            atributos: {
+                type: 'email',
                 id: 'newProvEmail',
                 class: 'form-control',
-                placeholder: 'Email del nuevo proveedor' 
+                placeholder: 'Email del nuevo proveedor'
             }
         },
         direccion: {
             etiqueta: 'label',
             contenido: 'Dirección',
-            atributos: { 
+            atributos: {
                 for: 'newProvDireccion',
                 class: 'form-label'
             }
         },
         inputDireccion: {
             etiqueta: 'input',
-            atributos: { 
-                type: 'text', 
+            atributos: {
+                type: 'text',
                 id: 'newProvDireccion',
                 class: 'form-control',
-                placeholder: 'Dirección del nuevo proveedor' 
+                placeholder: 'Dirección del nuevo proveedor'
             }
         },
         observaciones: {
             etiqueta: 'label',
             contenido: 'Observaciones',
-            atributos: { 
+            atributos: {
                 for: 'newProvObservacion',
                 class: 'form-label'
             }
@@ -732,10 +793,10 @@ function pagAñadirProveedor() {
         btnCrearProveedor: {
             etiqueta: 'input',
             contenido: 'Crear proveedor',
-            atributos: { 
-                type: 'submit', 
+            atributos: {
+                type: 'submit',
                 class: 'btn btn_custom_1',
-                onclick: 'crearProveedor()' 
+                onclick: 'crearProveedor()'
             }
         }
     };
@@ -744,7 +805,7 @@ function pagAñadirProveedor() {
 
 // Apartado RESIDUOS_______________________________________________________________________
 function navResiduos() {
-    pagResiduos(); 
+    pagResiduos();
 }
 
 function pagResiduos() {

@@ -28,8 +28,7 @@
                     </div>
                 </div>
                 <div class="sidebar_bottom">
-                    <!-- ! ps es de la biblioteca Perfect Scrollbar -->
-                    <ul class="sidebar_container py-1 ps ps--active-y">
+                    <ul class="sidebar_container py-1">
                         <li>
                             <a href="./inicioUsuario.html" class="nav_link" id="navInicio">
                                 <div class="nav_container">
@@ -96,13 +95,33 @@
 
                             <div class="topbar_right">
                                 <div class="topbar_icons">
-                                    <i class="bi bi-grid"></i>
-                                    <i class="bi bi-brightness-high"></i>
+                                    <div class="dropdown">
+                                        <a href="#" role="button" id="brightnessDropdown" data-bs-toggle="dropdown"
+                                            aria-expanded="false">
+                                            <div class="icon_container">
+                                                <i id="iconoPrincipal" class="bi bi-brightness-high"></i>
+                                            </div>
+                                        </a>
+
+                                        <div class="dropdown-menu" aria-labelledby="brightnessDropdown">
+                                            <a id="modoOscuro" class="dropdown-item dropdown_inline" href="#">
+                                                <span id="iconoModoOscuro"
+                                                    class="bi bi-moon dropdown_icon_margin"></span>
+                                                <p>Modo oscuro</p>
+                                            </a>
+                                            <a id="modoClaro" class="dropdown-item dropdown_inline" href="#">
+                                                <span id="iconoModoClaro"
+                                                    class="bi bi-brightness-high dropdown_icon_margin"></span>
+                                                <p>Modo claro</p>
+                                            </a>
+                                        </div>
+                                    </div>
                                     <i class="bi bi-cart2"></i>
                                 </div>
 
                                 <div class="dropdown show">
-                                    <a class="" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <a class="" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
+                                        aria-haspopup="true" aria-expanded="false">
                                         <div class="topbar_profile">
                                             <div class="profile_icon">
                                                 <i class="bi bi-person-fill"></i>
@@ -113,10 +132,16 @@
                                             </div>
                                         </div>
                                     </a>
-                                  
+
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                      <a class="dropdown-item" id="verPerfil" href="#">Ver perfil</a>
-                                      <a class="dropdown-item" id="cerrarSesion" href="#">Cerrar sesión</a>
+                                        <a id="verPerfil" class="dropdown-item dropdown_inline" href="#">
+                                            <i class="bi bi-person-fill dropdown_icon_margin"></i>
+                                            <p>Ver perfil</p>
+                                        </a>
+                                        <a id="cerrarSesion" class="dropdown-item dropdown_inline" href="#">
+                                            <i class="bi bi-box-arrow-right dropdown_icon_margin"></i>
+                                            <p>Cerrar sesión</p>
+                                        </a>
                                     </div>
                                 </div>
                             </div>
@@ -126,6 +151,14 @@
                     <div class="row">
                         <div id="contenedor" class="content_wrapper">
                         </div>
+                        <!-- Carrito -->
+                        <div class="col-3 carritoLateral">
+                            <div class="cabeceraCarritoLateral">
+                                <p><i class="bi bi-cart2"> X</i> Items</p>
+                                <button type="button" class="btn btn-danger btn-sm cerrarCarrito">X</button>
+                            </div>
+                        </div>
+                        <!-- fin del div carrito -->
                     </div>
                     <!-- fin del page_layout -->
                 </div>
@@ -141,4 +174,5 @@
     <script src="../../src/usuario/js/scriptUsuario.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 </body>
+
 </html>

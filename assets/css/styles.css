@@ -31,10 +31,22 @@
     /* Escala de grises */
     --accent-01: #DCDCDC; /* fondo cajas, barras scroll, líneas horizontales...*/
     --accent-02: #ECECEC; /* Fondo de botones */
-    --accent-03: #F9FAFB; /* Fondo de página */
+    --accent-03: #f7f7f7; /* Fondo de página */
     --accent-04: #F9F9FA; /* Fondo de etiquetas y marcador de sección menú */
     --aside-back: white;
     --light-color: white; 
+
+    --danger-dark: #FF3E1D;
+    --danger-light: #fff0ee;
+    --warning-dark: #FFAC02;
+    --warning-light: #FFF5E3;
+    --success-dark: #60B400;
+    --success-light: #F0FBE8;
+
+    --darkMode-dark: #202020;
+    --darkMode-medium: rgb(134, 134, 134);
+    --darkMode-light: #313131;
+    --darkMode-text: #707070;
 
     /* Textos...........................*/
     --font: 'Inter', sans-serif;
@@ -70,6 +82,10 @@
 .bg-primary {
     background-color: transparent !important;
     border: solid thin gray;
+}
+
+.dropdown-item:active {
+    background-color: transparent; 
 }
 
 /* Headings y textos............................gen_head */
@@ -109,6 +125,30 @@ p, a {
 a {
     color: var(--text-dark-color); 
     text-decoration: none;
+}
+
+/* Textos mensajes predefinidos Bootstrap */
+.alert {
+    font-weight: 500;
+    font-size: var(--size-p);
+}
+
+.alert-danger {
+    color: var(--danger-dark);
+    border: solid thin var(--danger-dark); 
+    background-color: var(--danger-light);
+}
+
+.alert-warning {
+    color: var(--warning-dark);
+    border: solid thin var(--warning-dark); 
+    background-color: var(--danger-light);
+}
+
+.alert-success {
+    color: var(--success-dark);
+    border: solid thin var(--success-dark); 
+    background-color: var(--success-light);
 }
 
 /* Botones...................................... gen_btn */ 
@@ -305,7 +345,7 @@ textarea::placeholder {
 }
 
 .searchbar.input-group-text {
-    padding-right: 0;
+    padding-right: 5px;
 }
 
 .searchbar.form-control {
@@ -384,10 +424,20 @@ body {
     padding: 0; 
 }
 
+::-webkit-scrollbar {
+    width: 5px;
+    background-color: var(--accent-03);
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: var(--accent-01); 
+    border-radius: 5px; 
+}
+
 .sidebar {
     width: 240px;
     height: 100vh;
-    overflow-y: scroll;
+    overflow-y: auto;
     margin: 0;
     border-right: solid thin rgb(238, 238, 238);
     background-color: var(--aside-back);
@@ -397,7 +447,8 @@ body {
     height: 70px;
     width: 240px;
     position: fixed;
-    padding: 20px 15px 15px 25px;
+    padding: 20px 15px 15px 30px;
+    border-right: solid thin rgb(238, 238, 238);
     background-color: white;
 }
 
@@ -406,7 +457,7 @@ body {
 }
 
 .sidebar_bottom {
-    padding: 100px 10px 15px 15px;
+    padding: 100px 10px 15px 20px;
 }
 
 .sidebar_container {
@@ -441,6 +492,15 @@ body {
     border-radius: 4px;
 }
 
+.nav_container.gray-bg {
+    font-weight: 500;
+    background-color: var(--accent-03);
+}
+
+.nav_container.gray-bg i {
+    color: var(--primary-color);
+}
+
 .nav_content {
     width: 100%;
     display: flex;
@@ -468,6 +528,7 @@ body {
     align-items: left;
     gap: 10px;
     padding-top: 10px !important;
+    padding-bottom: 20px !important;
 }
 
 .collapse li {
@@ -491,11 +552,16 @@ body {
 
 .topbar_container {
     width: 100%;
+    height: 100%;
     padding: 0 35px 0 40px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+}
+
+.topbar_container i {
+    font-size: 18px;
 }
 
 .topbar_left {
@@ -507,11 +573,12 @@ body {
 }
 
 .topbar_right {
+    height: 100%;
     display: flex;
     flex-direction: row;
     justify-content: left;
     align-items: center;
-    gap: 20px;
+    gap: 30px;
 }
 
 .topbar_icons {
@@ -519,18 +586,82 @@ body {
     flex-direction: row;
     justify-content: left;
     align-items: center;
+    gap: 10px;
 }
 
 .topbar_icons i {
     padding: 10px;
 }
 
+.dropdown_icon_margin {
+    padding: 5px;
+}
+
+.dropdown-menu {
+    border: solid thin var(--accent-02); 
+} 
+
+.admin_shortcuts_container {
+    padding: 0;
+    margin-left: -100px;
+}
+
+.titulo_shortcuts {
+    padding: 15px 0 15px 20px;
+    border-bottom: solid thin var(--accent-01);
+}
+
+.admin_shortcuts_grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(3, auto);
+    gap: 10px;
+    padding: 20px 10px 10px 10px; 
+}
+
+.caja_shortcuts {
+    position: relative; 
+    width: 130px; /* Define la anchura deseada para las cajas */
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px 10px;
+    border-radius: 6px;
+    border: solid thin var(--accent-03);
+}
+
+.caja_shortcuts i {
+    color: var(--primary-color);
+    font-size: 20px;
+}
+
+.admin_shortcuts_grid .dropdown-item {
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    border-radius: 6px;
+}
+
+.icon_container {
+    height: 70px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.profile_container {
+    height: 70px;
+}
+
 .topbar_profile {
+    height: 100%;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    gap: 10px;
+    gap: 20px;
 }
 
 .topbar_profile:hover {
@@ -571,6 +702,142 @@ body {
     padding-right: 30px;
 }
 
-#navInicio:active {
-    background-color: gray; /* Cambia el color a gris cuando se hace clic en el enlace */
+.dropdown_inline {
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Modo oscuro....................................*/
+.darkMode .btn_custom_2 {
+    background-color: rgb(78, 78, 78);
+    color: var(--accent-02);
+    border: none;
+}
+
+.darkMode .btn_custom_3 {
+    background-color: rgb(39, 39, 39);
+    color: var(--darkMode-medium);
+    border: none;
+}
+
+.darkMode ::-webkit-scrollbar {
+    background-color: rgb(41, 41, 41);
+}
+
+.darkMode ::-webkit-scrollbar-thumb {
+    background-color: rgb(51, 51, 51);
+}
+
+.darkMode .sidebar {
+    background-color: var(--darkMode-dark);
+    color: var(--light-color); 
+    border-right: solid thin var(--darkMode-light);
+}
+
+.darkMode .nav_container:hover {
+    background-color: var(--darkMode-light);
+}
+
+.darkMode .topbar {
+    background-color: var(--darkMode-dark);
+    color: var(--light-color); 
+    border-bottom: solid thin var(--darkMode-light);
+}
+
+.darkMode .sidebar_top {
+    background-color: var(--darkMode-dark);
+    color: var(--light-color);
+    border-right: solid thin var(--darkMode-light);
+}
+
+.darkMode .page_layout {
+    background-color: var(--darkMode-dark);
+    color: var(--light-color); 
+}
+
+.darkMode .nav_container.gray-bg {
+    background-color: var(--darkMode-light);
+    color: var(--light-color); 
+}
+
+.darkMode h1 {
+    color: var(--accent-01); 
+}
+
+.darkMode h4 {
+    color: var(--accent-01); 
+}
+
+.darkMode p {
+    color: var(--accent-01); 
+}
+
+.darkMode a {
+    color: var(--darkMode-medium); 
+}
+
+.darkMode ::placeholder {
+    color: var(--darkMode-medium); 
+}
+
+.darkMode i {
+    color: var(--light-color); 
+}
+
+.darkMode .bi {
+    color: var(--light-color); 
+}
+
+.darkMode .searchbar {
+    background-color: var(--darkMode-light) !important;
+    color: var(--light-color); 
+    border: none;
+}
+
+.darkMode .dropdown-menu {
+    background-color: var(--darkMode-light);
+    border: none;
+}
+
+.darkMode .dropdown-menu .dropdown-item:hover {
+    background-color: rgb(63, 63, 63);
+    border: none;
+}
+
+.darkMode .card {
+    background-color: var(--darkMode-light);
+}
+
+.darkMode .caja_shortcuts {
+    border: solid thin rgb(78, 78, 78);
+}
+
+.darkMode .titulo_shortcuts {
+    border-bottom: solid thin rgb(78, 78, 78);
+}
+
+.darkMode .form-select {
+    color: var(--accent-01);
+    background-color: var(--darkMode-light);
+    border: none;
+}
+
+.darkMode .form-control {
+    background-color: var(--darkMode-dark);
+    border: none;
+    color: var(--accent-02);
+}
+
+.darkMode th {
+    border-bottom: solid thin rgb(100, 100, 100); 
+    background: var(--darkMode-light) !important;
+}
+
+.darkMode td {
+    color: var(--accent-02);
+    border-bottom: solid thin rgb(77, 77, 77); 
+    background: rgb(56, 56, 56) !important;
 }
