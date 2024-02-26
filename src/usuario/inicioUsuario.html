@@ -85,7 +85,7 @@
 
             <!-- page_container (contenido particular de cada página) -->
             <div class="page_container col bg-secondary">
-                <div class="page_layout mb-5 h-100">
+                <div class="page_layout h-100">
                     <!-- header superior -->
                     <div class="topbar static-top">
                         <div class="topbar_container">
@@ -148,22 +148,24 @@
                         <div id="contenedor" class="content_wrapper col"></div>
                         <!-- Carrito -->
                         <div id="cart" class="carritoLateral col-3">
-                            <div class="cart_top_container">
-                                <span id="cerrarCarrito" class="bi bi-x"></span>
-                                <!-- Aquí va el número de productos que hay -->
-                                <!-- Aquí va el icono de la x -->
-                            </div>
-                           <div class="cart_bottom_container">
-                                <div class="cart_bottom_product">
-                                    <div id="cesta_item" class="cesta_item"></div>
+                            <div class="carrito_container">                            
+                                <div class="cart_top_container">
+                                    <span id="numProdCesta"></span>
+                                    <span>productos en la cesta</span>
+                                    <i id="cerrarCarrito" class="bi bi-x"></i>
                                 </div>
-                                <div class="cart_bottom_buttons_container">
-                                    <div class="cart_bottom_buttons">
-                                        <input id="btn_limpiarCesta" class="btn btn_custom_2" type="button" value="Vaciar cesta">
-                                        <input id="btn_verPedido" class="btn btn_custom_1" type="button" value="Hacer pedido">
+                                <div class="cart_bottom_container">
+                                    <div class="cart_bottom_product">
+                                        <div id="cesta_item" class="cesta_item"></div>
+                                    </div>
+                                    <div class="cart_bottom_buttons_container">
+                                        <div class="cart_bottom_buttons">
+                                            <input id="btn_limpiarCesta" class="btn btn_custom_2" type="button" value="Vaciar cesta">
+                                            <input id="btn_verPedido" class="btn btn_custom_1" type="button" value="Hacer pedido">
+                                        </div>
                                     </div>
                                 </div>
-                           </div>
+                            </div>
                         </div>
                     </div>
                     <!-- fin del page_layout -->
