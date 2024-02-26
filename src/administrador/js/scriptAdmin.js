@@ -154,19 +154,39 @@ function navAñadirCategoria() {
 // Formulario 1. Crear categorías...................
 function pagAñadirCategoria() { 
     crearPlantillaFormularios('Nueva categoría', 'Datos de la nueva categoría', 'Categorías existentes');
-    contenedorForm = document.querySelector('#contenedorForm');
+    let contenedorForm = document.querySelector('#contenedorForm');
 
     let formCategorias = crearElemento('form', undefined, []);
 
-    //. BLOQUE 1....................................................
+    let contenedorFormTop = crearElemento('div', undefined, {
+        class: 'form_contenedor_top'
+    })
 
+    let contenedorFormLeft = crearElemento('div', undefined, {
+        class: 'form_contenedor_left'
+    });
+
+    let contenedorFormRight = crearElemento('div', undefined, {
+        class: 'form_contenedor_right'
+    });
+
+    //. BLOQUE 1....................................................
+    let contenedorImagen = crearElemento('div', undefined, {
+        class: 'form-group form_cat_contenedor_imagen'
+    });
+
+    contenedorFormLeft.appendChild(contenedorImagen); // añadir a la columna izquierda del contendor
 
     //. BLOQUE 2....................................................
+    let contenedorNombre = crearElemento('div', undefined, {
+        class: 'form-group form_cat_contenedor_nombre'
+    });
+
     let labelNombre = crearElemento('label', 'Nombre', {
         for: 'newNombreCategoria',
         class: 'form-label'
     });
-    formCategorias.appendChild(labelNombre);
+    contenedorNombre.appendChild(labelNombre);
 
     let inputNombre = crearElemento('input', undefined, {
         type: 'text',
@@ -174,14 +194,20 @@ function pagAñadirCategoria() {
         class: 'form-control',
         placeholder: 'Nombre de la nueva categoría'
     });
-    formCategorias.appendChild(inputNombre); 
+    contenedorNombre.appendChild(inputNombre); 
+
+    contenedorFormLeft.appendChild(contenedorNombre); // añadir a la columna izquierda del contendor
 
     //. BLOQUE 3....................................................
-    let labelObservaciones = crearElemento('label', 'Nombre', {
+    let contenedorObservaciones = crearElemento('div', undefined, {
+        class: 'form-group form_cat_contenedor_obser'
+    });
+
+    let labelObservaciones = crearElemento('label', 'Observaciones', {
         for: 'newObservacionCategoria',
         class: 'form-label'
     });
-    formCategorias.appendChild(labelObservaciones);
+    contenedorObservaciones.appendChild(labelObservaciones);
 
     let inputObservaciones = crearElemento('input', undefined, {
         type: 'text',
@@ -189,9 +215,15 @@ function pagAñadirCategoria() {
         class: 'form-control',
         placeholder: 'Observación de la nueva categoría'
     });
-    formCategorias.appendChild(inputObservaciones); 
+    contenedorObservaciones.appendChild(inputObservaciones); 
+
+    contenedorFormLeft.appendChild(contenedorObservaciones);  // añadir a la columna izquierda del contenedor 
 
     //. BLOQUE 4....................................................
+    let contenedorBuscarProductos = crearElemento('div', undefined, {
+        class: 'form-group form_cat_contenedor_buscarProd'
+    });
+
     let contenedorBuscador = crearElemento("div", undefined, {
         id: "contenedorBuscador",
         class: "contenedorBuscador input-group"
@@ -203,7 +235,7 @@ function pagAñadirCategoria() {
     });
 
     let contenedorIconBuscador = crearElemento("span", undefined, {
-        class: "input-group-text searchbar"
+        class: "input-group-text"
     });
 
     let iconBuscador = crearElemento("i", undefined, {
@@ -214,17 +246,30 @@ function pagAñadirCategoria() {
     contenedorBuscadorIcon.appendChild(contenedorIconBuscador);
     contenedorBuscador.appendChild(contenedorBuscadorIcon);
 
+    let labelProductosCategoria = crearElemento('label', 'Productos de la categoría', {
+        for: 'filtroBuscadorNombre',
+        class: 'form-label'
+    });
+
     let inputNombreProducto = crearElemento("input", undefined, {
         id: "filtroBuscadorNombre",
         type: "text",
-        placeholder: "Buscar por nombre de producto...",
-        class: "form-control searchbar filtroBuscador",
-        value: nombre || ""
+        placeholder: "Agregar productos a la categoría...",
+        class: "form-control filtroBuscador"
     });
 
-    contenedorBuscadorIcon.appendChild(inputNombreProducto);
+    contenedorBuscadorIcon.appendChild(inputNombreProducto); 
+    contenedorBuscarProductos.appendChild(labelProductosCategoria); 
+
+    contenedorBuscarProductos.appendChild(contenedorBuscadorIcon);
+
+    contenedorFormRight.appendChild(contenedorBuscarProductos); 
     
     //. BOTONES......................................................
+    let contenedorBotones = crearElemento('div', undefined, {
+        class: 'form-group form_contenedor_botones'
+    });
+
     let btnCancelar = crearElemento("input", undefined, {
         type: 'submit',
         value: 'Cancelar',
@@ -232,7 +277,7 @@ function pagAñadirCategoria() {
         onclick: 'cancelar()'
     });
 
-    let botonVaciar = crearElemento("input", undefined, {
+    let btnVaciar = crearElemento("input", undefined, {
         type: 'submit',
         value: 'Limpiar datos',
         class: 'btn btn_custom_2',
@@ -246,7 +291,17 @@ function pagAñadirCategoria() {
         onclick: 'crearCategoria()'
     });
 
-    contenedorForm.appendChild(form)
+    contenedorBotones.appendChild(btnCancelar);
+    contenedorBotones.appendChild(btnVaciar);
+    contenedorBotones.appendChild(btnCrearCategoria);
+
+    contenedorFormTop.appendChild(contenedorFormLeft);
+    contenedorFormTop.appendChild(contenedorFormRight);
+
+    formCategorias.appendChild(contenedorFormTop); 
+    formCategorias.appendChild(contenedorBotones); 
+
+    contenedorForm.appendChild(formCategorias);
 }
 
 // Apartado PRODUCTOS__________________________________________________________________

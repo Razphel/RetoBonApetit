@@ -375,6 +375,52 @@ textarea::placeholder {
     box-shadow: none;
 }
 
+.form_contenedor_top {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.form_contenedor_left {
+    width: 100%;
+    padding-right: 30px;
+
+}
+
+.form_contenedor_right {
+    width: 100%;
+}
+
+.form_contenedor_botones {
+    padding-top: 40px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 20px;
+}
+
+.pagForm_columnas {
+    display: grid;
+    grid-template-columns: 1fr 30%;
+    gap: 30px;
+}
+
+.pagForm_columnaLeft {
+    width: 100%;
+}
+
+.pagForm_columnaRight {
+    width: 100%;
+}
+
+@media (max-width: 1200px) {
+    .pagForm_columnas {
+      grid-template-columns: 1fr;
+    }
+}
+
 /* Contenedores.................................. gen_cont */
 .card {
     border: none;

@@ -23,7 +23,7 @@ function principal() {
     document.querySelector("#navResiduos").addEventListener("click", navResiduos);
     document.querySelector("#cerrarSesion").addEventListener("click", cerrarSesion);
     document.querySelector("#btn_limpiarCesta").addEventListener("click", vaciarCarrito);
-
+    document.querySelector("btn_hacerPedido").addEventListener("click", hacerPedido); 
 
     // Funciones para el carrito.
     // Asigna la función de cerrar al botón X
