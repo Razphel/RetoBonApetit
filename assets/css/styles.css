@@ -376,20 +376,9 @@ textarea::placeholder {
 }
 
 .form_contenedor_top {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: flex-start;
-}
-
-.form_contenedor_left {
-    width: 100%;
-    padding-right: 30px;
-
-}
-
-.form_contenedor_right {
-    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
 }
 
 .form_contenedor_botones {
@@ -417,7 +406,13 @@ textarea::placeholder {
 
 @media (max-width: 1200px) {
     .pagForm_columnas {
-      grid-template-columns: 1fr;
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 992px) {
+    .form_contenedor_top {
+        grid-template-columns: 1fr;
     }
 }
 

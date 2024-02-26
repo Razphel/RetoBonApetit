@@ -158,15 +158,15 @@ function pagAñadirCategoria() {
 
     let formCategorias = crearElemento('form', undefined, []);
 
-    let contenedorFormTop = crearElemento('div', undefined, {
+    let contenedorFormTop = crearElemento('div', undefined, { // van el contenedor left y right
         class: 'form_contenedor_top'
     })
 
-    let contenedorFormLeft = crearElemento('div', undefined, {
+    let contenedorFormLeft = crearElemento('div', undefined, { // columna izquierda del formulario
         class: 'form_contenedor_left'
     });
 
-    let contenedorFormRight = crearElemento('div', undefined, {
+    let contenedorFormRight = crearElemento('div', undefined, { // columna derecha del formulario
         class: 'form_contenedor_right'
     });
 
