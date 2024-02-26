@@ -148,7 +148,7 @@ INSERT INTO proveedores (descripcion,telefono,email,direccion,observaciones) VAL
 INSERT INTO proveedores (descripcion,telefono,email,direccion,observaciones) VALUES ('MERCADONA','333333333','mercadona@gmail.com','Calle prueba 3, 12','observaciones prueba');
 INSERT INTO usuarios (admin,nombre_usuario,nombre,apellido,email,password,activo,observaciones,telefono) VALUES (1,'ADMINISTRADOR1','Yris','Guti','admin1@gmail.com','1234',1,'observaciones pruebas','888888888');
 INSERT INTO usuarios (admin,nombre_usuario,nombre,apellido,email,password,activo,observaciones,telefono) VALUES (0,'USUARIO1','Laura','apellido1','usuario1@gmail.com','1235',1,'observaciones prueba','99999999');
-INSERT INTO usuarios (admin,nombre_usuario,nombre,apellido,email,password,activo,observaciones,telefono) VALUES (0,'sagaz','Hoid','apellido1','usuario1@gmail.com','1235',1,'observaciones prueba','99999999');
+INSERT INTO usuarios (admin,nombre_usuario,nombre,apellido,email,password,activo,observaciones,telefono) VALUES (0,'sagaz','Hoid','Raphael','usuario1@gmail.com','1235',1,'observaciones prueba','99999999');
 INSERT INTO solicitudes (fecha_solicitud,descripcion,unidades,cantidad,observaciones,tramitado,fk_usuario) VALUES ('2024/02/07','huevos','cajas',6,'observaciones prueba',1,2);
 INSERT INTO solicitudes (fecha_solicitud,descripcion,unidades,cantidad,observaciones,tramitado,fk_usuario) VALUES ('2025/03/12','cosaRandom2','gramos',3.4,'observaciones prueba',0,2);
 INSERT INTO solicitudes (fecha_solicitud,descripcion,unidades,cantidad,observaciones,tramitado,fk_usuario) VALUES ('2023/12/07','cosaRandom3','cajas',6,'observaciones prueba',1,2);
@@ -168,7 +168,7 @@ INSERT INTO categorias (descripcion,observaciones,imagenes) VALUES ('pasteleria'
 INSERT INTO categorias (descripcion,observaciones,imagenes) VALUES ('pescado','observacion adolin','pescaderia.png');
 INSERT INTO categorias (descripcion,observaciones,imagenes) VALUES ('panaderia','observacion sagaz','panaderia.png');
 INSERT INTO categorias (descripcion,observaciones,imagenes) VALUES ('fruteria','observacion eshonai','fruteria.png');
-INSERT INTO categorias (descripcion,observaciones,imagenes) VALUES ('Cubiertos, servilletas...','observacion szeth','utiles.png');
+INSERT INTO categorias (descripcion,observaciones,imagenes) VALUES ('útiles y materiales','observacion szeth','utiles.png');
 INSERT INTO residuos (descripcion,observaciones) VALUES ('caja de papel','observacion kaladin');
 INSERT INTO residuos (descripcion,observaciones) VALUES ('bolsa de plastico','observacion dalinar');
 INSERT INTO residuos (descripcion,observaciones) VALUES ('botellas de cristal','observacion adolin');
