@@ -16,45 +16,6 @@
             - Aside....................... gen_aside
             - Header...................... gen_header
             - Main........................ gen_main
-
-        - Páginas individuales_____________________________________________________________ total: 17
-            Comunes_____________________________________________________________________ pag_00
-                1. Inicio sesión...................................... pag_inicio
-
-            Administrador_______________________________________________________________ pag_admin
-                2. Index................................................. pag_admin_index
-                3. Categorías............................................ pag_admin_cat
-                    3.1. Nueva categoría.................. pag_admin_cat_new 
-                    . Pop up vista previa categorías 
-                    . Pop up editar categoría
-                4. Productos............................................. pag_admin_prod
-                    4.1. Nuevo producto................... pag_admin_prod_new 
-                    . Pop up vista previa producto 
-                    . Pop up editar producto
-                    4.2. Ud. de medida.................... pag_admin_prod_ud
-                5. Solicitudes........................................... pag_admin_soli
-                6. Pedidos............................................... pag_admin_ped
-                    6.1. Nuevo pedido..................... pag_admin_ped_new
-                    !Falta pedidos
-                    6.2. Estados de pedido................ pag_admin_ped_estados
-                7. Facturas.............................................. pag_admin_fact
-                8. Usuarios.............................................. pag_admin_users
-                    8.1. Nuevo usuario.................... pag_admin_users_new
-                    . Pop up vista previa usuario
-                    . Pop up editar usuario
-                9. Proveedores........................................... pag_admin_prov
-                    9.1. Nuevo proveedor.................. pag_admin_prov_new
-                    . Pop up vista previa proveedor
-                    . Pop up editar proveedor
-                10. Residuos............................................. pag_admin_res
-                    ! Falta residuos
-
-            Usuario_____________________________________________________________________ pag_user
-                2. Index................................................. pag_user_index
-                3. Productos............................................. pag_user_prod
-                4. Pedidos............................................... pag_user_ped
-                5. Proveedores........................................... pag_user_prov
-                6. Residuos.............................................. pag_user_res
 */
 
 /* ETIQUETAS GENERALES________________________________________________gen_00 */
@@ -70,10 +31,22 @@
     /* Escala de grises */
     --accent-01: #DCDCDC; /* fondo cajas, barras scroll, líneas horizontales...*/
     --accent-02: #ECECEC; /* Fondo de botones */
-    --accent-03: #F9FAFB; /* Fondo de página */
+    --accent-03: #f7f7f7; /* Fondo de página */
     --accent-04: #F9F9FA; /* Fondo de etiquetas y marcador de sección menú */
     --aside-back: white;
     --light-color: white; 
+
+    --danger-dark: #FF3E1D;
+    --danger-light: #fff0ee;
+    --warning-dark: #FFAC02;
+    --warning-light: #FFF5E3;
+    --success-dark: #60B400;
+    --success-light: #F0FBE8;
+
+    --darkMode-dark: #202020;
+    --darkMode-medium: rgb(134, 134, 134);
+    --darkMode-light: #313131;
+    --darkMode-text: #707070;
 
     /* Textos...........................*/
     --font: 'Inter', sans-serif;
@@ -100,10 +73,19 @@
     --bs-gutter-y: 0;
 }
 
+.row > .custom_gutter {
+    --bs-gutter-x: 1.5rem;
+    --bs-gutter-y: 0;
+}
+
 /* Bootstrap....................*/
 .bg-primary {
     background-color: transparent !important;
     border: solid thin gray;
+}
+
+.dropdown-item:active {
+    background-color: transparent; 
 }
 
 /* Headings y textos............................gen_head */
@@ -136,8 +118,37 @@ h5 {
     font-size: var(--head-h5);
 }
 
-p {
+p, a {
     font-size: var(--size-p);
+}
+
+a {
+    color: var(--text-dark-color); 
+    text-decoration: none;
+}
+
+/* Textos mensajes predefinidos Bootstrap */
+.alert {
+    font-weight: 500;
+    font-size: var(--size-p);
+}
+
+.alert-danger {
+    color: var(--danger-dark);
+    border: solid thin var(--danger-dark); 
+    background-color: var(--danger-light);
+}
+
+.alert-warning {
+    color: var(--warning-dark);
+    border: solid thin var(--warning-dark); 
+    background-color: var(--danger-light);
+}
+
+.alert-success {
+    color: var(--success-dark);
+    border: solid thin var(--success-dark); 
+    background-color: var(--success-light);
 }
 
 /* Botones...................................... gen_btn */ 
@@ -149,6 +160,14 @@ p {
 
 .btn:hover {
     transform: translateY(-1px);
+}
+
+.btn:active {
+    background-color: var(--primary-color);
+}
+
+.btn:focus {
+    border-color: var(--primary-color);
 }
 
 /* Botón principal. Fondo color principal */
@@ -180,6 +199,14 @@ p {
 i:hover {
     cursor: pointer;
     color:#ee2f7f;
+}
+
+.bi-search {
+    color: var(--accent-01);
+}
+
+.nav_container_left i {
+    font-size: 20px;
 }
 
 /* chevron del sidebar */
@@ -252,7 +279,7 @@ td:hover {
     gap: 20px;
 }
 
-.contenedorFiltroSelect {
+.contenedorFiltroLeft {
     width: fit-content;
     display: flex;
     flex-direction: row;
@@ -263,7 +290,7 @@ td:hover {
 
 .filtroBuscador {
     display: inline;
-    width: 20%;
+    width: 100%;
 }
 
 .selectFiltros {
@@ -272,9 +299,22 @@ td:hover {
     width: fit-content;
 }
 
+.contenedorFiltroRight {
+    width: 45%; 
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+    align-items: center;
+    gap: 20px;
+}
+
 /* Formularios................................... gen_forms */
 .form-label {
-    font-size: var(--size-p);
+    font-size: var(--head-h5);
+    color: var(--text-light-color) !important;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
 .container_login {
@@ -295,22 +335,39 @@ input[type="number"] {
     width: 80px;
 }  
 
-input::placeholder {
-    color: var(--text-light-color);
-    font-size: var(--head-h5);
+.form-control {
+    font-size: 14px;
 }
 
-.search_bar input {
+textarea::placeholder {
+    color: var(--text-light-color);
+    font-size: 14px;
+}
+
+.searchbar.input-group-text {
+    padding-right: 5px;
+}
+
+.searchbar.form-control {
+    border-left: none;
+}
+
+.searchbar {
+    background-color: white;
     border-radius: 30px;
 }
 
-/* formulario admin */
-.form_container {
-    width: 100%;
+.form_buttons {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
-    background-color: yellow;
+    justify-content: right;
+    align-items: center;
+    gap: 15px;
+}
+
+.form-control:focus {
+    border-color: #ced4da; 
+    box-shadow: none;
 }
 
 /* Contenedores.................................. gen_cont */
@@ -367,21 +424,40 @@ body {
     padding: 0; 
 }
 
+::-webkit-scrollbar {
+    width: 5px;
+    background-color: var(--accent-03);
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: var(--accent-01); 
+    border-radius: 5px; 
+}
+
 .sidebar {
+    width: 240px;
     height: 100vh;
-    padding: 20px 15px 15px 15px;
+    overflow-y: auto;
     margin: 0;
     border-right: solid thin rgb(238, 238, 238);
     background-color: var(--aside-back);
 }
 
 .sidebar_top {
-    padding-left: 10px;
+    height: 70px;
+    width: 240px;
+    position: fixed;
+    padding: 20px 15px 15px 30px;
+    border-right: solid thin rgb(238, 238, 238);
     background-color: white;
 }
 
+.logo_container img {
+    width: 70%;
+}
+
 .sidebar_bottom {
-    padding-top: 60px;
+    padding: 100px 10px 15px 20px;
 }
 
 .sidebar_container {
@@ -397,20 +473,40 @@ body {
     margin: 0; 
 }
 
-.nav_link {
+.dropdown_toggle {
     width: 100%;
     text-decoration: none;
     color: var(--text-dark-color);
 }
 
+.dropdown-toggle::after {
+    display: block;
+    position: absolute;
+    top: 50%;
+    right: 20px;
+    transform: translateY(-50%);
+}
+
 .nav_container {
+    padding: 10px;
+    border-radius: 4px;
+}
+
+.nav_container.gray-bg {
+    font-weight: 500;
+    background-color: var(--accent-03);
+}
+
+.nav_container.gray-bg i {
+    color: var(--primary-color);
+}
+
+.nav_content {
     width: 100%;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    padding: 10px;
-    border-radius: 4px;
 }
 
 .nav_container:hover {
@@ -425,16 +521,38 @@ body {
     gap: 15px;
 }
 
+.collapse {
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+    align-items: left;
+    gap: 10px;
+    padding-top: 10px !important;
+    padding-bottom: 20px !important;
+}
+
+.collapse li {
+    margin-left: 45px;
+}
+
+.collapse li a:hover {
+    font-weight: 500;
+}
+
 /* Header.......................................... gen_header */
 .topbar {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
     height: 70px;
     width: 100%;
     border-bottom: solid thin rgb(221, 221, 221);
-
     background-color: var(--accent-03);
 }
 
 .topbar_container {
+    width: 100%;
+    height: 100%;
     padding: 0 35px 0 40px;
     display: flex;
     flex-direction: row;
@@ -442,11 +560,8 @@ body {
     align-items: center;
 }
 
-.search_bar {
-    display: flex;
-    flex-direction: row;
-    justify-content: left;
-    align-items: center;
+.topbar_container i {
+    font-size: 18px;
 }
 
 .topbar_left {
@@ -458,11 +573,12 @@ body {
 }
 
 .topbar_right {
+    height: 100%;
     display: flex;
     flex-direction: row;
     justify-content: left;
     align-items: center;
-    gap: 20px;
+    gap: 30px;
 }
 
 .topbar_icons {
@@ -470,18 +586,86 @@ body {
     flex-direction: row;
     justify-content: left;
     align-items: center;
+    gap: 10px;
 }
 
 .topbar_icons i {
     padding: 10px;
 }
 
+.dropdown_icon_margin {
+    padding: 5px;
+}
+
+.dropdown-menu {
+    border: solid thin var(--accent-02); 
+} 
+
+.admin_shortcuts_container {
+    padding: 0;
+    margin-left: -100px;
+}
+
+.titulo_shortcuts {
+    padding: 15px 0 15px 20px;
+    border-bottom: solid thin var(--accent-01);
+}
+
+.admin_shortcuts_grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(3, auto);
+    gap: 10px;
+    padding: 20px 10px 10px 10px; 
+}
+
+.caja_shortcuts {
+    position: relative; 
+    width: 130px; /* Define la anchura deseada para las cajas */
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px 10px;
+    border-radius: 6px;
+    border: solid thin var(--accent-03);
+}
+
+.caja_shortcuts i {
+    color: var(--primary-color);
+    font-size: 20px;
+}
+
+.admin_shortcuts_grid .dropdown-item {
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    border-radius: 6px;
+}
+
+.icon_container {
+    height: 70px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.profile_container {
+    height: 70px;
+}
+
 .topbar_profile {
+    height: 100%;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    gap: 10px;
+    gap: 20px;
+}
+
+.topbar_profile:hover {
+    cursor: pointer;
 }
 
 .topbar_profile_info {
@@ -498,6 +682,14 @@ body {
     font-size: var(--head-h5);
 }
 
+.dropdown-menu {
+    display: none;
+}
+
+.dropdown:hover .dropdown-menu {
+    display: block;
+}
+
 /* Main............................................ gen_main */
 .page_layout {
     background-color: var(--accent-03);  
@@ -510,8 +702,142 @@ body {
     padding-right: 30px;
 }
 
-/* PÁGINAS____________________________________________________________ pag_00 */
-/* Administrador_________________________________________ pag_admin */
-/* 2. Index.............................. pag_admin_index */
+.dropdown_inline {
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+    align-items: center;
+    gap: 10px;
+}
 
-/* Usuario_______________________________________________ pag_user */
+/* Modo oscuro....................................*/
+.darkMode .btn_custom_2 {
+    background-color: rgb(78, 78, 78);
+    color: var(--accent-02);
+    border: none;
+}
+
+.darkMode .btn_custom_3 {
+    background-color: rgb(39, 39, 39);
+    color: var(--darkMode-medium);
+    border: none;
+}
+
+.darkMode ::-webkit-scrollbar {
+    background-color: rgb(41, 41, 41);
+}
+
+.darkMode ::-webkit-scrollbar-thumb {
+    background-color: rgb(51, 51, 51);
+}
+
+.darkMode .sidebar {
+    background-color: var(--darkMode-dark);
+    color: var(--light-color); 
+    border-right: solid thin var(--darkMode-light);
+}
+
+.darkMode .nav_container:hover {
+    background-color: var(--darkMode-light);
+}
+
+.darkMode .topbar {
+    background-color: var(--darkMode-dark);
+    color: var(--light-color); 
+    border-bottom: solid thin var(--darkMode-light);
+}
+
+.darkMode .sidebar_top {
+    background-color: var(--darkMode-dark);
+    color: var(--light-color);
+    border-right: solid thin var(--darkMode-light);
+}
+
+.darkMode .page_layout {
+    background-color: var(--darkMode-dark);
+    color: var(--light-color); 
+}
+
+.darkMode .nav_container.gray-bg {
+    background-color: var(--darkMode-light);
+    color: var(--light-color); 
+}
+
+.darkMode h1 {
+    color: var(--accent-01); 
+}
+
+.darkMode h4 {
+    color: var(--accent-01); 
+}
+
+.darkMode p {
+    color: var(--accent-01); 
+}
+
+.darkMode a {
+    color: var(--darkMode-medium); 
+}
+
+.darkMode ::placeholder {
+    color: var(--darkMode-medium); 
+}
+
+.darkMode i {
+    color: var(--light-color); 
+}
+
+.darkMode .bi {
+    color: var(--light-color); 
+}
+
+.darkMode .searchbar {
+    background-color: var(--darkMode-light) !important;
+    color: var(--light-color); 
+    border: none;
+}
+
+.darkMode .dropdown-menu {
+    background-color: var(--darkMode-light);
+    border: none;
+}
+
+.darkMode .dropdown-menu .dropdown-item:hover {
+    background-color: rgb(63, 63, 63);
+    border: none;
+}
+
+.darkMode .card {
+    background-color: var(--darkMode-light);
+}
+
+.darkMode .caja_shortcuts {
+    border: solid thin rgb(78, 78, 78);
+}
+
+.darkMode .titulo_shortcuts {
+    border-bottom: solid thin rgb(78, 78, 78);
+}
+
+.darkMode .form-select {
+    color: var(--accent-01);
+    background-color: var(--darkMode-light);
+    border: none;
+}
+
+.darkMode .form-control {
+    background-color: var(--darkMode-dark);
+    border: none;
+    color: var(--accent-02);
+}
+
+.darkMode th {
+    border-bottom: solid thin rgb(100, 100, 100); 
+    background: var(--darkMode-light) !important;
+}
+
+.darkMode td {
+    color: var(--accent-02);
+    border-bottom: solid thin rgb(77, 77, 77); 
+    background: rgb(56, 56, 56) !important;
+}

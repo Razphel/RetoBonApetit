@@ -24,9 +24,9 @@
 window.addEventListener("load", principal);
 
 function principal() {
+    let usuarioActual = JSON.parse(localStorage.getItem("usuario"));
     //Antes de cargar la pagina del usuario, se comprueba que no se haya accedido sin una sesion valida.
-    if (localStorage.getItem("usuario")) {
-        let usuarioActual = JSON.parse(localStorage.getItem("usuario"));
+    if (usuarioActual != null) {
         if (usuarioActual.nombre === "") {
             window.location.replace("../../../sesion.html");
         }
@@ -35,14 +35,18 @@ function principal() {
         window.location.replace("../../../sesion.html");
     }
 
-    // Boton para cerrar la sesion y redireccionar a la pagina de inicio.
-    document.querySelector("#cerrarSesion").addEventListener("click", cerrarSesion);
+    //Agregar el nombre del usuario a la barra superior.
+    //Se usa el selector de clase, pero solo hay un elemento con esta clase.
+    let nombreApellido = document.querySelector(".topbar_profile_name");
+    let nombreCuenta = document.querySelector(".topbar_profile_account");
+
+    nombreApellido.innerHTML = usuarioActual.nombre + " " + usuarioActual.apellido;
+    nombreCuenta.innerHTML = usuarioActual.id_usuario;
 }
 
 function cerrarSesion() {
     localStorage.removeItem("usuario");
         window.location.replace("../../../sesion.html");
-
 }
 
 //Consulta general para recibir productos. La funcion devuelve un array de objetos literales con los datos de los productos.
@@ -118,31 +122,6 @@ function crearElemento(etiqueta, contenido, atributos) {
     }
     return elementoNuevo;
 }
-function crearFormulario(campos, contenedor) {
-    let formulario = crearElemento('form');
 
-    campos.forEach(campo => {
-        let etiqueta = campo.etiqueta || 'input';
-        let atributos = campo.atributos || {};
-        let contenido = campo.contenido || '';
-
-        let input = crearElemento(etiqueta);
-
-        for (let clave in atributos) {
-            input.setAttribute(clave, atributos[clave]);
-        }
-
-        if (contenido !== '') {
-            input.value = contenido;
-        }
-        formulario.appendChild(input);
-    });
-
-    if (contenedor instanceof HTMLElement) {
-        contenedor.appendChild(formulario);
-    } else {
-        console.error('El contenedor especificado no es un elemento HTML válido.');
-    }
-}
 
 

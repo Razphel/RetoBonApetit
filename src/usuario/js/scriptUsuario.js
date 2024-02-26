@@ -19,6 +19,7 @@ function principal() {
     document.querySelector("#navPedidos").addEventListener("click", navPedidos);
     document.querySelector("#navProveedores").addEventListener("click", navProveedores);
     document.querySelector("#navResiduos").addEventListener("click", navResiduos);
+    document.querySelector("#cerrarSesion").addEventListener("click", cerrarSesion);
 
     //Aqui es necesario que las consultas se ejecuten en el orden correcto.
     //Para eso hay que evitar que el ajax funcione de forma asincrona agregando async: false.
@@ -127,23 +128,22 @@ function inicioCategorias(respuesta) {
     contenedor.appendChild(parteSuperior);
 }
 
-function inicioSolicitudes(respuesta) {
-    let contenedor = document.querySelector("#contenedor");
-    let contador = 0;
-    contenedor.innerHTML = "";
-    let contenedorSolicitudesInicio = crearElemento("div",undefined,{id:"ContProveedores",class:"col-3",style:"border:2px black solid; padding:5px"});
-    respuesta.forEach(fila => {
-        let solicitud = crearElemento("p",undefined,{id:contenedor});
-        for (let i = 0; i < Object.keys(fila).length/2; i++) 
-        {   
-            solicitud.innerHTML += fila[i] + " ";
-        }
-        contenedorSolicitudesInicio.appendChild(solicitud);
-        contenedor.appendChild(contenedorSolicitudesInicio);
-        contador++;
+// function inicioSolicitudes(respuesta) {
+//     let contenedor = document.querySelector("#contenedor");
+//     let contador = 0;
+//     let contenedorSolicitudesInicio = crearElemento("div",undefined,{id:"ContProveedores",class:"col-3",style:"border:2px black solid; padding:5px"});
+//     respuesta.forEach(fila => {
+//         let solicitud = crearElemento("p",undefined,{id:contenedor});
+//         for (let i = 0; i < Object.keys(fila).length/2; i++) 
+//         {   
+//             solicitud.innerHTML += fila[i] + " ";
+//         }
+//         contenedorSolicitudesInicio.appendChild(solicitud);
+//         contenedor.appendChild(contenedorSolicitudesInicio);
+//         contador++;
 
-    });
-}
+//     });
+// }
 
 // Página productos___________________________________________________________________
 function navProductos() {
@@ -419,6 +419,7 @@ function pagResiduos(respuesta) {
     });
 }
 
+
 function manejadorCategoria(e) {
     let textoDividido = this.id.split("_");
     let idCategoria = textoDividido[1];
@@ -478,7 +479,7 @@ function imprimirFiltroTabla(nombre = null, categoria = null, unidades = null) {
     let todosProductos = JSON.parse(localStorage.getItem("todosProductos"));
     let parteInferior = document.querySelector("#parteInferior");
 
-    let contenedorFiltroLabelySelect = crearElemento("div", undefined, { // contiene el div contenedorFiltroLabel y contenedorFiltroSelect
+    let contenedorFiltroLabelySelect = crearElemento("div", undefined, { // contiene el div contenedorFiltroLabel y contenedorFiltroLeft
         id: "contenedorFiltroLabelySelect",
         class: "contenedorFiltroLabelySelect"
     });
@@ -499,9 +500,9 @@ function imprimirFiltroTabla(nombre = null, categoria = null, unidades = null) {
     contenedorFiltroLabel.appendChild(iconoFiltros);
     contenedorFiltroLabel.appendChild(labelFiltros);
 
-    let contenedorFiltroSelect = crearElemento("div", undefined, {
-        id: "contenedorFiltroSelect",
-        class: "contenedorFiltroSelect"
+    let contenedorFiltroLeft = crearElemento("div", undefined, {
+        id: "contenedorFiltroLeft",
+        class: "contenedorFiltroLeft"
     });
 
     // Crear el contenedor del filtro
@@ -521,6 +522,7 @@ function imprimirFiltroTabla(nombre = null, categoria = null, unidades = null) {
         id: "filtroDesplegableCategoria",
         class: "form-select selectFiltros"
     });
+
     selectCategoria.addEventListener("change", manejadorFiltro);
     let optionDefaultCategoria = document.createElement("option");
     optionDefaultCategoria.text = "Categorías";
@@ -535,13 +537,15 @@ function imprimirFiltroTabla(nombre = null, categoria = null, unidades = null) {
         }
         selectCategoria.add(optionCategoria);
     });
-    contenedorFiltroSelect.appendChild(selectCategoria);
+
+    contenedorFiltroLeft.appendChild(selectCategoria);
 
     // Crear el desplegable para las unidades
     let selectUnidades = crearElemento("select", undefined, {
         id: "filtroDesplegableUnidades",
         class: "form-select selectFiltros"
     });
+
     selectUnidades.addEventListener("change", manejadorFiltro);
     let optionDefaultUnidades = document.createElement("option");
     optionDefaultUnidades.text = "Ud. de medida";
@@ -555,23 +559,62 @@ function imprimirFiltroTabla(nombre = null, categoria = null, unidades = null) {
         }
         selectUnidades.add(optionUnidad);
     });
-    contenedorFiltroSelect.appendChild(selectUnidades);
+    contenedorFiltroLeft.appendChild(selectUnidades);
 
     contenedorFiltroLabelySelect.appendChild(contenedorFiltroLabel);
-    contenedorFiltroLabelySelect.appendChild(contenedorFiltroSelect);
+    contenedorFiltroLabelySelect.appendChild(contenedorFiltroLeft);
 
     contenedorFiltro.appendChild(contenedorFiltroLabelySelect);
+
+    let contenedorFiltroRight = crearElemento("div", undefined, {
+        id: "contenedorFiltroRight",
+        class: "contenedorFiltroRight"
+    });
+
+    let contenedorBuscador = crearElemento("div", undefined, {
+        id: "contenedorBuscador",
+        class: "contenedorBuscador input-group"
+    });
+
+    let contenedorBuscadorIcon = crearElemento("div", undefined, {
+        id: "contenedorBuscadorIcon",
+        class: "contenedorBuscadorIcon input-group-prepend input-group"
+    });
+
+    let contenedorIconBuscador = crearElemento("span", undefined, {
+        class: "input-group-text searchbar"
+    });
+
+    let iconBuscador = crearElemento("i", undefined, {
+        class: "bi bi-search"
+    });
+
+    contenedorIconBuscador.appendChild(iconBuscador);
+    contenedorBuscadorIcon.appendChild(contenedorIconBuscador);
+    contenedorBuscador.appendChild(contenedorBuscadorIcon);
 
     // Crear el campo de texto para el nombre
     let inputNombre = crearElemento("input", undefined, {
         id: "filtroBuscadorNombre",
         type: "text",
         placeholder: "Buscar por nombre de producto...",
-        class: "form-control filtroBuscador",
+        class: "form-control searchbar filtroBuscador",
         value: nombre || ""
     });
+
+    let botonSolicitud = crearElemento("input", undefined, {
+        type: "submit",
+        id: "botonSolicitud",
+        class: "btn btn_custom_1",
+        value: "Hacer solicitud"
+    });
+
     inputNombre.addEventListener("input", manejadorFiltro);
-    contenedorFiltro.appendChild(inputNombre);
+    contenedorBuscadorIcon.appendChild(inputNombre);
+    contenedorFiltroRight.appendChild(contenedorBuscador);
+    contenedorFiltroRight.appendChild(botonSolicitud);
+
+    contenedorFiltro.appendChild(contenedorFiltroRight);
 
     // Añadir el contenedor del filtro al DOM
     parteInferior.appendChild(contenedorFiltro);
@@ -650,9 +693,12 @@ function imprimirTablaProductos(nombre = null, categoria = null, unidades = null
                 filaBody.appendChild(celdaBody);
             });
 
+            //Los id de inputCantidad y botonAñadir concuerdan con la posicion del producto en el array.
+            //Esto se va a utilizar para identificar que producto se va a guardar en la cesta.
             let celdaBoton = crearElemento("td");
             let inputCantidad = crearElemento("input", undefined, {
                 type: "number",
+                min: "0",
                 value: "0",
                 id: "inputCantidad_" + i,
                 class: "form-control form-control-sm"
@@ -663,7 +709,7 @@ function imprimirTablaProductos(nombre = null, categoria = null, unidades = null
                 class: "btn btn_custom_1 btn_sm",
                 value: "Añadir"
             })
-            botonAñadir.addEventListener("click", agregarCesta);
+            botonAñadir.addEventListener("click", agregarCesta)
             celdaBoton.appendChild(inputCantidad);
             celdaBoton.appendChild(botonAñadir);
             filaBody.appendChild(celdaBoton);
@@ -730,7 +776,7 @@ function agregarCesta(e) {
     // Busco la cantidad de productos a añadir.
     let cantidadRecibida = parseInt(document.querySelector("#inputCantidad_" + productoSeleccionado).value);
 
-    // Si la cantidad es 0 o menor, no hacemos nada
+    // Si la cantidad es 0 o menor, no hacemos nada.
     if (cantidadRecibida <= 0) {
         return;
     }
@@ -745,39 +791,17 @@ function agregarCesta(e) {
     );
 
     if (productoEnCestaIndex === -1) {
-        // Si el producto no está en la cesta, agregarlo con la cantidad recibida
+        // Si el producto no está en la cesta, agregarlo con la cantidad recibida.
         let nuevoProducto = {
             ...todosProductos[productoSeleccionado],
             cantidad: cantidadRecibida
         };
         cesta.push(nuevoProducto);
     } else {
-        // Si el producto ya está en la cesta, sumar la cantidad recibida a la cantidad existente
+        // Si el producto ya está en la cesta, sumar la cantidad recibida a la cantidad existente.
         cesta[productoEnCestaIndex].cantidad += cantidadRecibida;
     }
 
     // Guardar la cesta actualizada en el almacenamiento local
     localStorage.setItem("cesta", JSON.stringify(cesta));
-
-    // Aquí puedes realizar otras acciones, como actualizar la visualización de la cesta, etc.
-    console.log(cesta);
-}
-function mostrarSolicitudesInicio(solicitudesInicio) {
-    
-    let contenedor = document.querySelector("#contenedor");
-    let contador = 0;
-    contenedor.innerHTML = "";
-    let contenedorSolicitudesInicio = crearElemento("div",undefined,{id:"ContProveedores",class:"col-3",style:"border:2px black solid; padding:5px"});
-    solicitudesInicio.forEach(fila => {
-        let solicitud = crearElemento("p",undefined,{id:contenedor});
-        for (let i = 0; i < Object.keys(fila).length/2; i++) 
-        {   
-            solicitud.innerHTML += fila[i] + " ";
-        }
-        contenedorSolicitudesInicio.appendChild(solicitud);
-        contenedor.appendChild(contenedorSolicitudesInicio);
-        contador++;
-
-    });
-
 }

@@ -47,7 +47,12 @@ class BD
             $nombreUsuario = $_REQUEST['nombreUsuario'];
             $contraseña = $_REQUEST['contraseña'];
 
-            $sql = "SELECT id_usuarios, nombre, password, admin, activo FROM usuarios WHERE nombre= '$nombreUsuario' and password= '$contraseña'";
+            $sql = "SELECT id_usuarios, nombre_usuario, nombre, apellido, password, admin, activo FROM usuarios WHERE nombre_usuario= '$nombreUsuario' and password= '$contraseña'";
+
+            // $preparada = $conexion->prepare($sql);
+            // $preparada->bindParam(':nombre', $_REQUEST['nombre']);
+            // $preparada->bindParam(':password', $_REQUEST['password']);
+            // $preparada->execute();
 
             $resultado = $conexion->query($sql);
 
@@ -246,4 +251,29 @@ class BD
     // $id = 7;
     // BD::actualizarRegistro("categorias",$datos3,$id);
     //CREAR CONSULTA QUE IMPRIME LAS TRES ULTIMAS SOLICITUDES PARA EL ADMINISTRADOR
+    
+    public static function imprimirMensajesInicio()
+    {
+        try {
+            $conexion = self::conexionBD();
+            $sql = "SELECT descripcion,fecha_mensaje
+            FROM mensajes 
+            ORDER BY fecha_mensaje DESC
+            LIMIT 3";
+
+            $resultado = $conexion->query($sql);
+
+            // Crear un array para almacenar todas las filas        
+            $filas = [];
+            // Recorrer los resultados y almacenar cada fila en el array        
+            while ($fila = $resultado->fetch()) {
+                $filas[] = $fila;
+            }
+        } catch (Exception $e) {
+            throw new Exception("ERROR: " + $e);
+        }
+        //Esta consulta te devuelve un array de arrays con todos los datos de la tabla producto.
+        return $filas;
+    }
+
 ?>  
