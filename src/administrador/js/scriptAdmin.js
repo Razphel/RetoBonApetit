@@ -916,6 +916,36 @@ function mostrarUsuarios(usuarios) {
     let contenedor = document.querySelector("#parteInferior");
     contenedor.innerHTML = "";
 
+    //Buscador.
+    let buscador = crearElemento("input", undefined, {
+        id: "buscadorUsuarios"
+    });
+
+    buscador.addEventListener("input", function (e) {
+        // Convertir a minúsculas y quitar espacios en blanco al inicio y al final.
+        let textoBuscar = this.value.toLowerCase().trim();
+
+        // Obtener todas las filas de la tabla.
+        let filasTabla = tablaBody.querySelectorAll("tr");
+
+        // Mostrar u ocultar según el texto del buscador.
+        filasTabla.forEach(fila => {
+            // Solo se va a buscar por nombre de usuario, nombre y apellidos, se seleccionan solo las columnas correspondientes.
+            let nombreUsuario = fila.querySelector("td:nth-child(3)").innerHTML.toLowerCase();
+            let nombre = fila.querySelector("td:nth-child(4)").innerHTML.toLowerCase();
+            let apellido = fila.querySelector("td:nth-child(5)").innerHTML.toLowerCase();
+
+            // Mostrar la fila si coincide con el texto buscado o si no se ha ingresado nada en el input.
+            if (nombreUsuario.includes(textoBuscar) || nombre.includes(textoBuscar) || apellido.includes(textoBuscar) || textoBuscar === "") {
+                fila.style.display = ""; // Mostrar la fila.
+            } else {
+                fila.style.display = "none"; // Ocultar la fila.
+            }
+        });
+    });
+
+    contenedor.appendChild(buscador);
+
     //Estructura del titulo de la tabla.
     let tablaUsuarios = crearElemento("table", undefined, {
         class: "table table-responsive table-hover mt-4"
