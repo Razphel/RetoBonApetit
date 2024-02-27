@@ -921,7 +921,7 @@ function pagAñadirProveedor() {
     });
 }
 
-function tablaProveedor()
+function tablaProveedores()
 {
 
 }
