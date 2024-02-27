@@ -44,6 +44,7 @@ function principal() {
     nombreCuenta.innerHTML = usuarioActual.id_usuario;
 
     modoColor(); 
+    generarIconUser();
 }
 
 function modoColor() {
@@ -66,6 +67,27 @@ function modoColor() {
         // Eliminar la clase "darkMode" del cuerpo del documento
         document.body.classList.remove("darkMode");
     });
+}
+
+function generarIconUser() {
+    let usuarioActual = JSON.parse(localStorage.getItem("usuario"));
+
+    let nombre = usuarioActual.nombre;
+    let apellido = usuarioActual.apellido;
+    const siglas = nombre.substring(0, 1) + apellido.substring(0, 1);
+    const userIcon = document.getElementById('userIcon');
+    userIcon.textContent = siglas;
+    userIcon.style.backgroundColor = getRandomColor();
+}
+
+// genera un color aleatorio, se usa en el icono de usuario
+function getRandomColor() {
+    const letters = '0123456789ABCDEF';
+    let color = '#';
+    for (let i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
 }
 
 function cerrarSesion() {
