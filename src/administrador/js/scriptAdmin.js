@@ -35,43 +35,43 @@ function principal() {
     document.querySelector("#navInicio").addEventListener("click", navInicio);
     // Apartado categorías
     document.querySelector("#navCategorias").addEventListener("click", navCategorias);
-        document.querySelector("#navListarCategorias").addEventListener("click", navListarCategorias);
-        document.querySelector("#navAñadirCategoria").addEventListener("click", navAñadirCategoria);
-        document.querySelector("#shortcut_categoria").addEventListener("click", navAñadirCategoria);
+    document.querySelector("#navListarCategorias").addEventListener("click", navListarCategorias);
+    document.querySelector("#navAñadirCategoria").addEventListener("click", navAñadirCategoria);
+    document.querySelector("#shortcut_categoria").addEventListener("click", navAñadirCategoria);
     // Apartado productos
     document.querySelector("#navProductos").addEventListener("click", navProductos);
-        document.querySelector("#navListarProductos").addEventListener("click", navListarProductos);
-        document.querySelector("#navAñadirProducto").addEventListener("click", navAñadirProducto);
-        document.querySelector("#shortcut_producto").addEventListener("click", navAñadirProducto);
-        document.querySelector("#navUdMedida").addEventListener("click", navUdMedida);
-        document.querySelector("#shortcut_medida").addEventListener("click", navUdMedida);
+    document.querySelector("#navListarProductos").addEventListener("click", navListarProductos);
+    document.querySelector("#navAñadirProducto").addEventListener("click", navAñadirProducto);
+    document.querySelector("#shortcut_producto").addEventListener("click", navAñadirProducto);
+    document.querySelector("#navUdMedida").addEventListener("click", navUdMedida);
+    document.querySelector("#shortcut_medida").addEventListener("click", navUdMedida);
     // Apartado solicitudes
     document.querySelector("#navSolicitudes").addEventListener("click", navSolicitudes);
     // Apartado pedidos
     document.querySelector("#navPedidos").addEventListener("click", navPedidos);
-        document.querySelector("#navListarPedidos").addEventListener("click", navListarPedidos);
-        document.querySelector("#navNuevoPedido").addEventListener("click", navNuevoPedido);
-        document.querySelector("#shortcut_pedido").addEventListener("click", navNuevoPedido);
+    document.querySelector("#navListarPedidos").addEventListener("click", navListarPedidos);
+    document.querySelector("#navNuevoPedido").addEventListener("click", navNuevoPedido);
+    document.querySelector("#shortcut_pedido").addEventListener("click", navNuevoPedido);
     // Apartado usuarios
     document.querySelector("#navUsuarios").addEventListener("click", navUsuarios);
-        document.querySelector("#navListarUsuarios").addEventListener("click", navListarUsuarios);
-        document.querySelector("#navAñadirUsuario").addEventListener("click", navAñadirUsuario);
-        document.querySelector("#shortcut_usuario").addEventListener("click", navAñadirUsuario);
+    document.querySelector("#navListarUsuarios").addEventListener("click", navListarUsuarios);
+    document.querySelector("#navAñadirUsuario").addEventListener("click", navAñadirUsuario);
+    document.querySelector("#shortcut_usuario").addEventListener("click", navAñadirUsuario);
     // Apartado proveedores
     document.querySelector("#navProveedores").addEventListener("click", navProveedores);
-        document.querySelector("#navListarProveedores").addEventListener("click", navListarProveedores);
-        document.querySelector("#navAñadirProveedor").addEventListener("click", navAñadirProveedor);
-        document.querySelector("#shortcut_proveedor").addEventListener("click", navAñadirProveedor);
-        document.querySelector("#cerrarSesion").addEventListener("click", cerrarSesion);
+    document.querySelector("#navListarProveedores").addEventListener("click", navListarProveedores);
+    document.querySelector("#navAñadirProveedor").addEventListener("click", navAñadirProveedor);
+    document.querySelector("#shortcut_proveedor").addEventListener("click", navAñadirProveedor);
+    document.querySelector("#cerrarSesion").addEventListener("click", cerrarSesion);
     // Apartado residuos
-    document.querySelector("#navResiduos").addEventListener("click", navResiduos); 
+    document.querySelector("#navResiduos").addEventListener("click", navResiduos);
 
     // Seleccionar los elementos clickeables del menú
     const menuItems = document.querySelectorAll('.active');
 
     // Iterar sobre cada elemento y agregar un manejador de eventos 'click'
     menuItems.forEach(item => {
-        item.addEventListener('click', function() {
+        item.addEventListener('click', function () {
             // Remover la clase 'gray-bg' de todos los contenedores 'nav_container'
             document.querySelectorAll('.nav_container').forEach(container => {
                 container.classList.remove('gray-bg');
@@ -79,37 +79,13 @@ function principal() {
 
             // Obtener el contenedor 'nav_container' del elemento clickeado
             const navContainer = this.querySelector('.nav_container');
-            
+
             // Agregar la clase 'gray-bg' al contenedor 'nav_container' del elemento clickeado
             navContainer.classList.add('gray-bg');
         });
     });
 
-    pagInicio(); 
-}
-
-function mostrarUsuarios(respuesta) {
-    let contenedor = document.querySelector("#contenedor");
-    let contador = 0;
-    contenedor.innerHTML = "";
-    let contenedorResiduos = crearElemento("div", undefined, {
-        id: "ContResiduos",
-        class: "col-3",
-        style: "border:2px black solid; padding:5px"
-    });
-
-    respuesta.forEach(fila => {
-        let residuo = crearElemento("p", undefined, {
-            id: "residuos"
-        });
-
-        for (let i = 0; i < Object.keys(fila).length / 2; i++) {
-            residuo.innerHTML += fila[i] + " ";
-        }
-        contenedorResiduos.appendChild(residuo);
-        contenedor.appendChild(contenedorResiduos);
-        contador++;
-    });
+    pagInicio();
 }
 
 // MANEJADORES COMUNES DE FORMULARIOS PARA BOTONES.........................................
@@ -124,15 +100,15 @@ function cancelar() {
 
 // Apartado INICIO____________________________________________________________________
 function navInicio() {
-    pagInicio(); 
+    pagInicio();
 }
 
 function pagInicio() {
 }
 
 // Apartado CATEGORÍAS________________________________________________________________
-function navCategorias() { 
-    navListarCategorias(); 
+function navCategorias() {
+    navListarCategorias();
 }
 
 function navListarCategorias() {
@@ -160,7 +136,7 @@ function navAñadirCategoria() {
     pagAñadirCategoria();
 
     let parametros = {
-        categorias: 'categorias' 
+        categorias: 'categorias'
     };
     console.log(parametros);
 
@@ -177,7 +153,7 @@ function navAñadirCategoria() {
 }
 
 // Formulario 1. Crear categorías...................
-function pagAñadirCategoria() { 
+function pagAñadirCategoria() {
     crearPlantillaFormularios('Nueva categoría', 'Datos de la nueva categoría', 'Categorías existentes');
     let contenedorForm = document.querySelector('#contenedorForm');
 
@@ -214,20 +190,20 @@ function pagAñadirCategoria() {
         href: '#',
         role: 'button',
         id: 'dropdownImgCategoria',
-        class: 'etiqueta_enlace_categoria', 
+        class: 'etiqueta_enlace_categoria',
         'data-bs-toggle': 'dropdown',
         'aria-expanded': 'false'
     });
-        let imagenCategoriaContenedor = crearElemento('div', undefined, {
-            id: 'imagenCategoriaContenedor',
-            class: 'imagenCategoriaContenedor'
-        })
-        let iconSeleccionarImg = crearElemento('i', undefined, { // por defecto aparece un + 
-            class: 'bi bi-xbi bi-plus-lg'
-        }); 
+    let imagenCategoriaContenedor = crearElemento('div', undefined, {
+        id: 'imagenCategoriaContenedor',
+        class: 'imagenCategoriaContenedor'
+    })
+    let iconSeleccionarImg = crearElemento('i', undefined, { // por defecto aparece un + 
+        class: 'bi bi-xbi bi-plus-lg'
+    });
 
-        imagenCategoriaContenedor.appendChild(iconSeleccionarImg); 
-        etiquetaEnlace.appendChild(imagenCategoriaContenedor); 
+    imagenCategoriaContenedor.appendChild(iconSeleccionarImg);
+    etiquetaEnlace.appendChild(imagenCategoriaContenedor);
 
     let contenedorGaleriaImg = crearElemento('div', undefined, {
         class: 'new_img_categoria_container dropdown-menu'
@@ -246,14 +222,14 @@ function pagAñadirCategoria() {
     let rutaCarpeta = "../../../assets/img/categorias/";
 
     // Número de imágenes
-    let numeroImagenes = 26; 
-    let imgItemDropdown = ''; 
+    let numeroImagenes = 26;
+    let imgItemDropdown = '';
 
     // Crear las opciones del desplegable con las imágenes
     for (let i = 1; i <= numeroImagenes; i++) {
         // Generar el nombre de archivo de la imagen
         let nombreImagen = i + ".png";
-            
+
         // Eliminar los últimos cuatro caracteres (".png") del nombre de la imagen
         let nombreImagenSinExtension = nombreImagen.slice(0, -4);
 
@@ -261,7 +237,7 @@ function pagAñadirCategoria() {
             id: 'dropdown-item',
             href: '#'
         });
-        
+
         // Crear y agregar la opción al desplegable
         let imgCategoriaDropdown = crearElemento("img", undefined, {
             id: 'img_' + nombreImagenSinExtension,
@@ -269,16 +245,16 @@ function pagAñadirCategoria() {
             src: rutaCarpeta + nombreImagen,
             alt: nombreImagenSinExtension
         });
-        imgCategoriaDropdown.addEventListener("click", function() {
+        imgCategoriaDropdown.addEventListener("click", function () {
             imagenCategoria.src = rutaCarpeta + nombreImagen;
         });
         imgItemDropdown.appendChild(imgCategoriaDropdown);
         estructuraGridGaleria.appendChild(imgItemDropdown);
     }
-    console.log(estructuraGridGaleria); 
+    console.log(estructuraGridGaleria);
 
     // Cambiar la imagen seleccionada cuando se elija una opción del desplegable
-    imagenCategoriaContenedor.addEventListener("change", function() {
+    imagenCategoriaContenedor.addEventListener("change", function () {
         let rutaImagenSeleccionada = imagenCategoriaContenedor.value;
         imagenCategoria.src = rutaImagenSeleccionada;
     });
@@ -290,7 +266,7 @@ function pagAñadirCategoria() {
     contenedorImagenSeleccionar.appendChild(etiquetaEnlace);
     contenedorImagenSeleccionar.appendChild(contenedorGaleriaImg);
 
-    contenedorImagen.appendChild(contenedorImagenSeleccionar); 
+    contenedorImagen.appendChild(contenedorImagenSeleccionar);
     contenedorFormLeft.appendChild(contenedorImagen);
 
     //. BLOQUE 2....................................................
@@ -310,7 +286,7 @@ function pagAñadirCategoria() {
         class: 'form-control',
         placeholder: 'Nombre de la nueva categoría'
     });
-    contenedorNombre.appendChild(inputNombre); 
+    contenedorNombre.appendChild(inputNombre);
 
     contenedorFormLeft.appendChild(contenedorNombre); // añadir a la columna izquierda del contendor
 
@@ -330,9 +306,9 @@ function pagAñadirCategoria() {
         id: 'newObservacionCategoria',
         class: 'form-control',
         placeholder: 'Observaciones de la nueva categoría',
-        rows: '5', 
+        rows: '5',
     });
-    contenedorObservaciones.appendChild(inputObservaciones); 
+    contenedorObservaciones.appendChild(inputObservaciones);
 
     contenedorFormLeft.appendChild(contenedorObservaciones);  // añadir a la columna izquierda del contenedor 
 
@@ -375,13 +351,13 @@ function pagAñadirCategoria() {
         class: "form-control filtroBuscador"
     });
 
-    contenedorBuscadorIcon.appendChild(inputNombreProducto); 
-    contenedorBuscarProductos.appendChild(labelProductosCategoria); 
+    contenedorBuscadorIcon.appendChild(inputNombreProducto);
+    contenedorBuscarProductos.appendChild(labelProductosCategoria);
 
     contenedorBuscarProductos.appendChild(contenedorBuscadorIcon);
 
-    contenedorFormRight.appendChild(contenedorBuscarProductos); 
-    
+    contenedorFormRight.appendChild(contenedorBuscarProductos);
+
     //. BOTONES......................................................
     let contenedorBotones = crearElemento('div', undefined, {
         class: 'form-group form_contenedor_botones'
@@ -415,8 +391,8 @@ function pagAñadirCategoria() {
     contenedorFormTop.appendChild(contenedorFormLeft);
     contenedorFormTop.appendChild(contenedorFormRight);
 
-    formCategorias.appendChild(contenedorFormTop); 
-    formCategorias.appendChild(contenedorBotones); 
+    formCategorias.appendChild(contenedorFormTop);
+    formCategorias.appendChild(contenedorBotones);
 
     contenedorForm.appendChild(formCategorias);
 }
@@ -440,7 +416,7 @@ function newCategoria() {
         type: "POST",
         url: "./php/consultaAdmin.php",
         data: parametros,
-        error: function(a,b,errorMsg) {
+        error: function (a, b, errorMsg) {
             console.log(errorMsg);
         }
     }).done(function (a) {
@@ -451,11 +427,11 @@ function newCategoria() {
 
 // Apartado PRODUCTOS__________________________________________________________________
 function navProductos() {
-    navListarProductos(); 
+    navListarProductos();
 }
 
-function navListarProductos() { 
-    pagListarProductos(); 
+function navListarProductos() {
+    pagListarProductos();
 }
 
 function pagListarProductos() { // mostrar tabla con todos los productos y sus datos
@@ -515,7 +491,7 @@ function pagAñadirProducto() {
         class: 'form-control',
         placeholder: 'Nombre del nuevo producto'
     });
-    contenedorNombre.appendChild(inputNombre); 
+    contenedorNombre.appendChild(inputNombre);
 
     contenedorFormLeft.appendChild(contenedorNombre);
 
@@ -536,7 +512,7 @@ function pagAñadirProducto() {
         class: 'form-control',
         placeholder: 'Ud. de medida del producto'
     });
-    contenedorUdMedida.appendChild(inputUdMedida); 
+    contenedorUdMedida.appendChild(inputUdMedida);
 
     contenedorFormLeft.appendChild(contenedorUdMedida);
 
@@ -556,9 +532,9 @@ function pagAñadirProducto() {
         id: 'newProductObservaciones',
         class: 'form-control',
         placeholder: 'Observaciones del nuevo producto',
-        rows: '5', 
+        rows: '5',
     });
-    contenedorObservaciones.appendChild(inputObservaciones); 
+    contenedorObservaciones.appendChild(inputObservaciones);
 
     contenedorFormLeft.appendChild(contenedorObservaciones);
 
@@ -579,7 +555,7 @@ function pagAñadirProducto() {
         class: 'form-control',
         placeholder: 'Categoría del producto'
     });
-    contenedorCategoria.appendChild(inputCategoria); 
+    contenedorCategoria.appendChild(inputCategoria);
 
     contenedorFormRight.appendChild(contenedorCategoria);
 
@@ -600,7 +576,7 @@ function pagAñadirProducto() {
         class: 'form-control',
         placeholder: 'Residuos del producto'
     });
-    contenedorResiduos.appendChild(inputResiduos); 
+    contenedorResiduos.appendChild(inputResiduos);
 
     contenedorFormRight.appendChild(contenedorResiduos);
 
@@ -637,18 +613,18 @@ function pagAñadirProducto() {
     contenedorFormTop.appendChild(contenedorFormLeft);
     contenedorFormTop.appendChild(contenedorFormRight);
 
-    formProductos.appendChild(contenedorFormTop); 
-    formProductos.appendChild(contenedorBotones); 
+    formProductos.appendChild(contenedorFormTop);
+    formProductos.appendChild(contenedorBotones);
 
     contenedorForm.appendChild(formProductos);
 }
 
 // Formulario 3. Crear ud. de medida...................
-function navUdMedida() { 
+function navUdMedida() {
     pagUdMedida();
 
     let parametros = {
-        unidadesDeMedida: 'unidadesMedida' 
+        unidadesDeMedida: 'unidadesMedida'
     };
     console.log(parametros);
 
@@ -805,7 +781,7 @@ function pagUdMedida() {
         class: 'form-control',
         placeholder: 'Nombre de la nueva ud. de medida'
     });
-    contenedorNombre.appendChild(inputNombre); 
+    contenedorNombre.appendChild(inputNombre);
 
     contenedorFormLeft.appendChild(contenedorNombre);
 
@@ -825,9 +801,9 @@ function pagUdMedida() {
         id: 'newUdMedidaObservaciones',
         class: 'form-control',
         placeholder: 'Observaciones de la nueva ud. de medida',
-        rows: '5', 
+        rows: '5',
     });
-    contenedorObservaciones.appendChild(inputObservaciones); 
+    contenedorObservaciones.appendChild(inputObservaciones);
 
     contenedorFormRight.appendChild(contenedorObservaciones);
 
@@ -864,8 +840,8 @@ function pagUdMedida() {
     contenedorFormTop.appendChild(contenedorFormLeft);
     contenedorFormTop.appendChild(contenedorFormRight);
 
-    formUdMedida.appendChild(contenedorFormTop); 
-    formUdMedida.appendChild(contenedorBotones); 
+    formUdMedida.appendChild(contenedorFormTop);
+    formUdMedida.appendChild(contenedorBotones);
 
     contenedorForm.appendChild(formUdMedida);
 }
@@ -886,13 +862,13 @@ function newUdMedida() {
         type: "POST",
         url: "./php/consultaAdmin.php",
         data: parametros,
-        error: function(a,b,errorMsg) {
+        error: function (a, b, errorMsg) {
             console.log(errorMsg);
         }
-      }).done(function (a) {
+    }).done(function (a) {
         console.log(a);
         console.log("hecho");
-      });
+    });
 }
 
 // Apartado PEDIDOS____________________________________________________________________
@@ -901,7 +877,7 @@ function navPedidos() {
 }
 
 function navListarPedidos() {
-    pagListarPedidos(); 
+    pagListarPedidos();
 }
 
 function pagListarPedidos() { // mostrar el historial de pedidos del admin
@@ -924,7 +900,7 @@ function navUsuarios() {
     };
     $.ajax({
         //Ubicacion del archivo php que va a manejar los valores.
-        url: "./php/consultaUsuario.php",
+        url: "./php/consultaAdmin.php",
         //Metodo en que los va a recibir.
         type: "GET",
         data: parametros,
@@ -936,15 +912,52 @@ function navUsuarios() {
     });
 }
 
+function mostrarUsuarios(usuarios) {
+    let contenedor = document.querySelector("#parteInferior");
+    contenedor.innerHTML = "";
+
+    //Estructura del titulo de la tabla.
+    let tablaUsuarios = crearElemento("table", undefined, {
+        class: "table table-responsive table-hover mt-4"
+    });
+    let titulosTabla = crearElemento("thead");
+
+    let filaTitulos = crearElemento("tr");
+    let titulos = ["id_usuarios", "admin", "nombre_usuario", "nombre", "apellido", "email", "password", "activo", "observaciones", "telefono"];
+    for (let i = 0; i < titulos.length; i++) {
+        let celdaTitulo = crearElemento("th", titulos[i].charAt(0).toUpperCase() + titulos[i].slice(1).toLowerCase());
+        filaTitulos.appendChild(celdaTitulo);
+    }
+    titulosTabla.appendChild(filaTitulos);
+    tablaUsuarios.appendChild(titulosTabla);
+
+    //Estructura del cuerpo de la tabla.
+    tablaBody = crearElemento("tbody");
+
+
+    usuarios.forEach(usuario => {
+        let filaBody = crearElemento("tr", undefined, {
+            id: "idusuario_" + usuario["id_usuarios"]
+        });
+        for (let i = 0; i < titulos.length; i++) {
+            let celdaBody = crearElemento("td", usuario[titulos[i]]);
+            filaBody.appendChild(celdaBody);
+        }
+        tablaBody.appendChild(filaBody);
+    });
+    tablaUsuarios.appendChild(tablaBody);
+    contenedor.appendChild(tablaUsuarios);
+}
+
 function navListarUsuarios() {
-    pagListarUsuarios(); 
+    pagListarUsuarios();
 
     let parametros = {
         claveTodosUsuarios: true
     };
     $.ajax({
         //Ubicacion del archivo php que va a manejar los valores.
-        url: "./php/consultaUsuario.php",
+        url: "./php/consultaAdmin.php",
         //Metodo en que los va a recibir.
         type: "GET",
         data: parametros,
@@ -976,7 +989,7 @@ function pagListarUsuarios() { // mostrar tabla con los usuarios y sus datos
 
 // Formulario 5. Añadir usuario.....................
 function navAñadirUsuario() {
-    pagAñadirUsuario(); 
+    pagAñadirUsuario();
 }
 
 function pagAñadirUsuario() {
@@ -1014,7 +1027,7 @@ function pagAñadirUsuario() {
         class: 'form-control',
         placeholder: 'Nombre del nuevo usuario'
     });
-    contenedorNombre.appendChild(inputNombre); 
+    contenedorNombre.appendChild(inputNombre);
 
     contenedorFormLeft.appendChild(contenedorNombre);
 
@@ -1035,7 +1048,7 @@ function pagAñadirUsuario() {
         class: 'form-control',
         placeholder: 'Teléfono del usuario'
     });
-    contenedorTelefono.appendChild(inputTelefono); 
+    contenedorTelefono.appendChild(inputTelefono);
 
     contenedorFormLeft.appendChild(contenedorTelefono);
 
@@ -1055,9 +1068,9 @@ function pagAñadirUsuario() {
         id: 'newUserObservacion',
         class: 'form-control',
         placeholder: 'Observaciones del nuevo usuario',
-        rows: '5', 
+        rows: '5',
     });
-    contenedorObservaciones.appendChild(inputObservaciones); 
+    contenedorObservaciones.appendChild(inputObservaciones);
 
     contenedorFormLeft.appendChild(contenedorObservaciones);
 
@@ -1075,7 +1088,7 @@ function pagAñadirUsuario() {
     let toggleContainer = crearElemento('div', undefined, {
         class: 'form-switch'
     });
-    
+
     let toggleActivo = crearElemento('input', undefined, {
         type: 'checkbox',
         id: 'userActive',
@@ -1083,7 +1096,7 @@ function pagAñadirUsuario() {
     });
     toggleContainer.appendChild(toggleActivo);
 
-    contenedorActivo.appendChild(toggleContainer); 
+    contenedorActivo.appendChild(toggleContainer);
 
     contenedorFormRight.appendChild(contenedorActivo);
 
@@ -1104,7 +1117,7 @@ function pagAñadirUsuario() {
         class: 'form-control',
         placeholder: 'Email del usuario'
     });
-    contenedorEmail.appendChild(inputEmail); 
+    contenedorEmail.appendChild(inputEmail);
 
     contenedorFormRight.appendChild(contenedorEmail);
 
@@ -1141,8 +1154,8 @@ function pagAñadirUsuario() {
     contenedorFormTop.appendChild(contenedorFormLeft);
     contenedorFormTop.appendChild(contenedorFormRight);
 
-    formUsuario.appendChild(contenedorFormTop); 
-    formUsuario.appendChild(contenedorBotones); 
+    formUsuario.appendChild(contenedorFormTop);
+    formUsuario.appendChild(contenedorBotones);
 
     contenedorForm.appendChild(formUsuario);
 }
@@ -1176,7 +1189,7 @@ function newUsuario() {
         type: "POST",
         url: "./php/consultaAdmin.php",
         data: parametros,
-        error: function(a,b,errorMsg) {
+        error: function (a, b, errorMsg) {
             console.log(errorMsg);
         }
     }).done(function (a) {
@@ -1216,7 +1229,7 @@ function navAñadirProveedor() {
     pagAñadirProveedor();
 
     let parametros = {
-        proveedores: 'proveedores' 
+        proveedores: 'proveedores'
     };
     console.log(parametros);
 
@@ -1268,7 +1281,7 @@ function pagAñadirProveedor() {
         class: 'form-control',
         placeholder: 'Nombre del nuevo proveedor'
     });
-    contenedorNombre.appendChild(inputNombre); 
+    contenedorNombre.appendChild(inputNombre);
 
     contenedorFormLeft.appendChild(contenedorNombre);
 
@@ -1289,7 +1302,7 @@ function pagAñadirProveedor() {
         class: 'form-control',
         placeholder: 'Teléfono del proveedor'
     });
-    contenedorTelefono.appendChild(inputTelefono); 
+    contenedorTelefono.appendChild(inputTelefono);
 
     contenedorFormRight.appendChild(contenedorTelefono);
 
@@ -1310,7 +1323,7 @@ function pagAñadirProveedor() {
         class: 'form-control',
         placeholder: 'Email del proveedor'
     });
-    contenedorEmail.appendChild(inputEmail); 
+    contenedorEmail.appendChild(inputEmail);
 
     contenedorFormRight.appendChild(contenedorEmail);
 
@@ -1331,7 +1344,7 @@ function pagAñadirProveedor() {
         class: 'form-control',
         placeholder: 'Dirección del proveedor'
     });
-    contenedorDireccion.appendChild(inputDireccion); 
+    contenedorDireccion.appendChild(inputDireccion);
 
     contenedorFormLeft.appendChild(contenedorDireccion);
 
@@ -1351,9 +1364,9 @@ function pagAñadirProveedor() {
         id: 'newProvObservacion',
         class: 'form-control',
         placeholder: 'Observaciones del nuevo usuario',
-        rows: '5', 
+        rows: '5',
     });
-    contenedorObservaciones.appendChild(inputObservaciones); 
+    contenedorObservaciones.appendChild(inputObservaciones);
 
     contenedorFormLeft.appendChild(contenedorObservaciones);
 
@@ -1390,8 +1403,8 @@ function pagAñadirProveedor() {
     contenedorFormTop.appendChild(contenedorFormLeft);
     contenedorFormTop.appendChild(contenedorFormRight);
 
-    formProveedores.appendChild(contenedorFormTop); 
-    formProveedores.appendChild(contenedorBotones); 
+    formProveedores.appendChild(contenedorFormTop);
+    formProveedores.appendChild(contenedorBotones);
 
     contenedorForm.appendChild(formProveedores);
 }
@@ -1420,18 +1433,18 @@ function newProveedor() {
         type: "POST",
         url: "./php/consultaAdmin.php",
         data: parametros,
-        error: function(a,b,errorMsg) {
+        error: function (a, b, errorMsg) {
             console.log(errorMsg);
         }
-      }).done(function (a) {
+    }).done(function (a) {
         console.log(a);
         console.log("hecho");
-      });
+    });
 }
 
 // Apartado RESIDUOS_______________________________________________________________________
 function navResiduos() {
-    pagResiduos(); 
+    pagResiduos();
 }
 
 function pagResiduos() {

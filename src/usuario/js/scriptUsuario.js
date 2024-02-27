@@ -456,9 +456,7 @@ function pagResiduos(residuos) {
     let filaTitulos = crearElemento("tr");
     let titulos = ["descripcion", "observaciones"];
     for (let i = 0; i < titulos.length; i++) {
-        let celdaTitulo = crearElemento("th", titulos[i].charAt(0).toUpperCase() + titulos[i].slice(1).toLowerCase(), {
-            style: "padding:5px 30px;"
-        });
+        let celdaTitulo = crearElemento("th", titulos[i].charAt(0).toUpperCase() + titulos[i].slice(1).toLowerCase());
         filaTitulos.appendChild(celdaTitulo);
     }
     titulosTabla.appendChild(filaTitulos);
