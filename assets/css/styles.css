@@ -489,6 +489,7 @@ body {
     border-radius: 5px; 
 }
 
+/* styles.css */
 .sidebar {
     width: 240px;
     height: 100vh;
@@ -496,6 +497,21 @@ body {
     margin: 0;
     border-right: solid thin rgb(238, 238, 238);
     background-color: var(--aside-back);
+    transition: transform 0.5s ease-out, width 0.5s ease-out; /* TRANSICION BARRA LATERAL */
+}
+
+.sidebar-hidden {
+    /* BARRA LATERAL HIDDEN */
+    transform: translateX(-240px);
+    width: 0;
+}
+
+.page_container {
+    transition: margin-left 0.5s ease-out;
+}
+
+.content-sidebar-hidden {
+    margin-left: 0;
 }
 
 .sidebar_top {
