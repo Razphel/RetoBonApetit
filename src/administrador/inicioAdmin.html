@@ -4,16 +4,333 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Principal - Administrador</title>
-    <!-- JQuery -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <script src="./js/scriptAdmin.js"></script>
+    <title>Inicio admin</title>
+    <!-- Enlace a Boxicons CSS -->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <!-- Enlace a Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <!-- Enlace a la hoja de estilos CSS -->
+    <link rel="stylesheet" href="../../assets/css/styles.css">
+    <!-- Enlace a iconos de Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
 </head>
 
 <body>
-    <h1>Pagina del Administrador.</h1>
-    <a href="../inicio.html">Volver al inicio.</a>
-    <button id="cerrarSesion">Cerrar Sesion</button>
-</body>
+    <div class="layout_wrapper">
+        <!-- layout_container se divide en dos: aside y contenedor principal -->
+        <div class="layout_container row">
+            <!-- sidebar -->
+            <div class="sidebar col-auto">
+                <div class="sidebar_top">
+                    <div class="logo_container">
+                        <img src="../../assets/img/logo/logotipo.png" alt="Bon Appétit">
+                    </div>
+                </div>
+                <div class="sidebar_bottom">
+                    <ul class="sidebar_container scrollable pos-r ps ps--active-y">
+                        <li class="active">
+                            <a href="#" id="navInicio" data-toggle="collapse" aria-expanded="false">
+                                <div class="nav_container">
+                                    <div class="nav_content">
+                                        <div class="nav_container_left">
+                                            <i class='bx bx-home-alt-2'></i>
+                                            <p>Inicio</p>
+                                        </div>
+                                    </div>
+                                </div> 
+                            </a>
+                        </li>
 
+                        <li class="active">
+                            <a href="#menuCategorias" id="navCategorias" data-toggle="collapse" aria-expanded="false">
+                                <div class="nav_container">
+                                    <div class="nav_content">
+                                        <div class="nav_container_left">
+                                            <i class='bx bx-category'></i>
+                                            <p>Categorías</p>
+                                        </div>
+                                        <div class="nav_container_right">
+                                            <!-- Dropdown toggle -->
+                                            <i class="bi bi-chevron-right" data-bs-toggle="dropdown" aria-expanded="false"></i>
+                                        </div>
+                                    </div>
+                                </div> 
+                            </a>
+                            <ul class="collapse" id="menuCategorias">
+                                <li>
+                                    <a href="#" id="navListarCategorias">Listar categorías</a>
+                                </li>
+                                <li>
+                                    <a href="#" id="navAñadirCategoria">Nueva categoría</a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li class="active">
+                            <a href="#menuProductos" id="navProductos" data-toggle="collapse" aria-expanded="false">
+                                <div class="nav_container">
+                                    <div class="nav_content">
+                                        <div class="nav_container_left">
+                                            <i class='bx bx-cookie'></i>
+                                            <p>Productos</p>
+                                        </div>
+                                        <div class="nav_container_right">
+                                            <!-- Dropdown toggle -->
+                                            <i class="bi bi-chevron-right" data-bs-toggle="dropdown" aria-expanded="false"></i>
+                                        </div>
+                                    </div>
+                                </div> 
+                            </a>
+                            <ul class="collapse" id="menuProductos">
+                                <li>
+                                    <a href="#" id="navListarProductos">Listar productos</a>
+                                </li>
+                                <li>
+                                    <a href="#" id="navAñadirProducto">Nuevo producto</a>
+                                </li>
+                                <li>
+                                    <a href="#" id="navUdMedida">Ud. de medida</a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li class="active">
+                            <a href="#" id="navSolicitudes" data-toggle="collapse" aria-expanded="false">
+                                <div class="nav_container">
+                                    <div class="nav_content">
+                                        <div class="nav_container_left">
+                                            <i class='bx bx-receipt'></i>
+                                            <p>Solicitudes</p>
+                                        </div>
+                                    </div>
+                                </div> 
+                            </a>
+                        </li>
+
+                        <li class="active">
+                            <a href="#menuPedidos" id="navPedidos" data-toggle="collapse" aria-expanded="false">
+                                <div class="nav_container">
+                                    <div class="nav_content">
+                                        <div class="nav_container_left">
+                                            <i class='bx bxs-package'></i>
+                                            <p>Pedidos</p>
+                                        </div>
+                                        <div class="nav_container_right">
+                                            <!-- Dropdown toggle -->
+                                            <i class="bi bi-chevron-right" data-bs-toggle="dropdown" aria-expanded="false"></i>
+                                        </div>
+                                    </div>
+                                </div> 
+                            </a>
+                            <ul class="collapse" id="menuPedidos">
+                                <li>
+                                    <a href="#" id="navListarPedidos">Listar pedidos</a>
+                                </li>
+                                <li>
+                                    <a href="#" id="navNuevoPedido">Nuevo pedido</a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li class="active">
+                            <a href="#menuUsuarios" id="navUsuarios" data-toggle="collapse" aria-expanded="false">
+                                <div class="nav_container">
+                                    <div class="nav_content">
+                                        <div class="nav_container_left">
+                                            <i class='bx bx-user'></i>
+                                            <p>Usuarios</p>
+                                        </div>
+                                        <div class="nav_container_right">
+                                            <!-- Dropdown toggle -->
+                                            <i class="bi bi-chevron-right" data-bs-toggle="dropdown" aria-expanded="false"></i>
+                                        </div>
+                                    </div>
+                                </div> 
+                            </a>
+                            <ul class="collapse" id="menuUsuarios">
+                                <li>
+                                    <a href="#" id="navListarUsuarios">Listar usuarios</a>
+                                </li>
+                                <li>
+                                    <a href="#" id="navAñadirUsuario">Añadir usuario</a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li class="active">
+                            <a href="#menuProveedores" id="navProveedores" data-toggle="collapse" aria-expanded="false">
+                                <div class="nav_container">
+                                    <div class="nav_content">
+                                        <div class="nav_container_left">
+                                            <i class='bx bx-store'></i>
+                                            <p>Proveedores</p>
+                                        </div>
+                                        <div class="nav_container_right">
+                                            <!-- Dropdown toggle -->
+                                            <i class="bi bi-chevron-right" data-bs-toggle="dropdown" aria-expanded="false"></i>
+                                        </div>
+                                    </div>
+                                </div> 
+                            </a>
+                            <ul class="collapse" id="menuProveedores">
+                                <li>
+                                    <a href="#" id="navListarProveedores">Listar proveedores</a>
+                                </li>
+                                <li>
+                                    <a href="#" id="navAñadirProveedor">Añadir proveedor</a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li class="active">
+                            <a href="#" id="navResiduos" data-toggle="collapse" aria-expanded="false">
+                                <div class="nav_container">
+                                    <div class="nav_content">
+                                        <div class="nav_container_left">
+                                            <i class='bx bx-trash'></i>
+                                            <p>Residuos</p>
+                                        </div>
+                                    </div>
+                                </div> 
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- page_container (contenido particular de cada página) -->
+            <div class="page_container col bg-secondary">
+                <div class="page_layout mb-5 h-100">
+                    <!-- header superior -->
+                    <div class="topbar static-top">
+                        <div class="topbar_container">
+                            <div class="topbar_left">
+                                <i class="bi bi-list"></i>
+                                <div class="input-group">
+                                    <div class="input-group-prepend input-group">
+                                        <span class="input-group-text searchbar"><i class="bi bi-search"></i></span>
+                                        <input type="text" class="form-control searchbar" placeholder="Buscar...">
+                                    </div>
+                                </div>                                  
+                            </div>
+
+                            <div class="topbar_right">
+                                <div class="topbar_icons">
+                                    <div class="dropdown">
+                                        <a  href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <div class="icon_container">
+                                                <i class="bi bi-grid"></i>
+                                            </div>
+                                        </a>
+                                            
+                                        <div class="dropdown-menu admin_shortcuts_container" aria-labelledby="gridDropdown">
+                                            <div class="titulo_shortcuts">
+                                                <p>Atajos para crear</p>
+                                            </div>
+                                           
+                                            <div class="admin_shortcuts_grid">
+                                                <a class="dropdown-item" href="#" id="shortcut_categoria">
+                                                    <div class="caja_shortcuts shadow-sm">
+                                                        <i class="bx bx-category"></i> 
+                                                        <p>Categoría</p>
+                                                    </div>
+                                                </a>
+                                                <a class="dropdown-item" href="#" id="shortcut_producto">
+                                                    <div class="caja_shortcuts shadow-sm">
+                                                        <i class="bx bx-cookie"></i> 
+                                                        <p>Producto</p>
+                                                    </div>
+                                                </a>
+                                                <a class="dropdown-item" href="#" id="shortcut_medida">
+                                                    <div class="caja_shortcuts shadow-sm">
+                                                        <i class="bi bi-bucket"></i> 
+                                                        <p>Ud. de medida</p>
+                                                    </div>
+                                                </a>
+                                                <a class="dropdown-item" href="#" id="shortcut_usuario">
+                                                    <div class="caja_shortcuts shadow-sm">
+                                                        <i class="bi bi-person-plus-fill"></i> 
+                                                        <p>Usuario</p>
+                                                    </div>
+                                                </a>
+                                                <a class="dropdown-item" href="#" id="shortcut_proveedor">
+                                                    <div class="caja_shortcuts shadow-sm">
+                                                        <i class="bi bi-shop"></i> 
+                                                        <p>Proveedor</p>
+                                                    </div>
+                                                </a>
+                                                <a class="dropdown-item" href="#" id="shortcut_pedido">
+                                                    <div class="caja_shortcuts shadow-sm">
+                                                        <i class="bi bi-basket3"></i> 
+                                                        <p>Pedido</p>
+                                                    </div>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="dropdown">
+                                        <a href="#" role="button" id="brightnessDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <div class="icon_container">
+                                                <i id="iconoPrincipal" class="bi bi-brightness-high"></i>
+                                            </div>
+                                        </a>
+                            
+                                        <div class="dropdown-menu" aria-labelledby="brightnessDropdown">
+                                            <a id="modoOscuro" class="dropdown-item dropdown_inline" href="#">
+                                                <span id="iconoModoOscuro" class="bi bi-moon dropdown_icon_margin"></span>
+                                                <p>Modo oscuro</p> 
+                                            </a>
+                                            <a id="modoClaro" class="dropdown-item dropdown_inline" href="#">
+                                                <span id="iconoModoClaro" class="bi bi-brightness-high dropdown_icon_margin"></span>
+                                                <p>Modo claro</p>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="dropdown show profile_container">
+                                    <a class="" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <div class="topbar_profile">
+                                            <div class="profile_icon">
+                                                <i class="bi bi-person-fill"></i>
+                                            </div>
+                                            <div class="topbar_profile_info">
+                                                <p id="nombrecompleto" class="topbar_profile_name">Nombre y apellido</p>
+                                                <p id="username" class="topbar_profile_account">Usuario</p>
+                                            </div>
+                                        </div>
+                                    </a>
+                                  
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                        <a id="cerrarSesion" class="dropdown-item dropdown_inline" href="#">
+                                            <i class="bi bi-box-arrow-right dropdown_icon_margin"></i> 
+                                            <p>Cerrar sesión</p>
+                                        </a>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- contenedor -->
+                    <div id="contenedor" class="content_wrapper">
+                    </div>
+                    <!-- fin del page_layout -->
+                </div>
+                <!-- fin del page_container -->
+            </div>
+            <!-- fin del layout_container -->
+        </div>
+        <!-- fin del layout_wrapper -->
+    </div>
+
+    <!-- Scripts -->
+    <script src="../../assets/js/useryadmin.js"></script>
+    <script src="../../src/administrador/js/scriptAdmin.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <!-- Bootstrap JS -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
+</body>
 </html>

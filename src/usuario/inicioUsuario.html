@@ -4,26 +4,178 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Principal - Usuario</title>
-    <!-- Bootstrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <!-- JQuery -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <script src="./js/scriptUsuario.js"></script>
+    <title>Inicio usuario</title>
+    <!-- Enlace a Boxicons CSS -->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <!-- Enlace a Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <!-- Enlace a la hoja de estilos CSS -->
+    <link rel="stylesheet" href="../../assets/css/styles.css">
+    <!-- Enlace a iconos de Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
 </head>
 
 <body>
-    <h1>Pagina del Usuario.</h1>
-    <a href="../inicio.html">Volver al inicio.</a>
-    <button id="cerrarSesion">Cerrar Sesion</button>
-    <button id="btnHistorial">Mostrar Historial</button>
-    <button id="btnCategorias">Categorias</button>
+    <div class="layout_wrapper">
+        <!-- layout_container se divide en dos: aside y contenedor principal -->
+        <div class="layout_container row">
+            <!-- sidebar -->
+            <div class="sidebar col-auto">
+                <div class="sidebar_top">
+                    <div class="logo_container">
+                        <img src="../../assets/img/logo/logotipo.png" alt="Bon Appétit">
+                    </div>
+                </div>
+                <div class="sidebar_bottom">
+                    <ul class="sidebar_container py-1">
+                        <li>
+                            <a href="./inicioUsuario.html" class="nav_link" id="navInicio">
+                                <div class="nav_container">
+                                    <div class="nav_container_left">
+                                        <i class='bx bx-home-alt-2'></i>
+                                        <p>Inicio</p>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="nav_link" id="navProductos">
+                                <div class="nav_container">
+                                    <div class="nav_container_left">
+                                        <i class='bx bx-cookie'></i>
+                                        <p>Productos</p>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="nav_link" id="navPedidos">
+                                <div class="nav_container">
+                                    <div class="nav_container_left">
+                                        <i class='bx bx-receipt'></i>
+                                        <p>Pedidos</p>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="nav_link" id="navProveedores">
+                                <div class="nav_container">
+                                    <div class="nav_container_left">
+                                        <i class='bx bx-store'></i>
+                                        <p>Proveedores</p>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="nav_link" id="navResiduos">
+                                <div class="nav_container">
+                                    <div class="nav_container_left">
+                                        <i class='bx bx-trash'></i>
+                                        <p>Residuos</p>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
 
-    <div class="container" id="contenedor">
-        <!-- Contenido Dinamico -->
+            <!-- page_container (contenido particular de cada página) -->
+            <div class="page_container col bg-secondary">
+                <div class="page_layout h-100">
+                    <!-- header superior -->
+                    <div class="topbar static-top">
+                        <div class="topbar_container">
+                            <div class="topbar_left">
+                                <i class="bi bi-list"></i>
+                            </div>
+
+                            <div class="topbar_right">
+                                <div class="topbar_icons">
+                                    <div class="dropdown">
+                                        <a href="#" role="button" id="brightnessDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <div class="icon_container">
+                                                <i id="iconoPrincipal" class="bi bi-brightness-high"></i>
+                                            </div>
+                                        </a>
+                            
+                                        <div class="dropdown-menu" aria-labelledby="brightnessDropdown">
+                                            <a id="modoOscuro" class="dropdown-item dropdown_inline" href="#">
+                                                <span id="iconoModoOscuro" class="bi bi-moon dropdown_icon_margin"></span>
+                                                <p>Modo oscuro</p> 
+                                            </a>
+                                            <a id="modoClaro" class="dropdown-item dropdown_inline" href="#">
+                                                <span id="iconoModoClaro" class="bi bi-brightness-high dropdown_icon_margin"></span>
+                                                <p>Modo claro</p>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <i id="abrirCarrito" class="bi bi-cart2"></i>
+                                </div>
+
+                                <div class="dropdown show profile_general">
+                                    <a class="" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <div class="topbar_profile">
+                                            <div id="userIcon" class="profile_icon">
+                                                
+                                            </div>
+                                            <div class="topbar_profile_info">
+                                                <p class="topbar_profile_name"></p>
+                                                <p class="topbar_profile_account"></p>
+                                            </div>
+                                        </div>
+                                    </a>
+                                   
+                                    <div class="dropdown-menu dropdown_profile" aria-labelledby="dropdownMenuLink">
+                                        <a id="cerrarSesion" class="dropdown-item dropdown_inline" href="#">
+                                            <i class="bi bi-box-arrow-right dropdown_icon_margin"></i> 
+                                            <p>Cerrar sesión</p>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- contenedor -->
+                    <div class="row">
+                        <div id="contenedor" class="content_wrapper col"></div>
+                        <!-- Carrito -->
+                        <div id="cart" class="carritoLateral col-3">
+                            <div class="carrito_container">                            
+                                <div class="cart_top_container">
+                                    <div class="cart_top_info">
+                                        <span id="numProdCesta" class="numProdCesta"></span>
+                                        <span class="texto_topCart">productos en la cesta</span>
+                                    </div>
+                                    <i id="cerrarCarrito" class="bi bi-x cerrarCarrito"></i>
+                                </div>
+                                <div class="cart_bottom_container">
+                                    <div id="cart_bottom_product" class="cart_bottom_product"></div>
+                                    <div class="cart_bottom_buttons_container">
+                                        <div class="cart_bottom_buttons">
+                                            <input id="btn_limpiarCesta" class="btn btn_custom_2" type="submit" value="Vaciar cesta">
+                                            <input id="btn_hacerPedido" class="btn btn_custom_1" type="submit" value="Hacer pedido">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- fin del page_layout -->
+                </div>
+                <!-- fin del page_container -->
+            </div>
+            <!-- fin del layout_container -->
+        </div>
+        <!-- fin del layout_wrapper -->
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <!-- Scripts -->
+    <script src="../../assets/js/useryadmin.js"></script>
+    <script src="../../src/usuario/js/scriptUsuario.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 </body>
-
 </html>
