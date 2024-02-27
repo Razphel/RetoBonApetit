@@ -160,7 +160,7 @@ function pagAñadirCategoria() {
 
     let contenedorFormTop = crearElemento('div', undefined, { // van el contenedor left y right
         class: 'form_contenedor_top'
-    })
+    });
 
     let contenedorFormLeft = crearElemento('div', undefined, { // columna izquierda del formulario
         class: 'form_contenedor_left'
@@ -222,6 +222,7 @@ function pagAñadirCategoria() {
 
     // Número de imágenes
     let numeroImagenes = 25; 
+    let imgItemDropdown = ''; 
 
     // Crear las opciones del desplegable con las imágenes
     for (let i = 1; i <= numeroImagenes; i++) {
@@ -231,8 +232,9 @@ function pagAñadirCategoria() {
         // Eliminar los últimos cuatro caracteres (".png") del nombre de la imagen
         let nombreImagenSinExtension = nombreImagen.slice(0, -4);
 
-        let imgItemDropdown = crearElemento('div', undefined, {
-            id: 'dropdown-item'
+        imgItemDropdown = crearElemento('a', undefined, {
+            id: 'dropdown-item',
+            href: '#'
         });
         
         // Crear y agregar la opción al desplegable
@@ -242,13 +244,13 @@ function pagAñadirCategoria() {
             src: rutaCarpeta + nombreImagen,
             alt: nombreImagenSinExtension
         });
-        console.log(imgCategoriaDropdown); 
         imgCategoriaDropdown.addEventListener("click", function() {
             imagenCategoria.src = rutaCarpeta + nombreImagen;
         });
         imgItemDropdown.appendChild(imgCategoriaDropdown);
+        estructuraGridGaleria.appendChild(imgItemDropdown);
     }
-    estructuraGridGaleria.appendChild(imgItemDropdown);
+    console.log(estructuraGridGaleria); 
 
     // Cambiar la imagen seleccionada cuando se elija una opción del desplegable
     imagenCategoriaContenedor.addEventListener("change", function() {
@@ -298,11 +300,12 @@ function pagAñadirCategoria() {
     });
     contenedorObservaciones.appendChild(labelObservaciones);
 
-    let inputObservaciones = crearElemento('input', undefined, {
+    let inputObservaciones = crearElemento('textarea', undefined, {
         type: 'text',
         id: 'newObservacionCategoria',
         class: 'form-control',
-        placeholder: 'Observación de la nueva categoría'
+        placeholder: 'Observación de la nueva categoría',
+        rows: '5', 
     });
     contenedorObservaciones.appendChild(inputObservaciones); 
 
