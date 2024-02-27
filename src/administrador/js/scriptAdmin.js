@@ -179,21 +179,41 @@ function pagAñadirCategoria() {
         for: 'iconoCategoriaForm',
         class: 'form-label'
     });
+    contenedorImagen.appendChild(labelImagen);
+
     let contenedorImagenSeleccionar = crearElemento('div', undefined, {
-        id: 'contenedorImagen'
+        id: 'dropdown contenedorImagen'
+    });
+    let etiquetaEnlace = crearElemento('a', undefined, {
+        href: '#',
+        role: 'button',
+        id: 'dropdownImgCategoria',
+        'data-bs-toggle': 'dropdown',
+        'aria-expanded': 'false'
+    });
+        let imagenCategoriaContenedor = crearElemento('div', undefined, {
+            id: 'imagenCategoriaContenedor',
+            class: 'imagenCategoriaContenedor'
+        })
+        let iconSeleccionarImg = crearElemento('i', undefined, { // por defecto aparece un + 
+            class: 'bi bi-x'
+        }); 
+
+        imagenCategoriaContenedor.appendChild(iconSeleccionarImg); 
+        etiquetaEnlace.appendChild(imagenCategoriaContenedor); 
+
+    let contenedorGaleriaImg = crearElemento('div', undefined, {
+        class: 'new_img_categoria_container'
+    });
+    let estructuraGridGaleria = crearElemento('div', undefined, {
+        class: 'img_categoria_grid'
     })
+    let imgItemDropdown = crearElemento('div', undefined, {
+        id: 'dropdown-item'
+    });
     let imagenCategoria = crearElemento('img', undefined, {
         id: 'imagenSeleccionada',
         alt: 'Imagen de categoría'
-    });
-
-    contenedorImagenSeleccionar.appendChild(imagenCategoria); 
-
-    let contenedorGaleriaImg = crearElemento('div', undefined, {
-        class: 'select-grid'
-    });
-    let selectImagen = crearElemento('select', undefined, {
-        id: 'seleccionImagen'
     });
 
     // Mostrar imágenes en el select para seleccionar.......................................
@@ -216,19 +236,24 @@ function pagAñadirCategoria() {
             value: rutaCarpeta + nombreImagen,
             textContent: nombreImagenSinExtension
         });
-        selectImagen.appendChild(option);
+        
+        estructuraGridGaleria.appendChild(imgItemDropdown);
     }
-
-    contenedorGaleriaImg.appendChild(selectImagen); 
-    contenedorImagen.appendChild(labelImagen); 
-    contenedorImagen.appendChild(contenedorImagenSeleccionar); 
-    contenedorFormLeft.appendChild(contenedorImagen); // añadir a la columna izquierda del contendor
 
     // Cambiar la imagen seleccionada cuando se elija una opción del desplegable
     selectImagen.addEventListener("change", function() {
-        const rutaImagenSeleccionada = selectImagen.value;
+        let rutaImagenSeleccionada = selectImagen.value;
         imagenCategoria.src = rutaImagenSeleccionada;
     });
+
+    imgItemDropdown.appendChild(imagenCategoria); 
+    estructuraGridGaleria.appendChild(imgItemDropdown);
+    contenedorGaleriaImg.appendChild(estructuraGridGaleria);
+
+    contenedorImagenSeleccionar.appendChild(etiquetaEnlace);
+    contenedorImagenSeleccionar.appendChild(contenedorGaleriaImg);
+
+    contenedorImagen.appendChild(contenedorImagenSeleccionar); 
 
     //. BLOQUE 2....................................................
     let contenedorNombre = crearElemento('div', undefined, {
@@ -807,10 +832,13 @@ function navAñadirProveedor() {
 
 // Formulario 6. Añadir proveedor.....................
 function pagAñadirProveedor() {
+    crearPlantillaFormularios('Nuevo proveedor', 'Datos del nuevo proveedor', 'Proveedores existentes');
     // Contenedor general de la pagina
-    let contenedor = document.querySelector("#contenedor");
+    let contenedorForm = document.querySelector("#contenedor");
 
-    contenedor.innerHTML = "";
+    let formProveedores = crearElemento('form', undefined, []);
+
+    contenedorForm.innerHTML = "";
 
     // Título de la página
     let h1Inicio = crearElemento("h1", "Nuevo proveedor", {
@@ -818,7 +846,7 @@ function pagAñadirProveedor() {
         class: "py-3 mb-3 mt-4"
     });
 
-    contenedor.appendChild(h1Inicio);
+    contenedorForm.appendChild(h1Inicio);
 
     let camposNewProveedor = {
         nombre: {
@@ -935,7 +963,11 @@ function pagAñadirProveedor() {
             }
         }
     };
-    crearFormulario(camposNewProveedor, contenedor);
+
+    /*
+    formProveedores.appendChild(camposNewProveedor); 
+    contenedorForm.appendChild(formProveedores);
+    */
 }
 
 // Apartado RESIDUOS_______________________________________________________________________
