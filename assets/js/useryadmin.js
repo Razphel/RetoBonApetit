@@ -43,7 +43,7 @@ function principal() {
     nombreApellido.innerHTML = usuarioActual.nombre + " " + usuarioActual.apellido;
     nombreCuenta.innerHTML = usuarioActual.id_usuario;
 
-    modoColor(); 
+    modoColor();
     generarIconUser();
 }
 
@@ -51,7 +51,7 @@ function modoColor() {
     const iconoPrincipal = document.getElementById("iconoPrincipal");
 
     // Event listener para cambiar entre los modos oscuro y claro
-    document.getElementById("modoOscuro").addEventListener("click", function() {
+    document.getElementById("modoOscuro").addEventListener("click", function () {
         // Cambiar la clase del icono principal al modo oscuro
         iconoPrincipal.classList.replace("bi-brightness-high", "bi-moon");
 
@@ -60,7 +60,7 @@ function modoColor() {
     });
 
     // Event listener para cambiar entre los modos oscuro y claro
-    document.getElementById("modoClaro").addEventListener("click", function() {
+    document.getElementById("modoClaro").addEventListener("click", function () {
         // Cambiar la clase del icono principal al modo claro
         iconoPrincipal.classList.replace("bi-moon", "bi-brightness-high");
 
@@ -136,7 +136,7 @@ function crearElemento(etiqueta, contenido, atributos) {
     - campos(recibe un array de objetos con todos los elementos a incluir en el formulario)
 */
 function crearFormulario(campos, contenedor) {
-    const formulario = document.createElement('form');
+    const formulario = crearElemento('form', undefined, { id: 'formulario' });
 
     // Recorrer las claves del objeto campos
     for (const nombreCampo in campos) {
@@ -310,15 +310,15 @@ function crearPlantillaFormularios(tituloPagina, tituloLeft, tituloRight) {
         class: 'card p-4 pagForm_columnaLeft'
     });
     let titulo_container_left = crearElemento('h4', tituloLeft, {
-        class: 'mb-5' 
+        class: 'mb-5'
     });
     let contenedorForm = crearElemento('div', undefined, {
         id: 'contenedorForm',
         class: 'contenedorForm'
     });
 
-    container_left.appendChild(titulo_container_left); 
-    container_left.appendChild(contenedorForm); 
+    container_left.appendChild(titulo_container_left);
+    container_left.appendChild(contenedorForm);
 
     let container_right = crearElemento('div', undefined, {
         class: 'card p-4 pagForm_columnaRight'
@@ -326,7 +326,7 @@ function crearPlantillaFormularios(tituloPagina, tituloLeft, tituloRight) {
     let titulo_container_right = crearElemento('h4', tituloRight, {
         class: 'mb-5'
     });
-    container_right.appendChild(titulo_container_right); 
+    container_right.appendChild(titulo_container_right);
 
     parteInferior.appendChild(container_left);
     parteInferior.appendChild(container_right);

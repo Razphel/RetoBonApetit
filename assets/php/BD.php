@@ -262,11 +262,41 @@ class BD
             $resultado = $conexion->query($sql);
 
             // Crear un array para almacenar todas las filas        
-            $fila = $resultado->fetch();
+            $filas = [];
+            // Recorrer los resultados y almacenar cada fila en el array        
+            while ($fila = $resultado->fetch()) {
+                $filas[] = $fila;
+            }
         } catch (Exception $e) {
             throw new Exception("ERROR: " + $e);
         }
         //Esta consulta te devuelve un array de arrays con todos los datos de la tabla producto.
-        return $fila;
+        return $filas;
+    }
+
+    public static function imprimirResiduos()
+    {
+        try {
+            $conexion = self::conexionBD();
+            $sql = "SELECT productos.descripcion AS 'descripcion_productos', residuos.descripcion AS 'descripcion_residuos', residuos.observaciones AS 'observaciones_residuos'
+            FROM productos 
+            INNER JOIN producto_residuo
+            ON productos.id_productos = producto_residuo.fk_producto
+            INNER JOIN residuos
+            ON producto_residuo.fk_residuo = residuos.id_residuos";
+            
+            $resultado = $conexion->query($sql);
+
+            // Crear un array para almacenar todas las filas        
+            $filas = [];
+            // Recorrer los resultados y almacenar cada fila en el array        
+            while ($fila = $resultado->fetch()) {
+                $filas[] = $fila;
+            }
+        } catch (Exception $e) {
+            throw new Exception("ERROR: " + $e);
+        }
+        //Esta consulta te devuelve un array de arrays con todos los datos de la tabla producto.
+        return $filas;
     }
 }

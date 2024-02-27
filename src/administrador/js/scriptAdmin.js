@@ -88,28 +88,6 @@ function principal() {
     pagInicio();
 }
 
-
-function mostrarUsuarios(respuesta) {
-    //Datos recibidos: "id_usuarios" - "admin" - "nombre_usuario" - ""
-
-    //Contenedor general de la pagina.
-    let contenedor = document.querySelector("#contenedor");
-    contenedor.innerHTML = "";
-
-    //Titulo de la pagina.
-    let parteSuperior = crearElemento("div", undefined, {
-        class: "row"
-    });
-    let h1Inicio = crearElemento("h1", "Usuarios", {
-        id: "tituloApartado",
-        class: "py-3 mb-3 mt-4"
-    });
-    parteSuperior.appendChild(h1Inicio);
-    contenedor.appendChild(parteSuperior);
-
-
-}
-
 // Apartado INICIO____________________________________________________________________
 function navInicio() {
     pagInicio();
@@ -540,113 +518,6 @@ function newUdMedida() {
     });
 }
 
-//Función que imprime la tabla de Unidades de Medida
-function tablaUnidadesMedida(respuesta) {
-    //Datos de unidades recibidos: "id_unidades" - "descripcion" - "observaciones"
-    let unidades = JSON.parse(respuesta);
-
-    //La parte derecha del formulario, falta darle un id,
-    let contenedorDerecho = document.querySelector(".pagForm_columnaRight");
-    let buscador = crearElemento("input", undefined, {
-        id: "buscadorFormDerecho"
-    });
-
-    buscador.addEventListener("input", function (e) {
-        // Convertir a minúsculas y quitar espacios en blanco al inicio y al final.
-        let textoBuscar = this.value.toLowerCase().trim();
-
-        // Obtener todas las filas de la tabla.
-        let filasTabla = tablaBody.querySelectorAll("tr");
-
-        // Mostrar u ocultar según el texto del buscador.
-        filasTabla.forEach(fila => {
-            // Obtener la descripción de la fila y convertirla a minúsculas.
-            let descripcion = fila.querySelector("td").innerHTML.toLowerCase();
-
-            // Mostrar la fila si coincide con el texto buscado o si no se ha ingresado nada en el input.
-            if (descripcion.includes(textoBuscar) || textoBuscar === "") {
-                fila.style.display = ""; // Mostrar la fila.
-            } else {
-                fila.style.display = "none"; // Ocultar la fila.
-            }
-        });
-    });
-
-    contenedorDerecho.appendChild(buscador);
-
-    //Tabla.
-    let tablaUnidades = crearElemento("table", undefined, {
-        class: "table table-responsive table-hover mt-4"
-    });
-
-    let tablaBody = crearElemento("tbody");
-    //Ahora agrego el contenido.
-    unidades.forEach(fila => {
-        let filaBody = crearElemento("tr");
-        let celdaDescripcion = crearElemento("td", fila["descripcion"]);
-        let celdaBotones = crearElemento("td");
-
-        // Crear el div principal con la clase dropdown
-        let divDropdown = crearElemento("div", undefined, {
-            class: "dropdown"
-        });
-
-        // Crear el enlace con los atributos y contenido dados
-        let enlace = crearElemento("a", undefined, {
-            href: "#",
-            role: "button",
-            id: "unidadDropdown_" + fila.id_unidades,
-            "data-bs-toggle": "dropdown",
-            "aria-expanded": "false"
-        });
-
-        // Crear el contenedor del icono
-        let iconContainer = crearElemento("div", undefined, { class: "icon_container" });
-
-        // Crear el icono principal
-        let iconoPrincipal = crearElemento("i", undefined, { id: "iconoPrincipal_" + fila.id_unidades, class: "bi bi-three-dots-vertical" });
-
-        // Agregar el icono principal al contenedor de iconos
-        iconContainer.appendChild(iconoPrincipal);
-
-        // Agregar el contenedor de iconos al enlace
-        enlace.appendChild(iconContainer);
-
-        // Crear el div del menú desplegable con los atributos dados
-        let divDropdownMenu = crearElemento("div", undefined, { class: "dropdown-menu", "aria-labelledby": "unidadDropdown_" + fila.id_unidades });
-
-        // Crear los elementos de las opciones del menú desplegable
-        let opcionModificar = crearElemento("a", undefined, { class: "dropdown-item", href: "#" });
-        let iconoModificar = crearElemento("span", undefined, { class: "bi bi-pencil dropdown_icon_margin" });
-        let textoModificar = crearElemento("span", "Editar");
-        opcionModificar.appendChild(iconoModificar);
-        opcionModificar.appendChild(textoModificar);
-
-        let opcionEliminar = crearElemento("a", undefined, { class: "dropdown-item", href: "#" });
-        let iconoEliminar = crearElemento("span", undefined, { class: "bi bi-trash3 dropdown_icon_margin" });
-        let textoEliminar = crearElemento("span", "Eliminar");
-        opcionEliminar.appendChild(iconoEliminar);
-        opcionEliminar.appendChild(textoEliminar);
-
-        // Agregar las opciones al div del menú desplegable
-        divDropdownMenu.appendChild(opcionModificar);
-        divDropdownMenu.appendChild(opcionEliminar);
-
-        // Agregar el enlace y el menú desplegable al div principal
-        divDropdown.appendChild(enlace);
-        divDropdown.appendChild(divDropdownMenu);
-
-        // Agregar el div principal a la celda de botones
-        celdaBotones.appendChild(divDropdown);
-
-        filaBody.appendChild(celdaDescripcion);
-        filaBody.appendChild(celdaBotones);
-        tablaBody.appendChild(filaBody);
-    });
-    tablaUnidades.appendChild(tablaBody);
-    contenedorDerecho.appendChild(tablaUnidades);
-}
-
 // Apartado PEDIDOS____________________________________________________________________
 function navPedidos() {
     navListarPedidos();
@@ -657,7 +528,6 @@ function navListarPedidos() {
 }
 
 function pagListarPedidos() { // mostrar el historial de pedidos del admin
-
 }
 
 function navNuevoPedido() {
@@ -677,7 +547,7 @@ function navUsuarios() {
     };
     $.ajax({
         //Ubicacion del archivo php que va a manejar los valores.
-        url: "./php/consultaAdmin.php",
+        url: "./php/consultaUsuario.php",
         //Metodo en que los va a recibir.
         type: "GET",
         data: parametros,
@@ -721,11 +591,28 @@ function pagAñadirUsuario() {
     contenedorForm = document.querySelector('#contenedorForm');
 
     let camposNewUsuario = {
+        nombreUsuario: {
+            etiqueta: 'label',
+            contenido: 'Nombre Usuario',
+            atributos: {
+                for: 'newUserName',
+                class: 'form-label'
+            }
+        },
+        InputnombreUsuario: {
+            etiqueta: 'input',
+            atributos: {
+                type: 'text',
+                id: 'newUserName',
+                class: 'form-control',
+                placeholder: 'Nombre del nuevo usuario'
+            }
+        },
         nombre: {
             etiqueta: 'label',
             contenido: 'Nombre',
             atributos: {
-                for: 'newUserName',
+                for: 'newName',
                 class: 'form-label'
             }
         },
@@ -733,7 +620,41 @@ function pagAñadirUsuario() {
             etiqueta: 'input',
             atributos: {
                 type: 'text',
-                id: 'newUserName',
+                id: 'newName',
+                class: 'form-control',
+                placeholder: 'Nombre personal del usuario'
+            }
+        },
+        apellido: {
+            etiqueta: 'label',
+            contenido: 'Apellido',
+            atributos: {
+                for: 'newApellido',
+                class: 'form-label'
+            }
+        },
+        inputApellido: {
+            etiqueta: 'input',
+            atributos: {
+                type: 'text',
+                id: 'newApellido',
+                class: 'form-control',
+                placeholder: 'Apellido del nuevo usuario'
+            }
+        },
+        password: {
+            etiqueta: 'label',
+            contenido: 'Contraseña',
+            atributos: {
+                for: 'newPassword',
+                class: 'form-label'
+            }
+        },
+        inputPassword: {
+            etiqueta: 'input',
+            atributos: {
+                type: 'text',
+                id: 'newPassword',
                 class: 'form-control',
                 placeholder: 'Nombre del nuevo usuario'
             }
@@ -751,6 +672,22 @@ function pagAñadirUsuario() {
             atributos: {
                 type: 'text', //! revisar tipo de input del toggle de usuario activo
                 id: 'userActive',
+                class: 'form-control'
+            }
+        },
+        admin: {
+            etiqueta: 'label',
+            contenido: 'Admin',
+            atributos: {
+                for: 'userAdmin',
+                class: 'form-label'
+            }
+        },
+        inputAdmin: {
+            etiqueta: 'input',
+            atributos: {
+                type: 'text', //! revisar tipo de input del toggle de usuario activo
+                id: 'userAdmin',
                 class: 'form-control'
             }
         },
@@ -826,17 +763,54 @@ function pagAñadirUsuario() {
         },
         btnCrearUsuario: {
             etiqueta: 'input',
-            contenido: 'Crear ud. de medida',
             atributos: {
                 type: 'submit',
+                value: 'Crear usuario',
                 class: 'btn btn_custom_1',
-                onclick: 'crearUsuario()'
+                onclick: 'newUsuario()'
             }
         }
     };
     crearFormulario(camposNewUsuario, contenedorForm);
 }
 
+function newUsuario() {
+    let nombreUser = document.getElementById('newUserName').value;
+    let observaciones = document.getElementById('newUserObservacion').value;
+    let nombre = document.getElementById('newName').value;
+    let apellido = document.getElementById('newApellido').value;
+    let password = document.getElementById('newPassword').value;
+    let telefono = document.getElementById('newUserTelefono').value;
+    let email = document.getElementById('newUserEmail').value;
+    let activo = document.getElementById('userActive').value;
+    let admin = document.getElementById('userAdmin').value;
+    let parametros = {
+        NewUsuario: JSON.stringify({
+            admin: admin,
+            nombre_usuario: nombreUser,
+            nombre: nombre,
+            apellido: apellido,
+            email: email,
+            password: password,
+            activo: activo,
+            telefono: telefono,
+            observaciones: observaciones,
+        })
+    };
+    console.log(parametros);
+
+    $.ajax({
+        type: "POST",
+        url: "./php/consultaAdmin.php",
+        data: parametros,
+        error: function (a, b, errorMsg) {
+            console.log(errorMsg);
+        }
+    }).done(function (a) {
+        console.log(a);
+        console.log("hecho");
+    });
+}
 // Apartado PROVEEDORES___________________________________________________________________
 function navProveedores() {
     pagListarProveedores();
@@ -1017,7 +991,7 @@ function pagAñadirProveedor() {
     });
 }
 
-function tablaProveedor() {
+function tablaProveedores() {
 
 }
 
@@ -1057,4 +1031,141 @@ function navResiduos() {
 }
 
 function pagResiduos() {
+}
+
+function limpiarDatos() {
+    let formualario = document.getElementById("formulario");
+    formualario.reset();
+}
+
+function cancelar() {
+    window.location.href('./')
+}
+
+//Función que imprime la tabla de Unidades de Medida
+function tablaUnidadesMedida(respuesta) {
+    //Datos de unidades recibidos: "id_unidades" - "descripcion" - "observaciones"
+    let unidades = JSON.parse(respuesta);
+
+    //La parte derecha del formulario, falta darle un id,
+    let contenedorDerecho = document.querySelector(".pagForm_columnaRight");
+    let buscador = crearElemento("input", undefined, {
+        id: "buscadorFormDerecho"
+    });
+
+    buscador.addEventListener("input", function (e) {
+        // Convertir a minúsculas y quitar espacios en blanco al inicio y al final.
+        let textoBuscar = this.value.toLowerCase().trim();
+
+        // Obtener todas las filas de la tabla.
+        let filasTabla = tablaBody.querySelectorAll("tr");
+
+        // Mostrar u ocultar según el texto del buscador.
+        filasTabla.forEach(fila => {
+            // Obtener la descripción de la fila y convertirla a minúsculas.
+            let descripcion = fila.querySelector("td").innerHTML.toLowerCase();
+
+            // Mostrar la fila si coincide con el texto buscado o si no se ha ingresado nada en el input.
+            if (descripcion.includes(textoBuscar) || textoBuscar === "") {
+                fila.style.display = ""; // Mostrar la fila.
+            } else {
+                fila.style.display = "none"; // Ocultar la fila.
+            }
+        });
+    });
+
+    contenedorDerecho.appendChild(buscador);
+
+    //Tabla.
+    let tablaUnidades = crearElemento("table", undefined, {
+        class: "table table-responsive table-hover mt-4"
+    });
+
+    let tablaBody = crearElemento("tbody");
+    //Ahora agrego el contenido.
+    unidades.forEach(fila => {
+        let filaBody = crearElemento("tr");
+        let celdaDescripcion = crearElemento("td", fila["descripcion"]);
+        let celdaBotones = crearElemento("td");
+
+        // Crear el div principal con la clase dropdown
+        let divDropdown = crearElemento("div", undefined, {
+            class: "dropdown"
+        });
+
+        // Crear el enlace con los atributos y contenido dados
+        let enlace = crearElemento("a", undefined, {
+            href: "#",
+            role: "button",
+            id: "unidadDropdown_" + fila.id_unidades,
+            "data-bs-toggle": "dropdown",
+            "aria-expanded": "false"
+        });
+
+        // Crear el contenedor del icono
+        let iconContainer = crearElemento("div", undefined, { class: "icon_container" });
+
+        // Crear el icono principal
+        let iconoPrincipal = crearElemento("i", undefined, { id: "iconoPrincipal_" + fila.id_unidades, class: "bi bi-three-dots-vertical" });
+
+        // Agregar el icono principal al contenedor de iconos
+        iconContainer.appendChild(iconoPrincipal);
+
+        // Agregar el contenedor de iconos al enlace
+        enlace.appendChild(iconContainer);
+
+        // Crear el div del menú desplegable con los atributos dados
+        let divDropdownMenu = crearElemento("div", undefined, { class: "dropdown-menu", "aria-labelledby": "unidadDropdown_" + fila.id_unidades });
+
+        // Crear los elementos de las opciones del menú desplegable
+        let opcionModificar = crearElemento("a", undefined, { class: "dropdown-item", href: "#" });
+        let iconoModificar = crearElemento("span", undefined, { class: "bi bi-pencil dropdown_icon_margin" });
+        let textoModificar = crearElemento("span", "Editar");
+        opcionModificar.appendChild(iconoModificar);
+        opcionModificar.appendChild(textoModificar);
+
+        let opcionEliminar = crearElemento("a", undefined, { class: "dropdown-item", href: "#" });
+        let iconoEliminar = crearElemento("span", undefined, { class: "bi bi-trash3 dropdown_icon_margin" });
+        let textoEliminar = crearElemento("span", "Eliminar");
+        opcionEliminar.appendChild(iconoEliminar);
+        opcionEliminar.appendChild(textoEliminar);
+
+        // Agregar las opciones al div del menú desplegable
+        divDropdownMenu.appendChild(opcionModificar);
+        divDropdownMenu.appendChild(opcionEliminar);
+
+        // Agregar el enlace y el menú desplegable al div principal
+        divDropdown.appendChild(enlace);
+        divDropdown.appendChild(divDropdownMenu);
+
+        // Agregar el div principal a la celda de botones
+        celdaBotones.appendChild(divDropdown);
+
+        filaBody.appendChild(celdaDescripcion);
+        filaBody.appendChild(celdaBotones);
+        tablaBody.appendChild(filaBody);
+    });
+    tablaUnidades.appendChild(tablaBody);
+    contenedorDerecho.appendChild(tablaUnidades);
+}
+
+function mostrarUsuarios(respuesta) {
+    //Datos recibidos: "id_usuarios" - "admin" - "nombre_usuario" - ""
+
+    //Contenedor general de la pagina.
+    let contenedor = document.querySelector("#contenedor");
+    contenedor.innerHTML = "";
+
+    //Titulo de la pagina.
+    let parteSuperior = crearElemento("div", undefined, {
+        class: "row"
+    });
+    let h1Inicio = crearElemento("h1", "Usuarios", {
+        id: "tituloApartado",
+        class: "py-3 mb-3 mt-4"
+    });
+    parteSuperior.appendChild(h1Inicio);
+    contenedor.appendChild(parteSuperior);
+
+
 }
