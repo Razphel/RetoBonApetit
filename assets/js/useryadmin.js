@@ -43,14 +43,15 @@ function principal() {
     nombreApellido.innerHTML = usuarioActual.nombre + " " + usuarioActual.apellido;
     nombreCuenta.innerHTML = usuarioActual.id_usuario;
 
-    modoColor();
+    modoColor(); 
+    generarIconUser();
 }
 
 function modoColor() {
     const iconoPrincipal = document.getElementById("iconoPrincipal");
 
     // Event listener para cambiar entre los modos oscuro y claro
-    document.getElementById("modoOscuro").addEventListener("click", function () {
+    document.getElementById("modoOscuro").addEventListener("click", function() {
         // Cambiar la clase del icono principal al modo oscuro
         iconoPrincipal.classList.replace("bi-brightness-high", "bi-moon");
 
@@ -59,7 +60,7 @@ function modoColor() {
     });
 
     // Event listener para cambiar entre los modos oscuro y claro
-    document.getElementById("modoClaro").addEventListener("click", function () {
+    document.getElementById("modoClaro").addEventListener("click", function() {
         // Cambiar la clase del icono principal al modo claro
         iconoPrincipal.classList.replace("bi-moon", "bi-brightness-high");
 
@@ -68,6 +69,26 @@ function modoColor() {
     });
 }
 
+function generarIconUser() {
+    let usuarioActual = JSON.parse(localStorage.getItem("usuario"));
+
+    let nombre = usuarioActual.nombre;
+    let apellido = usuarioActual.apellido;
+    const siglas = nombre.substring(0, 1) + apellido.substring(0, 1);
+    const userIcon = document.getElementById('userIcon');
+    userIcon.textContent = siglas;
+    userIcon.style.backgroundColor = getRandomColor();
+}
+
+// genera un color aleatorio, se usa en el icono de usuario
+function getRandomColor() {
+    const letters = '0123456789ABCDEF';
+    let color = '#';
+    for (let i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+}
 
 function cerrarSesion() {
     localStorage.removeItem("usuario");
@@ -282,29 +303,30 @@ function crearPlantillaFormularios(tituloPagina, tituloLeft, tituloRight) {
 
     // Crear la parte inferior de la página con container_left y container_right
     let parteInferior = crearElemento('div', undefined, {
-        class: 'row'
+        class: 'row pagForm_columnas'
     });
 
     let container_left = crearElemento('div', undefined, {
-        class: 'container_left card p-4 col-12 col-lg-8 mb-sm-4 mb-lg-0'
+        class: 'card p-4 pagForm_columnaLeft'
     });
     let titulo_container_left = crearElemento('h4', tituloLeft, {
-        class: 'mb-5'
+        class: 'mb-5' 
     });
     let contenedorForm = crearElemento('div', undefined, {
-        id: 'contenedorForm'
+        id: 'contenedorForm',
+        class: 'contenedorForm'
     });
 
-    container_left.appendChild(titulo_container_left);
-    container_left.appendChild(contenedorForm);
+    container_left.appendChild(titulo_container_left); 
+    container_left.appendChild(contenedorForm); 
 
     let container_right = crearElemento('div', undefined, {
-        class: 'container_right card p-4 col-12 col-lg-4'
+        class: 'card p-4 pagForm_columnaRight'
     });
-    let titulo_container_right = crearElemento('div', tituloRight, {
+    let titulo_container_right = crearElemento('h4', tituloRight, {
         class: 'mb-5'
     });
-    container_right.appendChild(titulo_container_right);
+    container_right.appendChild(titulo_container_right); 
 
     parteInferior.appendChild(container_left);
     parteInferior.appendChild(container_right);

@@ -375,6 +375,56 @@ textarea::placeholder {
     box-shadow: none;
 }
 
+.form_contenedor_top {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+}
+
+.form_contenedor_botones {
+    padding-top: 40px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 20px;
+}
+
+.pagForm_columnas {
+    display: grid;
+    grid-template-columns: 1fr 30%;
+    gap: 30px;
+}
+
+.pagForm_columnaLeft {
+    width: 100%;
+}
+
+.pagForm_columnaRight {
+    width: 100%;
+}
+
+@media (max-width: 1200px) {
+    .pagForm_columnas {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 992px) {
+    .form_contenedor_top {
+        grid-template-columns: 1fr;
+    }
+}
+
+.form_contenedor_left {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 30px;
+}
+
 /* Contenedores.................................. gen_cont */
 .card {
     border: none;
@@ -670,7 +720,21 @@ body {
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    gap: 20px;
+    gap: 10px;
+}
+
+.profile_icon {
+    width: 40px;
+    height: 40px;
+    line-height: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    font-size: 15px;
+    font-weight: 400;
+    color: white;
+    text-transform: uppercase;
 }
 
 .topbar_profile:hover {
