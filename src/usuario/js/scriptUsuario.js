@@ -735,8 +735,8 @@ function imprimirTablaProductos(nombre = null, categoria = null, unidades = null
                 filaBody.appendChild(celdaBody);
             });
 
-            //Los id de inputCantidad y botonAñadir concuerdan con la posicion del producto en el array.
-            //Esto se va a utilizar para identificar que producto se va a guardar en la cesta.
+            // Los id de inputCantidad y botonAñadir concuerdan con la posicion del producto en el array.
+            // Esto se va a utilizar para identificar qué producto se va a guardar en la cesta.
             let celdaBoton = crearElemento("td");
             let inputCantidad = crearElemento("input", undefined, {
                 type: "number",
@@ -750,9 +750,24 @@ function imprimirTablaProductos(nombre = null, categoria = null, unidades = null
                 type: "submit",
                 class: "btn btn_custom_1 btn_sm",
                 value: "Añadir"
-            })
-            botonAñadir.addEventListener("click", agregarCesta);
-            botonAñadir.addEventListener("click", manejadorCarrito);
+            });
+
+            // Aquí se añade el evento clic al botón "Añadir"
+            botonAñadir.addEventListener("click", function (event) {
+                // Evitar que se propague el clic a la fila y muestre el pop-up
+                event.stopPropagation();
+                agregarCesta.call(this); // Llama a la función agregarCesta con el contexto del botón actual
+                manejadorCarrito();
+            });
+
+            // Aquí se añade el evento clic a la fila para mostrar el pop-up
+            filaBody.addEventListener("click", function (event) {
+                // Solo muestra el pop-up si el clic no proviene del botón "Añadir"
+                if (!event.target.matches("#botonAñadir_" + i) && !event.target.matches("#inputCantidad_" + i)) {
+                    mostrarPopup(datosProducto);
+                }
+            });
+
             celdaBoton.appendChild(inputCantidad);
             celdaBoton.appendChild(botonAñadir);
             filaBody.appendChild(celdaBoton);
@@ -775,7 +790,75 @@ function imprimirTablaProductos(nombre = null, categoria = null, unidades = null
         contenedorTablaProductos.appendChild(mensajeVacio);
     }
 }
+function mostrarPopup(datosProducto) {
+    // Añadir el fondo oscuro semi-transparente
+    let overlay = document.createElement("div");
+    overlay.classList.add("overlay");
+    document.body.appendChild(overlay);
 
+    // Crear el contenedor del pop-up
+    let popupContainer = document.createElement("div");
+    popupContainer.classList.add("popup-container");
+
+    // Crear el contenido del pop-up
+    let popupContent = document.createElement("div");
+    popupContent.classList.add("popup-content");
+
+    // Crear el título del pop-up
+    let tituloPopup = document.createElement("h2");
+    tituloPopup.textContent = "Vista previa de producto";
+    popupContent.appendChild(tituloPopup);
+
+    // Crear los elementos para mostrar la información
+    let nombreProducto = document.createElement("p");
+    nombreProducto.textContent = `Nombre: ${datosProducto[0]}`;
+    nombreProducto.id = "popupNombre"; // Identificador
+    
+    let categoriaProducto = document.createElement("p");
+    categoriaProducto.textContent = `Categoría: ${datosProducto[1]}`;
+    categoriaProducto.id = "popupCategoria"; // Identificador
+    
+    let unidadesProducto = document.createElement("p");
+    unidadesProducto.textContent = `Unidades: ${datosProducto[2]}`;
+    unidadesProducto.id = "popupUnidades"; // Identificador
+    
+    let observacionesProducto = document.createElement("p");
+    observacionesProducto.textContent = `Observaciones: ${datosProducto[3]}`;
+    observacionesProducto.id = "popupObservaciones";
+
+    // Crear el botón para añadir a la cesta
+    let botonAñadirCesta = document.createElement("button");
+    botonAñadirCesta.textContent = "Añadir a la cesta";
+    botonAñadirCesta.style.backgroundColor = "rosybrown"; // Fondo rojo del botón
+    botonAñadirCesta.style.color = "white"; // Texto blanco del botón
+    botonAñadirCesta.addEventListener("click", function () {
+        // Lógica para añadir a la cesta
+        agregarCesta.call(this); // Llama a la función agregarCesta con el contexto del botón actual
+        manejadorCarrito();
+        // Cerrar el pop-up después de añadir a la cesta
+        popupContainer.remove();
+        overlay.remove();
+    });
+
+    // Agregar los elementos al contenido del pop-up
+    popupContent.appendChild(nombreProducto);
+    popupContent.appendChild(categoriaProducto);
+    popupContent.appendChild(unidadesProducto);
+    popupContent.appendChild(observacionesProducto);
+    popupContent.appendChild(botonAñadirCesta);
+
+    // Agregar el contenido del pop-up al contenedor
+    popupContainer.appendChild(popupContent);
+
+    // Agregar el contenedor del pop-up al body
+    document.body.appendChild(popupContainer);
+
+    // Cerrar el pop-up al hacer clic en el fondo oscuro
+    overlay.addEventListener("click", function () {
+        popupContainer.remove();
+        overlay.remove();
+    });
+}
 function agregarCesta(e) {
     let todosProductos = JSON.parse(localStorage.getItem("todosProductos"));
 
@@ -817,6 +900,7 @@ function agregarCesta(e) {
     // Guardar la cesta actualizada en el almacenamiento local
     localStorage.setItem("cesta", JSON.stringify(cesta));
 }
+
 
 // Carrito.
 function abrirCerrarCarrito() {

@@ -489,7 +489,6 @@ body {
     border-radius: 5px; 
 }
 
-/* styles.css */
 .sidebar {
     width: 240px;
     height: 100vh;
@@ -497,21 +496,6 @@ body {
     margin: 0;
     border-right: solid thin rgb(238, 238, 238);
     background-color: var(--aside-back);
-    transition: transform 0.5s ease-out, width 0.5s ease-out; /* TRANSICION BARRA LATERAL */
-}
-
-.sidebar-hidden {
-    /* BARRA LATERAL HIDDEN */
-    transform: translateX(-240px);
-    width: 0;
-}
-
-.page_container {
-    transition: margin-left 0.5s ease-out;
-}
-
-.content-sidebar-hidden {
-    margin-left: 0;
 }
 
 .sidebar_top {
@@ -1087,4 +1071,89 @@ body {
 
 .cart_bottom_buttons .btn {
     width: 100%; 
+}
+
+
+
+
+
+/* asfa */
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.5); /* Blanco semi-transparente */
+    z-index: 1000;
+}
+
+.popup-container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 500px;
+    height: 600px;
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    z-index: 1001;
+    overflow-y: auto;
+}
+
+.popup-content {
+    text-align: center;
+}
+
+.popup-content h2 {
+    color: #555;
+    margin-bottom: 20px;
+}
+
+.popup-content p {
+    color: #555;
+    margin-bottom: 15px;
+}
+
+.popup-content label {
+    color: grey;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.popup-content input[type="radio"] {
+    margin-bottom: 15px;
+}
+
+.popup-content button {
+    background-color: #ff0055;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 15px; /* Margen superior para separar el botón de los elementos anteriores */
+}
+
+/* Estilos específicos por identificador */
+#popupNombre {
+    font-weight: bold;
+    margin-bottom: 10px; /* Margen inferior para separar el nombre de los elementos siguientes */
+}
+
+#popupCategoria img {
+    width: 35px;
+    margin-right: 10px;
+}
+
+#popupUnidades {
+    font-style: italic;
+    margin-bottom: 10px; /* Margen inferior para separar las unidades de los elementos siguientes */
+}
+
+#popupObservaciones {
+    margin-bottom: 10px; /* Margen inferior para separar las observaciones de los elementos siguientes */
 }
