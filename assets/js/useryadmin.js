@@ -98,14 +98,6 @@ function cerrarSesion() {
     }, 500);
 }
 
-function cerrarSesion() {
-    localStorage.removeItem("usuario");
-
-    setTimeout(function () {
-        window.location.replace("../../../sesion.html");
-    }, 500);
-}
-
 // Contenedor con borde punteado que aparece cuando una tabla está vacía o no tiene contenido
 function mostrarMensajeVacio(titulo, texto, textoBoton) {
     let divRow = crearElemento("div", undefined, { class: "row" });
