@@ -875,123 +875,170 @@ function navAñadirUsuario() {
 
 function pagAñadirUsuario() {
     crearPlantillaFormularios('Nuevo usuario', 'Datos del nuevo usuario', 'Usuarios existentes');
-    contenedorForm = document.querySelector('#contenedorForm');
+    let contenedorForm = document.querySelector('#contenedorForm');
 
-    let camposNewUsuario = {
-        nombre: {
-            etiqueta: 'label',
-            contenido: 'Nombre',
-            atributos: { 
-                for: 'newUserName',
-                class: 'form-label'
-            }
-        },
-        inputNombre: {
-            etiqueta: 'input',
-            atributos: { 
-                type: 'text', 
-                id: 'newUserName',
-                class: 'form-control',
-                placeholder: 'Nombre del nuevo usuario' 
-            }
-        },
-        activo: {
-            etiqueta: 'label',
-            contenido: 'Activo',
-            atributos: { 
-                for: 'userActive',
-                class: 'form-label'
-            }
-        },
-        inputActivo: {
-            etiqueta: 'input',
-            atributos: { 
-                type: 'text', //! revisar tipo de input del toggle de usuario activo
-                id: 'userActive',
-                class: 'form-control' 
-            }
-        },
-        telefono: {
-            etiqueta: 'label',
-            contenido: 'Teléfono',
-            atributos: { 
-                for: 'newUserTelefono',
-                class: 'form-label'
-            }
-        },
-        inputTelefono: {
-            etiqueta: 'input',
-            atributos: { 
-                type: 'text', 
-                id: 'newUserTelefono',
-                class: 'form-control',
-                placeholder: 'Teléfono del nuevo usuario' 
-            }
-        },
-        email: {
-            etiqueta: 'label',
-            contenido: 'Email',
-            atributos: { 
-                for: 'newUserEmail',
-                class: 'form-label'
-            }
-        },
-        inputEmail: {
-            etiqueta: 'input',
-            atributos: { 
-                type: 'email', 
-                id: 'newUserEmail',
-                class: 'form-control',
-                placeholder: 'Email del nuevo usuario' 
-            }
-        },
-        observaciones: {
-            etiqueta: 'label',
-            contenido: 'Observaciones',
-            atributos: { 
-                for: 'newUserObservacion',
-                class: 'form-label'
-            }
-        },
-        inputObservaciones: {
-            etiqueta: 'textarea',
-            atributos: {
-                type: 'text',
-                id: 'newUserObservacion',
-                class: 'form-control',
-                placeholder: 'Observaciones del nuevo usuario'
-            }
-        },
-        // Botones
-        btnCancelar: {
-            etiqueta: 'input',
-            atributos: {
-                type: 'submit',
-                value: 'Cancelar',
-                class: 'btn btn_custom_3',
-                onclick: 'cancelar()'
-            }
-        },
-        btnLimpiarDatos: {
-            etiqueta: 'input',
-            atributos: {
-                type: 'submit',
-                value: 'Limpiar datos',
-                class: 'btn btn_custom_2',
-                onclick: 'limpiarDatos()'
-            }
-        },
-        btnCrearUsuario: {
-            etiqueta: 'input',
-            contenido: 'Crear ud. de medida',
-            atributos: { 
-                type: 'submit', 
-                class: 'btn btn_custom_1',
-                onclick: 'crearUsuario()' 
-            }
-        }
-    };
-    crearFormulario(camposNewUsuario, contenedorForm);
+    let formUdMedida = crearElemento('form', undefined, []);
+
+    let contenedorFormTop = crearElemento('div', undefined, { // van el contenedor left y right
+        class: 'form_contenedor_top'
+    });
+
+    let contenedorFormLeft = crearElemento('div', undefined, { // columna izquierda del formulario
+        class: 'form_contenedor_left'
+    });
+
+    let contenedorFormRight = crearElemento('div', undefined, { // columna derecha del formulario
+        class: 'form_contenedor_right'
+    });
+
+    //. BLOQUE 1....................................................
+    let contenedorNombre = crearElemento('div', undefined, {
+        class: 'form-group w-100'
+    });
+
+    let labelNombre = crearElemento('label', 'Nombre', {
+        for: 'newUserName',
+        class: 'form-label'
+    });
+    contenedorNombre.appendChild(labelNombre);
+
+    let inputNombre = crearElemento('input', undefined, {
+        type: 'text',
+        id: 'newUserName',
+        class: 'form-control',
+        placeholder: 'Nombre del nuevo usuario'
+    });
+    contenedorNombre.appendChild(inputNombre); 
+
+    contenedorFormLeft.appendChild(contenedorNombre);
+
+    //. BLOQUE 2....................................................
+    let contenedorTelefono = crearElemento('div', undefined, {
+        class: 'form-group w-100'
+    });
+
+    let labelTelefono = crearElemento('label', 'Nombre', {
+        for: 'newUserTelefono',
+        class: 'form-label'
+    });
+    contenedorTelefono.appendChild(labelTelefono);
+
+    let inputTelefono = crearElemento('input', undefined, {
+        type: 'text',
+        id: 'newUserTelefono',
+        class: 'form-control',
+        placeholder: 'Teléfono del usuario'
+    });
+    contenedorTelefono.appendChild(inputTelefono); 
+
+    contenedorFormLeft.appendChild(contenedorTelefono);
+
+    //. BLOQUE 3....................................................
+    let contenedorObservaciones = crearElemento('div', undefined, {
+        class: 'form-group w-100'
+    });
+
+    let labelObservaciones = crearElemento('label', 'Observaciones', {
+        for: 'newUserObservacion',
+        class: 'form-label'
+    });
+    contenedorObservaciones.appendChild(labelObservaciones);
+
+    let inputObservaciones = crearElemento('textarea', undefined, {
+        type: 'text',
+        id: 'newUserObservacion',
+        class: 'form-control',
+        placeholder: 'Observaciones del nuevo usuario',
+        rows: '5', 
+    });
+    contenedorObservaciones.appendChild(inputObservaciones); 
+
+    contenedorFormLeft.appendChild(contenedorObservaciones);
+
+    //. BLOQUE 4....................................................
+    let contenedorActivo = crearElemento('div', undefined, {
+        class: 'form-group w-100'
+    });
+
+    let labelActivo = crearElemento('label', 'Activo', {
+        for: 'userActive',
+        class: 'form-label'
+    });
+    contenedorActivo.appendChild(labelActivo);
+
+    let toggleContainer = crearElemento('div', undefined, {
+        class: 'form-switch'
+    });
+    
+    let toggleActivo = crearElemento('input', undefined, {
+        type: 'checkbox',
+        id: 'userActive',
+        class: 'form-check-input form-switch',
+    });
+    toggleContainer.appendChild(toggleActivo);
+
+    contenedorActivo.appendChild(toggleContainer); 
+
+    contenedorFormRight.appendChild(contenedorActivo);
+
+    //. BLOQUE 5....................................................
+    let contenedorEmail = crearElemento('div', undefined, {
+        class: 'form-group w-100'
+    });
+
+    let labelEmail = crearElemento('label', 'Email', {
+        for: 'newUserEmail',
+        class: 'form-label'
+    });
+    contenedorEmail.appendChild(labelEmail);
+
+    let inputEmail = crearElemento('input', undefined, {
+        type: 'text',
+        id: 'newUserEmail',
+        class: 'form-control',
+        placeholder: 'Email del usuario'
+    });
+    contenedorEmail.appendChild(inputEmail); 
+
+    contenedorFormRight.appendChild(contenedorEmail);
+
+    //. BOTONES......................................................
+    let contenedorBotones = crearElemento('div', undefined, {
+        class: 'form-group form_contenedor_botones'
+    });
+
+    let btnCancelar = crearElemento("input", undefined, {
+        type: 'submit',
+        value: 'Cancelar',
+        class: 'btn btn_custom_3',
+        onclick: 'cancelar()'
+    });
+
+    let btnVaciar = crearElemento("input", undefined, {
+        type: 'submit',
+        value: 'Limpiar datos',
+        class: 'btn btn_custom_2',
+        onclick: 'limpiarDatos()'
+    });
+
+    let btnCrearUsuario = crearElemento("input", undefined, {
+        type: 'submit',
+        value: 'Crear usuario',
+        class: 'btn btn_custom_1',
+        onclick: 'crearUsuario()'
+    });
+
+    contenedorBotones.appendChild(btnCancelar);
+    contenedorBotones.appendChild(btnVaciar);
+    contenedorBotones.appendChild(btnCrearUsuario);
+
+    contenedorFormTop.appendChild(contenedorFormLeft);
+    contenedorFormTop.appendChild(contenedorFormRight);
+
+    formUdMedida.appendChild(contenedorFormTop); 
+    formUdMedida.appendChild(contenedorBotones); 
+
+    contenedorForm.appendChild(formUdMedida);
 }
 
 function newUsuario() {

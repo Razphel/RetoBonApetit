@@ -378,7 +378,7 @@ textarea::placeholder {
 .form_contenedor_top {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 30px;
+    gap: 40px;
 }
 
 .form_contenedor_botones {
@@ -432,6 +432,28 @@ textarea::placeholder {
     justify-content: flex-start;
     align-items: flex-start;
     gap: 30px;
+}
+
+.form-switch {
+    width: 50px !important;
+    height: 30px;
+}
+
+.form-switch:hover {
+    cursor: pointer;
+}
+
+.form-switch .form-check-input:checked {
+    background-color: var(--success-dark); 
+}
+
+.form-switch .form-check-input:focus {
+    box-shadow: 0 0 0 .25rem rgba(40, 167, 69, .25); 
+}
+
+.form-switch .form-check-input {
+    background-color: var(--light-color); 
+    border-color: var(--accent-01); 
 }
 
 /* Dropdown galería imágenes nueva categoría */
