@@ -666,72 +666,102 @@ function navUdMedida() {
 
 function pagUdMedida() {
     crearPlantillaFormularios('Nueva unidad de medida', 'Datos de la nueva ud. de medida', 'Ud. de medida existentes');
-    contenedorForm = document.querySelector('#contenedorForm');
+    let contenedorForm = document.querySelector('#contenedorForm');
 
-    let camposNewMedida = {
-        nombre: {
-            etiqueta: 'label',
-            contenido: 'Nombre',
-            atributos: { 
-                for: 'newUdMedidaName',
-                class: 'form-label'
-            }
-        },
-        inputNombre: {
-            etiqueta: 'input',
-            atributos: { 
-                type: 'text', 
-                id: 'newUdMedidaName',
-                class: 'form-control',
-                placeholder: 'Nombre de la nueva unidad de medida' 
-            }
-        },
-        observaciones: {
-            etiqueta: 'label',
-            contenido: 'Observaciones',
-            atributos: { 
-                for: 'newUdMedidaObservaciones',
-                class: 'form-label'
-            }
-        },
-        inputObservaciones: {
-            etiqueta: 'textarea',
-            atributos: {
-                type: 'text',
-                id: 'newUdMedidaObservaciones',
-                class: 'form-control',
-                placeholder: 'Observaciones de la nueva unidad de medida'
-            }
-        },
-        // Botones
-        btnCancelar: {
-            etiqueta: 'input',
-            atributos: {
-                type: 'submit',
-                value: 'Cancelar',
-                class: 'btn btn_custom_3',
-                onclick: 'cancelar()'
-            }
-        },
-        btnLimpiarDatos: {
-            etiqueta: 'input',
-            atributos: {
-                type: 'submit',
-                value: 'Limpiar datos',
-                class: 'btn btn_custom_2',
-                onclick: 'limpiarDatos()'
-            }
-        },
-        btnCrearMedida: {
-            etiqueta: 'input',
-            atributos: { 
-                type: 'submit', 
-                value: 'Crear ud. de medida',
-                class: 'btn btn_custom_1' 
-            }
-        }
-    };
-    crearFormulario(camposNewMedida, contenedorForm);
+    let formUdMedida = crearElemento('form', undefined, []);
+
+    let contenedorFormTop = crearElemento('div', undefined, { // van el contenedor left y right
+        class: 'form_contenedor_top'
+    });
+
+    let contenedorFormLeft = crearElemento('div', undefined, { // columna izquierda del formulario
+        class: 'form_contenedor_left'
+    });
+
+    let contenedorFormRight = crearElemento('div', undefined, { // columna derecha del formulario
+        class: 'form_contenedor_right'
+    });
+
+    //. BLOQUE 1....................................................
+    let contenedorNombre = crearElemento('div', undefined, {
+        class: 'form-group w-100'
+    });
+
+    let labelNombre = crearElemento('label', 'Nombre', {
+        for: 'newUdMedidaName',
+        class: 'form-label'
+    });
+    contenedorNombre.appendChild(labelNombre);
+
+    let inputNombre = crearElemento('input', undefined, {
+        type: 'text',
+        id: 'newUdMedidaName',
+        class: 'form-control',
+        placeholder: 'Nombre de la nueva ud. de medida'
+    });
+    contenedorNombre.appendChild(inputNombre); 
+
+    contenedorFormLeft.appendChild(contenedorNombre);
+
+    //. BLOQUE 2....................................................
+    let contenedorObservaciones = crearElemento('div', undefined, {
+        class: 'form-group w-100 form_cat_contenedor_obser'
+    });
+
+    let labelObservaciones = crearElemento('label', 'Observaciones', {
+        for: 'newUdMedidaObservaciones',
+        class: 'form-label'
+    });
+    contenedorObservaciones.appendChild(labelObservaciones);
+
+    let inputObservaciones = crearElemento('textarea', undefined, {
+        type: 'text',
+        id: 'newUdMedidaObservaciones',
+        class: 'form-control',
+        placeholder: 'Observaciones de la nueva ud. de medida',
+        rows: '5', 
+    });
+    contenedorObservaciones.appendChild(inputObservaciones); 
+
+    contenedorFormRight.appendChild(contenedorObservaciones);
+
+    //. BOTONES......................................................
+    let contenedorBotones = crearElemento('div', undefined, {
+        class: 'form-group form_contenedor_botones'
+    });
+
+    let btnCancelar = crearElemento("input", undefined, {
+        type: 'submit',
+        value: 'Cancelar',
+        class: 'btn btn_custom_3',
+        onclick: 'cancelar()'
+    });
+
+    let btnVaciar = crearElemento("input", undefined, {
+        type: 'submit',
+        value: 'Limpiar datos',
+        class: 'btn btn_custom_2',
+        onclick: 'limpiarDatos()'
+    });
+
+    let btnCrearMedida = crearElemento("input", undefined, {
+        type: 'submit',
+        value: 'Crear ud. de medida',
+        class: 'btn btn_custom_1',
+        onclick: 'btnCrearMedida()'
+    });
+
+    contenedorBotones.appendChild(btnCancelar);
+    contenedorBotones.appendChild(btnVaciar);
+    contenedorBotones.appendChild(btnCrearMedida);
+
+    contenedorFormTop.appendChild(contenedorFormLeft);
+    contenedorFormTop.appendChild(contenedorFormRight);
+
+    formUdMedida.appendChild(contenedorFormTop); 
+    formUdMedida.appendChild(contenedorBotones); 
+
+    contenedorForm.appendChild(formUdMedida);
 }
 
 function newUdMedida() {
