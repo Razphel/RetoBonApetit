@@ -391,9 +391,7 @@ function pagProveedores(proveedores) {
     let filaTitulos = crearElemento("tr");
     let titulos = ["descripcion", "telefono", "email", "direccion", "observaciones"];
     for (let i = 0; i < titulos.length; i++) {
-        let celdaTitulo = crearElemento("th", titulos[i].charAt(0).toUpperCase() + titulos[i].slice(1).toLowerCase(), {
-            style: "padding:5px 30px;"
-        });
+        let celdaTitulo = crearElemento("th", titulos[i].charAt(0).toUpperCase() + titulos[i].slice(1).toLowerCase());
         filaTitulos.appendChild(celdaTitulo);
     }
     titulosTabla.appendChild(filaTitulos);
@@ -457,9 +455,7 @@ function pagResiduos(residuos) {
     let filaTitulos = crearElemento("tr");
     let titulos = ["descripcion", "observaciones"];
     for (let i = 0; i < titulos.length; i++) {
-        let celdaTitulo = crearElemento("th", titulos[i].charAt(0).toUpperCase() + titulos[i].slice(1).toLowerCase(), {
-            style: "padding:5px 30px;"
-        });
+        let celdaTitulo = crearElemento("th", titulos[i].charAt(0).toUpperCase() + titulos[i].slice(1).toLowerCase());
         filaTitulos.appendChild(celdaTitulo);
     }
     titulosTabla.appendChild(filaTitulos);
@@ -744,7 +740,13 @@ function imprimirTablaProductos(nombre = null, categoria = null, unidades = null
             datosProducto.forEach((dato, index) => {
                 let celdaBody = crearElemento("td");
 
+                if (index === 0) {
+                    celdaBody.classList.add("tabla_nombreLargo"); 
+                }
+
                 if (index === 1) {
+                    celdaBody.classList.add("tabla_nombreLargo");
+
                     let imagenCategoria = crearElemento("img", undefined, {
                         src: `../../../assets/img/categorias/${todosProductos[i]["imagen_categoria"]}`,
                         width: "35px",
@@ -753,11 +755,18 @@ function imprimirTablaProductos(nombre = null, categoria = null, unidades = null
                 }
                 celdaBody.innerHTML += dato;
                 filaBody.appendChild(celdaBody);
+
+                // Verificar si la celda actual es para la columna de observaciones
+                if (index === 3) {
+                    celdaBody.classList.add("tabla_observaciones");
+                }
             });
 
             //Los id de inputCantidad y botonAñadir concuerdan con la posicion del producto en el array.
             //Esto se va a utilizar para identificar que producto se va a guardar en la cesta.
-            let celdaBoton = crearElemento("td");
+            let celdaBoton = crearElemento("td", undefined, {
+                class: "td_alignRight"
+            });
             let inputCantidad = crearElemento("input", undefined, {
                 type: "number",
                 min: "0",

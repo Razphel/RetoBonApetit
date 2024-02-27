@@ -251,13 +251,27 @@ td:first-child, th:first-child {
     padding-left: 15px; 
   }
 
-td:last-child {
+.td_alignRight {
     padding-right: 20px;
     text-align: right; 
 }
 
 td:hover {
     cursor: pointer;
+}
+
+.tabla_nombreLargo {
+    max-width: 80px;
+    white-space: nowrap; 
+    overflow: hidden; 
+    text-overflow: ellipsis;
+}
+
+.tabla_observaciones {
+    max-width: 170px;
+    white-space: nowrap; 
+    overflow: hidden; 
+    text-overflow: ellipsis;
 }
 
 /* Filtros....................................... gen_filtros */
