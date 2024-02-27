@@ -23,7 +23,8 @@ function principal() {
     document.querySelector("#navResiduos").addEventListener("click", navResiduos);
     document.querySelector("#cerrarSesion").addEventListener("click", cerrarSesion);
     document.querySelector("#btn_limpiarCesta").addEventListener("click", vaciarCarrito);
-    document.querySelector("btn_hacerPedido").addEventListener("click", hacerPedido); 
+    // document.querySelector("#btn_verPedido").addEventListener("click", hacerSolicitud);
+
 
     // Funciones para el carrito.
     // Asigna la función de cerrar al botón X
@@ -35,7 +36,7 @@ function principal() {
     //Aqui es necesario que las consultas se ejecuten en el orden correcto.
     //Para eso hay que evitar que el ajax funcione de forma asincrona agregando async: false.
     let parametros = {
-        categoria: 'categorias'
+        mensajesInicio: true
     };
     //Mostrar categorias.
     $.ajax({
@@ -46,7 +47,7 @@ function principal() {
         dataType: "json",
         data: parametros,
         async: false,
-        success: inicioCategorias,
+        success: mensajesInicio,
         error: function (jqXHR, textStatus, errorThrown) {
             console.error("Error en la solicitud AJAX: " + textStatus, errorThrown);
         }
@@ -79,10 +80,9 @@ function principal() {
 
     //Guardo en el localStorage el listado con todos los productos.
     consultarProductos();
-    manejadorCarrito();
 }
 
-function inicioCategorias(respuesta) {
+function mensajesInicio(respuesta) {
     //Contenedor general de la pagina.
     let contenedor = document.querySelector("#contenedor");
 
@@ -95,6 +95,7 @@ function inicioCategorias(respuesta) {
     let nombreUsuario = JSON.parse(localStorage.getItem("usuario"));
     nombreUsuario = nombreUsuario.nombre;
 
+    //Titulo de la pagina.
     let h1Inicio = crearElemento("h1", "Bienvenido, " + nombreUsuario, {
         id: "tituloApartado",
         class: "py-3 mb-3 mt-4"
@@ -102,41 +103,31 @@ function inicioCategorias(respuesta) {
 
     parteSuperior.appendChild(h1Inicio);
 
-    let categorias = crearElemento("div", undefined, {
+    //Contenedor principal de los recuadros de los mensajes.
+    let contenedorMensajes = crearElemento("div", undefined, {
         class: "row",
-        id: "categorias"
+        id: "contenedorMensajes"
     });
 
-    respuesta.forEach(fila => {
-        let carta = crearElemento("div", undefined, {
-            class: "col-6 col-sm-3 col-md-3 col-lg-3 d-flex justify-content-between"
-        });
-
-        //Le doy un id al contenedor para usarlo en el manejador.
-        let divCarta = crearElemento("div", undefined, {
-            id: "idCategoria_" + fila.id_categorias,
-            class: "label_effect card card_margin p-3 mb-3",
-            "data-toggle": "tooltip"
-        });
-
-        //Le doy un manejador a cada boton que usa el id para consultar las categorias.
-        divCarta.addEventListener("click", manejadorCategoria);
-
-        let p = crearElemento("p", fila.descripcion, undefined);
-        let img = crearElemento("img", undefined, {
-            src: "../../../assets/img/categorias/" + fila.imagenes,
-            alt: fila.descripcion
-        });
-
-        //Organizo los elementos y los agrego al div row.
-        divCarta.appendChild(img);
-        divCarta.appendChild(p);
-        carta.appendChild(divCarta);
-        categorias.appendChild(carta);
+    //Manejando la respuesta de la base de datos. Columnas recibidas "descripcion" - "fecha_mensaje"
+    //Siempre se recibe el mas nuevo.
+    let carta = crearElemento("div", undefined, {
+        class: "col-4 d-flex justify-content-between"
     });
+    let contenedorMensaje = crearElemento("div", undefined, {
+        class: "label_effect card card_margin p-3 mb-3"
+    });
+    let mensaje = crearElemento("p", respuesta.descripcion, undefined);
+    let fechaMensaje = crearElemento("p", respuesta.fecha_mensaje, undefined);
+
+    //Organizo los elementos y los agrego al div row.
+    contenedorMensaje.appendChild(mensaje);
+    contenedorMensaje.appendChild(fechaMensaje);
+    carta.appendChild(contenedorMensaje);
+    contenedorMensajes.appendChild(carta);
 
     //Agrego el div con la lista de cartas al contenedor superior de la pagina.
-    parteSuperior.appendChild(categorias);
+    parteSuperior.appendChild(contenedorMensajes);
 
     //Agrego el contenedor superior a la pagina.
     contenedor.appendChild(parteSuperior);
@@ -150,8 +141,12 @@ function inicioSolicitudes(respuesta) {
         style: "border-collapse: collapse;"
     });
 
-    //Compruebo que exista algun dato.
+    //Se comprueba primero que exista algo en el historial de solicitudes.
     if (respuesta[0] != null) {
+        let historial = crearElemento("table", undefined, {
+            class: "table table-responsive table-hover mt-4"
+        });
+        let tablaTitulos = crearElemento("thead");
 
         //Creo los titulos de las tablas.
         let titulos = crearElemento("tr", undefined, undefined);
@@ -159,15 +154,15 @@ function inicioSolicitudes(respuesta) {
         let prueba = Object.keys(respuesta[0]);
         for (let i = prueba.length / 2; i < prueba.length; i++) {
             //Creo cada elemento y lo agrego a la fila del titulo.
-            let filaTitulo = crearElemento("th", prueba[i], {
-                style: "padding:5px 30px;"
-            });
+            let filaTitulo = crearElemento("th", prueba[i]);
             titulos.appendChild(filaTitulo);
         }
 
         //Agrego el titulo a la tabla.
-        historial.appendChild(titulos);
+        tablaTitulos.appendChild(titulos);
+        historial.appendChild(tablaTitulos);
 
+        let tablaBody = crearElemento("tbody");
         //Ahora agrego el contenido.
         respuesta.forEach(fila => {
             let filaNormal = crearElemento("tr", undefined, undefined);
@@ -175,15 +170,13 @@ function inicioSolicitudes(respuesta) {
                 let elementoFila = crearElemento("td", fila[i], undefined);
                 filaNormal.appendChild(elementoFila);
             }
-            historial.appendChild(filaNormal);
+            tablaBody.appendChild(filaNormal);
         });
+        historial.appendChild(tablaBody);
         contenedor.appendChild(historial);
-    }
-    else {
-        historial = crearElemento("p", "Historial Vacio.", {
-            id: "historial"
-        });
-        contenedor.appendChild(historial);
+    } else {
+        let sinHistorial = crearElemento("p", "Historial Vacio.", undefined)
+        contenedor.appendChild(sinHistorial);
     }
 
 }
@@ -321,9 +314,9 @@ function pagPedidos(respuesta) {
     //Se comprueba primero que exista algo en el historial de solicitudes.
     if (respuesta[0] != null) {
         let historial = crearElemento("table", undefined, {
-            id: "historial",
-            style: "border-collapse: collapse;"
+            class: "table table-responsive table-hover mt-4"
         });
+        let tablaTitulos = crearElemento("thead");
 
         //Creo los titulos de las tablas.
         let titulos = crearElemento("tr", undefined, undefined);
@@ -331,15 +324,15 @@ function pagPedidos(respuesta) {
         let prueba = Object.keys(respuesta[0]);
         for (let i = prueba.length / 2; i < prueba.length; i++) {
             //Creo cada elemento y lo agrego a la fila del titulo.
-            let filaTitulo = crearElemento("th", prueba[i], {
-                style: "padding:5px 30px;"
-            });
+            let filaTitulo = crearElemento("th", prueba[i]);
             titulos.appendChild(filaTitulo);
         }
 
         //Agrego el titulo a la tabla.
-        historial.appendChild(titulos);
+        tablaTitulos.appendChild(titulos);
+        historial.appendChild(tablaTitulos);
 
+        let tablaBody = crearElemento("tbody");
         //Ahora agrego el contenido.
         respuesta.forEach(fila => {
             let filaNormal = crearElemento("tr", undefined, undefined);
@@ -347,8 +340,9 @@ function pagPedidos(respuesta) {
                 let elementoFila = crearElemento("td", fila[i], undefined);
                 filaNormal.appendChild(elementoFila);
             }
-            historial.appendChild(filaNormal);
+            tablaBody.appendChild(filaNormal);
         });
+        historial.appendChild(tablaBody);
         contenedor.appendChild(historial);
     } else {
         let sinHistorial = crearElemento("p", "Historial Vacio.", undefined)
@@ -376,8 +370,8 @@ function navProveedores() {
 }
 
 function pagProveedores(proveedores) {
+    //Datos recibidos de proveedores: "id_proveedores" - "descripcion" - "telefono" - "email" - "direccion" - "observaciones"
     let contenedor = document.querySelector("#contenedor");
-    let contador = 0;
     contenedor.innerHTML = "";
 
     let provTopUser = crearElemento("div", undefined, undefined);
@@ -389,25 +383,37 @@ function pagProveedores(proveedores) {
     provTopUser.appendChild(h1Proveedores);
     contenedor.appendChild(provTopUser);
 
-    let contenedorProveedores = crearElemento("div", undefined, {
-        id: "ContProveedores",
-        class: "col-3",
-        style: "border:2px black solid; padding:5px"
+    //Estructura del titulo de la tabla.
+    let tablaProveedores = crearElemento("table", undefined, {
+        class: "table table-responsive table-hover mt-4"
     });
-
-    proveedores.forEach(fila => {
-        let proveedor = crearElemento("p", undefined, {
-            id: contenedor
+    let titulosTabla = crearElemento("thead");
+    let filaTitulos = crearElemento("tr");
+    let titulos = ["descripcion", "telefono", "email", "direccion", "observaciones"];
+    for (let i = 0; i < titulos.length; i++) {
+        let celdaTitulo = crearElemento("th", titulos[i].charAt(0).toUpperCase() + titulos[i].slice(1).toLowerCase(), {
+            style: "padding:5px 30px;"
         });
+        filaTitulos.appendChild(celdaTitulo);
+    }
+    titulosTabla.appendChild(filaTitulos);
+    tablaProveedores.appendChild(titulosTabla);
 
-        for (let i = 0; i < Object.keys(fila).length / 2; i++) {
-            proveedor.innerHTML += fila[i] + " ";
+    //Estructura del cuerpo de la tabla.
+    tablaBody = crearElemento("tbody");
+
+
+    proveedores.forEach(proveedor => {
+        let filaBody = crearElemento("tr");
+        for (let i = 0; i < titulos.length; i++) {
+            let celdaBody = crearElemento("td", proveedor[titulos[i]]);
+            filaBody.appendChild(celdaBody);
         }
-        contenedorProveedores.appendChild(proveedor);
-        contenedor.appendChild(contenedorProveedores);
-        contador++;
-
+        tablaBody.appendChild(filaBody);
     });
+    tablaProveedores.appendChild(tablaBody);
+    contenedor.appendChild(tablaProveedores);
+
 }
 
 // Página residuos____________________________________________________________________
@@ -429,15 +435,10 @@ function navResiduos() {
     });
 }
 
-function pagResiduos(respuesta) {
+function pagResiduos(residuos) {
+    //Datos recibidos de residuos: "id_reciduos" - "descripcion" - "observaciones"
     let contenedor = document.querySelector("#contenedor");
-    let contador = 0;
     contenedor.innerHTML = "";
-    let contenedorResiduos = crearElemento("div", undefined, {
-        id: "ContResiduos",
-        class: "col-3",
-        style: "border:2px black solid; padding:5px"
-    });
 
     let resiTopUser = crearElemento("div", undefined, undefined);
     let h1Residuos = crearElemento("h1", "Residuos", {
@@ -448,18 +449,37 @@ function pagResiduos(respuesta) {
     resiTopUser.appendChild(h1Residuos);
     contenedor.appendChild(resiTopUser);
 
-    respuesta.forEach(fila => {
-        let residuo = crearElemento("p", undefined, {
-            id: "residuos"
-        });
-
-        for (let i = 0; i < Object.keys(fila).length / 2; i++) {
-            residuo.innerHTML += fila[i] + " ";
-        }
-        contenedorResiduos.appendChild(residuo);
-        contenedor.appendChild(contenedorResiduos);
-        contador++;
+    //Estructura del titulo de la tabla.
+    let tablaReciduos = crearElemento("table", undefined, {
+        class: "table table-responsive table-hover mt-4"
     });
+    let titulosTabla = crearElemento("thead");
+    let filaTitulos = crearElemento("tr");
+    let titulos = ["descripcion", "observaciones"];
+    for (let i = 0; i < titulos.length; i++) {
+        let celdaTitulo = crearElemento("th", titulos[i].charAt(0).toUpperCase() + titulos[i].slice(1).toLowerCase(), {
+            style: "padding:5px 30px;"
+        });
+        filaTitulos.appendChild(celdaTitulo);
+    }
+    titulosTabla.appendChild(filaTitulos);
+    tablaReciduos.appendChild(titulosTabla);
+
+    //Estructura del cuerpo de la tabla.
+    tablaBody = crearElemento("tbody");
+
+
+    residuos.forEach(residuo => {
+        let filaBody = crearElemento("tr");
+        for (let i = 0; i < titulos.length; i++) {
+            let celdaBody = crearElemento("td", residuo[titulos[i]]);
+            filaBody.appendChild(celdaBody);
+        }
+        tablaBody.appendChild(filaBody);
+    });
+    tablaReciduos.appendChild(tablaBody);
+    contenedor.appendChild(tablaReciduos);
+
 }
 
 function manejadorCategoria(e) {
@@ -822,6 +842,9 @@ function agregarCesta(e) {
 function abrirCerrarCarrito() {
     //Controlador para desplecar o cerrar el carrito.
     $("#cart").fadeToggle();
+
+    //Se vuelve a cargar el carrito para que no este vacio la primera vez que cargue la pagina y existan productos en local.
+    manejadorCarrito();
 }
 
 function manejadorCarrito(e) {
@@ -876,7 +899,7 @@ function manejadorCarrito(e) {
 
         //Parrafo donde se muestra el nombre del producto.
         let productoCarrito = crearElemento("p", cesta[i].nombre_producto, undefined);
-        contenedorCestaProdNombre.appendChild(productoCarrito); 
+        contenedorCestaProdNombre.appendChild(productoCarrito);
         contenedorCestaItemTexto.appendChild(contenedorCestaProdNombre);
 
         //Parrafo que muestra la unidad del producto.
