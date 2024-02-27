@@ -524,7 +524,7 @@ function pagAñadirProducto() {
         class: 'form-group w-100'
     });
 
-    let labelUdMedida = crearElemento('label', 'Nombre', {
+    let labelUdMedida = crearElemento('label', 'Ud. de medida', {
         for: 'newProductUdMedida',
         class: 'form-label'
     });
@@ -567,7 +567,7 @@ function pagAñadirProducto() {
         class: 'form-group w-100'
     });
 
-    let labelCategoria = crearElemento('label', 'Nombre', {
+    let labelCategoria = crearElemento('label', 'Categoría', {
         for: 'newProductCategoria',
         class: 'form-label'
     });
@@ -588,7 +588,7 @@ function pagAñadirProducto() {
         class: 'form-group w-100'
     });
 
-    let labelResiduos = crearElemento('label', 'Nombre', {
+    let labelResiduos = crearElemento('label', 'Residuos', {
         for: 'newProductResiduos',
         class: 'form-label'
     });
