@@ -425,6 +425,82 @@ textarea::placeholder {
     gap: 30px;
 }
 
+.form_contenedor_right {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 30px;
+}
+
+/* Dropdown galería imágenes nueva categoría */
+.imagenCategoriaContenedor {
+    width: 70px; 
+    height: 70px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 4px;
+    background-color: var(--accent-02);
+}
+
+.imagenCategoriaContenedor:hover {
+    opacity: 80%;
+}
+
+.imagenCategoriaContenedor i::before {
+    color: var(--light-color);
+    display: flex;
+    width: 100%;
+    line-height: 0;
+    font-size: 35px;
+    align-self: center;
+}
+
+.img_dropdown_categoria {
+    width: 45px;
+    height: 45px;   
+}
+
+.img_dropdown_categoria:hover {
+    cursor: pointer;
+    opacity: 80%;
+}
+
+.etiqueta_enlace_categoria {
+    position: relative; 
+}
+
+.new_img_categoria_container {
+    position: absolute; 
+    max-height: 210px;
+    overflow-y: auto;
+}
+
+.dropdownItem_categorias {
+    width: 100%;
+    overflow-y: auto;
+}
+
+.etiqueta_enlace_categoria {
+    width: fit-content;
+}
+
+.img_categoria_grid {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: auto;
+    grid-gap: 10px; 
+    padding: 20px; 
+}
+
+.img_categoria_grid .dropdown-item {
+    width: 100%;
+    height: 100%;
+}
+
 /* Contenedores.................................. gen_cont */
 .card {
     border: none;
