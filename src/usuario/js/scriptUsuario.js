@@ -312,9 +312,9 @@ function pagPedidos(respuesta) {
     //Se comprueba primero que exista algo en el historial de solicitudes.
     if (respuesta[0] != null) {
         let historial = crearElemento("table", undefined, {
-            id: "historial",
-            style: "border-collapse: collapse;"
+            class: "table table-responsive table-hover mt-4"
         });
+        let tablaTitulos = crearElemento("thead");
 
         //Creo los titulos de las tablas.
         let titulos = crearElemento("tr", undefined, undefined);
@@ -322,15 +322,15 @@ function pagPedidos(respuesta) {
         let prueba = Object.keys(respuesta[0]);
         for (let i = prueba.length / 2; i < prueba.length; i++) {
             //Creo cada elemento y lo agrego a la fila del titulo.
-            let filaTitulo = crearElemento("th", prueba[i], {
-                style: "padding:5px 30px;"
-            });
+            let filaTitulo = crearElemento("th", prueba[i]);
             titulos.appendChild(filaTitulo);
         }
 
         //Agrego el titulo a la tabla.
-        historial.appendChild(titulos);
+        tablaTitulos.appendChild(titulos);
+        historial.appendChild(tablaTitulos);
 
+        let tablaBody = crearElemento("tbody");
         //Ahora agrego el contenido.
         respuesta.forEach(fila => {
             let filaNormal = crearElemento("tr", undefined, undefined);
@@ -338,8 +338,9 @@ function pagPedidos(respuesta) {
                 let elementoFila = crearElemento("td", fila[i], undefined);
                 filaNormal.appendChild(elementoFila);
             }
-            historial.appendChild(filaNormal);
+            tablaBody.appendChild(filaNormal);
         });
+        historial.appendChild(tablaBody);
         contenedor.appendChild(historial);
     } else {
         let sinHistorial = crearElemento("p", "Historial Vacio.", undefined)
@@ -367,8 +368,8 @@ function navProveedores() {
 }
 
 function pagProveedores(proveedores) {
+    //Datos recibidos de proveedores: "id_proveedores" - "descripcion" - "telefono" - "email" - "direccion" - "observaciones"
     let contenedor = document.querySelector("#contenedor");
-    let contador = 0;
     contenedor.innerHTML = "";
 
     let provTopUser = crearElemento("div", undefined, undefined);
@@ -380,25 +381,37 @@ function pagProveedores(proveedores) {
     provTopUser.appendChild(h1Proveedores);
     contenedor.appendChild(provTopUser);
 
-    let contenedorProveedores = crearElemento("div", undefined, {
-        id: "ContProveedores",
-        class: "col-3",
-        style: "border:2px black solid; padding:5px"
+    //Estructura del titulo de la tabla.
+    let tablaProveedores = crearElemento("table", undefined, {
+        class: "table table-responsive table-hover mt-4"
     });
-
-    proveedores.forEach(fila => {
-        let proveedor = crearElemento("p", undefined, {
-            id: contenedor
+    let titulosTabla = crearElemento("thead");
+    let filaTitulos = crearElemento("tr");
+    let titulos = ["descripcion", "telefono", "email", "direccion", "observaciones"];
+    for (let i = 0; i < titulos.length; i++) {
+        let celdaTitulo = crearElemento("th", titulos[i].charAt(0).toUpperCase() + titulos[i].slice(1).toLowerCase(), {
+            style: "padding:5px 30px;"
         });
+        filaTitulos.appendChild(celdaTitulo);
+    }
+    titulosTabla.appendChild(filaTitulos);
+    tablaProveedores.appendChild(titulosTabla);
 
-        for (let i = 0; i < Object.keys(fila).length / 2; i++) {
-            proveedor.innerHTML += fila[i] + " ";
+    //Estructura del cuerpo de la tabla.
+    tablaBody = crearElemento("tbody");
+
+
+    proveedores.forEach(proveedor => {
+        let filaBody = crearElemento("tr");
+        for (let i = 0; i < titulos.length; i++) {
+            let celdaBody = crearElemento("td", proveedor[titulos[i]]);
+            filaBody.appendChild(celdaBody);
         }
-        contenedorProveedores.appendChild(proveedor);
-        contenedor.appendChild(contenedorProveedores);
-        contador++;
-
+        tablaBody.appendChild(filaBody);
     });
+    tablaProveedores.appendChild(tablaBody);
+    contenedor.appendChild(tablaProveedores);
+
 }
 
 // Página residuos____________________________________________________________________
@@ -420,15 +433,10 @@ function navResiduos() {
     });
 }
 
-function pagResiduos(respuesta) {
+function pagResiduos(residuos) {
+    //Datos recibidos de residuos: "id_reciduos" - "descripcion" - "observaciones"
     let contenedor = document.querySelector("#contenedor");
-    let contador = 0;
     contenedor.innerHTML = "";
-    let contenedorResiduos = crearElemento("div", undefined, {
-        id: "ContResiduos",
-        class: "col-3",
-        style: "border:2px black solid; padding:5px"
-    });
 
     let resiTopUser = crearElemento("div", undefined, undefined);
     let h1Residuos = crearElemento("h1", "Residuos", {
@@ -439,18 +447,37 @@ function pagResiduos(respuesta) {
     resiTopUser.appendChild(h1Residuos);
     contenedor.appendChild(resiTopUser);
 
-    respuesta.forEach(fila => {
-        let residuo = crearElemento("p", undefined, {
-            id: "residuos"
-        });
-
-        for (let i = 0; i < Object.keys(fila).length / 2; i++) {
-            residuo.innerHTML += fila[i] + " ";
-        }
-        contenedorResiduos.appendChild(residuo);
-        contenedor.appendChild(contenedorResiduos);
-        contador++;
+    //Estructura del titulo de la tabla.
+    let tablaReciduos = crearElemento("table", undefined, {
+        class: "table table-responsive table-hover mt-4"
     });
+    let titulosTabla = crearElemento("thead");
+    let filaTitulos = crearElemento("tr");
+    let titulos = ["descripcion", "observaciones"];
+    for (let i = 0; i < titulos.length; i++) {
+        let celdaTitulo = crearElemento("th", titulos[i].charAt(0).toUpperCase() + titulos[i].slice(1).toLowerCase(), {
+            style: "padding:5px 30px;"
+        });
+        filaTitulos.appendChild(celdaTitulo);
+    }
+    titulosTabla.appendChild(filaTitulos);
+    tablaReciduos.appendChild(titulosTabla);
+
+    //Estructura del cuerpo de la tabla.
+    tablaBody = crearElemento("tbody");
+
+
+    residuos.forEach(residuo => {
+        let filaBody = crearElemento("tr");
+        for (let i = 0; i < titulos.length; i++) {
+            let celdaBody = crearElemento("td", residuo[titulos[i]]);
+            filaBody.appendChild(celdaBody);
+        }
+        tablaBody.appendChild(filaBody);
+    });
+    tablaReciduos.appendChild(tablaBody);
+    contenedor.appendChild(tablaReciduos);
+
 }
 
 function manejadorCategoria(e) {
