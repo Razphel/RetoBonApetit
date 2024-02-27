@@ -35,43 +35,43 @@ function principal() {
     document.querySelector("#navInicio").addEventListener("click", navInicio);
     // Apartado categorías
     document.querySelector("#navCategorias").addEventListener("click", navCategorias);
-        document.querySelector("#navListarCategorias").addEventListener("click", navListarCategorias);
-        document.querySelector("#navAñadirCategoria").addEventListener("click", navAñadirCategoria);
-        document.querySelector("#shortcut_categoria").addEventListener("click", navAñadirCategoria);
+    document.querySelector("#navListarCategorias").addEventListener("click", navListarCategorias);
+    document.querySelector("#navAñadirCategoria").addEventListener("click", navAñadirCategoria);
+    document.querySelector("#shortcut_categoria").addEventListener("click", navAñadirCategoria);
     // Apartado productos
     document.querySelector("#navProductos").addEventListener("click", navProductos);
-        document.querySelector("#navListarProductos").addEventListener("click", navListarProductos);
-        document.querySelector("#navAñadirProducto").addEventListener("click", navAñadirProducto);
-        document.querySelector("#shortcut_producto").addEventListener("click", navAñadirProducto);
-        document.querySelector("#navUdMedida").addEventListener("click", navUdMedida);
-        document.querySelector("#shortcut_medida").addEventListener("click", navUdMedida);
+    document.querySelector("#navListarProductos").addEventListener("click", navListarProductos);
+    document.querySelector("#navAñadirProducto").addEventListener("click", navAñadirProducto);
+    document.querySelector("#shortcut_producto").addEventListener("click", navAñadirProducto);
+    document.querySelector("#navUdMedida").addEventListener("click", navUdMedida);
+    document.querySelector("#shortcut_medida").addEventListener("click", navUdMedida);
     // Apartado solicitudes
     document.querySelector("#navSolicitudes").addEventListener("click", navSolicitudes);
     // Apartado pedidos
     document.querySelector("#navPedidos").addEventListener("click", navPedidos);
-        document.querySelector("#navListarPedidos").addEventListener("click", navListarPedidos);
-        document.querySelector("#navNuevoPedido").addEventListener("click", navNuevoPedido);
-        document.querySelector("#shortcut_pedido").addEventListener("click", navNuevoPedido);
+    document.querySelector("#navListarPedidos").addEventListener("click", navListarPedidos);
+    document.querySelector("#navNuevoPedido").addEventListener("click", navNuevoPedido);
+    document.querySelector("#shortcut_pedido").addEventListener("click", navNuevoPedido);
     // Apartado usuarios
     document.querySelector("#navUsuarios").addEventListener("click", navUsuarios);
-        document.querySelector("#navListarUsuarios").addEventListener("click", navListarUsuarios);
-        document.querySelector("#navAñadirUsuario").addEventListener("click", navAñadirUsuario);
-        document.querySelector("#shortcut_usuario").addEventListener("click", navAñadirUsuario);
+    document.querySelector("#navListarUsuarios").addEventListener("click", navListarUsuarios);
+    document.querySelector("#navAñadirUsuario").addEventListener("click", navAñadirUsuario);
+    document.querySelector("#shortcut_usuario").addEventListener("click", navAñadirUsuario);
     // Apartado proveedores
     document.querySelector("#navProveedores").addEventListener("click", navProveedores);
-        document.querySelector("#navListarProveedores").addEventListener("click", navListarProveedores);
-        document.querySelector("#navAñadirProveedor").addEventListener("click", navAñadirProveedor);
-        document.querySelector("#shortcut_proveedor").addEventListener("click", navAñadirProveedor);
-        document.querySelector("#cerrarSesion").addEventListener("click", cerrarSesion);
+    document.querySelector("#navListarProveedores").addEventListener("click", navListarProveedores);
+    document.querySelector("#navAñadirProveedor").addEventListener("click", navAñadirProveedor);
+    document.querySelector("#shortcut_proveedor").addEventListener("click", navAñadirProveedor);
+    document.querySelector("#cerrarSesion").addEventListener("click", cerrarSesion);
     // Apartado residuos
-    document.querySelector("#navResiduos").addEventListener("click", navResiduos); 
+    document.querySelector("#navResiduos").addEventListener("click", navResiduos);
 
     // Seleccionar los elementos clickeables del menú
     const menuItems = document.querySelectorAll('.active');
 
     // Iterar sobre cada elemento y agregar un manejador de eventos 'click'
     menuItems.forEach(item => {
-        item.addEventListener('click', function() {
+        item.addEventListener('click', function () {
             // Remover la clase 'gray-bg' de todos los contenedores 'nav_container'
             document.querySelectorAll('.nav_container').forEach(container => {
                 container.classList.remove('gray-bg');
@@ -79,13 +79,13 @@ function principal() {
 
             // Obtener el contenedor 'nav_container' del elemento clickeado
             const navContainer = this.querySelector('.nav_container');
-            
+
             // Agregar la clase 'gray-bg' al contenedor 'nav_container' del elemento clickeado
             navContainer.classList.add('gray-bg');
         });
     });
 
-    pagInicio(); 
+    pagInicio();
 }
 
 
@@ -115,7 +115,7 @@ function mostrarUsuarios(respuesta) {
 
 // Apartado INICIO____________________________________________________________________
 function navInicio() {
-    pagInicio(); 
+    pagInicio();
 }
 
 function pagInicio() {
@@ -123,8 +123,8 @@ function pagInicio() {
 }
 
 // Apartado CATEGORÍAS________________________________________________________________
-function navCategorias() { 
-    navListarCategorias(); 
+function navCategorias() {
+    navListarCategorias();
 }
 
 function navListarCategorias() {
@@ -153,7 +153,7 @@ function navAñadirCategoria() {
 }
 
 // Formulario 1. Crear categorías...................
-function pagAñadirCategoria() {  
+function pagAñadirCategoria() {
     crearPlantillaFormularios('Nueva categoría', 'Datos de la nueva categoría', 'Categorías existentes');
     contenedorForm = document.querySelector('#contenedorForm');
 
@@ -223,7 +223,7 @@ function pagAñadirCategoria() {
     crearFormulario(camposNewCategoria, contenedorForm);
 
     let parametros = {
-        categorias: 'categorias' 
+        categorias: 'categorias'
     };
     console.log(parametros);
 
@@ -239,8 +239,7 @@ function pagAñadirCategoria() {
     });
 }
 
-function newCategoria()
-{
+function newCategoria() {
     let nombre = document.getElementById('newNombreCategoria').value;
     let observaciones = document.getElementById('newObservacionCategoria').value;
 
@@ -256,27 +255,26 @@ function newCategoria()
         type: "POST",
         url: "./php/consultaAdmin.php",
         data: parametros,
-        error: function(a,b,errorMsg) {
+        error: function (a, b, errorMsg) {
             console.log(errorMsg);
         }
-      }).done(function (a) {
+    }).done(function (a) {
         console.log(a);
         console.log("hecho");
-      });
+    });
 }
 
-function tablaCategorias()
-{
+function tablaCategorias() {
 
 }
 
 // Apartado PRODUCTOS__________________________________________________________________
 function navProductos() {
-    navListarProductos(); 
+    navListarProductos();
 }
 
-function navListarProductos() { 
-    pagListarProductos(); 
+function navListarProductos() {
+    pagListarProductos();
 }
 
 function pagListarProductos() { // mostrar tabla con todos los productos y sus datos
@@ -414,7 +412,7 @@ function pagAñadirProducto() {
             etiqueta: 'input',
             atributos: {
                 type: 'submit',
-                value: 'Crear producto', 
+                value: 'Crear producto',
                 class: 'btn btn_custom_1',
                 onclick: 'crearProducto()'
             }
@@ -424,7 +422,7 @@ function pagAñadirProducto() {
 }
 
 // Formulario 3. Crear ud. de medida...................
-function navUdMedida() { 
+function navUdMedida() {
     pagUdMedida()
 }
 
@@ -436,24 +434,24 @@ function pagUdMedida() {
         nombre: {
             etiqueta: 'label',
             contenido: 'Nombre',
-            atributos: { 
+            atributos: {
                 for: 'newUdMedidaName',
                 class: 'form-label'
             }
         },
         inputNombre: {
             etiqueta: 'input',
-            atributos: { 
-                type: 'text', 
+            atributos: {
+                type: 'text',
                 id: 'newUdMedidaName',
                 class: 'form-control',
-                placeholder: 'Nombre de la nueva unidad de medida' 
+                placeholder: 'Nombre de la nueva unidad de medida'
             }
         },
         observaciones: {
             etiqueta: 'label',
             contenido: 'Observaciones',
-            atributos: { 
+            atributos: {
                 for: 'newUdMedidaObservaciones',
                 class: 'form-label'
             }
@@ -490,20 +488,20 @@ function pagUdMedida() {
         },
         btnCrearMedida: {
             etiqueta: 'input',
-            atributos: { 
-                type: 'submit', 
+            atributos: {
+                type: 'submit',
                 id: 'btnCrearMedida',
                 value: 'Crear ud. de medida',
                 class: 'btn btn_custom_1',
-                onclick: 'newUdMedida()' 
-                
+                onclick: 'newUdMedida()'
+
             }
         }
     };
     crearFormulario(camposNewMedida, contenedorForm);
-    
+
     let parametros = {
-        unidadesDeMedida: 'unidadesMedida' 
+        unidadesDeMedida: 'unidadesMedida'
     };
     console.log(parametros);
 
@@ -520,8 +518,7 @@ function pagUdMedida() {
 
 }
 
-function newUdMedida()
-{   
+function newUdMedida() {
     let nombre = document.getElementById('newUdMedidaName').value;
     let observaciones = document.getElementById('newUdMedidaObservaciones').value;
 
@@ -537,20 +534,122 @@ function newUdMedida()
         type: "POST",
         url: "./php/consultaAdmin.php",
         data: parametros,
-        error: function(a,b,errorMsg) {
+        error: function (a, b, errorMsg) {
             console.log(errorMsg);
         }
-      }).done(function (a) {
+    }).done(function (a) {
         console.log(a);
         console.log("hecho");
-      });
+    });
 }
 
 //Función que imprime la tabla de Unidades de Medida
-function tablaUnidadesMedida()
-{
-    
+function tablaUnidadesMedida(respuesta) {
+    //Datos de unidades recibidos: "id_unidades" - "descripcion" - "observaciones"
+    let unidades = JSON.parse(respuesta);
+
+    //La parte derecha del formulario, falta darle un id,
+    let contenedorDerecho = document.querySelector(".pagForm_columnaRight");
+    let buscador = crearElemento("input", undefined, {
+        id: "buscadorFormDerecho"
+    });
+
+    buscador.addEventListener("input", function (e) {
+        // Convertir a minúsculas y quitar espacios en blanco al inicio y al final.
+        let textoBuscar = this.value.toLowerCase().trim();
+
+        // Obtener todas las filas de la tabla.
+        let filasTabla = tablaBody.querySelectorAll("tr");
+
+        // Mostrar u ocultar según el texto del buscador.
+        filasTabla.forEach(fila => {
+            // Obtener la descripción de la fila y convertirla a minúsculas.
+            let descripcion = fila.querySelector("td").innerHTML.toLowerCase();
+
+            // Mostrar la fila si coincide con el texto buscado o si no se ha ingresado nada en el input.
+            if (descripcion.includes(textoBuscar) || textoBuscar === "") {
+                fila.style.display = ""; // Mostrar la fila.
+            } else {
+                fila.style.display = "none"; // Ocultar la fila.
+            }
+        });
+    });
+
+    contenedorDerecho.appendChild(buscador);
+
+    //Tabla.
+    let tablaUnidades = crearElemento("table", undefined, {
+        class: "table table-responsive table-hover mt-4"
+    });
+
+    let tablaBody = crearElemento("tbody");
+    //Ahora agrego el contenido.
+    unidades.forEach(fila => {
+        let filaBody = crearElemento("tr");
+        let celdaDescripcion = crearElemento("td", fila["descripcion"]);
+        let celdaBotones = crearElemento("td");
+
+        // Crear el div principal con la clase dropdown
+        let divDropdown = crearElemento("div", undefined, { 
+            class: "dropdown"
+        });
+
+        // Crear el enlace con los atributos y contenido dados
+        let enlace = crearElemento("a", undefined, {
+            href: "#",
+            role: "button",
+            id: "unidadDropdown_" + fila.id_unidades,
+            "data-bs-toggle": "dropdown",
+            "aria-expanded": "false"
+        });
+
+        // Crear el contenedor del icono
+        let iconContainer = crearElemento("div", undefined, { class: "icon_container" });
+
+        // Crear el icono principal
+        let iconoPrincipal = crearElemento("i", undefined, { id: "iconoPrincipal_" + fila.id_unidades, class: "bi bi-three-dots-vertical" });
+
+        // Agregar el icono principal al contenedor de iconos
+        iconContainer.appendChild(iconoPrincipal);
+
+        // Agregar el contenedor de iconos al enlace
+        enlace.appendChild(iconContainer);
+
+        // Crear el div del menú desplegable con los atributos dados
+        let divDropdownMenu = crearElemento("div", undefined, { class: "dropdown-menu", "aria-labelledby": "unidadDropdown_" + fila.id_unidades });
+
+        // Crear los elementos de las opciones del menú desplegable
+        let opcionModificar = crearElemento("a", undefined, { class: "dropdown-item", href: "#" });
+        let iconoModificar = crearElemento("span", undefined, { class: "bi bi-pencil dropdown_icon_margin" });
+        let textoModificar = crearElemento("span", "Editar");
+        opcionModificar.appendChild(iconoModificar);
+        opcionModificar.appendChild(textoModificar);
+
+        let opcionEliminar = crearElemento("a", undefined, { class: "dropdown-item", href: "#" });
+        let iconoEliminar = crearElemento("span", undefined, { class: "bi bi-trash3 dropdown_icon_margin" });
+        let textoEliminar = crearElemento("span", "Eliminar");
+        opcionEliminar.appendChild(iconoEliminar);
+        opcionEliminar.appendChild(textoEliminar);
+
+        // Agregar las opciones al div del menú desplegable
+        divDropdownMenu.appendChild(opcionModificar);
+        divDropdownMenu.appendChild(opcionEliminar);
+
+        // Agregar el enlace y el menú desplegable al div principal
+        divDropdown.appendChild(enlace);
+        divDropdown.appendChild(divDropdownMenu);
+
+        // Agregar el div principal a la celda de botones
+        celdaBotones.appendChild(divDropdown);
+
+        filaBody.appendChild(celdaDescripcion);
+        filaBody.appendChild(celdaBotones);
+        tablaBody.appendChild(filaBody);
+    });
+    tablaUnidades.appendChild(tablaBody);
+    contenedorDerecho.appendChild(tablaUnidades);
 }
+
 
 // Apartado PEDIDOS____________________________________________________________________
 function navPedidos() {
@@ -558,10 +657,11 @@ function navPedidos() {
 }
 
 function navListarPedidos() {
-    pagListarPedidos(); 
+    pagListarPedidos();
 }
 
 function pagListarPedidos() { // mostrar el historial de pedidos del admin
+
 }
 
 function navNuevoPedido() {
@@ -594,7 +694,7 @@ function navUsuarios() {
 }
 
 function navListarUsuarios() {
-    pagListarUsuarios(); 
+    pagListarUsuarios();
 }
 
 function pagListarUsuarios() { // mostrar tabla con los usuarios y sus datos
@@ -617,7 +717,7 @@ function pagListarUsuarios() { // mostrar tabla con los usuarios y sus datos
 
 // Formulario 5. Añadir usuario.....................
 function navAñadirUsuario() {
-    pagAñadirUsuario(); 
+    pagAñadirUsuario();
 }
 
 function pagAñadirUsuario() {
@@ -628,74 +728,74 @@ function pagAñadirUsuario() {
         nombre: {
             etiqueta: 'label',
             contenido: 'Nombre',
-            atributos: { 
+            atributos: {
                 for: 'newUserName',
                 class: 'form-label'
             }
         },
         inputNombre: {
             etiqueta: 'input',
-            atributos: { 
-                type: 'text', 
+            atributos: {
+                type: 'text',
                 id: 'newUserName',
                 class: 'form-control',
-                placeholder: 'Nombre del nuevo usuario' 
+                placeholder: 'Nombre del nuevo usuario'
             }
         },
         activo: {
             etiqueta: 'label',
             contenido: 'Activo',
-            atributos: { 
+            atributos: {
                 for: 'userActive',
                 class: 'form-label'
             }
         },
         inputActivo: {
             etiqueta: 'input',
-            atributos: { 
+            atributos: {
                 type: 'text', //! revisar tipo de input del toggle de usuario activo
                 id: 'userActive',
-                class: 'form-control' 
+                class: 'form-control'
             }
         },
         telefono: {
             etiqueta: 'label',
             contenido: 'Teléfono',
-            atributos: { 
+            atributos: {
                 for: 'newUserTelefono',
                 class: 'form-label'
             }
         },
         inputTelefono: {
             etiqueta: 'input',
-            atributos: { 
-                type: 'text', 
+            atributos: {
+                type: 'text',
                 id: 'newUserTelefono',
                 class: 'form-control',
-                placeholder: 'Teléfono del nuevo usuario' 
+                placeholder: 'Teléfono del nuevo usuario'
             }
         },
         email: {
             etiqueta: 'label',
             contenido: 'Email',
-            atributos: { 
+            atributos: {
                 for: 'newUserEmail',
                 class: 'form-label'
             }
         },
         inputEmail: {
             etiqueta: 'input',
-            atributos: { 
-                type: 'email', 
+            atributos: {
+                type: 'email',
                 id: 'newUserEmail',
                 class: 'form-control',
-                placeholder: 'Email del nuevo usuario' 
+                placeholder: 'Email del nuevo usuario'
             }
         },
         observaciones: {
             etiqueta: 'label',
             contenido: 'Observaciones',
-            atributos: { 
+            atributos: {
                 for: 'newUserObservacion',
                 class: 'form-label'
             }
@@ -731,10 +831,10 @@ function pagAñadirUsuario() {
         btnCrearUsuario: {
             etiqueta: 'input',
             contenido: 'Crear ud. de medida',
-            atributos: { 
-                type: 'submit', 
+            atributos: {
+                type: 'submit',
                 class: 'btn btn_custom_1',
-                onclick: 'crearUsuario()' 
+                onclick: 'crearUsuario()'
             }
         }
     };
@@ -791,75 +891,75 @@ function pagAñadirProveedor() {
         nombre: {
             etiqueta: 'label',
             contenido: 'Nombre',
-            atributos: { 
+            atributos: {
                 for: 'newProvName',
                 class: 'form-label'
             }
         },
         inputNombre: {
             etiqueta: 'input',
-            atributos: { 
-                type: 'text', 
+            atributos: {
+                type: 'text',
                 id: 'newProvName',
                 class: 'form-control',
-                placeholder: 'Nombre del nuevo proveedor' 
+                placeholder: 'Nombre del nuevo proveedor'
             }
         },
         telefono: {
             etiqueta: 'label',
             contenido: 'Teléfono',
-            atributos: { 
+            atributos: {
                 for: 'newProvTelefono',
                 class: 'form-label'
             }
         },
         inputTelefono: {
             etiqueta: 'input',
-            atributos: { 
-                type: 'text', 
+            atributos: {
+                type: 'text',
                 id: 'newProvTelefono',
                 class: 'form-control',
-                placeholder: 'Teléfono del nuevo proveedor' 
+                placeholder: 'Teléfono del nuevo proveedor'
             }
         },
         email: {
             etiqueta: 'label',
             contenido: 'Email',
-            atributos: { 
+            atributos: {
                 for: 'newProvEmail',
                 class: 'form-label'
             }
         },
         inputEmail: {
             etiqueta: 'input',
-            atributos: { 
-                type: 'email', 
+            atributos: {
+                type: 'email',
                 id: 'newProvEmail',
                 class: 'form-control',
-                placeholder: 'Email del nuevo proveedor' 
+                placeholder: 'Email del nuevo proveedor'
             }
         },
         direccion: {
             etiqueta: 'label',
             contenido: 'Dirección',
-            atributos: { 
+            atributos: {
                 for: 'newProvDireccion',
                 class: 'form-label'
             }
         },
         inputDireccion: {
             etiqueta: 'input',
-            atributos: { 
-                type: 'text', 
+            atributos: {
+                type: 'text',
                 id: 'newProvDireccion',
                 class: 'form-control',
-                placeholder: 'Dirección del nuevo proveedor' 
+                placeholder: 'Dirección del nuevo proveedor'
             }
         },
         observaciones: {
             etiqueta: 'label',
             contenido: 'Observaciones',
-            atributos: { 
+            atributos: {
                 for: 'newProvObservacion',
                 class: 'form-label'
             }
@@ -894,18 +994,18 @@ function pagAñadirProveedor() {
         },
         btnCrearProveedor: {
             etiqueta: 'input',
-            atributos: { 
+            atributos: {
                 value: 'Crear proveedor',
-                type: 'submit', 
+                type: 'submit',
                 class: 'btn btn_custom_1',
-                onclick: 'newProveedor()' 
+                onclick: 'newProveedor()'
             }
         }
     };
     crearFormulario(camposNewProveedor, contenedor);
-    
+
     let parametros = {
-        proveedores: 'proveedores' 
+        proveedores: 'proveedores'
     };
     console.log(parametros);
 
@@ -921,13 +1021,11 @@ function pagAñadirProveedor() {
     });
 }
 
-function tablaProveedor()
-{
+function tablaProveedor() {
 
 }
 
-function newProveedor()
-{
+function newProveedor() {
     let nombre = document.getElementById('newProvName').value;
     let observaciones = document.getElementById('newProvObservacion').value;
     let email = document.getElementById('newProvEmail').value;
@@ -948,18 +1046,18 @@ function newProveedor()
         type: "POST",
         url: "./php/consultaAdmin.php",
         data: parametros,
-        error: function(a,b,errorMsg) {
+        error: function (a, b, errorMsg) {
             console.log(errorMsg);
         }
-      }).done(function (a) {
+    }).done(function (a) {
         console.log(a);
         console.log("hecho");
-      });
+    });
 }
 
 // Apartado RESIDUOS_______________________________________________________________________
 function navResiduos() {
-    pagResiduos(); 
+    pagResiduos();
 }
 
 function pagResiduos() {
