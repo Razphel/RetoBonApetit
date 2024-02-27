@@ -85,7 +85,6 @@ function principal() {
 function mensajesInicio(respuesta) {
     //Contenedor general de la pagina.
     let contenedor = document.querySelector("#contenedor");
-
     //Contenedor de botones de categorias y h1 con el titulo de la vista inicio.
     let parteSuperior = crearElemento("div", undefined, {
         class: "row"

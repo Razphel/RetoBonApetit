@@ -38,6 +38,11 @@ if (isset($_REQUEST['pedirProductos'])) {
     echo json_encode($productos);
 }
 
+if (isset($_REQUEST['mensajesInicio'])) {
+    $mensajes = BD::imprimirMensajesInicio();
+    echo json_encode($mensajes);
+}
+
 if (isset($_REQUEST['residuos'])) {
     $residuos = BD::imprimirResiduos();
     echo json_encode($residuos);
