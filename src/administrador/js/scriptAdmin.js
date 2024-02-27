@@ -172,14 +172,67 @@ function pagAñadirCategoria() {
 
     //. BLOQUE 1....................................................
     let contenedorImagen = crearElemento('div', undefined, {
-        class: 'form-group form_cat_contenedor_imagen'
+        class: 'form-group w-100 form_cat_contenedor_imagen'
     });
 
+    let labelImagen = crearElemento('label', 'Icono de categoría', {
+        for: 'iconoCategoriaForm',
+        class: 'form-label'
+    });
+    let contenedorImagenSeleccionar = crearElemento('div', undefined, {
+        id: 'contenedorImagen'
+    })
+    let imagenCategoria = crearElemento('img', undefined, {
+        id: 'imagenSeleccionada',
+        alt: 'Imagen de categoría'
+    });
+
+    contenedorImagenSeleccionar.appendChild(imagenCategoria); 
+
+    let contenedorGaleriaImg = crearElemento('div', undefined, {
+        class: 'select-grid'
+    });
+    let selectImagen = crearElemento('select', undefined, {
+        id: 'seleccionImagen'
+    });
+
+    // Mostrar imágenes en el select para seleccionar.......................................
+    // Ruta de la carpeta de imágenes
+    let rutaCarpeta = "../../../assets/img/categorias/";
+
+    // Número de imágenes
+    let numeroImagenes = 25; 
+
+    // Crear las opciones del desplegable con las imágenes
+    for (let i = 1; i <= numeroImagenes; i++) {
+        // Generar el nombre de archivo de la imagen
+        let nombreImagen = i.toString().padStart(2, "0") + ".png";
+            
+        // Eliminar los últimos cuatro caracteres (".png") del nombre de la imagen
+        let nombreImagenSinExtension = nombreImagen.slice(0, -4);
+        
+        // Crear y agregar la opción al desplegable
+        let option = crearElemento("option", {
+            value: rutaCarpeta + nombreImagen,
+            textContent: nombreImagenSinExtension
+        });
+        selectImagen.appendChild(option);
+    }
+
+    contenedorGaleriaImg.appendChild(selectImagen); 
+    contenedorImagen.appendChild(labelImagen); 
+    contenedorImagen.appendChild(contenedorImagenSeleccionar); 
     contenedorFormLeft.appendChild(contenedorImagen); // añadir a la columna izquierda del contendor
+
+    // Cambiar la imagen seleccionada cuando se elija una opción del desplegable
+    selectImagen.addEventListener("change", function() {
+        const rutaImagenSeleccionada = selectImagen.value;
+        imagenCategoria.src = rutaImagenSeleccionada;
+    });
 
     //. BLOQUE 2....................................................
     let contenedorNombre = crearElemento('div', undefined, {
-        class: 'form-group form_cat_contenedor_nombre'
+        class: 'form-group w-100 form_cat_contenedor_nombre'
     });
 
     let labelNombre = crearElemento('label', 'Nombre', {
@@ -200,7 +253,7 @@ function pagAñadirCategoria() {
 
     //. BLOQUE 3....................................................
     let contenedorObservaciones = crearElemento('div', undefined, {
-        class: 'form-group form_cat_contenedor_obser'
+        class: 'form-group w-100 form_cat_contenedor_obser'
     });
 
     let labelObservaciones = crearElemento('label', 'Observaciones', {

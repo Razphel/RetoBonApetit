@@ -416,6 +416,15 @@ textarea::placeholder {
     }
 }
 
+.form_contenedor_left {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 30px;
+}
+
 /* Contenedores.................................. gen_cont */
 .card {
     border: none;
