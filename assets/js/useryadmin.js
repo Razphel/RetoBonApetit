@@ -378,22 +378,20 @@ function getRandomColor() {
 }
 
 //FUNCION ICONO BARRA LATERAL
-function toggleSidebar() {
-    $(".sidebar").toggleClass("sidebar-hidden");
-    $(".page_container").toggleClass("content-sidebar-hidden");
-}
-
 document.addEventListener("DOMContentLoaded", function () {
-    // Recuperar el estado de visibilidad desde el almacenamiento local y aplicarlo al cargar la página
-    let sidebarVisible = localStorage.getItem("sidebarVisible");
-
-    if (sidebarVisible === "false") {
-        $(".sidebar").addClass("sidebar-hidden");
-        $(".page_container").addClass("content-sidebar-hidden");
-    }
-
-    // Click del icono
-    $("#toggleSidebarIcon").click(function () {
+    // Event listener para el clic en el icono de la barra lateral
+    $(".bi.bi-list").click(function () {
         toggleSidebar();
     });
 });
+
+//FUNCION ICONO BARRA LATERAL
+function toggleSidebar() {
+    $(".sidebar").toggleClass("sidebar-hidden");
+    $(".page_container").toggleClass("content-sidebar-hidden");
+
+    // Guardar el estado de visibilidad en el almacenamiento local
+    let sidebarVisible = $(".sidebar").hasClass("sidebar-hidden") ? "false" : "true";
+    localStorage.setItem("sidebarVisible", sidebarVisible);
+}
+;
