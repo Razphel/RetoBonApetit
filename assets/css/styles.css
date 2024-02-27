@@ -425,6 +425,15 @@ textarea::placeholder {
     gap: 30px;
 }
 
+.form_contenedor_right {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 30px;
+}
+
 /* Dropdown galería imágenes nueva categoría */
 .imagenCategoriaContenedor {
     width: 70px; 

@@ -128,7 +128,6 @@ function navInicio() {
 }
 
 function pagInicio() {
-
 }
 
 // Apartado CATEGORÍAS________________________________________________________________
@@ -300,14 +299,14 @@ function pagAñadirCategoria() {
     });
 
     let labelNombre = crearElemento('label', 'Nombre', {
-        for: 'newNombreCategoria',
+        for: 'newCategoriaName',
         class: 'form-label'
     });
     contenedorNombre.appendChild(labelNombre);
 
     let inputNombre = crearElemento('input', undefined, {
         type: 'text',
-        id: 'newNombreCategoria',
+        id: 'newCategoriaName',
         class: 'form-control',
         placeholder: 'Nombre de la nueva categoría'
     });
@@ -330,7 +329,7 @@ function pagAñadirCategoria() {
         type: 'text',
         id: 'newObservacionCategoria',
         class: 'form-control',
-        placeholder: 'Observación de la nueva categoría',
+        placeholder: 'Observaciones de la nueva categoría',
         rows: '5', 
     });
     contenedorObservaciones.appendChild(inputObservaciones); 
@@ -423,11 +422,10 @@ function pagAñadirCategoria() {
 }
 
 function tablaCategorias() {
-
 }
 
 function newCategoria() {
-    let nombre = document.getElementById('newNombreCategoria').value;
+    let nombre = document.getElementById('newCategoriaName').value;
     let observaciones = document.getElementById('newObservacionCategoria').value;
 
     let parametros = {
@@ -484,124 +482,165 @@ function navAñadirProducto() {
 // Formulario 2. Crear producto.......................
 function pagAñadirProducto() {
     crearPlantillaFormularios('Nuevo producto', 'Datos del nuevo producto', 'Productos existentes');
-    contenedorForm = document.querySelector('#contenedorForm');
+    let contenedorForm = document.querySelector('#contenedorForm');
 
-    let camposNewProductos = {
-        nombre: {
-            etiqueta: 'label',
-            contenido: 'Nombre',
-            atributos: {
-                for: 'newProductName',
-                class: 'form-label'
-            }
-        },
-        inputNombre: {
-            etiqueta: 'input',
-            atributos: {
-                type: 'text',
-                id: 'newProductName',
-                class: 'form-control',
-                placeholder: "Nombre del producto"
-            }
-        },
-        categoria: {
-            etiqueta: 'label',
-            contenido: 'Categoría',
-            atributos: {
-                for: 'newProductCategoria',
-                class: 'form-label'
-            }
-        },
-        inputCategoria: {
-            etiqueta: 'input',
-            atributos: {
-                type: 'text',
-                id: 'newProductCategoria',
-                class: 'form-control',
-                placeholder: 'Categoría asociada al nuevo producto'
-            }
-        },
-        unidadDeMedida: {
-            etiqueta: 'label',
-            contenido: 'Unidad de medida',
-            atributos: {
-                for: 'newProductUdMedida',
-                class: 'form-label'
-            }
-        },
-        inputUnidadDeMedida: {
-            etiqueta: 'input',
-            atributos: {
-                type: 'text',
-                id: 'newProductUdMedida',
-                class: 'form-control',
-                placeholder: 'Unidad de medida del nuevo producto'
-            }
-        },
-        residuos: {
-            etiqueta: 'label',
-            contenido: 'Residuos',
-            atributos: {
-                for: 'newProductResiduos',
-                class: 'form-label'
-            }
-        },
-        inputResiduos: {
-            etiqueta: 'input',
-            atributos: {
-                type: 'text',
-                id: 'newProductResiduos',
-                class: 'form-control',
-                placeholder: 'Residuos del nuevo producto'
-            }
-        },
-        observaciones: {
-            etiqueta: 'label',
-            contenido: 'Observaciones',
-            atributos: {
-                for: 'newProductObservaciones',
-                class: 'form-label'
-            }
-        },
-        inputObservaciones: {
-            etiqueta: 'textarea',
-            atributos: {
-                type: 'text',
-                id: 'newProductObservaciones',
-                class: 'form-control',
-                placeholder: 'Observaciones del nuevo producto'
-            }
-        },
-        // Botones
-        btnCancelar: {
-            etiqueta: 'input',
-            atributos: {
-                type: 'submit',
-                value: 'Cancelar',
-                class: 'btn btn_custom_3',
-                onclick: 'cancelar()'
-            }
-        },
-        btnLimpiarDatos: {
-            etiqueta: 'input',
-            atributos: {
-                type: 'submit',
-                value: 'Limpiar datos',
-                class: 'btn btn_custom_2',
-                onclick: 'limpiarDatos()'
-            }
-        },
-        btnCrearProducto: {
-            etiqueta: 'input',
-            atributos: {
-                type: 'submit',
-                value: 'Crear producto', 
-                class: 'btn btn_custom_1',
-                onclick: 'crearProducto()'
-            }
-        }
-    };
-    crearFormulario(camposNewProductos, contenedorForm);
+    let formProductos = crearElemento('form', undefined, []);
+
+    let contenedorFormTop = crearElemento('div', undefined, { // van el contenedor left y right
+        class: 'form_contenedor_top'
+    });
+
+    let contenedorFormLeft = crearElemento('div', undefined, { // columna izquierda del formulario
+        class: 'form_contenedor_left'
+    });
+
+    let contenedorFormRight = crearElemento('div', undefined, { // columna derecha del formulario
+        class: 'form_contenedor_right'
+    });
+
+    //. BLOQUE 1....................................................
+    let contenedorNombre = crearElemento('div', undefined, {
+        class: 'form-group w-100'
+    });
+
+    let labelNombre = crearElemento('label', 'Nombre', {
+        for: 'newNombreProducto',
+        class: 'form-label'
+    });
+    contenedorNombre.appendChild(labelNombre);
+
+    let inputNombre = crearElemento('input', undefined, {
+        type: 'text',
+        id: 'newNombreProducto',
+        class: 'form-control',
+        placeholder: 'Nombre del nuevo producto'
+    });
+    contenedorNombre.appendChild(inputNombre); 
+
+    contenedorFormLeft.appendChild(contenedorNombre);
+
+    //. BLOQUE 2....................................................
+    let contenedorUdMedida = crearElemento('div', undefined, {
+        class: 'form-group w-100'
+    });
+
+    let labelUdMedida = crearElemento('label', 'Nombre', {
+        for: 'newProductUdMedida',
+        class: 'form-label'
+    });
+    contenedorUdMedida.appendChild(labelUdMedida);
+
+    let inputUdMedida = crearElemento('input', undefined, {
+        type: 'text',
+        id: 'newProductUdMedida',
+        class: 'form-control',
+        placeholder: 'Ud. de medida del producto'
+    });
+    contenedorUdMedida.appendChild(inputUdMedida); 
+
+    contenedorFormLeft.appendChild(contenedorUdMedida);
+
+    //. BLOQUE 3....................................................
+    let contenedorObservaciones = crearElemento('div', undefined, {
+        class: 'form-group w-100 form_cat_contenedor_obser'
+    });
+
+    let labelObservaciones = crearElemento('label', 'Observaciones', {
+        for: 'newProductObservaciones',
+        class: 'form-label'
+    });
+    contenedorObservaciones.appendChild(labelObservaciones);
+
+    let inputObservaciones = crearElemento('textarea', undefined, {
+        type: 'text',
+        id: 'newProductObservaciones',
+        class: 'form-control',
+        placeholder: 'Observaciones del nuevo producto',
+        rows: '5', 
+    });
+    contenedorObservaciones.appendChild(inputObservaciones); 
+
+    contenedorFormLeft.appendChild(contenedorObservaciones);
+
+    //. BLOQUE 4....................................................
+    let contenedorCategoria = crearElemento('div', undefined, {
+        class: 'form-group w-100'
+    });
+
+    let labelCategoria = crearElemento('label', 'Nombre', {
+        for: 'newProductCategoria',
+        class: 'form-label'
+    });
+    contenedorCategoria.appendChild(labelCategoria);
+
+    let inputCategoria = crearElemento('input', undefined, {
+        type: 'text',
+        id: 'newProductCategoria',
+        class: 'form-control',
+        placeholder: 'Categoría del producto'
+    });
+    contenedorCategoria.appendChild(inputCategoria); 
+
+    contenedorFormRight.appendChild(contenedorCategoria);
+
+    //. BLOQUE 5....................................................
+    let contenedorResiduos = crearElemento('div', undefined, {
+        class: 'form-group w-100'
+    });
+
+    let labelResiduos = crearElemento('label', 'Nombre', {
+        for: 'newProductResiduos',
+        class: 'form-label'
+    });
+    contenedorResiduos.appendChild(labelResiduos);
+
+    let inputResiduos = crearElemento('input', undefined, {
+        type: 'text',
+        id: 'newProductResiduos',
+        class: 'form-control',
+        placeholder: 'Residuos del producto'
+    });
+    contenedorResiduos.appendChild(inputResiduos); 
+
+    contenedorFormRight.appendChild(contenedorResiduos);
+
+    //. BOTONES......................................................
+    let contenedorBotones = crearElemento('div', undefined, {
+        class: 'form-group form_contenedor_botones'
+    });
+
+    let btnCancelar = crearElemento("input", undefined, {
+        type: 'submit',
+        value: 'Cancelar',
+        class: 'btn btn_custom_3',
+        onclick: 'cancelar()'
+    });
+
+    let btnVaciar = crearElemento("input", undefined, {
+        type: 'submit',
+        value: 'Limpiar datos',
+        class: 'btn btn_custom_2',
+        onclick: 'limpiarDatos()'
+    });
+
+    let btnCrearProducto = crearElemento("input", undefined, {
+        type: 'submit',
+        value: 'Crear producto',
+        class: 'btn btn_custom_1',
+        onclick: 'crearProducto()'
+    });
+
+    contenedorBotones.appendChild(btnCancelar);
+    contenedorBotones.appendChild(btnVaciar);
+    contenedorBotones.appendChild(btnCrearProducto);
+
+    contenedorFormTop.appendChild(contenedorFormLeft);
+    contenedorFormTop.appendChild(contenedorFormRight);
+
+    formProductos.appendChild(contenedorFormTop); 
+    formProductos.appendChild(contenedorBotones); 
+
+    contenedorForm.appendChild(formProductos);
 }
 
 // Formulario 3. Crear ud. de medida...................
