@@ -69,18 +69,6 @@ function modoColor() {
     });
 }
 
-function generarIconUser() {
-    let usuarioActual = JSON.parse(localStorage.getItem("usuario"));
-
-    let nombre = usuarioActual.nombre;
-    let apellido = usuarioActual.apellido;
-    const siglas = nombre.substring(0, 1) + apellido.substring(0, 1);
-    const userIcon = document.getElementById('userIcon');
-    userIcon.textContent = siglas;
-    userIcon.style.backgroundColor = getRandomColor();
-}
-
-
 function cerrarSesion() {
     localStorage.removeItem("usuario");
 
@@ -364,6 +352,18 @@ function consultarProductos() {
 
         localStorage.setItem("todosProductos", JSON.stringify(todosProductos));
     }
+}
+
+// genera el icono de usuario
+function generarIconUser() {
+    let usuarioActual = JSON.parse(localStorage.getItem("usuario"));
+
+    let nombre = usuarioActual.nombre;
+    let apellido = usuarioActual.apellido;
+    const siglas = nombre.substring(0, 1) + apellido.substring(0, 1);
+    const userIcon = document.getElementById('userIcon');
+    userIcon.textContent = siglas;
+    userIcon.style.backgroundColor = getRandomColor();
 }
 
 // genera un color aleatorio, se usa en el icono de usuario
