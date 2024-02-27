@@ -798,11 +798,11 @@ function mostrarPopup(datosProducto) {
 
     // Crear el contenedor del pop-up
     let popupContainer = document.createElement("div");
-    popupContainer.classList.add("popup-container");
+    popupContainer.classList.add("popup-container", "card");
 
     // Crear el contenido del pop-up
     let popupContent = document.createElement("div");
-    popupContent.classList.add("popup-content");
+    popupContent.classList.add("popup-content", "card-body");
 
     // Crear el título del pop-up
     let tituloPopup = document.createElement("h2");
@@ -826,19 +826,16 @@ function mostrarPopup(datosProducto) {
     observacionesProducto.textContent = `Observaciones: ${datosProducto[3]}`;
     observacionesProducto.id = "popupObservaciones";
 
-    // Crear el botón para añadir a la cesta
     let botonAñadirCesta = document.createElement("button");
     botonAñadirCesta.textContent = "Añadir a la cesta";
-    botonAñadirCesta.style.backgroundColor = "rosybrown"; // Fondo rojo del botón
-    botonAñadirCesta.style.color = "white"; // Texto blanco del botón
-    botonAñadirCesta.addEventListener("click", function () {
+    botonAñadirCesta.addEventListener("click", function() {
         // Lógica para añadir a la cesta
-        agregarCesta.call(this); // Llama a la función agregarCesta con el contexto del botón actual
-        manejadorCarrito();
+        agregarCestaDesdePopup(datosProducto);
         // Cerrar el pop-up después de añadir a la cesta
         popupContainer.remove();
-        overlay.remove();
+        overlay.style.backgroundColor = "transparent";
     });
+
 
     // Agregar los elementos al contenido del pop-up
     popupContent.appendChild(nombreProducto);
@@ -858,6 +855,37 @@ function mostrarPopup(datosProducto) {
         popupContainer.remove();
         overlay.remove();
     });
+}
+
+function agregarCestaDesdePopup(datosProducto) {
+    // Lógica para añadir a la cesta desde el pop-up
+    let cesta = JSON.parse(localStorage.getItem("cesta")) || [];
+    
+    // Verificar si el producto ya está en la cesta
+    let productoEnCestaIndex = cesta.findIndex(item =>
+        item.nombre_producto === datosProducto[0] &&
+        item.nombre_categoria === datosProducto[1]
+    );
+
+    if (productoEnCestaIndex === -1) {
+        // Si el producto no está en la cesta, agregarlo con la cantidad 1
+        let nuevoProducto = {
+            nombre_producto: datosProducto[0],
+            nombre_categoria: datosProducto[1],
+            cantidad: 1, // Cantidad inicial
+            // Otros datos del producto si es necesario
+        };
+        cesta.push(nuevoProducto);
+    } else {
+        // Si el producto ya está en la cesta, sumar 1 a la cantidad existente
+        cesta[productoEnCestaIndex].cantidad += 1;
+    }
+
+    // Guardar la cesta actualizada en el almacenamiento local
+    localStorage.setItem("cesta", JSON.stringify(cesta));
+
+    // Actualizar la visualización de la cesta (puedes hacerlo llamando a la función correspondiente)
+    manejadorCarrito();
 }
 function agregarCesta(e) {
     let todosProductos = JSON.parse(localStorage.getItem("todosProductos"));
