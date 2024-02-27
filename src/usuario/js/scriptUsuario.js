@@ -141,8 +141,12 @@ function inicioSolicitudes(respuesta) {
         style: "border-collapse: collapse;"
     });
 
-    //Compruebo que exista algun dato.
+    //Se comprueba primero que exista algo en el historial de solicitudes.
     if (respuesta[0] != null) {
+        let historial = crearElemento("table", undefined, {
+            class: "table table-responsive table-hover mt-4"
+        });
+        let tablaTitulos = crearElemento("thead");
 
         //Creo los titulos de las tablas.
         let titulos = crearElemento("tr", undefined, undefined);
@@ -150,15 +154,15 @@ function inicioSolicitudes(respuesta) {
         let prueba = Object.keys(respuesta[0]);
         for (let i = prueba.length / 2; i < prueba.length; i++) {
             //Creo cada elemento y lo agrego a la fila del titulo.
-            let filaTitulo = crearElemento("th", prueba[i], {
-                style: "padding:5px 30px;"
-            });
+            let filaTitulo = crearElemento("th", prueba[i]);
             titulos.appendChild(filaTitulo);
         }
 
         //Agrego el titulo a la tabla.
-        historial.appendChild(titulos);
+        tablaTitulos.appendChild(titulos);
+        historial.appendChild(tablaTitulos);
 
+        let tablaBody = crearElemento("tbody");
         //Ahora agrego el contenido.
         respuesta.forEach(fila => {
             let filaNormal = crearElemento("tr", undefined, undefined);
@@ -166,15 +170,13 @@ function inicioSolicitudes(respuesta) {
                 let elementoFila = crearElemento("td", fila[i], undefined);
                 filaNormal.appendChild(elementoFila);
             }
-            historial.appendChild(filaNormal);
+            tablaBody.appendChild(filaNormal);
         });
+        historial.appendChild(tablaBody);
         contenedor.appendChild(historial);
-    }
-    else {
-        historial = crearElemento("p", "Historial Vacio.", {
-            id: "historial"
-        });
-        contenedor.appendChild(historial);
+    } else {
+        let sinHistorial = crearElemento("p", "Historial Vacio.", undefined)
+        contenedor.appendChild(sinHistorial);
     }
 
 }
