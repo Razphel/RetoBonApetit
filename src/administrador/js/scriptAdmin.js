@@ -625,11 +625,28 @@ function pagAñadirUsuario() {
     contenedorForm = document.querySelector('#contenedorForm');
 
     let camposNewUsuario = {
+        nombreUsuario: {
+            etiqueta: 'label',
+            contenido: 'Nombre Usuario',
+            atributos: { 
+                for: 'newUserName',
+                class: 'form-label'
+            }
+        },
+        InputnombreUsuario: {
+            etiqueta: 'input',
+            atributos: { 
+                type: 'text', 
+                id: 'newUserName',
+                class: 'form-control',
+                placeholder: 'Nombre del nuevo usuario' 
+            }
+        },
         nombre: {
             etiqueta: 'label',
             contenido: 'Nombre',
             atributos: { 
-                for: 'newUserName',
+                for: 'newName',
                 class: 'form-label'
             }
         },
@@ -637,7 +654,41 @@ function pagAñadirUsuario() {
             etiqueta: 'input',
             atributos: { 
                 type: 'text', 
-                id: 'newUserName',
+                id: 'newName',
+                class: 'form-control',
+                placeholder: 'Nombre personal del usuario' 
+            }
+        },
+        apellido: {
+            etiqueta: 'label',
+            contenido: 'Apellido',
+            atributos: { 
+                for: 'newApellido',
+                class: 'form-label'
+            }
+        },
+        inputApellido: {
+            etiqueta: 'input',
+            atributos: { 
+                type: 'text', 
+                id: 'newApellido',
+                class: 'form-control',
+                placeholder: 'Apellido del nuevo usuario' 
+            }
+        },
+        password: {
+            etiqueta: 'label',
+            contenido: 'Contraseña',
+            atributos: { 
+                for: 'newPassword',
+                class: 'form-label'
+            }
+        },
+        inputPassword: {
+            etiqueta: 'input',
+            atributos: { 
+                type: 'text', 
+                id: 'newPassword',
                 class: 'form-control',
                 placeholder: 'Nombre del nuevo usuario' 
             }
@@ -655,6 +706,22 @@ function pagAñadirUsuario() {
             atributos: { 
                 type: 'text', //! revisar tipo de input del toggle de usuario activo
                 id: 'userActive',
+                class: 'form-control' 
+            }
+        },
+        admin: {
+            etiqueta: 'label',
+            contenido: 'Admin',
+            atributos: { 
+                for: 'userAdmin',
+                class: 'form-label'
+            }
+        },
+        inputAdmin: {
+            etiqueta: 'input',
+            atributos: { 
+                type: 'text', //! revisar tipo de input del toggle de usuario activo
+                id: 'userAdmin',
                 class: 'form-control' 
             }
         },
@@ -730,17 +797,55 @@ function pagAñadirUsuario() {
         },
         btnCrearUsuario: {
             etiqueta: 'input',
-            contenido: 'Crear ud. de medida',
             atributos: { 
                 type: 'submit', 
+                value: 'Crear usuario',
                 class: 'btn btn_custom_1',
-                onclick: 'crearUsuario()' 
+                onclick: 'newUsuario()'
             }
         }
     };
     crearFormulario(camposNewUsuario, contenedorForm);
 }
 
+function newUsuario()
+{
+    let nombreUser = document.getElementById('newUserName').value;
+    let observaciones = document.getElementById('newUserObservacion').value;
+    let nombre = document.getElementById('newName').value;
+    let apellido = document.getElementById('newApellido').value;
+    let password = document.getElementById('newPassword').value;
+    let telefono = document.getElementById('newUserTelefono').value;
+    let email = document.getElementById('newUserEmail').value;
+    let activo = document.getElementById('userActive').value;
+    let admin = document.getElementById('userAdmin').value;
+    let parametros = {
+        NewUsuario: JSON.stringify({
+            admin: admin,
+            nombre_usuario: nombreUser,
+            nombre: nombre,
+            apellido: apellido,
+            email: email,
+            password: password,
+            activo: activo,
+            telefono: telefono,
+            observaciones: observaciones,
+        })
+    };
+    console.log(parametros);
+
+    $.ajax({
+        type: "POST",
+        url: "./php/consultaAdmin.php",
+        data: parametros,
+        error: function(a,b,errorMsg) {
+            console.log(errorMsg);
+        }
+      }).done(function (a) {
+        console.log(a);
+        console.log("hecho");
+      });
+}
 // Apartado PROVEEDORES___________________________________________________________________
 function navProveedores() {
     pagListarProveedores();
@@ -963,4 +1068,15 @@ function navResiduos() {
 }
 
 function pagResiduos() {
+}
+
+function limpiarDatos()
+{
+    let formualario = document.getElementById("formulario");
+    formualario.reset();
+}
+
+function cancelar()
+{
+window.location.href('./')
 }

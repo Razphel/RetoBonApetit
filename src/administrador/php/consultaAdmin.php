@@ -20,8 +20,15 @@ if(isset($_POST['NewCategoria']))
 if(isset($_POST['NewProveedor']))
 {   
     echo var_dump($_REQUEST['NewProveedor']);
-    $categoriaInsertar = json_decode($_REQUEST['NewProveedor'],true);
-    $addCategoria = BD::insertarRegistro("proveedores",$categoriaInsertar);
+    $proveedorInsertar = json_decode($_REQUEST['NewProveedor'],true);
+    $addProveedor = BD::insertarRegistro("proveedores",$proveedorInsertar);
+}
+
+if(isset($_POST['NewUsuario']))
+{   
+    echo var_dump($_REQUEST['NewUsuario']);
+    $usuarioInsertar = json_decode($_REQUEST['NewUsuario'],true);
+    $addUsuario = BD::insertarRegistro("usuarios",$usuarioInsertar);
 }
 
 if (isset($_REQUEST['categorias'])) 

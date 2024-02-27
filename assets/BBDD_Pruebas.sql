@@ -12,8 +12,8 @@ apellido VARCHAR(50),
 email VARCHAR(50) NOT NULL,
 password VARCHAR(20),
 activo BOOLEAN DEFAULT FALSE,
-observaciones TEXT,
-telefono VARCHAR(15)
+telefono VARCHAR(15),
+observaciones TEXT
 );
  
 CREATE TABLE solicitudes(
@@ -146,9 +146,9 @@ INSERT INTO estados (descripcion) VALUES ('En reparto'),('Entregado'),('En prepa
 INSERT INTO proveedores (descripcion,telefono,email,direccion,observaciones) VALUES ('CARREFOUR','111111111','carrefour@gmail.com','Calle prueba 1, 22','observaciones pruebas');
 INSERT INTO proveedores (descripcion,telefono,email,direccion,observaciones) VALUES ('EL CORTE INGLES','222222222','elcorteingles@gmail.com','Calle prueba 2, 32','observaciones prueba');
 INSERT INTO proveedores (descripcion,telefono,email,direccion,observaciones) VALUES ('MERCADONA','333333333','mercadona@gmail.com','Calle prueba 3, 12','observaciones prueba');
-INSERT INTO usuarios (admin,nombre_usuario,nombre,apellido,email,password,activo,observaciones,telefono) VALUES (1,'ADMINISTRADOR1','Yris','Guti','admin1@gmail.com','1234',1,'observaciones pruebas','888888888');
-INSERT INTO usuarios (admin,nombre_usuario,nombre,apellido,email,password,activo,observaciones,telefono) VALUES (0,'USUARIO1','Laura','apellido1','usuario1@gmail.com','1235',1,'observaciones prueba','99999999');
-INSERT INTO usuarios (admin,nombre_usuario,nombre,apellido,email,password,activo,observaciones,telefono) VALUES (0,'sagaz','Hoid','Raphael','usuario1@gmail.com','1235',1,'observaciones prueba','99999999');
+INSERT INTO usuarios (admin,nombre_usuario,nombre,apellido,email,password,activo,telefono,observaciones) VALUES (1,'ADMINISTRADOR1','Yris','Guti','admin1@gmail.com','1234',1,'888888888','observaciones pruebas');
+INSERT INTO usuarios (admin,nombre_usuario,nombre,apellido,email,password,activo,telefono,observaciones) VALUES (0,'USUARIO1','Laura','apellido1','usuario1@gmail.com','1235',1,'99999999','observaciones prueba');
+INSERT INTO usuarios (admin,nombre_usuario,nombre,apellido,email,password,activo,telefono,observaciones) VALUES (0,'sagaz','Hoid','Raphael','usuario1@gmail.com','1235',1,'99999999','observaciones prueba');
 INSERT INTO solicitudes (fecha_solicitud,descripcion,unidades,cantidad,observaciones,tramitado,fk_usuario) VALUES ('2024/02/07','huevos','cajas',6,'observaciones prueba',1,2);
 INSERT INTO solicitudes (fecha_solicitud,descripcion,unidades,cantidad,observaciones,tramitado,fk_usuario) VALUES ('2025/03/12','cosaRandom2','gramos',3.4,'observaciones prueba',0,2);
 INSERT INTO solicitudes (fecha_solicitud,descripcion,unidades,cantidad,observaciones,tramitado,fk_usuario) VALUES ('2023/12/07','cosaRandom3','cajas',6,'observaciones prueba',1,2);
@@ -163,12 +163,12 @@ INSERT INTO linea_pedido (fk_pedido,descripcion,cantidad,unidades,observaciones)
 INSERT INTO unidades (descripcion,observaciones) VALUES ('cajas','observacion kaladin');
 INSERT INTO unidades (descripcion,observaciones) VALUES ('kilogramos','observacion dalinar');
 INSERT INTO unidades (descripcion,observaciones) VALUES ('sacos','observacion adolin');
-INSERT INTO categorias (descripcion,observaciones,imagenes) VALUES ('carne','observacion kaladin','carniceria.png');
-INSERT INTO categorias (descripcion,observaciones,imagenes) VALUES ('pasteleria','observacion dalinar','pasteleria.png');
-INSERT INTO categorias (descripcion,observaciones,imagenes) VALUES ('pescado','observacion adolin','pescaderia.png');
-INSERT INTO categorias (descripcion,observaciones,imagenes) VALUES ('panaderia','observacion sagaz','panaderia.png');
-INSERT INTO categorias (descripcion,observaciones,imagenes) VALUES ('fruteria','observacion eshonai','fruteria.png');
-INSERT INTO categorias (descripcion,observaciones,imagenes) VALUES ('útiles y materiales','observacion szeth','utiles.png');
+INSERT INTO categorias (descripcion,observaciones,imagenes) VALUES ('carne','observacion kaladin','20.png');
+INSERT INTO categorias (descripcion,observaciones,imagenes) VALUES ('pasteleria','observacion dalinar','21.png');
+INSERT INTO categorias (descripcion,observaciones,imagenes) VALUES ('pescado','observacion adolin','22.png');
+INSERT INTO categorias (descripcion,observaciones,imagenes) VALUES ('panaderia','observacion sagaz','23.png');
+INSERT INTO categorias (descripcion,observaciones,imagenes) VALUES ('fruteria','observacion eshonai','24.png');
+INSERT INTO categorias (descripcion,observaciones,imagenes) VALUES ('útiles y materiales','observacion szeth','25.png');
 INSERT INTO residuos (descripcion,observaciones) VALUES ('caja de papel','observacion kaladin');
 INSERT INTO residuos (descripcion,observaciones) VALUES ('bolsa de plastico','observacion dalinar');
 INSERT INTO residuos (descripcion,observaciones) VALUES ('botellas de cristal','observacion adolin');
@@ -185,3 +185,8 @@ INSERT INTO mensajes (descripcion,fecha_mensaje,observaciones,fk_usuario) VALUES
 INSERT INTO mensajes (descripcion,fecha_mensaje,observaciones,fk_usuario) VALUES ('Mensaje random','2023/02/27','observacion dalinar',1);
 INSERT INTO mensajes (descripcion,fecha_mensaje,observaciones,fk_usuario) VALUES ('Bombardeeen php','2022/02/27','observacion sagaz',1);
 INSERT INTO mensajes (descripcion,fecha_mensaje,observaciones,fk_usuario) VALUES ('Mensaje 4','2024/02/27','observacion adolin',1);
+INSERT INTO producto_residuo (fk_producto,fk_residuo) VALUES (2,4);
+INSERT INTO producto_residuo (fk_producto,fk_residuo) VALUES (3,3);
+INSERT INTO producto_residuo (fk_producto,fk_residuo) VALUES (3,2);
+INSERT INTO producto_residuo (fk_producto,fk_residuo) VALUES (1,2);
+INSERT INTO producto_residuo (fk_producto,fk_residuo) VALUES (4,1);

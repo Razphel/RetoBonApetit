@@ -45,23 +45,23 @@ function principal() {
     //Se almacena en esta letiable la información recogida desde el main
     let usuarioActual = JSON.parse(localStorage.getItem("usuario"));
 
-    parametros = {
-        //UsuarioActual contiene todos los campos de usuario que se han almacenado anteriormente en principal 
-        //Y clavePrimaria ha sido creada en el js de controlUsuario en la funcion manejarRespuesta
-        claveUsuario: usuarioActual.clavePrimaria
-    };
-        $.ajax({
-            //Ubicacion del archivo php que va a manejar los valores.
-            url: "./php/consultaUsuario.php",
-            //Metodo en que los va a recibir.
-            type: "GET",
-            data: parametros,
-            dataType: "json",
-            success: inicioSolicitudes,
-            error: function (jqXHR, textStatus, errorThrown) {
-                console.error("Error en la solicitud AJAX: " + textStatus, errorThrown);
-            }
-        });
+    // parametros = {
+    //     //UsuarioActual contiene todos los campos de usuario que se han almacenado anteriormente en principal 
+    //     //Y clavePrimaria ha sido creada en el js de controlUsuario en la funcion manejarRespuesta
+    //     claveUsuario: usuarioActual.clavePrimaria
+    // };
+    //     $.ajax({
+    //         //Ubicacion del archivo php que va a manejar los valores.
+    //         url: "./php/consultaUsuario.php",
+    //         //Metodo en que los va a recibir.
+    //         type: "GET",
+    //         data: parametros,
+    //         dataType: "json",
+    //         success: inicioSolicitudes,
+    //         error: function (jqXHR, textStatus, errorThrown) {
+    //             console.error("Error en la solicitud AJAX: " + textStatus, errorThrown);
+    //         }
+    //     });
 
     //Guardo en el localStorage el listado con todos los productos.
     consultarProductos();

@@ -42,6 +42,12 @@ if (isset($_REQUEST['pedirProductos'])) {
     echo json_encode($productos);
 }
 
+if (isset($_REQUEST['residuos'])) 
+{
+    $residuos = BD::imprimirResiduos();
+    echo json_encode($residuos);
+}
+
 //--------- ESTO ES  PARTE DE ADMINISTRADOR-------------
 
 if (isset($_REQUEST['claveTodosUsuarios'])) 

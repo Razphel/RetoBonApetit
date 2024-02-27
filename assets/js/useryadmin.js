@@ -114,7 +114,7 @@ function crearElemento(etiqueta, contenido, atributos) {
     - campos(recibe un array de objetos con todos los elementos a incluir en el formulario)
 */
 function crearFormulario(campos, contenedor) {
-    const formulario = document.createElement('form');
+    const formulario = crearElemento('form',undefined,{id:'formulario'});
 
     // Recorrer las claves del objeto campos
     for (const nombreCampo in campos) {
