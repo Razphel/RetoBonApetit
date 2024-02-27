@@ -450,8 +450,8 @@ textarea::placeholder {
 }
 
 .img_dropdown_categoria {
-    width: 50px;
-    height: 50px;   
+    width: 45px;
+    height: 45px;   
 }
 
 .img_dropdown_categoria:hover {
@@ -465,6 +465,8 @@ textarea::placeholder {
 
 .new_img_categoria_container {
     position: absolute; 
+    max-height: 210px;
+    overflow-y: auto;
 }
 
 .dropdownItem_categorias {
@@ -479,18 +481,15 @@ textarea::placeholder {
 .img_categoria_grid {
     width: 100%;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
+    grid-template-columns: repeat(5, 1fr);
     grid-template-rows: auto;
-    gap: 10px;
-    padding: 20px 10px 10px 10px; 
-    background-color: pink;
+    grid-gap: 10px; 
+    padding: 20px; 
 }
 
 .img_categoria_grid .dropdown-item {
     width: 100%;
     height: 100%;
-    padding: 0;
-    border-radius: 6px;
 }
 
 /* Contenedores.................................. gen_cont */

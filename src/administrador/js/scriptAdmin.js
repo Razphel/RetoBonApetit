@@ -205,10 +205,10 @@ function pagAñadirCategoria() {
         etiquetaEnlace.appendChild(imagenCategoriaContenedor); 
 
     let contenedorGaleriaImg = crearElemento('div', undefined, {
-        class: 'new_img_categoria_container'
+        class: 'new_img_categoria_container dropdown-menu'
     });
     let estructuraGridGaleria = crearElemento('div', undefined, {
-        class: 'card img_categoria_grid dropdown-menu'
+        class: 'card img_categoria_grid'
     })
 
     let imagenCategoria = crearElemento('img', undefined, {
@@ -221,7 +221,7 @@ function pagAñadirCategoria() {
     let rutaCarpeta = "../../../assets/img/categorias/";
 
     // Número de imágenes
-    let numeroImagenes = 25; 
+    let numeroImagenes = 26; 
     let imgItemDropdown = ''; 
 
     // Crear las opciones del desplegable con las imágenes
