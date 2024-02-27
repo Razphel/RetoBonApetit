@@ -496,7 +496,58 @@ body {
     margin: 0;
     border-right: solid thin rgb(238, 238, 238);
     background-color: var(--aside-back);
+    transition: transform 0.5s ease-out, width 0.5s ease-out; /* Añadida transición para el ancho */
 }
+
+.sidebar-hidden {
+    /* Ocultar la barra lateral hacia la izquierda y ajustar el ancho a cero */
+    transform: translateX(-240px);
+    width: 0;
+}
+
+.page_container {
+    transition: margin-left 0.5s ease-out;
+}
+
+.content-sidebar-hidden {
+    /* Ajustar el margen izquierdo del contenido principal cuando la barra lateral está oculta */
+    margin-left: 0;
+}
+
+/* Estilos para dispositivos móviles */
+/* Estilos para dispositivos móviles */
+@media only screen and (max-width: 767px) {
+    .sidebar {
+        width: 40%; /* Tamaño ajustado */
+        height: 80vh; /* Altura ajustada */
+        position: fixed;
+        top: 60px; /* Distancia desde la parte superior */
+        left: 0;
+        z-index: 1000;
+        transform: translateX(-100%);
+    }
+
+    .sidebar-hidden {
+        transform: translateX(0);
+    }
+
+    /* Estilos para elementos dentro de la barra lateral en dispositivos móviles */
+    .sidebar_container,
+    .nav_link,
+    .nav_container_left i,
+    .nav_container_left p {
+        font-size: 10px; /* Ajusta el tamaño del texto */
+    }
+
+    .page_container {
+        margin-left: 0;
+    }
+
+    .content-sidebar-hidden {
+        margin-left: 0;
+    }
+}
+
 
 .sidebar_top {
     height: 70px;
@@ -1157,3 +1208,7 @@ body {
 #popupObservaciones {
     margin-bottom: 10px; /* Margen inferior para separar las observaciones de los elementos siguientes */
 }
+
+
+/* Estilos para pantallas más pequeñas (dispositivos móviles) */
+
