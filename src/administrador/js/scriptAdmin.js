@@ -182,12 +182,14 @@ function pagAñadirCategoria() {
     contenedorImagen.appendChild(labelImagen);
 
     let contenedorImagenSeleccionar = crearElemento('div', undefined, {
-        id: 'dropdown contenedorImagen'
+        id: 'contenedorImagenSeleccionar',
+        class: 'dropdown contenedorImagenCategoria'
     });
     let etiquetaEnlace = crearElemento('a', undefined, {
         href: '#',
         role: 'button',
         id: 'dropdownImgCategoria',
+        class: 'etiqueta_enlace_categoria', 
         'data-bs-toggle': 'dropdown',
         'aria-expanded': 'false'
     });
@@ -196,7 +198,7 @@ function pagAñadirCategoria() {
             class: 'imagenCategoriaContenedor'
         })
         let iconSeleccionarImg = crearElemento('i', undefined, { // por defecto aparece un + 
-            class: 'bi bi-x'
+            class: 'bi bi-xbi bi-plus-lg'
         }); 
 
         imagenCategoriaContenedor.appendChild(iconSeleccionarImg); 
@@ -206,11 +208,9 @@ function pagAñadirCategoria() {
         class: 'new_img_categoria_container'
     });
     let estructuraGridGaleria = crearElemento('div', undefined, {
-        class: 'img_categoria_grid'
+        class: 'card img_categoria_grid dropdown-menu'
     })
-    let imgItemDropdown = crearElemento('div', undefined, {
-        id: 'dropdown-item'
-    });
+
     let imagenCategoria = crearElemento('img', undefined, {
         id: 'imagenSeleccionada',
         alt: 'Imagen de categoría'
@@ -226,27 +226,37 @@ function pagAñadirCategoria() {
     // Crear las opciones del desplegable con las imágenes
     for (let i = 1; i <= numeroImagenes; i++) {
         // Generar el nombre de archivo de la imagen
-        let nombreImagen = i.toString().padStart(2, "0") + ".png";
+        let nombreImagen = i + ".png";
             
         // Eliminar los últimos cuatro caracteres (".png") del nombre de la imagen
         let nombreImagenSinExtension = nombreImagen.slice(0, -4);
-        
-        // Crear y agregar la opción al desplegable
-        let option = crearElemento("option", {
-            value: rutaCarpeta + nombreImagen,
-            textContent: nombreImagenSinExtension
+
+        let imgItemDropdown = crearElemento('div', undefined, {
+            id: 'dropdown-item'
         });
         
-        estructuraGridGaleria.appendChild(imgItemDropdown);
+        // Crear y agregar la opción al desplegable
+        let imgCategoriaDropdown = crearElemento("img", undefined, {
+            id: 'img_' + nombreImagenSinExtension,
+            class: 'img_dropdown_categoria',
+            src: rutaCarpeta + nombreImagen,
+            alt: nombreImagenSinExtension
+        });
+        console.log(imgCategoriaDropdown); 
+        imgCategoriaDropdown.addEventListener("click", function() {
+            imagenCategoria.src = rutaCarpeta + nombreImagen;
+        });
+        imgItemDropdown.appendChild(imgCategoriaDropdown);
     }
+    estructuraGridGaleria.appendChild(imgItemDropdown);
 
     // Cambiar la imagen seleccionada cuando se elija una opción del desplegable
-    selectImagen.addEventListener("change", function() {
-        let rutaImagenSeleccionada = selectImagen.value;
+    imagenCategoriaContenedor.addEventListener("change", function() {
+        let rutaImagenSeleccionada = imagenCategoriaContenedor.value;
         imagenCategoria.src = rutaImagenSeleccionada;
     });
 
-    imgItemDropdown.appendChild(imagenCategoria); 
+    // imgItemDropdown.appendChild(imagenCategoria); 
     estructuraGridGaleria.appendChild(imgItemDropdown);
     contenedorGaleriaImg.appendChild(estructuraGridGaleria);
 
@@ -254,6 +264,7 @@ function pagAñadirCategoria() {
     contenedorImagenSeleccionar.appendChild(contenedorGaleriaImg);
 
     contenedorImagen.appendChild(contenedorImagenSeleccionar); 
+    contenedorFormLeft.appendChild(contenedorImagen);
 
     //. BLOQUE 2....................................................
     let contenedorNombre = crearElemento('div', undefined, {

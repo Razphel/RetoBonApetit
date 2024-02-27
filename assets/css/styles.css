@@ -425,6 +425,59 @@ textarea::placeholder {
     gap: 30px;
 }
 
+/* Dropdown galería imágenes nueva categoría */
+.imagenCategoriaContenedor {
+    width: 70px; 
+    height: 70px;
+    border-radius: 4px;
+    background-color: var(--accent-02);
+}
+
+.imagenCategoriaContenedor:hover {
+    opacity: 80%;
+}
+
+.imagenCategoriaContenedor i {
+    font-size: 35px;
+    align-self: center;
+}
+
+.img_dropdown_categoria {
+    width: 50px;
+    height: 50px;   
+}
+
+.img_dropdown_categoria:hover {
+    cursor: pointer;
+    opacity: 80%;
+}
+
+.etiqueta_enlace_categoria {
+    position: relative; 
+}
+
+.new_img_categoria_container {
+    position: absolute; 
+}
+
+.dropdownItem_categorias {
+    width: 100%;
+    overflow-y: auto;
+}
+
+.etiqueta_enlace_categoria {
+    width: fit-content;
+}
+
+.img_categoria_grid {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
+    grid-template-rows: auto;
+    gap: 10px;
+    padding: 20px 10px 10px 10px; 
+}
+
 /* Contenedores.................................. gen_cont */
 .card {
     border: none;
