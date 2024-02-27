@@ -70,7 +70,7 @@ CONSTRAINT fk_pedidos_linea_pedido FOREIGN KEY (fk_pedido) REFERENCES pedidos(id
 CREATE TABLE unidades(
 id_unidades INT AUTO_INCREMENT PRIMARY KEY,
 descripcion VARCHAR(100),
-observar TEXT
+observaciones TEXT
 );
 
 CREATE TABLE categorias(
@@ -160,9 +160,9 @@ INSERT INTO pedidos (fecha_pedido,fk_proveedor,fk_estado,fk_usuario,observacione
 INSERT INTO linea_pedido (fk_pedido,descripcion,cantidad,unidades,observaciones) VALUES (1,'huevos',6,'cajas','observacion kaladin');
 INSERT INTO linea_pedido (fk_pedido,descripcion,cantidad,unidades,observaciones) VALUES (1,'carne',3.4,'kilogramos','observacion dalinar');
 INSERT INTO linea_pedido (fk_pedido,descripcion,cantidad,unidades,observaciones) VALUES (2,'patatas',4,'sacos','observacion adolin');
-INSERT INTO unidades (descripcion,observar) VALUES ('cajas','observacion kaladin');
-INSERT INTO unidades (descripcion,observar) VALUES ('kilogramos','observacion dalinar');
-INSERT INTO unidades (descripcion,observar) VALUES ('sacos','observacion adolin');
+INSERT INTO unidades (descripcion,observaciones) VALUES ('cajas','observacion kaladin');
+INSERT INTO unidades (descripcion,observaciones) VALUES ('kilogramos','observacion dalinar');
+INSERT INTO unidades (descripcion,observaciones) VALUES ('sacos','observacion adolin');
 INSERT INTO categorias (descripcion,observaciones,imagenes) VALUES ('carne','observacion kaladin','carniceria.png');
 INSERT INTO categorias (descripcion,observaciones,imagenes) VALUES ('pasteleria','observacion dalinar','pasteleria.png');
 INSERT INTO categorias (descripcion,observaciones,imagenes) VALUES ('pescado','observacion adolin','pescaderia.png');

@@ -153,7 +153,7 @@ function navAñadirCategoria() {
 }
 
 // Formulario 1. Crear categorías...................
-function pagAñadirCategoria() { 
+function pagAñadirCategoria() {  
     crearPlantillaFormularios('Nueva categoría', 'Datos de la nueva categoría', 'Categorías existentes');
     contenedorForm = document.querySelector('#contenedorForm');
 
@@ -216,11 +216,58 @@ function pagAñadirCategoria() {
                 type: 'submit',
                 value: 'Crear categoría',
                 class: 'btn btn_custom_1',
-                onclick: 'crearCategoria()'
+                onclick: 'newCategoria()'
             }
         }
     };
     crearFormulario(camposNewCategoria, contenedorForm);
+
+    let parametros = {
+        categorias: 'categorias' 
+    };
+    console.log(parametros);
+
+    $.ajax({
+        type: "POST",
+        url: "./php/consultaAdmin.php",
+        data: parametros,
+        async: false,
+        success: tablaCategorias,
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.error("Error en la solicitud AJAX: " + textStatus, errorThrown);
+        }
+    });
+}
+
+function newCategoria()
+{
+    let nombre = document.getElementById('newNombreCategoria').value;
+    let observaciones = document.getElementById('newObservacionCategoria').value;
+
+    let parametros = {
+        NewCategoria: JSON.stringify({
+            descripcion: nombre,
+            observaciones: observaciones
+        })
+    };
+    console.log(parametros);
+
+    $.ajax({
+        type: "POST",
+        url: "./php/consultaAdmin.php",
+        data: parametros,
+        error: function(a,b,errorMsg) {
+            console.log(errorMsg);
+        }
+      }).done(function (a) {
+        console.log(a);
+        console.log("hecho");
+      });
+}
+
+function tablaCategorias()
+{
+
 }
 
 // Apartado PRODUCTOS__________________________________________________________________
@@ -448,25 +495,61 @@ function pagUdMedida() {
                 id: 'btnCrearMedida',
                 value: 'Crear ud. de medida',
                 class: 'btn btn_custom_1',
-                eventos: {
-                    click: newUdMedida 
-                }
+                onclick: 'newUdMedida()' 
                 
             }
         }
     };
     crearFormulario(camposNewMedida, contenedorForm);
+    
+    let parametros = {
+        unidadesDeMedida: 'unidadesMedida' 
+    };
+    console.log(parametros);
+
+    $.ajax({
+        type: "POST",
+        url: "./php/consultaAdmin.php",
+        data: parametros,
+        async: false,
+        success: tablaUnidadesMedida,
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.error("Error en la solicitud AJAX: " + textStatus, errorThrown);
+        }
+    });
+
 }
 
 function newUdMedida()
 {   
     let nombre = document.getElementById('newUdMedidaName').value;
     let observaciones = document.getElementById('newUdMedidaObservaciones').value;
-    let UnidadMedida= {
-        descripcion: nombre,
-        observaciones: observaciones
-    }
-    console.log(UnidadMedida);
+
+    let parametros = {
+        NewUnidadMedida: JSON.stringify({
+            descripcion: nombre,
+            observaciones: observaciones
+        })
+    };
+    console.log(parametros);
+
+    $.ajax({
+        type: "POST",
+        url: "./php/consultaAdmin.php",
+        data: parametros,
+        error: function(a,b,errorMsg) {
+            console.log(errorMsg);
+        }
+      }).done(function (a) {
+        console.log(a);
+        console.log("hecho");
+      });
+}
+
+//Función que imprime la tabla de Unidades de Medida
+function tablaUnidadesMedida()
+{
+    
 }
 
 // Apartado PEDIDOS____________________________________________________________________
@@ -667,6 +750,7 @@ function navListarProveedores() {
     pagListarProveedores();
 }
 
+// TEN EN CUENTA QUE PAG LISTAR PROVEEDORES DEBE DE LLAMAR A LA FUNCION TABLAPROVEEODRES E IMPRIMIRLA
 function pagListarProveedores() {
     // Contenido para la parte superior
     let tituloPagina = "Proveedores";
@@ -811,15 +895,67 @@ function pagAñadirProveedor() {
         },
         btnCrearProveedor: {
             etiqueta: 'input',
-            contenido: 'Crear proveedor',
             atributos: { 
+                value: 'Crear proveedor',
                 type: 'submit', 
                 class: 'btn btn_custom_1',
-                onclick: 'crearProveedor()' 
+                onclick: 'newProveedor()' 
             }
         }
     };
     crearFormulario(camposNewProveedor, contenedor);
+    
+    let parametros = {
+        proveedores: 'proveedores' 
+    };
+    console.log(parametros);
+
+    $.ajax({
+        type: "POST",
+        url: "./php/consultaAdmin.php",
+        data: parametros,
+        async: false,
+        success: tablaProveedor,
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.error("Error en la solicitud AJAX: " + textStatus, errorThrown);
+        }
+    });
+}
+
+function tablaProveedor()
+{
+
+}
+
+function newProveedor()
+{
+    let nombre = document.getElementById('newProvName').value;
+    let observaciones = document.getElementById('newProvObservacion').value;
+    let email = document.getElementById('newProvEmail').value;
+    let telefono = document.getElementById('newProvTelefono').value;
+    let direccion = document.getElementById('newProvDireccion').value;
+    let parametros = {
+        NewProveedor: JSON.stringify({
+            descripcion: nombre,
+            telefono: telefono,
+            email: email,
+            direccion: direccion,
+            observaciones: observaciones
+        })
+    };
+    console.log(parametros);
+
+    $.ajax({
+        type: "POST",
+        url: "./php/consultaAdmin.php",
+        data: parametros,
+        error: function(a,b,errorMsg) {
+            console.log(errorMsg);
+        }
+      }).done(function (a) {
+        console.log(a);
+        console.log("hecho");
+      });
 }
 
 // Apartado RESIDUOS_______________________________________________________________________
