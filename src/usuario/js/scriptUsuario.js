@@ -36,7 +36,7 @@ function principal() {
     //Aqui es necesario que las consultas se ejecuten en el orden correcto.
     //Para eso hay que evitar que el ajax funcione de forma asincrona agregando async: false.
     let parametros = {
-        categoria: 'categorias'
+        mensajesInicio: true
     };
     //Mostrar categorias.
     $.ajax({
@@ -47,7 +47,7 @@ function principal() {
         dataType: "json",
         data: parametros,
         async: false,
-        success: inicioCategorias,
+        success: mensajesInicio,
         error: function (jqXHR, textStatus, errorThrown) {
             console.error("Error en la solicitud AJAX: " + textStatus, errorThrown);
         }
@@ -82,7 +82,7 @@ function principal() {
     consultarProductos();
 }
 
-function inicioCategorias(respuesta) {
+function mensajesInicio(respuesta) {
     //Contenedor general de la pagina.
     let contenedor = document.querySelector("#contenedor");
 
@@ -95,6 +95,7 @@ function inicioCategorias(respuesta) {
     let nombreUsuario = JSON.parse(localStorage.getItem("usuario"));
     nombreUsuario = nombreUsuario.nombre;
 
+    //Titulo de la pagina.
     let h1Inicio = crearElemento("h1", "Bienvenido, " + nombreUsuario, {
         id: "tituloApartado",
         class: "py-3 mb-3 mt-4"
@@ -102,41 +103,31 @@ function inicioCategorias(respuesta) {
 
     parteSuperior.appendChild(h1Inicio);
 
-    let categorias = crearElemento("div", undefined, {
+    //Contenedor principal de los recuadros de los mensajes.
+    let contenedorMensajes = crearElemento("div", undefined, {
         class: "row",
-        id: "categorias"
+        id: "contenedorMensajes"
     });
 
-    respuesta.forEach(fila => {
-        let carta = crearElemento("div", undefined, {
-            class: "col-6 col-sm-3 col-md-3 col-lg-3 d-flex justify-content-between"
-        });
-
-        //Le doy un id al contenedor para usarlo en el manejador.
-        let divCarta = crearElemento("div", undefined, {
-            id: "idCategoria_" + fila.id_categorias,
-            class: "label_effect card card_margin p-3 mb-3",
-            "data-toggle": "tooltip"
-        });
-
-        //Le doy un manejador a cada boton que usa el id para consultar las categorias.
-        divCarta.addEventListener("click", manejadorCategoria);
-
-        let p = crearElemento("p", fila.descripcion, undefined);
-        let img = crearElemento("img", undefined, {
-            src: "../../../assets/img/categorias/" + fila.imagenes,
-            alt: fila.descripcion
-        });
-
-        //Organizo los elementos y los agrego al div row.
-        divCarta.appendChild(img);
-        divCarta.appendChild(p);
-        carta.appendChild(divCarta);
-        categorias.appendChild(carta);
+    //Manejando la respuesta de la base de datos. Columnas recibidas "descripcion" - "fecha_mensaje"
+    //Siempre se recibe el mas nuevo.
+    let carta = crearElemento("div", undefined, {
+        class: "col-4 d-flex justify-content-between"
     });
+    let contenedorMensaje = crearElemento("div", undefined, {
+        class: "label_effect card card_margin p-3 mb-3"
+    });
+    let mensaje = crearElemento("p", respuesta.descripcion, undefined);
+    let fechaMensaje = crearElemento("p", respuesta.fecha_mensaje, undefined);
+
+    //Organizo los elementos y los agrego al div row.
+    contenedorMensaje.appendChild(mensaje);
+    contenedorMensaje.appendChild(fechaMensaje);
+    carta.appendChild(contenedorMensaje);
+    contenedorMensajes.appendChild(carta);
 
     //Agrego el div con la lista de cartas al contenedor superior de la pagina.
-    parteSuperior.appendChild(categorias);
+    parteSuperior.appendChild(contenedorMensajes);
 
     //Agrego el contenedor superior a la pagina.
     contenedor.appendChild(parteSuperior);

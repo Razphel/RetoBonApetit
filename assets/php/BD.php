@@ -257,20 +257,16 @@ class BD
             $sql = "SELECT descripcion,fecha_mensaje
             FROM mensajes 
             ORDER BY fecha_mensaje DESC
-            LIMIT 3";
+            LIMIT 1";
 
             $resultado = $conexion->query($sql);
 
             // Crear un array para almacenar todas las filas        
-            $filas = [];
-            // Recorrer los resultados y almacenar cada fila en el array        
-            while ($fila = $resultado->fetch()) {
-                $filas[] = $fila;
-            }
+            $fila = $resultado->fetch();
         } catch (Exception $e) {
             throw new Exception("ERROR: " + $e);
         }
         //Esta consulta te devuelve un array de arrays con todos los datos de la tabla producto.
-        return $filas;
+        return $fila;
     }
 }
