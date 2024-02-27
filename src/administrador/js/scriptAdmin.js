@@ -750,7 +750,6 @@ function navListarProveedores() {
     pagListarProveedores();
 }
 
-// TEN EN CUENTA QUE PAG LISTAR PROVEEDORES DEBE DE LLAMAR A LA FUNCION TABLAPROVEEODRES E IMPRIMIRLA
 function pagListarProveedores() {
     // Contenido para la parte superior
     let tituloPagina = "Proveedores";
