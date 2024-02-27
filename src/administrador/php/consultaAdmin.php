@@ -41,4 +41,10 @@ if (isset($_REQUEST['proveedores']))
     $proveedores = BD::imprimirConsultas('proveedores');
     echo json_encode($proveedores);
 }
+
+if (isset($_REQUEST['claveTodosUsuarios'])) 
+{
+    $todosUsuarios = BD::imprimirConsultas('usuarios');
+    echo json_encode($todosUsuarios);
+}
 ?>

@@ -90,27 +90,24 @@ function principal() {
 
 
 function mostrarUsuarios(respuesta) {
+    //Datos recibidos: "id_usuarios" - "admin" - "nombre_usuario" - ""
+
+    //Contenedor general de la pagina.
     let contenedor = document.querySelector("#contenedor");
-    let contador = 0;
     contenedor.innerHTML = "";
-    let contenedorResiduos = crearElemento("div", undefined, {
-        id: "ContResiduos",
-        class: "col-3",
-        style: "border:2px black solid; padding:5px"
-    });
 
-    respuesta.forEach(fila => {
-        let residuo = crearElemento("p", undefined, {
-            id: "residuos"
-        });
-
-        for (let i = 0; i < Object.keys(fila).length / 2; i++) {
-            residuo.innerHTML += fila[i] + " ";
-        }
-        contenedorResiduos.appendChild(residuo);
-        contenedor.appendChild(contenedorResiduos);
-        contador++;
+    //Titulo de la pagina.
+    let parteSuperior = crearElemento("div", undefined, {
+        class: "row"
     });
+    let h1Inicio = crearElemento("h1", "Usuarios", {
+        id: "tituloApartado",
+        class: "py-3 mb-3 mt-4"
+    });
+    parteSuperior.appendChild(h1Inicio);
+    contenedor.appendChild(parteSuperior);
+
+
 }
 
 // Apartado INICIO____________________________________________________________________
@@ -590,7 +587,7 @@ function tablaUnidadesMedida(respuesta) {
         let celdaBotones = crearElemento("td");
 
         // Crear el div principal con la clase dropdown
-        let divDropdown = crearElemento("div", undefined, { 
+        let divDropdown = crearElemento("div", undefined, {
             class: "dropdown"
         });
 
@@ -650,7 +647,6 @@ function tablaUnidadesMedida(respuesta) {
     contenedorDerecho.appendChild(tablaUnidades);
 }
 
-
 // Apartado PEDIDOS____________________________________________________________________
 function navPedidos() {
     navListarPedidos();
@@ -681,7 +677,7 @@ function navUsuarios() {
     };
     $.ajax({
         //Ubicacion del archivo php que va a manejar los valores.
-        url: "./php/consultaUsuario.php",
+        url: "./php/consultaAdmin.php",
         //Metodo en que los va a recibir.
         type: "GET",
         data: parametros,
