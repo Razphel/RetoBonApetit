@@ -135,6 +135,7 @@ a {
 /* Textos mensajes predefinidos Bootstrap */
 .alert {
     font-weight: 500;
+    padding: 10px 15px;
     font-size: var(--size-p);
 }
 
@@ -323,7 +324,7 @@ td:hover {
 }
 
 .container_login {
-    margin-top: 50px;
+    margin-top: 80px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -331,8 +332,12 @@ td:hover {
     gap: 30px;
 }
 
+.container_login img {
+    width: 15%;
+}
+
 .login-form {
-    width: fit-content;
+    width: 25%;
 }
 
 input[type="number"] {
@@ -341,12 +346,12 @@ input[type="number"] {
 }  
 
 .form-control {
-    font-size: 14px;
+    font-size: var(--size-p);
 }
 
 textarea::placeholder {
     color: var(--text-light-color);
-    font-size: 14px;
+    font-size: var(--size-p);
 }
 
 .searchbar.input-group-text {
