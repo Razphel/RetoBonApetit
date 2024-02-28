@@ -342,6 +342,26 @@ td:hover {
     padding-bottom: 10px;
 }
 
+.contenedorMensajeBottom {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.contendorHoraLimite {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 10px;
+}
+
+.bi-stopwatch {
+    color: var(--primary-color);
+}
+
 .fecha_mensajeUser {
     white-space: nowrap;
     position: relative;

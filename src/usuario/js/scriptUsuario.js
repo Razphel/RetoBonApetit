@@ -127,11 +127,23 @@ function mensajesInicio(respuesta) {
     let fechaMensaje = crearElemento("p", respuesta.fecha_mensaje, {
         class: 'fecha_mensajeUser'
     });
-    let mensaje = crearElemento("p", respuesta.descripcion, undefined);
+    let contendorHoraLimite = crearElemento('div', undefined, {
+        class: 'contendorHoraLimite'
+    })
+    let iconMensaje = crearElemento('i', undefined, {
+        class: 'bi bi-stopwatch'
+    })
+    let horaLimite = crearElemento("p", respuesta.hora_limite, undefined);
+
+    contendorHoraLimite.appendChild(iconMensaje);
+    contendorHoraLimite.appendChild(horaLimite);
+
+    let observaciones = crearElemento("p", respuesta.observaciones, undefined);
 
     contenedorMensajeTop.appendChild(tituloMensaje);
     contenedorMensajeTop.appendChild(fechaMensaje);
-    contenedorMensajeBottom.appendChild(mensaje);
+    contenedorMensajeBottom.appendChild(contendorHoraLimite);
+    contenedorMensajeBottom.appendChild(observaciones);
 
     //Organizo los elementos y los agrego al div row.
     contenedorMensaje.appendChild(contenedorMensajeTop);

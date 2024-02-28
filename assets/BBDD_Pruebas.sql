@@ -134,8 +134,8 @@ CONSTRAINT fk_residuos_generados_estadoresiduos FOREIGN KEY (fk_estadoresiduo) R
 
 CREATE TABLE mensajes(
 id_mensajes INT AUTO_INCREMENT PRIMARY KEY,
-descripcion VARCHAR(200),
 fecha_mensaje DATE,
+hora_limite TEXT,
 observaciones TEXT,
 fk_usuario INT,
 
@@ -224,7 +224,7 @@ INSERT INTO residuos (descripcion,observaciones) VALUES ('bolsa de plástico','O
 INSERT INTO residuos (descripcion,observaciones) VALUES ('botella de cristal','Observación de prueba para botella de cristal');
 INSERT INTO residuos (descripcion,observaciones) VALUES ('bandeja','Observación de prueba para bandeja');
 
-INSERT INTO mensajes (descripcion,fecha_mensaje,observaciones,fk_usuario) VALUES ('Hora límite para solicitud 23:59','2025/02/27','Observación de prueba',1);
-INSERT INTO mensajes (descripcion,fecha_mensaje,observaciones,fk_usuario) VALUES ('Hora límite para solicitud 2','2023/02/27','Observación de prueba',1);
-INSERT INTO mensajes (descripcion,fecha_mensaje,observaciones,fk_usuario) VALUES ('Hora límite para solicitud 3','2022/02/27','Observación de prueba',1);
-INSERT INTO mensajes (descripcion,fecha_mensaje,observaciones,fk_usuario) VALUES ('Hora límite para solicitud 4','2024/02/27','Observación de prueba',1);
+INSERT INTO mensajes (fecha_mensaje, hora_limite, observaciones,fk_usuario) VALUES ('2025/02/27', 'Hora límite para solicitud 23:59', 'Observación de prueba para mensaje de administrador',1);
+INSERT INTO mensajes (fecha_mensaje, hora_limite, observaciones,fk_usuario) VALUES ('2023/02/27', 'Hora límite para solicitud 2', 'Observación de prueba',1);
+INSERT INTO mensajes (fecha_mensaje, hora_limite, observaciones,fk_usuario) VALUES ('2022/02/27', 'Hora límite para solicitud 3', 'Observación de prueba',1);
+INSERT INTO mensajes (fecha_mensaje, hora_limite, observaciones,fk_usuario) VALUES ('2024/02/27', 'Hora límite para solicitud 4', 'Observación de prueba',1);
