@@ -1205,14 +1205,17 @@ function hacerPedido() {
         class: 'contenedorFormTop'
     });
 
-    let formPedidos = crearElemento('form', undefined, {
-        id: "formulario",
-        class: "userFormPedido"
+    let formulario = crearElemento('form', undefined, {
+        id: "formulario"
+    });
+
+    let contenedorTabla = crearElemento('div', undefined, {
+        class: 'contenedor_tablaUserPedido'
     });
 
     //Se crea la estructura de la tabla.
     let tablaSolicitud = crearElemento("table", undefined, {
-        class: "table table-responsive table-hover mt-4"
+        class: "table table-responsive table-hover mt-4 tablaUserPedido"
     });
     let tablaTitulos = crearElemento("thead");
     let tablaBody = crearElemento("tbody");
@@ -1245,7 +1248,8 @@ function hacerPedido() {
                 let inputObservaciones = crearElemento("textarea", undefined, {
                     class: 'form-control',
                     type: "text",
-                    value: producto[titulos[i]]
+                    rows: '1',
+                    placeholder: producto[titulos[i]]
                 });
                 celdaTabla = crearElemento("td");
                 celdaTabla.appendChild(inputObservaciones);
@@ -1258,11 +1262,11 @@ function hacerPedido() {
 
         tablaBody.appendChild(filaTabla);
     });
-
     tablaSolicitud.appendChild(tablaBody);
-
+    contenedorTabla.appendChild(tablaSolicitud);
+    formulario.appendChild(contenedorTabla);
     //Se añade la tabla al formulario,
-    contenedorFormTop.appendChild(tablaSolicitud);
+    contenedorFormTop.appendChild(formulario);
 
     //. BOTONES......................................................
     let contenedorBotones = crearElemento('div', undefined, {
@@ -1285,7 +1289,7 @@ function hacerPedido() {
 
     let btnCrearProducto = crearElemento("input", undefined, {
         type: 'submit',
-        value: 'Finalizar solicitud',
+        value: 'Enviar solicitud',
         class: 'btn btn_custom_1',
         onclick: 'crearProducto()'
     });
@@ -1294,16 +1298,20 @@ function hacerPedido() {
     contenedorBotones.appendChild(btnVaciar);
     contenedorBotones.appendChild(btnCrearProducto);
 
-    formPedidos.appendChild(tablaSolicitud);
-    formPedidos.appendChild(contenedorBotones);
+    formulario.appendChild(contenedorTabla);
+    formulario.appendChild(contenedorBotones);
 
-    contenedorFormTop.appendChild(formPedidos);
+    contenedorFormTop.appendChild(formulario);
 
     contenedorForm.appendChild(contenedorFormTop);
-    contenedorForm.appendChild(formPedidos);
+    contenedorForm.appendChild(formulario);
 }
 
 function limpiarDatos() {
     let formulario = document.getElementById("formulario");
     formulario.reset();
+}
+
+function cancelar() {
+    window.location.href('./');
 }

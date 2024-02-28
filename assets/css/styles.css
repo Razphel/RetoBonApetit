@@ -276,6 +276,11 @@ td:hover {
     text-overflow: ellipsis;
 }
 
+.contenedor_tablaUserPedido {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
 /* Filtros....................................... gen_filtros */
 .contenedorFiltros {
     display: flex;
@@ -475,11 +480,6 @@ textarea::placeholder {
 .form-switch .form-check-input {
     background-color: var(--light-color); 
     border-color: var(--accent-01); 
-}
-
-.userFormPedido {
-    max-height: 500px;
-    overflow-y: auto;
 }
 
 /* Dropdown galería imágenes nueva categoría */
