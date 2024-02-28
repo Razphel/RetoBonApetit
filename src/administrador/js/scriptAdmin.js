@@ -107,12 +107,23 @@ function pagInicio() {
 }
 
 // Apartado CATEGORÍAS________________________________________________________________
-function navCategorias() {
-    navListarCategorias();
-}
-
 function navListarCategorias() {
     pagListarCategorias();
+
+    let parametros = {
+        categorias: 'categorias'
+    };
+
+    $.ajax({
+        type: "POST",
+        url: "./php/consultaAdmin.php",
+        data: parametros,
+        async: false,
+        success: tablaCategorias,
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.error("Error en la solicitud AJAX: " + textStatus, errorThrown);
+        }
+    });
 }
 
 function pagListarCategorias() { // mostrar tabla con todas las categorías y sus datos
@@ -150,6 +161,101 @@ function navAñadirCategoria() {
             console.error("Error en la solicitud AJAX: " + textStatus, errorThrown);
         }
     });
+}
+
+function tablaCategorias(respuesta) {
+    let categorias = JSON.parse(respuesta);
+    console.log(categorias);
+
+    let contenedor = document.querySelector("#parteInferior");
+    contenedor.innerHTML = "";
+
+    //Buscador.
+    let buscador = crearElemento("input", undefined, {
+        id: "buscadorCategorias"
+    });
+
+    buscador.addEventListener("input", function (e) {
+        // Convertir a minúsculas y quitar espacios en blanco al inicio y al final.
+        let textoBuscar = this.value.toLowerCase().trim();
+
+        // Obtener todas las filas de la tabla.
+        let filasTabla = tablaBody.querySelectorAll("tr");
+
+        // Mostrar u ocultar según el texto del buscador.
+        filasTabla.forEach(fila => {
+            // Solo se va a buscar por nombre de categoria, se seleccionan solo las columnas correspondientes.
+            let nombreCategoria = fila.querySelector("td:nth-child(2)").innerHTML.toLowerCase();
+
+            // Mostrar la fila si coincide con el texto buscado o si no se ha ingresado nada en el input.
+            if (nombreCategoria.includes(textoBuscar) || textoBuscar === "") {
+                fila.style.display = ""; // Mostrar la fila.
+            } else {
+                fila.style.display = "none"; // Ocultar la fila.
+            }
+        });
+    });
+
+    contenedor.appendChild(buscador);
+
+    //Estructura del titulo de la tabla.
+    let tablaCategorias = crearElemento("table", undefined, {
+        class: "table table-responsive table-hover mt-4"
+    });
+    let titulosTabla = crearElemento("thead");
+
+    let filaTitulos = crearElemento("tr");
+    let titulos = ["id_categorias", "descripcion", "imagenes", "observaciones"];
+    for (let i = 0; i < titulos.length; i++) {
+        let celdaTitulo = crearElemento("th", titulos[i].charAt(0).toUpperCase() + titulos[i].slice(1).toLowerCase());
+        filaTitulos.appendChild(celdaTitulo);
+    }
+    let columnaDeBotones = crearElemento("td");
+    filaTitulos.appendChild(columnaDeBotones);
+    titulosTabla.appendChild(filaTitulos);
+    tablaCategorias.appendChild(titulosTabla);
+
+    //Estructura del cuerpo de la tabla.
+    tablaBody = crearElemento("tbody");
+
+    categorias.forEach(categoria => {
+        let filaBody = crearElemento("tr", undefined, {
+            id: "idcategoria_" + categoria["id_categorias"]
+        });
+        for (let i = 0; i < titulos.length; i++) {
+            if (titulos[i] == "imagenes") {
+                let celdaBody = crearElemento("td");
+                let imagenCategoria = crearElemento("img", undefined, {
+                    src: "../../../assets/img/categorias/" + categoria[titulos[i]]
+                })
+                celdaBody.appendChild(imagenCategoria);
+                filaBody.appendChild(celdaBody);
+            } else {
+                let celdaBody = crearElemento("td", categoria[titulos[i]]);
+                filaBody.appendChild(celdaBody);
+            }
+        }
+        //Botones editar/borrar.
+        let celdaBodyBoton = crearElemento("td");
+
+        let editar = crearElemento('input', undefined, {
+            id: "botonEditarCategoria_" + categoria["id_categorias"],
+            type: "submit",
+            value: "Editar"
+        })
+        let borrar = crearElemento('input', undefined, {
+            id: "botonBorrarCategoria_" + categoria["id_categorias"],
+            type: "submit",
+            value: "Borrar"
+        })
+        celdaBodyBoton.appendChild(editar);
+        celdaBodyBoton.appendChild(borrar);
+
+        filaBody.appendChild(celdaBodyBoton);
+        tablaBody.appendChild(filaBody);
+    });
+    tablaCategorias.appendChild(tablaBody);
+    contenedor.appendChild(tablaCategorias);
 }
 
 // Formulario 1. Crear categorías...................
@@ -395,10 +501,6 @@ function pagAñadirCategoria() {
     formCategorias.appendChild(contenedorBotones);
 
     contenedorForm.appendChild(formCategorias);
-}
-
-function tablaCategorias() {
-    
 }
 
 function newCategoria() {
@@ -893,26 +995,6 @@ function pagNuevoPedido() {
 }
 
 // Apartado USUARIOS____________________________________________________________________
-function navUsuarios() {
-    navListarUsuarios();
-
-    let parametros = {
-        claveTodosUsuarios: true
-    };
-    $.ajax({
-        //Ubicacion del archivo php que va a manejar los valores.
-        url: "./php/consultaAdmin.php",
-        //Metodo en que los va a recibir.
-        type: "GET",
-        data: parametros,
-        dataType: "json",
-        success: tablaUsuarios,
-        error: function (jqXHR, textStatus, errorThrown) {
-            console.error("Error en la solicitud AJAX: " + textStatus, errorThrown);
-        }
-    });
-}
-
 function tablaUsuarios(usuarios) {
     let contenedor = document.querySelector("#parteInferior");
     contenedor.innerHTML = "";
