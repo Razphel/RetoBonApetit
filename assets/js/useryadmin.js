@@ -100,7 +100,7 @@ function generarIconUser() {
         data: parametros,
         success: function (colorIconoUsuario) {
             let userIcon = document.getElementById('userIcon');
-            userIcon.style.backgroundColor = colorIconoUsuario;
+            userIcon.style.backgroundColor = JSON.parse(colorIconoUsuario);
 
             let usuarioActual = JSON.parse(localStorage.getItem("usuario"));
             let nombre = usuarioActual.nombre;
@@ -115,25 +115,22 @@ function generarIconUser() {
 }
 
 function cerrarSesion() {
-    localStorage.removeItem("usuario");
-    window.location.replace("../../../sesion.html");
+    let parametros = {
+        cerrarSesion: true
+    }
 
-    // let parametros = {
-    //     cerrarSesion: true
-    // }
-
-    // $.ajax({
-    //     url: "../../assets/php/iconoSesion.php",
-    //     type: "GET",
-    //     data: parametros,
-    //     success: function (respuesta) {
-    //         localStorage.removeItem("usuario");
-    //         window.location.replace("../../../sesion.html");
-    //     },
-    //     error: function (jqXHR, textStatus, errorThrown) {
-    //         console.error("Error en la solicitud AJAX: " + textStatus, errorThrown);
-    //     }
-    // });
+    $.ajax({
+        url: "../../assets/php/iconoSesion.php",
+        type: "GET",
+        data: parametros,
+        success: function () {
+            localStorage.removeItem("usuario");
+            window.location.replace("../../../sesion.html");
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.error("Error en la solicitud AJAX: " + textStatus, errorThrown);
+        }
+    });
 }
 
 

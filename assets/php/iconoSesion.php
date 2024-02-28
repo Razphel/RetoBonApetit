@@ -2,7 +2,6 @@
 // Para que el navegador no haga cache (fecha de expiración menor a la actual)
 header('Cache-Control: no-cache, must-revalidate');
 header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
-header("Content-Type: application/json");
 
 if (isset($_REQUEST['iconoUsuario'])) {
     session_start();
@@ -32,6 +31,8 @@ if (isset($_REQUEST['iconoUsuario'])) {
 }
 
 if (isset($_REQUEST['cerrarSesion'])) {
+    //Aqui hay que iniciar la sesion antes de borrar sus variables.
+    session_start();
     session_destroy();
-    echo json_encode(true);
 }
+
