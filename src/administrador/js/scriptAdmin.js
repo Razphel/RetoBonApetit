@@ -748,7 +748,7 @@ function pagUdMedida() {
         type: 'submit',
         value: 'Crear ud. de medida',
         class: 'btn btn_custom_1',
-        onclick: 'btnCrearMedida()'
+        onclick: 'newUdMedida()'
     });
 
     contenedorBotones.appendChild(btnCancelar);
@@ -1025,7 +1025,7 @@ function pagAñadirUsuario() {
         type: 'submit',
         value: 'Crear usuario',
         class: 'btn btn_custom_1',
-        onclick: 'crearUsuario()'
+        onclick: 'newUsuario()'
     });
 
     contenedorBotones.appendChild(btnCancelar);
@@ -1274,7 +1274,7 @@ function pagAñadirProveedor() {
         type: 'submit',
         value: 'Crear usuario',
         class: 'btn btn_custom_1',
-        onclick: 'crearProveedor()'
+        onclick: 'newProveedor()'
     });
 
     contenedorBotones.appendChild(btnCancelar);
