@@ -142,8 +142,7 @@ function mostrarMensajeVacio(titulo, texto, textoBoton) {
     let divLabelEmpty = crearElemento("div", undefined, { class: "label_empty card p-4 align-items-center mt-4" });
     let h4 = crearElemento("h4", titulo);
     let p = crearElemento("p", texto);
-    let button = crearElemento("button", textoBoton, { type: "button", class: "btn btn_custom_1 mt-3" });
-
+    let button = crearElemento("button", textoBoton, {id:"botonMensajeVacio", type: "button", class: "btn btn_custom_1 mt-3" });
     // Construir la estructura
     divLabelEmpty.appendChild(h4);
     divLabelEmpty.appendChild(p);
@@ -166,6 +165,63 @@ function crearElemento(etiqueta, contenido, atributos) {
         }
     }
     return elementoNuevo;
+}
+
+/*
+    Función dinámica para crear la estructura de los pop up
+        - Permite crear un popup con título y contenido
+        - Permite crear un popup solo con contenido (sin título)
+*/
+
+function crearPopup(titulo = "", contenido = "") {
+    let overlay = crearElemento("div", undefined, {
+        id: "overlay",
+        class: "overlay"
+    });
+    document.body.appendChild(overlay);
+
+    // Cerrar el pop-up al hacer clic en el fondo oscuro
+    overlay.addEventListener("click", function () {
+        popupContainer.remove();
+        overlay.remove();
+    });
+
+    // Crear el contenedor del popup
+    let popupContainer = crearElemento("div", undefined, {
+        id: "popupContainer",
+        class: "popupContainer card"
+    });
+
+    // Crear el icono de cruz para cerrar el popup
+    let iconoCerrar = crearElemento("i", undefined, {
+        class: "bi bi-x-lg iconoCerrarPopup"
+    });
+
+    // Agregar el evento de clic para cerrar el popup al hacer clic en el icono de cruz
+    iconoCerrar.addEventListener("click", function () {
+        popupContainer.remove();
+        overlay.remove();
+    });
+    popupContainer.appendChild(iconoCerrar);
+
+    let popupContent = crearElemento("div", undefined, {
+        id: 'contenedorPopup',
+        class: "popupContent card-body"
+    });
+
+    let tituloPopup = crearElemento("h1", titulo, {
+        class: "mt-2 mb-4"
+    });
+    popupContent.appendChild(tituloPopup);
+
+    if (contenido) {
+        popupContent.appendChild(contenido);
+    }
+
+    popupContainer.appendChild(popupContent);
+
+    // Agregar el popup al cuerpo del documento
+    document.body.appendChild(popupContainer);
 }
 
 /* Función dinámica para crear formularios
