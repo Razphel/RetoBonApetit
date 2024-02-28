@@ -85,7 +85,6 @@ function mensajesInicio(respuesta) {
     //Contenedor general de la pagina.
     let contenedor = document.querySelector("#contenedor");
 
-    //Contenedor de botones de categorias y h1 con el titulo de la vista inicio.
     let parteSuperior = crearElemento("div", undefined, {
         class: "row"
     });
@@ -114,14 +113,29 @@ function mensajesInicio(respuesta) {
         class: "col-4 d-flex justify-content-between"
     });
     let contenedorMensaje = crearElemento("div", undefined, {
-        class: "label_effect card card_margin p-3 mb-3"
+        class: "card card_margin p-3 mensajesUser"
+    });
+    let contenedorMensajeTop = crearElemento('div', undefined, {
+        class: "contenedorMensajeTop"
+    });
+    let contenedorMensajeBottom = crearElemento('div', undefined, {
+        class: "contenedorMensajeBottom"
+    });
+    let tituloMensaje = crearElemento("h5", "Mensaje del administrador", {
+        class: 'titulo_mensajeUser'
+    });
+    let fechaMensaje = crearElemento("p", respuesta.fecha_mensaje, {
+        class: 'fecha_mensajeUser'
     });
     let mensaje = crearElemento("p", respuesta.descripcion, undefined);
-    let fechaMensaje = crearElemento("p", respuesta.fecha_mensaje, undefined);
+
+    contenedorMensajeTop.appendChild(tituloMensaje);
+    contenedorMensajeTop.appendChild(fechaMensaje);
+    contenedorMensajeBottom.appendChild(mensaje);
 
     //Organizo los elementos y los agrego al div row.
-    contenedorMensaje.appendChild(mensaje);
-    contenedorMensaje.appendChild(fechaMensaje);
+    contenedorMensaje.appendChild(contenedorMensajeTop);
+    contenedorMensaje.appendChild(contenedorMensajeBottom);
     carta.appendChild(contenedorMensaje);
     contenedorMensajes.appendChild(carta);
 
@@ -135,6 +149,17 @@ function mensajesInicio(respuesta) {
 function inicioSolicitudes(respuesta) {
     let contenedor = document.querySelector("#contenedor");
 
+    let parteInferior = crearElemento("div", undefined, {
+        class: "row"
+    });
+
+    let h1_tituloInferior = crearElemento("h1", "Solicitudes recientes", {
+        id: "tituloApartado",
+        class: "py-3 mb-3 mt-5"
+    });
+
+    parteInferior.appendChild(h1_tituloInferior); 
+
     let historial = crearElemento("table", undefined, {
         id: "historial",
         style: "border-collapse: collapse;"
@@ -143,7 +168,7 @@ function inicioSolicitudes(respuesta) {
     //Se comprueba primero que exista algo en el historial de solicitudes.
     if (respuesta[0] != null) {
         let historial = crearElemento("table", undefined, {
-            class: "table table-responsive table-hover mt-4"
+            class: "table table-responsive table-hover"
         });
         let tablaTitulos = crearElemento("thead");
 
@@ -172,13 +197,34 @@ function inicioSolicitudes(respuesta) {
             tablaBody.appendChild(filaNormal);
         });
         historial.appendChild(tablaBody);
-        contenedor.appendChild(historial);
+        parteInferior.appendChild(historial);
     } else {
         let sinHistorial = crearElemento("p", "Historial Vacio.", undefined)
-        contenedor.appendChild(sinHistorial);
+        parteInferior.appendChild(sinHistorial);
     }
-
+    contenedor.appendChild(parteInferior); 
 }
+
+// Página productos___________________________________________________________________
+function navProductos() {
+    let parametros = {
+        categoria: 'categorias'
+    };
+    //Mostrar categorias.
+    $.ajax({
+        //Ubicacion del archivo php que va a manejar los valores.
+        url: "./php/consultaUsuario.php",
+        //Metodo en que los va a recibir.
+        type: "GET",
+        dataType: "json",
+        data: parametros,
+        success: pagProductos,
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.error("Error en la solicitud AJAX: " + textStatus, errorThrown);
+        }
+    });
+}
+
 
 // Página productos___________________________________________________________________
 function navProductos() {
