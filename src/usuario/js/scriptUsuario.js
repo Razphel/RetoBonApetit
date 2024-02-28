@@ -840,6 +840,9 @@ function mostrarPopup(datosUsuario) {
 
     contenedorPopup.appendChild(contenedorBotones);
 
+    // Agregar el contenido del pop-up al contenedor
+    popupContainer.appendChild(popupContent);
+
     // Agregar el contenedor del pop-up al body
     document.body.appendChild(popupContainer);
 
