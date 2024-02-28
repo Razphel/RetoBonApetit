@@ -23,7 +23,7 @@ window.addEventListener("load", principal);
 
 function principal() {
     let usuarioActual = JSON.parse(localStorage.getItem("usuario"));
-    
+
     //Antes de cargar la pagina del usuario, se comprueba que no se haya accedido sin una sesion valida.
     if (localStorage.getItem("usuario")) {
         let usuarioActual = JSON.parse(localStorage.getItem("usuario"));
@@ -57,7 +57,7 @@ function principal() {
         toggleSidebar();
     });
 
-    modoColor(); 
+    modoColor();
     generarIconUser();
 }
 
@@ -71,7 +71,7 @@ function modoColor() {
     const iconoPrincipal = document.getElementById("iconoPrincipal");
 
     // Event listener para cambiar entre los modos oscuro y claro
-    document.getElementById("modoOscuro").addEventListener("click", function() {
+    document.getElementById("modoOscuro").addEventListener("click", function () {
         // Cambiar la clase del icono principal al modo oscuro
         iconoPrincipal.classList.replace("bi-brightness-high", "bi-moon");
 
@@ -80,7 +80,7 @@ function modoColor() {
     });
 
     // Event listener para cambiar entre los modos oscuro y claro
-    document.getElementById("modoClaro").addEventListener("click", function() {
+    document.getElementById("modoClaro").addEventListener("click", function () {
         // Cambiar la clase del icono principal al modo claro
         iconoPrincipal.classList.replace("bi-moon", "bi-brightness-high");
 
@@ -90,6 +90,26 @@ function modoColor() {
 }
 
 function generarIconUser() {
+    //Se comprueba que ya el icono no este generado desde la sesion de PHP.
+    // let parametros = {
+    //     iconoUsuario: true
+    // };
+
+    // $.ajax({
+    //     //Ubicacion del archivo php que va a manejar los valores.
+    //     url: "./php/consultaUsuario.php",
+    //     //Metodo en que los va a recibir.
+    //     type: "GET",
+    //     data: parametros,
+    //     dataType: "json",
+    //     success: comprobarIcono,
+    //     error: function (jqXHR, textStatus, errorThrown) {
+    //         console.error("Error en la solicitud AJAX: " + textStatus, errorThrown);
+    //     }
+    // });
+
+
+
     let usuarioActual = JSON.parse(localStorage.getItem("usuario"));
 
     let nombre = usuarioActual.nombre;
@@ -297,14 +317,14 @@ function crearPlantillaFormularios(tituloPagina, tituloLeft, tituloRight) {
         class: 'container_left pagForm_columnaLeft card p-4 col-12 col-lg-8 mb-sm-4 mb-lg-0'
     });
     let titulo_container_left = crearElemento('h4', tituloLeft, {
-        class: 'mb-5' 
+        class: 'mb-5'
     });
     let contenedorForm = crearElemento('div', undefined, {
         id: 'contenedorForm'
     });
 
-    container_left.appendChild(titulo_container_left); 
-    container_left.appendChild(contenedorForm); 
+    container_left.appendChild(titulo_container_left);
+    container_left.appendChild(contenedorForm);
 
     let container_right = crearElemento('div', undefined, {
         class: 'container_right pagForm_columnaRight card p-4 col-12 col-lg-4'
@@ -312,7 +332,7 @@ function crearPlantillaFormularios(tituloPagina, tituloLeft, tituloRight) {
     let titulo_container_right = crearElemento('div', tituloRight, {
         class: 'mb-5'
     });
-    container_right.appendChild(titulo_container_right); 
+    container_right.appendChild(titulo_container_right);
 
     parteInferior.appendChild(container_left);
     parteInferior.appendChild(container_right);

@@ -906,14 +906,14 @@ function navUsuarios() {
         type: "GET",
         data: parametros,
         dataType: "json",
-        success: mostrarUsuarios,
+        success: tablaUsuarios,
         error: function (jqXHR, textStatus, errorThrown) {
             console.error("Error en la solicitud AJAX: " + textStatus, errorThrown);
         }
     });
 }
 
-function mostrarUsuarios(usuarios) {
+function tablaUsuarios(usuarios) {
     let contenedor = document.querySelector("#parteInferior");
     contenedor.innerHTML = "";
 
@@ -993,7 +993,7 @@ function navListarUsuarios() {
         type: "GET",
         data: parametros,
         dataType: "json",
-        success: mostrarUsuarios,
+        success: tablaUsuarios,
         error: function (jqXHR, textStatus, errorThrown) {
             console.error("Error en la solicitud AJAX: " + textStatus, errorThrown);
         }

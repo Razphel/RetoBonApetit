@@ -23,6 +23,7 @@ function principal() {
     document.querySelector("#navResiduos").addEventListener("click", navResiduos);
     document.querySelector("#cerrarSesion").addEventListener("click", cerrarSesion);
     document.querySelector("#btn_limpiarCesta").addEventListener("click", vaciarCarrito);
+    document.querySelector("#btn_hacerPedido").addEventListener("click", hacerSolicitud);
     // document.querySelector("#btn_verPedido").addEventListener("click", hacerSolicitud);
 
 
@@ -739,7 +740,7 @@ function mostrarPopup(datosUsuario) {
         let nombre = document.querySelector("#nombreNuevoProducto").value;
         let cantidadRecibida = parseFloat(document.querySelector("#cantidadNuevoProducto").value);
         let unidad = document.querySelector("#unidadNuevoProducto").value;
-        let observaciones = document.querySelector("#observacionesNuevoProducto").value;
+        let observaciones = document.querySelector("#observacionesNuevoProducto").innerHTML;
 
         //Se crea el nuevo producto.
         let nuevoProducto = {
@@ -1112,4 +1113,116 @@ function modificarDesdeCarrito(e) {
         // Si el valor ingresado no es un número válido, restaurar el valor original en el input
         this.value = cesta[indiceProducto].cantidad;
     }
+}
+
+//Formulario final de hacer solicitud.
+function hacerSolicitud() {
+    //Se reciben todos los productos del carrito y los datos del usuario.
+    let usuarioActual = JSON.parse(localStorage.getItem("usuario"));
+    let carrito = JSON.parse(localStorage.getItem("cesta"));
+
+    //Se crea el contenido.
+    crearPlantillaFormularios("Solicitud de pedido", "Datos de la colicitud de pedido", "Vista previa de la solicitud");
+    abrirCerrarCarrito();
+
+    let contenedorForm = document.querySelector('#contenedorForm');
+
+    let contenedorFormTop = crearElemento('div', undefined, { // van el contenedor left y right
+        class: 'contenedorFormTop'
+    });
+
+    let formPedidos = crearElemento('form', undefined, {
+        if: "formulario"
+    });
+
+    //Se crea la estructura de la tabla.
+    let tablaSolicitud = crearElemento("table", undefined, {
+        class: "table table-responsive table-hover mt-4"
+    });
+    let tablaTitulos = crearElemento("thead");
+    let tablaBody = crearElemento("tbody");
+
+    //Creo un array para los titulos de cada columna.
+    let titulos = ["Nombre", "Cantidad", "Observaciones"];
+
+    let filaTitulos = crearElemento("tr");
+    for (let i = 0; i < titulos.length; i++) {
+        let celdaTitulo = crearElemento("th", titulos[i]);
+        filaTitulos.appendChild(celdaTitulo);
+    }
+    tablaTitulos.appendChild(filaTitulos);
+    tablaSolicitud.appendChild(tablaTitulos);
+
+    // Cambio los nombres para que coincidan con los indices del objeto productos.
+    titulos = ["nombre_producto", "cantidad", "nombre_observaciones"];
+
+    carrito.forEach(producto => {
+        let filaTabla = crearElemento("tr");
+
+        for (let i = 0; i < titulos.length; i++) {
+            let celdaTabla;
+            if (titulos[i] === "cantidad") {
+                //Si el título es "cantidad", combina la cantidad y las unidades en una sola celda.
+                let textoCantidadUnidades = producto["cantidad"] + " " + producto["nombre_unidades"];
+                celdaTabla = crearElemento("td", textoCantidadUnidades);
+            } else if (titulos[i] === "nombre_observaciones") {
+                //Si el título es "nombre_observaciones", crea un input dentro de la celda.
+                let inputObservaciones = crearElemento("input", undefined, {
+                    type: "text",
+                    value: producto[titulos[i]]
+                });
+                celdaTabla = crearElemento("td");
+                celdaTabla.appendChild(inputObservaciones);
+            } else {
+                //De lo contrario, crea una celda normal
+                celdaTabla = crearElemento("td", producto[titulos[i]]);
+            }
+            filaTabla.appendChild(celdaTabla);
+        }
+
+        tablaBody.appendChild(filaTabla);
+    });
+
+    tablaSolicitud.appendChild(tablaBody);
+
+    //Se añade la tabla al formulario,
+    contenedorFormTop.appendChild(tablaSolicitud);
+
+    //. BOTONES......................................................
+    let contenedorBotones = crearElemento('div', undefined, {
+        class: 'form-group form_contenedor_botones'
+    });
+
+    let btnCancelar = crearElemento("input", undefined, {
+        type: 'submit',
+        value: 'Cancelar',
+        class: 'btn btn_custom_3',
+        onclick: 'cancelar()'
+    });
+
+    let btnVaciar = crearElemento("input", undefined, {
+        type: 'submit',
+        value: 'Limpiar datos',
+        class: 'btn btn_custom_2',
+        onclick: 'limpiarDatos()'
+    });
+
+    let btnCrearProducto = crearElemento("input", undefined, {
+        type: 'submit',
+        value: 'Finalizar solicitud',
+        class: 'btn btn_custom_1',
+        onclick: 'crearProducto()'
+    });
+
+    contenedorBotones.appendChild(btnCancelar);
+    contenedorBotones.appendChild(btnVaciar);
+    contenedorBotones.appendChild(btnCrearProducto);
+
+    formPedidos.appendChild(tablaSolicitud);
+    formPedidos.appendChild(contenedorBotones);
+
+    contenedorFormTop.appendChild(formPedidos);
+
+    contenedorForm.appendChild(contenedorFormTop);
+    contenedorForm.appendChild(formPedidos);
 }
