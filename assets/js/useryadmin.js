@@ -61,6 +61,50 @@ function principal() {
     generarIconUser();
 }
 
+function generarIconUser() {
+    let parametros = {
+        iconoUsuario: true
+    }
+
+    $.ajax({
+        url: "../../assets/php/iconoSesion.php",
+        type: "GET",
+        data: parametros,
+        success: function (colorIconoUsuario) {
+            let userIcon = document.getElementById('userIcon');
+            userIcon.style.backgroundColor = JSON.parse(colorIconoUsuario);
+
+            let usuarioActual = JSON.parse(localStorage.getItem("usuario"));
+            let nombre = usuarioActual.nombre;
+            let apellido = usuarioActual.apellido;
+            let siglas = nombre.substring(0, 1) + apellido.substring(0, 1);
+            userIcon.textContent = siglas;
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.error("Error en la solicitud AJAX: " + textStatus, errorThrown);
+        }
+    });
+}
+
+function cerrarSesion() {
+    let parametros = {
+        cerrarSesion: true
+    }
+
+    $.ajax({
+        url: "../../assets/php/iconoSesion.php",
+        type: "GET",
+        data: parametros,
+        success: function () {
+            localStorage.removeItem("usuario");
+            window.location.replace("../../../sesion.html");
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.error("Error en la solicitud AJAX: " + textStatus, errorThrown);
+        }
+    });
+}
+
 function toggleSidebar() {
     $(".sidebar").toggleClass("sidebar-hidden");
     $(".page_container").toggleClass("content-sidebar-hidden");
@@ -88,17 +132,6 @@ function modoColor() {
     });
 }
 
-function generarIconUser() {
-    let usuarioActual = JSON.parse(localStorage.getItem("usuario"));
-
-    let nombre = usuarioActual.nombre;
-    let apellido = usuarioActual.apellido;
-    const siglas = nombre.substring(0, 1) + apellido.substring(0, 1);
-    const userIcon = document.getElementById('userIcon');
-    userIcon.textContent = siglas;
-    userIcon.style.backgroundColor = getRandomColor();
-}
-
 // genera un color aleatorio, se usa en el icono de usuario
 function getRandomColor() {
     const letters = '0123456789ABCDEF';
@@ -107,14 +140,6 @@ function getRandomColor() {
         color += letters[Math.floor(Math.random() * 16)];
     }
     return color;
-}
-
-function cerrarSesion() {
-    localStorage.removeItem("usuario");
-
-    setTimeout(function () {
-        window.location.replace("../../../sesion.html");
-    }, 500);
 }
 
 // Contenedor con borde punteado que aparece cuando una tabla está vacía o no tiene contenido
