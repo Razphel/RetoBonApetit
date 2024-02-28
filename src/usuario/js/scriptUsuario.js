@@ -24,6 +24,8 @@ function principal() {
     document.querySelector("#cerrarSesion").addEventListener("click", cerrarSesion);
     document.querySelector("#btn_limpiarCesta").addEventListener("click", vaciarCarrito);
     // document.querySelector("#btn_verPedido").addEventListener("click", hacerSolicitud);
+    let toggleIcon = document.getElementById('toggleSidebar');
+    let sidebar = document.getElementById('sidebar');
 
 
     // Funciones para el carrito.
@@ -78,8 +80,26 @@ function principal() {
         }
     });
 
+    let sidebarVisible = localStorage.getItem("sidebarVisible");
+
+    if (sidebarVisible === "false") {
+        $(".sidebar").addClass("sidebar-hidden");
+        $(".page_container").addClass("content-sidebar-hidden");
+    }
+
+    // Click del icono
+    $("#toggleSidebarIcon").click(function () {
+        toggleSidebar();
+    });
+
     //Guardo en el localStorage el listado con todos los productos.
     consultarProductos();
+    toggleSidebar(); 
+}
+
+function toggleSidebar() {
+    $(".sidebar").toggleClass("sidebar-hidden");
+    $(".page_container").toggleClass("content-sidebar-hidden");
 }
 
 function mensajesInicio(respuesta) {

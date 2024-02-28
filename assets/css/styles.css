@@ -615,6 +615,49 @@ body {
     background-color: var(--aside-back);
 }
 
+.sidebar-hidden {
+    display: none; 
+}
+
+.content-sidebar-hidden {
+    margin-left: 0;
+}
+
+/* Estilos para dispositivos móviles */
+/* Estilos para dispositivos móviles */
+@media only screen and (max-width: 767px) {
+    .sidebar {
+        width: 40%; /* Tamaño ajustado */
+        height: 80vh; /* Altura ajustada */
+        position: fixed;
+        top: 60px; /* Distancia desde la parte superior */
+        left: 0;
+        z-index: 1000;
+        transform: translateX(-100%);
+    }
+
+    .sidebar-hidden {
+        transform: translateX(0);
+    }
+
+    /* Estilos para elementos dentro de la barra lateral en dispositivos móviles */
+    .sidebar_container,
+    .nav_link,
+    .nav_container_left i,
+    .nav_container_left p {
+        font-size: 10px; /* Ajusta el tamaño del texto */
+    }
+
+    .page_container {
+        margin-left: 0;
+    }
+
+    .content-sidebar-hidden {
+        margin-left: 0;
+    }
+}
+
+
 .sidebar_user {
     width: 210px;
 }
