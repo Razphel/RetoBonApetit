@@ -43,9 +43,29 @@ function principal() {
     nombreApellido.innerHTML = usuarioActual.nombre + " " + usuarioActual.apellido;
     nombreCuenta.innerHTML = usuarioActual.id_usuario;
 
+    // Abrir y cerrar el sidebar
+
+    let sidebarVisible = localStorage.getItem("sidebarVisible");
+
+    if (sidebarVisible === "false") {
+        $(".sidebar").addClass("sidebar-hidden");
+        $(".page_container").addClass("content-sidebar-hidden");
+    }
+
+    // Click del icono
+    $("#toggleSidebar").click(function () {
+        toggleSidebar();
+    });
+
     modoColor(); 
     generarIconUser();
 }
+
+function toggleSidebar() {
+    $(".sidebar").toggleClass("sidebar-hidden");
+    $(".page_container").toggleClass("content-sidebar-hidden");
+}
+
 
 function modoColor() {
     const iconoPrincipal = document.getElementById("iconoPrincipal");

@@ -398,6 +398,7 @@ function pagAñadirCategoria() {
 }
 
 function tablaCategorias() {
+    
 }
 
 function newCategoria() {

@@ -667,6 +667,9 @@ function imprimirFiltroTabla(nombre = null, categoria = null, unidades = null) {
         value: "Hacer solicitud"
     });
 
+    //Boton para solicitar crear nuevos productos.
+    botonSolicitud.addEventListener("click", manejadorSolicitud);
+
     inputNombre.addEventListener("input", manejadorFiltro);
     contenedorBuscadorIcon.appendChild(inputNombre);
     contenedorFiltroRight.appendChild(contenedorBuscador);
@@ -676,6 +679,126 @@ function imprimirFiltroTabla(nombre = null, categoria = null, unidades = null) {
 
     // Añadir el contenedor del filtro al DOM
     parteInferior.appendChild(contenedorFiltro);
+}
+
+function manejadorSolicitud(e) {
+    //Busco los datos del usuario que necesita la siguiente funcion.
+    let datosUsuario = JSON.parse(localStorage.getItem("usuario"));
+    mostrarPopup(datosUsuario);
+}
+
+function mostrarPopup(datosUsuario) {
+    // Añadir el fondo oscuro semi-transparente.
+    let overlay = crearElemento("div", undefined, {
+        class: "overlay"
+    });
+    document.body.appendChild(overlay);
+
+    // Crear el contenedor del pop-up.
+    let popupContainer = crearElemento("div", undefined, {
+        class: "popup-container card"
+    });
+
+    // Crear el contenido del pop-up.
+    let popupContent = crearElemento("div", undefined, {
+        class: "popup-content card-body"
+    });
+
+    // Crear el título del pop-up.
+    let tituloPopup = crearElemento("h2", "Vista previa de producto", undefined);
+    popupContent.appendChild(tituloPopup);
+
+    //Contenido del popub.
+    let nombreProducto = crearElemento("input", undefined, {
+        id: "nombreNuevoProducto",
+        placeholder: "Nombre del producto nuevo.",
+        type: "text"
+    });
+
+    let cantidadProducto = crearElemento("input", undefined, {
+        id: "cantidadNuevoProducto",
+        placeholder: "Cantidad a solicitar.",
+        min: 0,
+        type: "number"
+    });
+
+    let unidadProducto = crearElemento("input", undefined, {
+        id: "unidadNuevoProducto",
+        placeholder: "Unidad de medida. Ej: kg, litros, gramos, etc.",
+        type: "text"
+    });
+
+    let observaciones = crearElemento("p", `Solicitud del usuario ${datosUsuario.nombre} ${datosUsuario.apellido} para añadir un producto nuevo.`, {
+        id: "observacionesNuevoProducto"
+    });
+
+    //Boton final.
+    let botonAñadirCesta = crearElemento("button", "Añadir a la cesta", undefined);
+    botonAñadirCesta.addEventListener("click", function () {
+        //Se reciben los datos.
+        let nombre = document.querySelector("#nombreNuevoProducto").value;
+        let cantidadRecibida = parseFloat(document.querySelector("#cantidadNuevoProducto").value);
+        let unidad = document.querySelector("#unidadNuevoProducto").value;
+        let observaciones = document.querySelector("#observacionesNuevoProducto").value;
+
+        //Se crea el nuevo producto.
+        let nuevoProducto = {
+            nombre_producto: nombre,
+            nombre_unidades: unidad,
+            nombre_observaciones: observaciones,
+            cantidad: cantidadRecibida
+        };
+
+        // Lógica para añadir a la cesta
+        agregarCestaDesdePopup(nuevoProducto);
+        // Cerrar el pop-up después de añadir a la cesta
+        popupContainer.remove();
+        overlay.style.backgroundColor = "transparent";
+    });
+
+
+    // Agregar los elementos al contenido del pop-up
+    popupContent.appendChild(nombreProducto);
+    popupContent.appendChild(cantidadProducto);
+    popupContent.appendChild(unidadProducto);
+    popupContent.appendChild(observaciones);
+    popupContent.appendChild(botonAñadirCesta);
+
+    // Agregar el contenido del pop-up al contenedor
+    popupContainer.appendChild(popupContent);
+
+    // Agregar el contenedor del pop-up al body
+    document.body.appendChild(popupContainer);
+
+    // Cerrar el pop-up al hacer clic en el fondo oscuro
+    overlay.addEventListener("click", function () {
+        popupContainer.remove();
+        overlay.remove();
+    });
+}
+
+function agregarCestaDesdePopup(datosProducto) {
+    // Lógica para añadir a la cesta desde el pop-up
+    let cesta = JSON.parse(localStorage.getItem("cesta")) || [];
+
+    // Verificar si el producto ya está en la cesta
+    let productoEnCestaIndex = cesta.findIndex(item =>
+        item.nombre_producto === datosProducto.nombre_producto
+    );
+
+    if (productoEnCestaIndex === -1) {
+        cesta.push(datosProducto);
+    } else {
+        // Si el producto ya está en la cesta, sumar la cantidad existente con la cantidad del nuevo producto
+        cesta[productoEnCestaIndex].cantidad += parseFloat(datosProducto.cantidad);
+    }
+
+
+    // Guardar la cesta actualizada en el almacenamiento local
+    localStorage.setItem("cesta", JSON.stringify(cesta));
+
+    // Actualizar la visualización de la cesta (puedes hacerlo llamando a la función correspondiente)
+    manejadorCarrito();
 }
 
 function imprimirTablaProductos(nombre = null, categoria = null, unidades = null) {
@@ -741,7 +864,7 @@ function imprimirTablaProductos(nombre = null, categoria = null, unidades = null
                 let celdaBody = crearElemento("td");
 
                 if (index === 0) {
-                    celdaBody.classList.add("tabla_nombreLargo"); 
+                    celdaBody.classList.add("tabla_nombreLargo");
                 }
 
                 if (index === 1) {
