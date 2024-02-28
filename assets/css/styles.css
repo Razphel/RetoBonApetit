@@ -1252,7 +1252,6 @@ body {
     width: 100%; 
 }
 
-
 /* Estilos para el pop up */
 .overlay {
     position: fixed;
@@ -1332,5 +1331,3 @@ body {
 #popupObservaciones {
     margin-bottom: 10px; /* Margen inferior para separar las observaciones de los elementos siguientes */
 }
-
-/* Estilos para pantallas más pequeñas (dispositivos móviles) */

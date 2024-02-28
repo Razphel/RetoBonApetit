@@ -59,7 +59,6 @@ function principal() {
 
     modoColor(); 
     generarIconUser();
-    toggleSidebar(); 
 }
 
 function toggleSidebar() {
