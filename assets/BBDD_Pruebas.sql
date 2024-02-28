@@ -149,38 +149,72 @@ INSERT INTO proveedores (descripcion,telefono,email,direccion,observaciones) VAL
 INSERT INTO usuarios (admin,nombre_usuario,nombre,apellido,email,password,activo,observaciones,telefono) VALUES (1,'ADMINISTRADOR1','Yris','Guti','admin1@gmail.com','1234',1,'observaciones pruebas','888888888');
 INSERT INTO usuarios (admin,nombre_usuario,nombre,apellido,email,password,activo,observaciones,telefono) VALUES (0,'USUARIO1','Laura','apellido1','usuario1@gmail.com','1235',1,'observaciones prueba','99999999');
 INSERT INTO usuarios (admin,nombre_usuario,nombre,apellido,email,password,activo,observaciones,telefono) VALUES (0,'sagaz','Hoid','Raphael','usuario1@gmail.com','1235',1,'observaciones prueba','99999999');
+
 INSERT INTO solicitudes (fecha_solicitud,descripcion,unidades,cantidad,observaciones,tramitado,fk_usuario) VALUES ('2024/02/07','huevos','cajas',6,'observaciones prueba',1,2);
 INSERT INTO solicitudes (fecha_solicitud,descripcion,unidades,cantidad,observaciones,tramitado,fk_usuario) VALUES ('2025/03/12','cosaRandom2','gramos',3.4,'observaciones prueba',0,2);
 INSERT INTO solicitudes (fecha_solicitud,descripcion,unidades,cantidad,observaciones,tramitado,fk_usuario) VALUES ('2023/12/07','cosaRandom3','cajas',6,'observaciones prueba',1,2);
 INSERT INTO solicitudes (fecha_solicitud,descripcion,unidades,cantidad,observaciones,tramitado,fk_usuario) VALUES ('2022/02/27','cosaRandom4','kg',3.4,'observaciones prueba',0,2);
 INSERT INTO solicitudes (fecha_solicitud,descripcion,unidades,cantidad,observaciones,tramitado,fk_usuario) VALUES ('2024/04/07','cosaRandom5','botellas',6,'observaciones prueba',1,2);
 INSERT INTO solicitudes (fecha_solicitud,descripcion,unidades,cantidad,observaciones,tramitado,fk_usuario) VALUES ('2024/12/17','carne','kg',3.4,'observaciones prueba',0,2);
-INSERT INTO pedidos (fecha_pedido,fk_proveedor,fk_estado,fk_usuario,observaciones) VALUES ('2024/02/07',1,3,2,'observacion kaladin');
-INSERT INTO pedidos (fecha_pedido,fk_proveedor,fk_estado,fk_usuario,observaciones) VALUES ('2024/02/07',2,2,2,'observacion dalinar');
-INSERT INTO linea_pedido (fk_pedido,descripcion,cantidad,unidades,observaciones) VALUES (1,'huevos',6,'cajas','Observación de prueba');
-INSERT INTO linea_pedido (fk_pedido,descripcion,cantidad,unidades,observaciones) VALUES (1,'carne',3.4,'kg','Observación de prueba');
-INSERT INTO linea_pedido (fk_pedido,descripcion,cantidad,unidades,observaciones) VALUES (2,'patatas',4,'sacos','Observación de prueba');
-INSERT INTO unidades (descripcion,observaciones) VALUES ('cajas','Observación de prueba');
-INSERT INTO unidades (descripcion,observaciones) VALUES ('kg','Observación de prueba');
-INSERT INTO unidades (descripcion,observaciones) VALUES ('sacos','Observación de prueba');
+
 INSERT INTO categorias (descripcion,observaciones,imagenes) VALUES ('Carnicería','Observación de prueba para carnicería','5.png');
 INSERT INTO categorias (descripcion,observaciones,imagenes) VALUES ('Pastelería','Observación de prueba para pastelería','2.png');
 INSERT INTO categorias (descripcion,observaciones,imagenes) VALUES ('Pescadería','Observación de prueba para pescadería','4.png');
 INSERT INTO categorias (descripcion,observaciones,imagenes) VALUES ('Panadería','Observación de prueba para panadería','3.png');
 INSERT INTO categorias (descripcion,observaciones,imagenes) VALUES ('Frutería','Observación de prueba para frutería','1.png');
 INSERT INTO categorias (descripcion,observaciones,imagenes) VALUES ('Útiles y materiales','Observación de prueba para útiles y materiales','6.png');
+
+INSERT INTO unidades (descripcion,observaciones) VALUES ('kg','Observación de prueba'); 
+INSERT INTO unidades (descripcion,observaciones) VALUES ('g','Observación de prueba'); 
+INSERT INTO unidades (descripcion,observaciones) VALUES ('litro','Observación de prueba');
+INSERT INTO unidades (descripcion,observaciones) VALUES ('pack','Observación de prueba');
+INSERT INTO unidades (descripcion,observaciones) VALUES ('cajita','Observación de prueba');
+INSERT INTO unidades (descripcion,observaciones) VALUES ('paquetes','Observación de prueba');
+INSERT INTO unidades (descripcion,observaciones) VALUES ('unidades','Observación de prueba');
+INSERT INTO unidades (descripcion,observaciones) VALUES ('bandeja','Observación de prueba');
+
+INSERT INTO productos (descripcion,fk_unidad,observaciones) VALUES ('Bacon',1,'Observación para bacon');
+INSERT INTO productos (descripcion,fk_unidad,observaciones) VALUES ('Conejo',2,'Observación para conejo');
+INSERT INTO productos (descripcion,fk_unidad,observaciones) VALUES ('Panceta de cerdo',3,'Observación para panceta de cerdo');
+INSERT INTO productos (descripcion,fk_unidad,observaciones) VALUES ('Barra pan',4,'Observación de prueba para barra de pan');
+INSERT INTO productos (descripcion,fk_unidad,observaciones) VALUES ('Frambuesa fresca',5,'Observación de pruebas para frambuesa');
+INSERT INTO productos (descripcion,fk_unidad,observaciones) VALUES ('Grosellas',6,'Observación de pruebas para grosellas');
+INSERT INTO productos (descripcion,fk_unidad,observaciones) VALUES ('Harina floja',7,'Observación de pruebas para harina floja');
+INSERT INTO productos (descripcion,fk_unidad,observaciones) VALUES ('Arándanos',8,'Observación de pruebas para arándanos');
+INSERT INTO productos (descripcion,fk_unidad,observaciones) VALUES ('Naranjas',9,'Observación de prueba para naranjas');
+INSERT INTO productos (descripcion,fk_unidad,observaciones) VALUES ('Calabacín',10,'Observación de prueba para calabacín');
+INSERT INTO productos (descripcion,fk_unidad,observaciones) VALUES ('Cilantro',11,'Observación de prueba para cilantro');
+INSERT INTO productos (descripcion,fk_unidad,observaciones) VALUES ('Patatas',12,'Observación de prueba para patatas');
+INSERT INTO productos (descripcion,fk_unidad,observaciones) VALUES ('Cebollino',13,'Observación de prueba para cebollino');
+INSERT INTO productos (descripcion,fk_unidad,observaciones) VALUES ('Limones',14,'Observación de prueba para limones');
+
+INSERT INTO producto_categoria (fk_producto,fk_categoria) VALUES (1,1);
+INSERT INTO producto_categoria (fk_producto,fk_categoria) VALUES (2,7);
+INSERT INTO producto_categoria (fk_producto,fk_categoria) VALUES (3,1);
+INSERT INTO producto_categoria (fk_producto,fk_categoria) VALUES (4,7);
+INSERT INTO producto_categoria (fk_producto,fk_categoria) VALUES (5,5);
+INSERT INTO producto_categoria (fk_producto,fk_categoria) VALUES (6,5);
+INSERT INTO producto_categoria (fk_producto,fk_categoria) VALUES (7,1);
+INSERT INTO producto_categoria (fk_producto,fk_categoria) VALUES (8,7);
+INSERT INTO producto_categoria (fk_producto,fk_categoria) VALUES (9,1);
+INSERT INTO producto_categoria (fk_producto,fk_categoria) VALUES (10,1);
+INSERT INTO producto_categoria (fk_producto,fk_categoria) VALUES (11,8);
+INSERT INTO producto_categoria (fk_producto,fk_categoria) VALUES (12,1);
+INSERT INTO producto_categoria (fk_producto,fk_categoria) VALUES (13,8);
+INSERT INTO producto_categoria (fk_producto,fk_categoria) VALUES (14,1);
+
+INSERT INTO pedidos (fecha_pedido,fk_proveedor,fk_estado,fk_usuario,observaciones) VALUES ('2024/02/07',1,3,2,'observacion kaladin');
+INSERT INTO pedidos (fecha_pedido,fk_proveedor,fk_estado,fk_usuario,observaciones) VALUES ('2024/02/07',2,2,2,'observacion dalinar');
+
+INSERT INTO linea_pedido (fk_pedido,descripcion,cantidad,unidades,observaciones) VALUES (1,'huevos',6,'cajas','Observación de prueba');
+INSERT INTO linea_pedido (fk_pedido,descripcion,cantidad,unidades,observaciones) VALUES (1,'carne',3.4,'kg','Observación de prueba');
+INSERT INTO linea_pedido (fk_pedido,descripcion,cantidad,unidades,observaciones) VALUES (2,'patatas',4,'sacos','Observación de prueba');
+
 INSERT INTO residuos (descripcion,observaciones) VALUES ('caja de papel','Observación de prueba para caja de papel');
 INSERT INTO residuos (descripcion,observaciones) VALUES ('bolsa de plastico','Observación de prueba para bolsa de plástico');
 INSERT INTO residuos (descripcion,observaciones) VALUES ('botella de cristal','Observación de prueba para botella de cristal');
 INSERT INTO residuos (descripcion,observaciones) VALUES ('bandeja','Observación de prueba para bandeja');
-INSERT INTO productos (descripcion,fk_unidad,observaciones) VALUES ('Bacon',2,'Observación para bacon');
-INSERT INTO productos (descripcion,fk_unidad,observaciones) VALUES ('Barra pan',1,'Observación de prueba para barra de pan');
-INSERT INTO productos (descripcion,fk_unidad,observaciones) VALUES ('Frambuesa fresca',2,'Observación de pruebas para frambuesa');
-INSERT INTO productos (descripcion,fk_unidad,observaciones) VALUES ('Naranjas',1,'Observación de prueba para naranjas');
-INSERT INTO producto_categoria (fk_producto,fk_categoria) VALUES (1,1);
-INSERT INTO producto_categoria (fk_producto,fk_categoria) VALUES (2,4);
-INSERT INTO producto_categoria (fk_producto,fk_categoria) VALUES (3,2);
-INSERT INTO producto_categoria (fk_producto,fk_categoria) VALUES (4,5);
+
 INSERT INTO mensajes (descripcion,fecha_mensaje,observaciones,fk_usuario) VALUES ('Fecha límite para solicitud 1','2025/02/27','Observación de prueba',1);
 INSERT INTO mensajes (descripcion,fecha_mensaje,observaciones,fk_usuario) VALUES ('Fecha límite para solicitud 2','2023/02/27','Observación de prueba',1);
 INSERT INTO mensajes (descripcion,fecha_mensaje,observaciones,fk_usuario) VALUES ('Fecha límite para solicitud 3','2022/02/27','Observación de prueba',1);

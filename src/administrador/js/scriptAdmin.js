@@ -114,8 +114,8 @@ function mostrarUsuarios(respuesta) {
 
 // MANEJADORES COMUNES DE FORMULARIOS PARA BOTONES.........................................
 function limpiarDatos() {
-    let formualario = document.getElementById("formulario");
-    formualario.reset();
+    let formulario = document.getElementById("formulario");
+    formulario.reset();
 }
 
 function cancelar() {

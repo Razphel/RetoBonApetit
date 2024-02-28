@@ -365,7 +365,7 @@ function crearPlantillaFormularios(tituloPagina, tituloLeft, tituloRight) {
     let container_right = crearElemento('div', undefined, {
         class: 'container_right pagForm_columnaRight card p-4 col-12 col-lg-4'
     });
-    let titulo_container_right = crearElemento('div', tituloRight, {
+    let titulo_container_right = crearElemento('h4', tituloRight, {
         class: 'mb-5'
     });
     container_right.appendChild(titulo_container_right); 

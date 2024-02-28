@@ -245,6 +245,7 @@ th {
 }
 
 td {
+    vertical-align: middle; 
     font-size: var(--size-p);
 }
 
@@ -253,7 +254,7 @@ td:first-child, th:first-child {
   }
 
 .td_alignRight {
-    padding-right: 20px;
+    padding-right: 20px !important;
     text-align: right; 
 }
 
@@ -474,6 +475,11 @@ textarea::placeholder {
 .form-switch .form-check-input {
     background-color: var(--light-color); 
     border-color: var(--accent-01); 
+}
+
+.userFormPedido {
+    max-height: 500px;
+    overflow-y: auto;
 }
 
 /* Dropdown galería imágenes nueva categoría */
@@ -1302,13 +1308,9 @@ body {
 
 .contenedor_item_popup {
     display: grid;
-
-
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    align-items: flex-start;
-    border-bottom: solid thin var(--accent-01);
+    grid-template-columns: 110px 1fr; 
+    gap: 30px; 
+    align-items: flex-start; 
 }
 
 .label_popup {

@@ -689,7 +689,7 @@ function mostrarPopup(datosUsuario) {
     crearPopup('Solicitud de nuevo producto');
     let popupContainer = document.querySelector('#popupContainer');
     let contenedorPopup = document.querySelector('#contenedorPopup');
-    let contenedorForm = crearElemento('div', undefined, {
+    let formulario = crearElemento('form', undefined, {
         class: 'w-100 contenedorFormPopup'
     });
 
@@ -719,7 +719,7 @@ function mostrarPopup(datosUsuario) {
     });
     contenedorNombre.appendChild(labelNombre);
     contenedorNombre.appendChild(nombreProducto); 
-    contenedorForm.appendChild(contenedorNombre);
+    formulario.appendChild(contenedorNombre);
 
     //. BLOQUE 2....................................................
     let contenedorCantidad = crearElemento('div', undefined, {
@@ -733,14 +733,15 @@ function mostrarPopup(datosUsuario) {
 
     //Contenido del popub.
     let cantidadProducto = crearElemento("input", undefined, {
-        type: 'number',
         id: "cantidadNuevoProducto",
+        class: 'form-control',
+        type: 'number',
         min: 0,
         value: 0
     });
     contenedorCantidad.appendChild(labelCantidad);
     contenedorCantidad.appendChild(cantidadProducto); 
-    contenedorForm.appendChild(contenedorCantidad);
+    formulario.appendChild(contenedorCantidad);
 
     //. BLOQUE 3....................................................
     let contenedorUdMedida = crearElemento('div', undefined, {
@@ -756,34 +757,35 @@ function mostrarPopup(datosUsuario) {
     let udMedidaProducto = crearElemento("input", undefined, {
         id: "unidadNuevoProducto",
         class: 'form-control',
-        placeholder: "Unidad de medida. Ej: kg, litros, gramos, etc.",
+        placeholder: "Ej.: kg, litros, caja...",
         type: "text"
     });
     contenedorUdMedida.appendChild(labelUdMedida);
     contenedorUdMedida.appendChild(udMedidaProducto); 
-    contenedorForm.appendChild(contenedorUdMedida);
+    formulario.appendChild(contenedorUdMedida);
 
     //. BLOQUE 4....................................................
     let contenedorObservaciones = crearElemento('div', undefined, {
         class: 'w-100 contenedor_item_popup'
     });
 
-    let labelObservaciones = crearElemento('label', 'Ud. de medida', {
+    let labelObservaciones = crearElemento('label', 'Observaciones', {
         for: 'observacionesNuevoProducto',
         class: 'form-label label_popup'
     });
 
     //Contenido del popub.
-    let observacionesProducto = crearElemento("input", undefined, {
+    let observacionesProducto = crearElemento("textarea", undefined, {
         id: "observacionesNuevoProducto",
         class: "form-control",
-        placeholder: 'Observaciones del nuevo producto a añadir'
+        placeholder: 'Observaciones del nuevo producto',
+        rows: '3', 
     });
     contenedorObservaciones.appendChild(labelObservaciones);
     contenedorObservaciones.appendChild(observacionesProducto); 
-    contenedorForm.appendChild(contenedorObservaciones);
+    formulario.appendChild(contenedorObservaciones);
 
-    contenedorPopup.appendChild(contenedorForm); 
+    contenedorPopup.appendChild(formulario); 
 
     //. BOTONES......................................................
     let contenedorBotones = crearElemento('div', undefined, {
@@ -1194,7 +1196,7 @@ function hacerPedido() {
     let carrito = JSON.parse(localStorage.getItem("cesta"));
 
     //Se crea el contenido.
-    crearPlantillaFormularios("Solicitud de pedido", "Datos de la colicitud de pedido", "Vista previa de la solicitud");
+    crearPlantillaFormularios("Solicitud de pedido", "Datos de la solicitud de pedido", "Vista previa de la solicitud");
     abrirCerrarCarrito();
 
     let contenedorForm = document.querySelector('#contenedorForm');
@@ -1204,7 +1206,8 @@ function hacerPedido() {
     });
 
     let formPedidos = crearElemento('form', undefined, {
-        if: "formulario"
+        id: "formulario",
+        class: "userFormPedido"
     });
 
     //Se crea la estructura de la tabla.
@@ -1239,7 +1242,8 @@ function hacerPedido() {
                 celdaTabla = crearElemento("td", textoCantidadUnidades);
             } else if (titulos[i] === "nombre_observaciones") {
                 //Si el título es "nombre_observaciones", crea un input dentro de la celda.
-                let inputObservaciones = crearElemento("input", undefined, {
+                let inputObservaciones = crearElemento("textarea", undefined, {
+                    class: 'form-control',
                     type: "text",
                     value: producto[titulos[i]]
                 });
@@ -1297,4 +1301,9 @@ function hacerPedido() {
 
     contenedorForm.appendChild(contenedorFormTop);
     contenedorForm.appendChild(formPedidos);
+}
+
+function limpiarDatos() {
+    let formulario = document.getElementById("formulario");
+    formulario.reset();
 }
