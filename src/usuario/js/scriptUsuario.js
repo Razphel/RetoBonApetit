@@ -23,8 +23,7 @@ function principal() {
     document.querySelector("#navResiduos").addEventListener("click", navResiduos);
     document.querySelector("#cerrarSesion").addEventListener("click", cerrarSesion);
     document.querySelector("#btn_limpiarCesta").addEventListener("click", vaciarCarrito);
-    document.querySelector("#btn_hacerPedido").addEventListener("click", hacerSolicitud);
-    // document.querySelector("#btn_verPedido").addEventListener("click", hacerSolicitud);
+    document.querySelector("#btn_hacerPedido").addEventListener("click", hacerPedido);
 
 
     // Funciones para el carrito.
@@ -1116,7 +1115,7 @@ function modificarDesdeCarrito(e) {
 }
 
 //Formulario final de hacer solicitud.
-function hacerSolicitud() {
+function hacerPedido() {
     //Se reciben todos los productos del carrito y los datos del usuario.
     let usuarioActual = JSON.parse(localStorage.getItem("usuario"));
     let carrito = JSON.parse(localStorage.getItem("cesta"));

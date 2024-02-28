@@ -90,53 +90,53 @@ function modoColor() {
 }
 
 function generarIconUser() {
-    //Se comprueba que ya el icono no este generado desde la sesion de PHP.
-    // let parametros = {
-    //     iconoUsuario: true
-    // };
-
-    // $.ajax({
-    //     //Ubicacion del archivo php que va a manejar los valores.
-    //     url: "./php/consultaUsuario.php",
-    //     //Metodo en que los va a recibir.
-    //     type: "GET",
-    //     data: parametros,
-    //     dataType: "json",
-    //     success: comprobarIcono,
-    //     error: function (jqXHR, textStatus, errorThrown) {
-    //         console.error("Error en la solicitud AJAX: " + textStatus, errorThrown);
-    //     }
-    // });
-
-
-
-    let usuarioActual = JSON.parse(localStorage.getItem("usuario"));
-
-    let nombre = usuarioActual.nombre;
-    let apellido = usuarioActual.apellido;
-    const siglas = nombre.substring(0, 1) + apellido.substring(0, 1);
-    const userIcon = document.getElementById('userIcon');
-    userIcon.textContent = siglas;
-    userIcon.style.backgroundColor = getRandomColor();
-}
-
-// genera un color aleatorio, se usa en el icono de usuario
-function getRandomColor() {
-    const letters = '0123456789ABCDEF';
-    let color = '#';
-    for (let i = 0; i < 6; i++) {
-        color += letters[Math.floor(Math.random() * 16)];
+    let parametros = {
+        iconoUsuario: true
     }
-    return color;
+
+    $.ajax({
+        url: "../../assets/php/iconoSesion.php",
+        type: "GET",
+        data: parametros,
+        success: function (colorIconoUsuario) {
+            let userIcon = document.getElementById('userIcon');
+            userIcon.style.backgroundColor = colorIconoUsuario;
+
+            let usuarioActual = JSON.parse(localStorage.getItem("usuario"));
+            let nombre = usuarioActual.nombre;
+            let apellido = usuarioActual.apellido;
+            let siglas = nombre.substring(0, 1) + apellido.substring(0, 1);
+            userIcon.textContent = siglas;
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.error("Error en la solicitud AJAX: " + textStatus, errorThrown);
+        }
+    });
 }
 
 function cerrarSesion() {
     localStorage.removeItem("usuario");
+    window.location.replace("../../../sesion.html");
 
-    setTimeout(function () {
-        window.location.replace("../../../sesion.html");
-    }, 500);
+    // let parametros = {
+    //     cerrarSesion: true
+    // }
+
+    // $.ajax({
+    //     url: "../../assets/php/iconoSesion.php",
+    //     type: "GET",
+    //     data: parametros,
+    //     success: function (respuesta) {
+    //         localStorage.removeItem("usuario");
+    //         window.location.replace("../../../sesion.html");
+    //     },
+    //     error: function (jqXHR, textStatus, errorThrown) {
+    //         console.error("Error en la solicitud AJAX: " + textStatus, errorThrown);
+    //     }
+    // });
 }
+
+
 
 // Contenedor con borde punteado que aparece cuando una tabla está vacía o no tiene contenido
 function mostrarMensajeVacio(titulo, texto, textoBoton) {
