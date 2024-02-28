@@ -135,44 +135,75 @@ function mensajesInicio(respuesta) {
 function inicioSolicitudes(respuesta) {
     let contenedor = document.querySelector("#contenedor");
 
-    let historial = crearElemento("table", undefined, {
-        id: "historial",
-        style: "border-collapse: collapse;"
-    });
-
     //Se comprueba primero que exista algo en el historial de solicitudes.
     if (respuesta[0] != null) {
-        let historial = crearElemento("table", undefined, {
-            class: "table table-responsive table-hover mt-4"
-        });
-        let tablaTitulos = crearElemento("thead");
+        let pedidos = respuesta;
 
-        //Creo los titulos de las tablas.
-        let titulos = crearElemento("tr", undefined, undefined);
-        //Segun el formato en el que se recibe el objeto, tengo que usar sus elementos de la mitad al final.
-        let prueba = Object.keys(respuesta[0]);
-        for (let i = prueba.length / 2; i < prueba.length; i++) {
-            //Creo cada elemento y lo agrego a la fila del titulo.
-            let filaTitulo = crearElemento("th", prueba[i]);
-            titulos.appendChild(filaTitulo);
+        //Aqui se agrupan los pedidos agrupados por día.
+        let pedidosAgrupados = {};
+
+        // Itera sobre cada pedido.
+        pedidos.forEach(pedido => {
+            // Extrae la fecha del pedido.
+            let fechaPedido = pedido.fecha_pedido;
+
+            // Si la fecha del pedido no es una clave en pedidosAgrupados, agrégala con un array vacío.
+            if (!pedidosAgrupados[fechaPedido]) {
+                pedidosAgrupados[fechaPedido] = [];
+            }
+
+            // Agrega el pedido al array correspondiente en pedidosAgrupados.
+            pedidosAgrupados[fechaPedido].push(pedido);
+        });
+
+        console.log(pedidosAgrupados);
+
+        for (let fecha in pedidosAgrupados) {
+            //Cada fecha es un array de objetos literales, cada objeto es un pedido.
+            let cartaPedidos = crearElemento("div");
+            let fechaPedido = crearElemento("h1", fecha);
+
+            cartaPedidos.appendChild(fechaPedido);
+            for (let i = 0; i < pedidosAgrupados[fecha].length; i++) {
+                let pedido = pedidosAgrupados[fecha][i];
+                let textoPedidos = crearElemento("p", pedido.descripcion + " " + pedido.cantidad + " " + pedido.unidades);
+                cartaPedidos.appendChild(textoPedidos);
+            }
+            contenedor.appendChild(cartaPedidos);
+
         }
 
-        //Agrego el titulo a la tabla.
-        tablaTitulos.appendChild(titulos);
-        historial.appendChild(tablaTitulos);
+        // let historial = crearElemento("table", undefined, {
+        //     class: "table table-responsive table-hover mt-4"
+        // });
+        // let tablaTitulos = crearElemento("thead");
 
-        let tablaBody = crearElemento("tbody");
-        //Ahora agrego el contenido.
-        respuesta.forEach(fila => {
-            let filaNormal = crearElemento("tr", undefined, undefined);
-            for (let i = 0; i < Object.keys(fila).length / 2; i++) {
-                let elementoFila = crearElemento("td", fila[i], undefined);
-                filaNormal.appendChild(elementoFila);
-            }
-            tablaBody.appendChild(filaNormal);
-        });
-        historial.appendChild(tablaBody);
-        contenedor.appendChild(historial);
+        // //Creo los titulos de las tablas.
+        // let titulos = crearElemento("tr", undefined, undefined);
+        // //Segun el formato en el que se recibe el objeto, tengo que usar sus elementos de la mitad al final.
+        // let prueba = Object.keys(respuesta[0]);
+        // for (let i = prueba.length / 2; i < prueba.length; i++) {
+        //     //Creo cada elemento y lo agrego a la fila del titulo.
+        //     let filaTitulo = crearElemento("th", prueba[i]);
+        //     titulos.appendChild(filaTitulo);
+        // }
+
+        // //Agrego el titulo a la tabla.
+        // tablaTitulos.appendChild(titulos);
+        // historial.appendChild(tablaTitulos);
+
+        // let tablaBody = crearElemento("tbody");
+        // //Ahora agrego el contenido.
+        // respuesta.forEach(fila => {
+        //     let filaNormal = crearElemento("tr", undefined, undefined);
+        //     for (let i = 0; i < Object.keys(fila).length / 2; i++) {
+        //         let elementoFila = crearElemento("td", fila[i], undefined);
+        //         filaNormal.appendChild(elementoFila);
+        //     }
+        //     tablaBody.appendChild(filaNormal);
+        // });
+        // historial.appendChild(tablaBody);
+        // contenedor.appendChild(historial);
     } else {
         let sinHistorial = crearElemento("p", "Historial Vacio.", undefined)
         contenedor.appendChild(sinHistorial);
@@ -841,7 +872,7 @@ function mostrarPopup(datosUsuario) {
     contenedorPopup.appendChild(contenedorBotones);
 
     // Agregar el contenido del pop-up al contenedor
-    popupContainer.appendChild(popupContent);
+    popupContainer.appendChild(contenedorPopup);
 
     // Agregar el contenedor del pop-up al body
     document.body.appendChild(popupContainer);

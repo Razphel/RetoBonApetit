@@ -959,6 +959,8 @@ function tablaUsuarios(usuarios) {
         let celdaTitulo = crearElemento("th", titulos[i].charAt(0).toUpperCase() + titulos[i].slice(1).toLowerCase());
         filaTitulos.appendChild(celdaTitulo);
     }
+    let columnaDeBotones = crearElemento("td");
+    filaTitulos.appendChild(columnaDeBotones);
     titulosTabla.appendChild(filaTitulos);
     tablaUsuarios.appendChild(titulosTabla);
 
@@ -974,6 +976,23 @@ function tablaUsuarios(usuarios) {
             let celdaBody = crearElemento("td", usuario[titulos[i]]);
             filaBody.appendChild(celdaBody);
         }
+        //Botones editar/borrar.
+        let celdaBodyBoton = crearElemento("td");
+
+        let editar = crearElemento('input', undefined, {
+            id: "botonEditarUsuario_" + usuario["id_usuarios"],
+            type: "submit",
+            value: "Editar"
+        })
+        let borrar = crearElemento('input', undefined, {
+            id: "botonBorrarUsuario_" + usuario["id_usuarios"],
+            type: "submit",
+            value: "Borrar"
+        })
+        celdaBodyBoton.appendChild(editar);
+        celdaBodyBoton.appendChild(borrar);
+
+        filaBody.appendChild(celdaBodyBoton);
         tablaBody.appendChild(filaBody);
     });
     tablaUsuarios.appendChild(tablaBody);
