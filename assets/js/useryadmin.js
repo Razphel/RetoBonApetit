@@ -357,7 +357,6 @@ function consultarProductos() {
 // genera el icono de usuario
 function generarIconUser() {
     let usuarioActual = JSON.parse(localStorage.getItem("usuario"));
-
     let nombre = usuarioActual.nombre;
     let apellido = usuarioActual.apellido;
     const siglas = nombre.substring(0, 1) + apellido.substring(0, 1);
@@ -371,7 +370,6 @@ function getRandomColor() {
     const letters = '0123456789ABCDEF';
     let color = '#';
     for (let i = 0; i < 6; i++) {
-        // Usar un valor más bajo (por ejemplo, hasta 8) para obtener colores más oscuros
         color += letters[Math.floor(Math.random() * 13)];
     }
     return color;
@@ -379,7 +377,6 @@ function getRandomColor() {
 
 //FUNCION ICONO BARRA LATERAL
 document.addEventListener("DOMContentLoaded", function () {
-    // Event listener para el clic en el icono de la barra lateral
     $(".bi.bi-list").click(function () {
         toggleSidebar();
     });
