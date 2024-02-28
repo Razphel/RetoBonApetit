@@ -664,8 +664,10 @@ function imprimirFiltroTabla(nombre = null, categoria = null, unidades = null) {
         type: "submit",
         id: "botonSolicitud",
         class: "btn btn_custom_1",
-        value: "Hacer solicitud"
+        value: "Hacer solicitud",
     });
+
+    botonSolicitud.addEventListener("click", manejadorSolicitud); 
 
     inputNombre.addEventListener("input", manejadorFiltro);
     contenedorBuscadorIcon.appendChild(inputNombre);
@@ -676,6 +678,10 @@ function imprimirFiltroTabla(nombre = null, categoria = null, unidades = null) {
 
     // Añadir el contenedor del filtro al DOM
     parteInferior.appendChild(contenedorFiltro);
+}
+
+function manejadorSolicitud() {
+
 }
 
 function imprimirTablaProductos(nombre = null, categoria = null, unidades = null) {

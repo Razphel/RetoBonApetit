@@ -608,7 +608,6 @@ body {
 }
 
 .sidebar {
-    width: 240px;
     height: 100vh;
     overflow-y: auto;
     margin: 0;
@@ -616,17 +615,36 @@ body {
     background-color: var(--aside-back);
 }
 
+.sidebar_user {
+    width: 210px;
+}
+
+.sidebar_admin {
+    width: 240px;
+}
+
 .sidebar_top {
     height: 70px;
-    width: 240px;
     position: fixed;
     padding: 20px 15px 15px 30px;
     border-right: solid thin rgb(238, 238, 238);
     background-color: white;
 }
 
-.logo_container img {
+.sidebar_top_user {
+    width: 210px;
+}
+
+.sidebar_top_admin {
+    width: 240px;
+}
+
+.logo_container_admin img {
     width: 70%;
+}
+
+.logo_container_user img {
+    width: 80%;
 }
 
 .sidebar_bottom {
@@ -1190,3 +1208,86 @@ body {
 .cart_bottom_buttons .btn {
     width: 100%; 
 }
+
+
+/* Estilos para el pop up */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.5); /* Blanco semi-transparente */
+    z-index: 1000;
+}
+
+.popup-container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 500px;
+    height: 600px;
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    z-index: 1001;
+    overflow-y: auto;
+}
+
+.popup-content {
+    text-align: center;
+}
+
+.popup-content h2 {
+    color: #555;
+    margin-bottom: 20px;
+}
+
+.popup-content p {
+    color: #555;
+    margin-bottom: 15px;
+}
+
+.popup-content label {
+    color: grey;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.popup-content input[type="radio"] {
+    margin-bottom: 15px;
+}
+
+.popup-content button {
+    background-color: #ff0055;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 15px; /* Margen superior para separar el botón de los elementos anteriores */
+}
+
+/* Estilos específicos por identificador */
+#popupNombre {
+    font-weight: bold;
+    margin-bottom: 10px; /* Margen inferior para separar el nombre de los elementos siguientes */
+}
+
+#popupCategoria img {
+    width: 35px;
+    margin-right: 10px;
+}
+
+#popupUnidades {
+    font-style: italic;
+    margin-bottom: 10px; /* Margen inferior para separar las unidades de los elementos siguientes */
+}
+
+#popupObservaciones {
+    margin-bottom: 10px; /* Margen inferior para separar las observaciones de los elementos siguientes */
+}
+
+/* Estilos para pantallas más pequeñas (dispositivos móviles) */
