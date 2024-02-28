@@ -175,7 +175,7 @@ INSERT INTO residuos (descripcion,observaciones) VALUES ('botella de cristal','O
 INSERT INTO residuos (descripcion,observaciones) VALUES ('bandeja','Observación de prueba para bandeja');
 INSERT INTO productos (descripcion,fk_unidad,observaciones) VALUES ('Bacon',2,'Observación para bacon');
 INSERT INTO productos (descripcion,fk_unidad,observaciones) VALUES ('Barra pan',1,'Observación de prueba para barra de pan');
-INSERT INTO productos (descripcion,fk_unidad,observaciones) VALUES ('Frabmbuesa fresca',2,'Observación de pruebas para frambuesa');
+INSERT INTO productos (descripcion,fk_unidad,observaciones) VALUES ('Frambuesa fresca',2,'Observación de pruebas para frambuesa');
 INSERT INTO productos (descripcion,fk_unidad,observaciones) VALUES ('Naranjas',1,'Observación de prueba para naranjas');
 INSERT INTO producto_categoria (fk_producto,fk_categoria) VALUES (1,1);
 INSERT INTO producto_categoria (fk_producto,fk_categoria) VALUES (2,4);

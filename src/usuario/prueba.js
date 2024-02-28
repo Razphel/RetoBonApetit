@@ -23,7 +23,8 @@ function principal() {
     document.querySelector("#navResiduos").addEventListener("click", navResiduos);
     document.querySelector("#cerrarSesion").addEventListener("click", cerrarSesion);
     document.querySelector("#btn_limpiarCesta").addEventListener("click", vaciarCarrito);
-    document.querySelector("#btn_hacerPedido").addEventListener("click", hacerPedido);
+    // document.querySelector("#btn_verPedido").addEventListener("click", hacerSolicitud);
+
 
     // Funciones para el carrito.
     // Asigna la función de cerrar al botón X
@@ -663,10 +664,11 @@ function imprimirFiltroTabla(nombre = null, categoria = null, unidades = null) {
         type: "submit",
         id: "botonSolicitud",
         class: "btn btn_custom_1",
-        value: "Hacer solicitud",
+        value: "Hacer solicitud"
     });
 
-    botonSolicitud.addEventListener("click", manejadorSolicitud); 
+    //Boton para solicitar crear nuevos productos.
+    botonSolicitud.addEventListener("click", manejadorSolicitud);
 
     inputNombre.addEventListener("input", manejadorFiltro);
     contenedorBuscadorIcon.appendChild(inputNombre);
@@ -686,130 +688,52 @@ function manejadorSolicitud(e) {
 }
 
 function mostrarPopup(datosUsuario) {
-    crearPopup('Solicitud de nuevo producto');
-    let popupContainer = document.querySelector('#popupContainer');
-    let contenedorPopup = document.querySelector('#contenedorPopup');
-    let contenedorForm = crearElemento('div', undefined, {
-        class: 'w-100 contenedorFormPopup'
+    // Añadir el fondo oscuro semi-transparente.
+    let overlay = crearElemento("div", undefined, {
+        class: "overlay"
+    });
+    document.body.appendChild(overlay);
+
+    // Crear el contenedor del pop-up.
+    let popupContainer = crearElemento("div", undefined, {
+        class: "popup-container card"
     });
 
-    let textoInfo = crearElemento("p", `Solicitud del usuario ${datosUsuario.nombre} ${datosUsuario.apellido} para añadir un producto nuevo.`, {
-        id: "observacionesNuevoProducto",
-        class: "mb-5"
+    // Crear el contenido del pop-up.
+    let popupContent = crearElemento("div", undefined, {
+        class: "popup-content card-body"
     });
 
-    contenedorPopup.appendChild(textoInfo); 
-
-    //. BLOQUE 1....................................................
-    let contenedorNombre = crearElemento('div', undefined, {
-        class: 'w-100 contenedor_item_popup'
-    });
-
-    let labelNombre = crearElemento('label', 'Nombre', {
-        for: 'nombreNuevoProducto',
-        class: 'form-label label_popup'
-    });
+    // Crear el título del pop-up.
+    let tituloPopup = crearElemento("h2", "Vista previa de producto", undefined);
+    popupContent.appendChild(tituloPopup);
 
     //Contenido del popub.
     let nombreProducto = crearElemento("input", undefined, {
         id: "nombreNuevoProducto",
-        class: 'form-control',
-        placeholder: "Nombre del nuevo producto",
+        placeholder: "Nombre del producto nuevo.",
         type: "text"
     });
-    contenedorNombre.appendChild(labelNombre);
-    contenedorNombre.appendChild(nombreProducto); 
-    contenedorForm.appendChild(contenedorNombre);
 
-    //. BLOQUE 2....................................................
-    let contenedorCantidad = crearElemento('div', undefined, {
-        class: 'w-100 contenedor_item_popup'
-    });
-
-    let labelCantidad = crearElemento('label', 'Cantidad', {
-        for: 'cantidadNuevoProducto',
-        class: 'form-label label_popup'
-    });
-
-    //Contenido del popub.
     let cantidadProducto = crearElemento("input", undefined, {
-        type: 'number',
         id: "cantidadNuevoProducto",
+        placeholder: "Cantidad a solicitar.",
         min: 0,
-        value: 0
-    });
-    contenedorCantidad.appendChild(labelCantidad);
-    contenedorCantidad.appendChild(cantidadProducto); 
-    contenedorForm.appendChild(contenedorCantidad);
-
-    //. BLOQUE 3....................................................
-    let contenedorUdMedida = crearElemento('div', undefined, {
-        class: 'w-100 contenedor_item_popup'
+        type: "number"
     });
 
-    let labelUdMedida = crearElemento('label', 'Ud. de medida', {
-        for: 'unidadNuevoProducto',
-        class: 'form-label label_popup'
-    });
-
-    //Contenido del popub.
-    let udMedidaProducto = crearElemento("input", undefined, {
+    let unidadProducto = crearElemento("input", undefined, {
         id: "unidadNuevoProducto",
-        class: 'form-control',
         placeholder: "Unidad de medida. Ej: kg, litros, gramos, etc.",
         type: "text"
     });
-    contenedorUdMedida.appendChild(labelUdMedida);
-    contenedorUdMedida.appendChild(udMedidaProducto); 
-    contenedorForm.appendChild(contenedorUdMedida);
 
-    //. BLOQUE 4....................................................
-    let contenedorObservaciones = crearElemento('div', undefined, {
-        class: 'w-100 contenedor_item_popup'
+    let observaciones = crearElemento("p", `Solicitud del usuario ${datosUsuario.nombre} ${datosUsuario.apellido} para añadir un producto nuevo.`, {
+        id: "observacionesNuevoProducto"
     });
 
-    let labelObservaciones = crearElemento('label', 'Ud. de medida', {
-        for: 'observacionesNuevoProducto',
-        class: 'form-label label_popup'
-    });
-
-    //Contenido del popub.
-    let observacionesProducto = crearElemento("input", undefined, {
-        id: "observacionesNuevoProducto",
-        class: "form-control",
-        placeholder: 'Observaciones del nuevo producto a añadir'
-    });
-    contenedorObservaciones.appendChild(labelObservaciones);
-    contenedorObservaciones.appendChild(observacionesProducto); 
-    contenedorForm.appendChild(contenedorObservaciones);
-
-    contenedorPopup.appendChild(contenedorForm); 
-
-    //. BOTONES......................................................
-    let contenedorBotones = crearElemento('div', undefined, {
-        class: 'form-group d-flex mt-5 contenedorBotonesPopup'
-    });
-
-    let btnCancelar = crearElemento("input", undefined, {
-        type: 'submit',
-        value: 'Cancelar',
-        class: 'btn btn_custom_3',
-        onclick: 'cancelar()'
-    });
-
-    let btnVaciar = crearElemento("input", undefined, {
-        type: 'submit',
-        value: 'Limpiar datos',
-        class: 'btn btn_custom_2',
-        onclick: 'limpiarDatos()'
-    });
-
-    let botonAñadirCesta = crearElemento("input", undefined, {
-        type: "submit",
-        value: "Añadir a la cesta",
-        id: "btn_solicitudNuevoProducto",
-        class: 'btn btn_custom_1'
-    });
+    //Boton final.
+    let botonAñadirCesta = crearElemento("button", "Añadir a la cesta", undefined);
     botonAñadirCesta.addEventListener("click", function () {
         //Se reciben los datos.
         let nombre = document.querySelector("#nombreNuevoProducto").value;
@@ -832,19 +756,19 @@ function mostrarPopup(datosUsuario) {
         overlay.style.backgroundColor = "transparent";
     });
 
-    contenedorBotones.appendChild(btnCancelar);
-    contenedorBotones.appendChild(btnVaciar);
-    contenedorBotones.appendChild(botonAñadirCesta);
 
-    contenedorPopup.appendChild(contenedorBotones); 
+    // Agregar los elementos al contenido del pop-up
+    popupContent.appendChild(nombreProducto);
+    popupContent.appendChild(cantidadProducto);
+    popupContent.appendChild(unidadProducto);
+    popupContent.appendChild(observaciones);
+    popupContent.appendChild(botonAñadirCesta);
 
     // Agregar el contenido del pop-up al contenedor
     popupContainer.appendChild(popupContent);
 
     // Agregar el contenedor del pop-up al body
     document.body.appendChild(popupContainer);
-
-    let overlay = document.querySelector('#overlay');
 
     // Cerrar el pop-up al hacer clic en el fondo oscuro
     overlay.addEventListener("click", function () {
@@ -868,6 +792,7 @@ function agregarCestaDesdePopup(datosProducto) {
         // Si el producto ya está en la cesta, sumar la cantidad existente con la cantidad del nuevo producto
         cesta[productoEnCestaIndex].cantidad += parseFloat(datosProducto.cantidad);
     }
+
 
     // Guardar la cesta actualizada en el almacenamiento local
     localStorage.setItem("cesta", JSON.stringify(cesta));
@@ -939,7 +864,7 @@ function imprimirTablaProductos(nombre = null, categoria = null, unidades = null
                 let celdaBody = crearElemento("td");
 
                 if (index === 0) {
-                    celdaBody.classList.add("tabla_nombreLargo"); 
+                    celdaBody.classList.add("tabla_nombreLargo");
                 }
 
                 if (index === 1) {
@@ -1038,6 +963,8 @@ function agregarCesta(e) {
         // Si el producto ya está en la cesta, sumar la cantidad recibida a la cantidad existente.
         cesta[productoEnCestaIndex].cantidad += cantidadRecibida;
     }
+
+    console.log(cesta);
 
     // Guardar la cesta actualizada en el almacenamiento local
     localStorage.setItem("cesta", JSON.stringify(cesta));
@@ -1185,116 +1112,4 @@ function modificarDesdeCarrito(e) {
         // Si el valor ingresado no es un número válido, restaurar el valor original en el input
         this.value = cesta[indiceProducto].cantidad;
     }
-}
-
-//Formulario final de hacer solicitud.
-function hacerPedido() {
-    //Se reciben todos los productos del carrito y los datos del usuario.
-    let usuarioActual = JSON.parse(localStorage.getItem("usuario"));
-    let carrito = JSON.parse(localStorage.getItem("cesta"));
-
-    //Se crea el contenido.
-    crearPlantillaFormularios("Solicitud de pedido", "Datos de la colicitud de pedido", "Vista previa de la solicitud");
-    abrirCerrarCarrito();
-
-    let contenedorForm = document.querySelector('#contenedorForm');
-
-    let contenedorFormTop = crearElemento('div', undefined, { // van el contenedor left y right
-        class: 'contenedorFormTop'
-    });
-
-    let formPedidos = crearElemento('form', undefined, {
-        if: "formulario"
-    });
-
-    //Se crea la estructura de la tabla.
-    let tablaSolicitud = crearElemento("table", undefined, {
-        class: "table table-responsive table-hover mt-4"
-    });
-    let tablaTitulos = crearElemento("thead");
-    let tablaBody = crearElemento("tbody");
-
-    //Creo un array para los titulos de cada columna.
-    let titulos = ["Nombre", "Cantidad", "Observaciones"];
-
-    let filaTitulos = crearElemento("tr");
-    for (let i = 0; i < titulos.length; i++) {
-        let celdaTitulo = crearElemento("th", titulos[i]);
-        filaTitulos.appendChild(celdaTitulo);
-    }
-    tablaTitulos.appendChild(filaTitulos);
-    tablaSolicitud.appendChild(tablaTitulos);
-
-    // Cambio los nombres para que coincidan con los indices del objeto productos.
-    titulos = ["nombre_producto", "cantidad", "nombre_observaciones"];
-
-    carrito.forEach(producto => {
-        let filaTabla = crearElemento("tr");
-
-        for (let i = 0; i < titulos.length; i++) {
-            let celdaTabla;
-            if (titulos[i] === "cantidad") {
-                //Si el título es "cantidad", combina la cantidad y las unidades en una sola celda.
-                let textoCantidadUnidades = producto["cantidad"] + " " + producto["nombre_unidades"];
-                celdaTabla = crearElemento("td", textoCantidadUnidades);
-            } else if (titulos[i] === "nombre_observaciones") {
-                //Si el título es "nombre_observaciones", crea un input dentro de la celda.
-                let inputObservaciones = crearElemento("input", undefined, {
-                    type: "text",
-                    value: producto[titulos[i]]
-                });
-                celdaTabla = crearElemento("td");
-                celdaTabla.appendChild(inputObservaciones);
-            } else {
-                //De lo contrario, crea una celda normal
-                celdaTabla = crearElemento("td", producto[titulos[i]]);
-            }
-            filaTabla.appendChild(celdaTabla);
-        }
-
-        tablaBody.appendChild(filaTabla);
-    });
-
-    tablaSolicitud.appendChild(tablaBody);
-
-    //Se añade la tabla al formulario,
-    contenedorFormTop.appendChild(tablaSolicitud);
-
-    //. BOTONES......................................................
-    let contenedorBotones = crearElemento('div', undefined, {
-        class: 'form-group form_contenedor_botones'
-    });
-
-    let btnCancelar = crearElemento("input", undefined, {
-        type: 'submit',
-        value: 'Cancelar',
-        class: 'btn btn_custom_3',
-        onclick: 'cancelar()'
-    });
-
-    let btnVaciar = crearElemento("input", undefined, {
-        type: 'submit',
-        value: 'Limpiar datos',
-        class: 'btn btn_custom_2',
-        onclick: 'limpiarDatos()'
-    });
-
-    let btnCrearProducto = crearElemento("input", undefined, {
-        type: 'submit',
-        value: 'Finalizar solicitud',
-        class: 'btn btn_custom_1',
-        onclick: 'crearProducto()'
-    });
-
-    contenedorBotones.appendChild(btnCancelar);
-    contenedorBotones.appendChild(btnVaciar);
-    contenedorBotones.appendChild(btnCrearProducto);
-
-    formPedidos.appendChild(tablaSolicitud);
-    formPedidos.appendChild(contenedorBotones);
-
-    contenedorFormTop.appendChild(formPedidos);
-
-    contenedorForm.appendChild(contenedorFormTop);
-    contenedorForm.appendChild(formPedidos);
 }
