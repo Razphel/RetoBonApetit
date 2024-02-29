@@ -23,7 +23,7 @@ window.addEventListener("load", principal);
 
 function principal() {
     let usuarioActual = JSON.parse(localStorage.getItem("usuario"));
-    
+
     //Antes de cargar la pagina del usuario, se comprueba que no se haya accedido sin una sesion valida.
     if (localStorage.getItem("usuario")) {
         let usuarioActual = JSON.parse(localStorage.getItem("usuario"));
@@ -57,7 +57,7 @@ function principal() {
         toggleSidebar();
     });
 
-    modoColor(); 
+    modoColor();
     generarIconUser();
 }
 
@@ -71,7 +71,7 @@ function modoColor() {
     const iconoPrincipal = document.getElementById("iconoPrincipal");
 
     // Event listener para cambiar entre los modos oscuro y claro
-    document.getElementById("modoOscuro").addEventListener("click", function() {
+    document.getElementById("modoOscuro").addEventListener("click", function () {
         // Cambiar la clase del icono principal al modo oscuro
         iconoPrincipal.classList.replace("bi-brightness-high", "bi-moon");
 
@@ -80,7 +80,7 @@ function modoColor() {
     });
 
     // Event listener para cambiar entre los modos oscuro y claro
-    document.getElementById("modoClaro").addEventListener("click", function() {
+    document.getElementById("modoClaro").addEventListener("click", function () {
         // Cambiar la clase del icono principal al modo claro
         iconoPrincipal.classList.replace("bi-moon", "bi-brightness-high");
 
@@ -90,32 +90,47 @@ function modoColor() {
 }
 
 function generarIconUser() {
-    let usuarioActual = JSON.parse(localStorage.getItem("usuario"));
-
-    let nombre = usuarioActual.nombre;
-    let apellido = usuarioActual.apellido;
-    const siglas = nombre.substring(0, 1) + apellido.substring(0, 1);
-    const userIcon = document.getElementById('userIcon');
-    userIcon.textContent = siglas;
-    userIcon.style.backgroundColor = getRandomColor();
-}
-
-// genera un color aleatorio, se usa en el icono de usuario
-function getRandomColor() {
-    const letters = '0123456789ABCDEF';
-    let color = '#';
-    for (let i = 0; i < 6; i++) {
-        color += letters[Math.floor(Math.random() * 16)];
+    let parametros = {
+        iconoUsuario: true
     }
-    return color;
+
+    $.ajax({
+        url: "../../assets/php/iconoSesion.php",
+        type: "GET",
+        data: parametros,
+        success: function (colorIconoUsuario) {
+            let userIcon = document.getElementById('userIcon');
+            userIcon.style.backgroundColor = JSON.parse(colorIconoUsuario);
+
+            let usuarioActual = JSON.parse(localStorage.getItem("usuario"));
+            let nombre = usuarioActual.nombre;
+            let apellido = usuarioActual.apellido;
+            let siglas = nombre.substring(0, 1) + apellido.substring(0, 1);
+            userIcon.textContent = siglas;
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.error("Error en la solicitud AJAX: " + textStatus, errorThrown);
+        }
+    });
 }
 
 function cerrarSesion() {
-    localStorage.removeItem("usuario");
+    let parametros = {
+        cerrarSesion: true
+    }
 
-    setTimeout(function () {
-        window.location.replace("../../../sesion.html");
-    }, 500);
+    $.ajax({
+        url: "../../assets/php/iconoSesion.php",
+        type: "GET",
+        data: parametros,
+        success: function () {
+            localStorage.removeItem("usuario");
+            window.location.replace("../../../sesion.html");
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.error("Error en la solicitud AJAX: " + textStatus, errorThrown);
+        }
+    });
 }
 
 // Contenedor con borde punteado que aparece cuando una tabla está vacía o no tiene contenido
@@ -125,8 +140,7 @@ function mostrarMensajeVacio(titulo, texto, textoBoton) {
     let divLabelEmpty = crearElemento("div", undefined, { class: "label_empty card p-4 align-items-center mt-4" });
     let h4 = crearElemento("h4", titulo);
     let p = crearElemento("p", texto);
-    let button = crearElemento("button", textoBoton, { type: "button", class: "btn btn_custom_1 mt-3" });
-
+    let button = crearElemento("button", textoBoton, {id:"botonMensajeVacio", type: "button", class: "btn btn_custom_1 mt-3" });
     // Construir la estructura
     divLabelEmpty.appendChild(h4);
     divLabelEmpty.appendChild(p);
@@ -149,6 +163,63 @@ function crearElemento(etiqueta, contenido, atributos) {
         }
     }
     return elementoNuevo;
+}
+
+/*
+    Función dinámica para crear la estructura de los pop up
+        - Permite crear un popup con título y contenido
+        - Permite crear un popup solo con contenido (sin título)
+*/
+
+function crearPopup(titulo = "", contenido = "") {
+    let overlay = crearElemento("div", undefined, {
+        id: "overlay",
+        class: "overlay"
+    });
+    document.body.appendChild(overlay);
+
+    // Cerrar el pop-up al hacer clic en el fondo oscuro
+    overlay.addEventListener("click", function () {
+        popupContainer.remove();
+        overlay.remove();
+    });
+
+    // Crear el contenedor del popup
+    let popupContainer = crearElemento("div", undefined, {
+        id: "popupContainer",
+        class: "popupContainer card"
+    });
+
+    // Crear el icono de cruz para cerrar el popup
+    let iconoCerrar = crearElemento("i", undefined, {
+        class: "bi bi-x-lg iconoCerrarPopup"
+    });
+
+    // Agregar el evento de clic para cerrar el popup al hacer clic en el icono de cruz
+    iconoCerrar.addEventListener("click", function () {
+        popupContainer.remove();
+        overlay.remove();
+    });
+    popupContainer.appendChild(iconoCerrar);
+
+    let popupContent = crearElemento("div", undefined, {
+        id: 'contenedorPopup',
+        class: "popupContent card-body"
+    });
+
+    let tituloPopup = crearElemento("h1", titulo, {
+        class: "mt-2 mb-4"
+    });
+    popupContent.appendChild(tituloPopup);
+
+    if (contenido) {
+        popupContent.appendChild(contenido);
+    }
+
+    popupContainer.appendChild(popupContent);
+
+    // Agregar el popup al cuerpo del documento
+    document.body.appendChild(popupContainer);
 }
 
 /* Función dinámica para crear formularios
@@ -297,14 +368,14 @@ function crearPlantillaFormularios(tituloPagina, tituloLeft, tituloRight) {
         class: 'container_left pagForm_columnaLeft card p-4 col-12 col-lg-8 mb-sm-4 mb-lg-0'
     });
     let titulo_container_left = crearElemento('h4', tituloLeft, {
-        class: 'mb-5' 
+        class: 'mb-5'
     });
     let contenedorForm = crearElemento('div', undefined, {
         id: 'contenedorForm'
     });
 
-    container_left.appendChild(titulo_container_left); 
-    container_left.appendChild(contenedorForm); 
+    container_left.appendChild(titulo_container_left);
+    container_left.appendChild(contenedorForm);
 
     let container_right = crearElemento('div', undefined, {
         class: 'container_right pagForm_columnaRight card p-4 col-12 col-lg-4'
@@ -312,7 +383,7 @@ function crearPlantillaFormularios(tituloPagina, tituloLeft, tituloRight) {
     let titulo_container_right = crearElemento('div', tituloRight, {
         class: 'mb-5'
     });
-    container_right.appendChild(titulo_container_right); 
+    container_right.appendChild(titulo_container_right);
 
     parteInferior.appendChild(container_left);
     parteInferior.appendChild(container_right);
