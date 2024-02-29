@@ -1384,10 +1384,9 @@ function limpiarDatos() {
 
 function InsertarSolicitud()
 {
-
+    console.log(cesta);
 }
 
 function cancelar() {
-    console.log('mondog');
     window.location.replace('./inicioUsuario.html');
 }
