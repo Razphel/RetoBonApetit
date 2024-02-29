@@ -52,3 +52,30 @@ if (isset($_REQUEST['claveTodosUsuarios'])) {
 }
 
 
+if(isset($_POST['NewSolicitud'])) {
+    $datosSolicitudJSON = $_POST['NewSolicitud'];
+
+    // Verificar si es un JSON válido
+    if ($datosSolicitudJSON && is_string($datosSolicitudJSON)) {
+        $datosSolicitud = json_decode($datosSolicitudJSON, true);
+
+        // Verificar si se decodificó correctamente
+        if ($datosSolicitud !== null) {
+            // Obtener el id_solicitudes del array $datosSolicitud
+            $id = $datosSolicitud['id_solicitudes'] ?? null;
+
+            // Verificar si el id_solicitudes es válido antes de continuar
+            if ($id !== null) {
+                // Continuar con la actualización en la base de datos
+                $addActualizar = BD::actualizarRegistro("solicitudes", $datosSolicitud, $id);
+                echo "Actualización exitosa";
+            } else {
+                echo "Error: id_solicitudes no válido";
+            }
+        } else {
+            echo "Error al decodificar el JSON";
+        }
+    } else {
+        echo "Solicitud no es un JSON válido";
+    }
+}

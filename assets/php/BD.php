@@ -250,24 +250,50 @@ class BD
         }
     }
 
+    // public static function actualizarRegistro($tabla, $datos, $id)
+    // {
+    //     try {
+    //         $conexion = self::conexionBD();
+    //         foreach ($datos as $columna => $value) {
+    //             $columnas_valores[] = "$columna = ?";
+    //         }
+    //         $columnas_valores = implode(",", $columnas_valores);
+    //         $sql = "UPDATE $tabla SET $columnas_valores WHERE id_$tabla = $id";
+    //         $consulta = $conexion->prepare($sql);
+
+    //         // Ejecutar la consulta preparada con los valores
+    //         $consulta->execute(array_values($datos));
+    //         return true;
+    //     } catch (PDOException $e) {
+    //         throw new Exception("ERROR: " . $e->getMessage());
+    //     }
+    // }
     public static function actualizarRegistro($tabla, $datos, $id)
-    {
-        try {
-            $conexion = self::conexionBD();
-            foreach ($datos as $columna => $value) {
+{
+    try {
+        $conexion = self::conexionBD();
+        $columnas_valores = [];
+
+        foreach ($datos as $columna => $value) {
+            // Asegurarse de tratar el campo tramitado correctamente
+            if ($columna === 'tramitado') {
+                $columnas_valores[] = "$columna = ?";
+            } else {
                 $columnas_valores[] = "$columna = ?";
             }
-            $columnas_valores = implode(",", $columnas_valores);
-            $sql = "UPDATE $tabla SET $columnas_valores WHERE id_$tabla = $id";
-            $consulta = $conexion->prepare($sql);
-
-            // Ejecutar la consulta preparada con los valores
-            $consulta->execute(array_values($datos));
-            return true;
-        } catch (PDOException $e) {
-            throw new Exception("ERROR: " . $e->getMessage());
         }
+
+        $columnas_valores = implode(",", $columnas_valores);
+        $sql = "UPDATE $tabla SET $columnas_valores WHERE id_$tabla = $id";
+        $consulta = $conexion->prepare($sql);
+
+        // Ejecutar la consulta preparada con los valores
+        $consulta->execute(array_values($datos));
+        return true;
+    } catch (PDOException $e) {
+        throw new Exception("ERROR: " . $e->getMessage());
     }
+}
 
     // $datos1 = [
     //     "admin" => "1",
