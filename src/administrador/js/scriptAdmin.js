@@ -247,7 +247,6 @@ function principal() {
         }
     });
 
-
 }
 
 // MANEJADORES COMUNES DE FORMULARIOS PARA BOTONES.........................................
@@ -915,7 +914,7 @@ function imprimirTablaProductos(nombre = null, categoria = null, unidades = null
     for (let i = 0; i < todosProductos.length; i++) {
         let filaBody = crearElemento("tr");
 
-        filaBody.addEventListener("click", manejadorProductoPopup);
+        // filaBody.addEventListener("click", manejadorProductoPopup);
 
         let celdaCheckbox = crearElemento("td");
         let inputCheckbox = crearElemento("input", undefined, {
@@ -951,8 +950,8 @@ function imprimirTablaProductos(nombre = null, categoria = null, unidades = null
                         width: "35px",
                     });
                     celdaBody.appendChild(imagenCategoria);
-                }
 
+                }
 
                 celdaBody.innerHTML += dato;
 
@@ -1005,17 +1004,14 @@ function imprimirTablaProductos(nombre = null, categoria = null, unidades = null
 }
 
 // function manejadorProductoPopup(e) {
-
-
-//     crearPopup("Vista previa de "+ nombreProducto);
-//     let contenedorPopup = document.querySelector('#contenedorPopup');
 //     let contenidoFila = this.querySelectorAll("td");
-
 //     let nombreProducto = contenidoFila[1].innerHTML;
 //     let categoriaFila = contenidoFila[2].innerHTML;
 //     let unidades = contenidoFila[3].innerHTML;
 //     let observaciones = contenidoFila[4].innerHTML;
-
+//     crearPopup("Vista previa de " + nombreProducto);
+//     let contenedorPopup = document.querySelector('#contenedorPopup');
+//     contenedorPopup.append(nombreProducto, categoriaFila, unidades, observaciones);
 // }
 
 function manejadorCategoria(e) {
@@ -1386,6 +1382,76 @@ function pagAñadirProducto() {
     formProductos.appendChild(contenedorBotones);
 
     contenedorForm.appendChild(formProductos);
+
+    tablaProductosSimplificada();
+}
+
+function tablaProductosSimplificada() {
+    let productos = JSON.parse(localStorage.getItem("todosProductos"));
+    let contenedor = document.querySelector(".pagForm_columnaRight");
+
+    console.log(productos);
+
+    //Buscador.
+    let buscador = crearElemento("input", undefined, {
+        id: "buscadorCategorias"
+    });
+
+    buscador.addEventListener("input", function (e) {
+        // Convertir a minúsculas y quitar espacios en blanco al inicio y al final.
+        let textoBuscar = this.value.toLowerCase().trim();
+
+        // Obtener todas las filas de la tabla.
+        let filasTabla = tablaBody.querySelectorAll("tr");
+
+        // Mostrar u ocultar según el texto del buscador.
+        filasTabla.forEach(fila => {
+            // Solo se va a buscar por nombre de categoria, se seleccionan solo las columnas correspondientes.
+            let nombreProducto = fila.querySelector("td:first-child").innerHTML.toLowerCase();
+
+            // Mostrar la fila si coincide con el texto buscado o si no se ha ingresado nada en el input.
+            if (nombreProducto.includes(textoBuscar) || textoBuscar === "") {
+                fila.style.display = ""; // Mostrar la fila.
+            } else {
+                fila.style.display = "none"; // Ocultar la fila.
+            }
+        });
+    });
+
+    contenedor.appendChild(buscador);
+
+    //Estructura del titulo de la tabla.
+    let tablaProductos = crearElemento("table", undefined, {
+        class: "table table-responsive table-hover mt-4"
+    });
+    let titulosTabla = crearElemento("thead");
+
+    let filaTitulos = crearElemento("tr");
+    let titulos = ["descripcion", "categoria"];
+    for (let i = 0; i < titulos.length; i++) {
+        let celdaTitulo = crearElemento("th", titulos[i].charAt(0).toUpperCase() + titulos[i].slice(1).toLowerCase());
+        filaTitulos.appendChild(celdaTitulo);
+    }
+    titulosTabla.appendChild(filaTitulos);
+    tablaProductos.appendChild(titulosTabla);
+
+    //Estructura del cuerpo de la tabla.
+    tablaBody = crearElemento("tbody");
+
+    titulos = ["nombre_producto", "nombre_categoria"];
+
+    productos.forEach(producto => {
+        let filaBody = crearElemento("tr", undefined);
+
+        for (let i = 0; i < titulos.length; i++) {
+            let celdaBody = crearElemento("td", producto[titulos[i]]);
+            filaBody.appendChild(celdaBody);
+        }
+
+        tablaBody.appendChild(filaBody);
+    });
+    tablaProductos.appendChild(tablaBody);
+    contenedor.appendChild(tablaProductos);
 }
 
 // Formulario 3. Crear ud. de medida...................
@@ -1825,7 +1891,7 @@ function pagAñadirUsuario() {
         class: 'form-control',
         placeholder: 'Nombre de la persona'
     });
-    contenedorNombre.appendChild(inputNombre); 
+    contenedorNombre.appendChild(inputNombre);
 
     contenedorFormLeft.appendChild(contenedorNombre);
 
@@ -1846,7 +1912,7 @@ function pagAñadirUsuario() {
         class: 'form-control',
         placeholder: 'Apellido de la persona'
     });
-    contenedorApellido.appendChild(inputApellido); 
+    contenedorApellido.appendChild(inputApellido);
     contenedorFormRight.appendChild(contenedorApellido);
 
     //. BLOQUE 3....................................................
@@ -1866,7 +1932,7 @@ function pagAñadirUsuario() {
         class: 'form-control',
         placeholder: 'Nombre de usuario'
     });
-    contenedorUsername.appendChild(inputUsername); 
+    contenedorUsername.appendChild(inputUsername);
     contenedorFormLeft.appendChild(contenedorUsername);
 
     //. BLOQUE 4....................................................
@@ -1886,7 +1952,7 @@ function pagAñadirUsuario() {
         class: 'form-control',
         placeholder: 'Contraseña del usuario'
     });
-    contenedorPassword.appendChild(inputPassword); 
+    contenedorPassword.appendChild(inputPassword);
     contenedorFormRight.appendChild(contenedorPassword);
 
     //. BLOQUE 5....................................................
@@ -1906,7 +1972,7 @@ function pagAñadirUsuario() {
         class: 'form-control',
         placeholder: 'Email del usuario'
     });
-    contenedorEmail.appendChild(inputEmail); 
+    contenedorEmail.appendChild(inputEmail);
     contenedorFormLeft.appendChild(contenedorEmail);
 
     //. BLOQUE 6....................................................
@@ -1926,7 +1992,7 @@ function pagAñadirUsuario() {
         class: 'form-control',
         placeholder: 'Teléfono del usuario'
     });
-    contenedorTelefono.appendChild(inputTelefono); 
+    contenedorTelefono.appendChild(inputTelefono);
     contenedorFormRight.appendChild(contenedorTelefono);
 
     //. BLOQUE 7....................................................
@@ -1945,9 +2011,9 @@ function pagAñadirUsuario() {
         id: 'newUserObservacion',
         class: 'form-control',
         placeholder: 'Observaciones del nuevo usuario',
-        rows: '5', 
+        rows: '5',
     });
-    contenedorObservaciones.appendChild(inputObservaciones); 
+    contenedorObservaciones.appendChild(inputObservaciones);
 
     contenedorFormLeft.appendChild(contenedorObservaciones);
 
@@ -1965,7 +2031,7 @@ function pagAñadirUsuario() {
     let contenedorToggleAdmin = crearElemento('div', undefined, {
         class: 'form-switch container_toggle_admin mt-2 mb-2'
     })
-    
+
     let toggleAdmin = crearElemento('input', undefined, {
         type: 'checkbox',
         id: 'userAdmin',
@@ -1983,7 +2049,7 @@ function pagAñadirUsuario() {
     let contenedorToggleActive = crearElemento('div', undefined, {
         class: 'form-switch container_toggle_active'
     })
-    
+
     let toggleActive = crearElemento('input', undefined, {
         type: 'checkbox',
         id: 'userActive',
@@ -2033,8 +2099,8 @@ function pagAñadirUsuario() {
     contenedorFormTop.appendChild(contenedorFormLeft);
     contenedorFormTop.appendChild(contenedorFormRight);
 
-    formUsuario.appendChild(contenedorFormTop); 
-    formUsuario.appendChild(contenedorBotones); 
+    formUsuario.appendChild(contenedorFormTop);
+    formUsuario.appendChild(contenedorBotones);
 
     contenedorForm.appendChild(formUsuario);
 }
