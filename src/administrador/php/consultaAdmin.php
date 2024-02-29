@@ -51,6 +51,10 @@ if (isset($_REQUEST['claveTodosUsuarios'])) {
     echo json_encode($todosUsuarios);
 }
 
+if (isset($_REQUEST['pedidos'])) {
+    $imprimirTodosPedidos = BD::imprimirTodosPedidos('pedidos');
+    echo json_encode($imprimirTodosPedidos);
+}
 
 if(isset($_POST['NewSolicitud'])) {
     $datosSolicitudJSON = $_POST['NewSolicitud'];
