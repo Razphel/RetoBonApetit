@@ -88,30 +88,6 @@ function principal() {
     pagInicio(); 
 }
 
-function mostrarUsuarios(respuesta) {
-    let contenedor = document.querySelector("#contenedor");
-    let contador = 0;
-    contenedor.innerHTML = "";
-    let contenedorResiduos = crearElemento("div", undefined, {
-        id: "ContResiduos",
-        class: "col-3",
-        style: "border:2px black solid; padding:5px"
-    });
-
-    respuesta.forEach(fila => {
-        let residuo = crearElemento("p", undefined, {
-            id: "residuos"
-        });
-
-        for (let i = 0; i < Object.keys(fila).length / 2; i++) {
-            residuo.innerHTML += fila[i] + " ";
-        }
-        contenedorResiduos.appendChild(residuo);
-        contenedor.appendChild(contenedorResiduos);
-        contador++;
-    });
-}
-
 // MANEJADORES COMUNES DE FORMULARIOS PARA BOTONES.........................................
 function limpiarDatos() {
     let formualario = document.getElementById("formulario");
@@ -479,12 +455,49 @@ function navAñadirProducto() {
     pagAñadirProducto();
 }
 
+function crearSelect(opciones,idSelect) {
+    let select = crearElemento("select",undefined,{id: idSelect});
+    for (let key in opciones) {
+        let opcion = crearElemento("option", opciones[key], {value: key}); 
+        // console.log('Clave:', key);
+        // console.log('Valor:', opciones[key]);
+        select.appendChild(opcion);
+      }
+    return select; 
+}
+
+function selectUnidades(respuesta)
+{
+let unidades = JSON.parse(respuesta);
+console.log(unidades);
+let guardarDescripcion = []; 
+for (let i = 0; i < unidades.length; i++) {
+    guardarDescripcion[unidades[i].id_unidades] = unidades[i].descripcion;
+}
+console.log(guardarDescripcion);
+return guardarDescripcion;
+}
+
+function crearCheckBox(opciones, nombreGrupo) 
+{
+    let grupoCheckboxes = document.createElement('div');
+
+    for (let clave in opciones) {
+            let label = crearElemento('label');
+            let checkbox = crearElemento('input',undefined,{type:'checkbox', name: nombreGrupo, value: clave});
+
+            label.appendChild(checkbox);
+            grupoCheckboxes.appendChild(label);
+        }
+    return grupoCheckboxes;
+}
+
 // Formulario 2. Crear producto.......................
 function pagAñadirProducto() {
     crearPlantillaFormularios('Nuevo producto', 'Datos del nuevo producto', 'Productos existentes');
     let contenedorForm = document.querySelector('#contenedorForm');
 
-    let formProductos = crearElemento('form', undefined, []);
+    let formProductos = crearElemento('form', undefined, {id:'formulario'});
 
     let contenedorFormTop = crearElemento('div', undefined, { // van el contenedor left y right
         class: 'form_contenedor_top'
@@ -520,6 +533,25 @@ function pagAñadirProducto() {
     contenedorFormLeft.appendChild(contenedorNombre);
 
     //. BLOQUE 2....................................................
+    let parametros = {
+        unidadesDeMedida: 'unidadesMedida' 
+    };
+    console.log(parametros);
+
+    $.ajax({
+        type: "POST",
+        url: "./php/consultaAdmin.php",
+        data: parametros,
+        async: false,
+        success: function(respuesta) {
+            unidadesSeleccionadas = selectUnidades(respuesta);
+        }, 
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.error("Error en la solicitud AJAX: " + textStatus, errorThrown);
+        }
+    });
+    // console.log(unidadesSeleccionadas);
+
     let contenedorUdMedida = crearElemento('div', undefined, {
         class: 'form-group w-100'
     });
@@ -530,14 +562,15 @@ function pagAñadirProducto() {
     });
     contenedorUdMedida.appendChild(labelUdMedida);
 
-    let inputUdMedida = crearElemento('input', undefined, {
-        type: 'text',
-        id: 'newProductUdMedida',
-        class: 'form-control',
-        placeholder: 'Ud. de medida del producto'
-    });
-    contenedorUdMedida.appendChild(inputUdMedida); 
-
+    // let inputUdMedida = crearElemento('input', undefined, {
+    //     type: 'text',
+    //     id: 'newProductUdMedida',
+    //     class: 'form-control',
+    //     placeholder: 'Ud. de medida del producto'
+    // });
+    // contenedorUdMedida.appendChild(inputUdMedida); 
+    let select = crearSelect(unidadesSeleccionadas,'unidadesNewProducto');
+    contenedorUdMedida.appendChild(select); 
     contenedorFormLeft.appendChild(contenedorUdMedida);
 
     //. BLOQUE 3....................................................
@@ -572,16 +605,15 @@ function pagAñadirProducto() {
         class: 'form-label'
     });
     contenedorCategoria.appendChild(labelCategoria);
+    opciones = {
+        2: 'mondongo',
+        3: 'matanga',
+        4: 'te odio'
+    };
+    contenedorCategoria.appendChild(crearCheckBox(opciones,'tumadre'));
+    // contenedorCategoria.appendChild(inputCategoria); 
 
-    let inputCategoria = crearElemento('input', undefined, {
-        type: 'text',
-        id: 'newProductCategoria',
-        class: 'form-control',
-        placeholder: 'Categoría del producto'
-    });
-    contenedorCategoria.appendChild(inputCategoria); 
-
-    contenedorFormRight.appendChild(contenedorCategoria);
+    // contenedorFormRight.appendChild(contenedorCategoria);
 
     //. BLOQUE 5....................................................
     let contenedorResiduos = crearElemento('div', undefined, {
@@ -627,7 +659,7 @@ function pagAñadirProducto() {
         type: 'submit',
         value: 'Crear producto',
         class: 'btn btn_custom_1',
-        onclick: 'crearProducto()'
+        onclick: 'newProducto()'
     });
 
     contenedorBotones.appendChild(btnCancelar);
@@ -641,6 +673,33 @@ function pagAñadirProducto() {
     formProductos.appendChild(contenedorBotones); 
 
     contenedorForm.appendChild(formProductos);
+}
+function newProducto()
+{
+    let nombre = document.getElementById('newNombreProducto').value;
+    let observaciones = document.getElementById('newProductObservaciones').value;
+    let unidades = document.getElementById('unidadesNewProducto').value
+
+    let parametros = {
+        NewUnidadMedida: JSON.stringify({
+            descripcion: nombre,
+            observaciones: observaciones,
+            unidades: unidades
+        })
+    };
+    console.log(parametros);
+
+    // $.ajax({
+    //     type: "POST",
+    //     url: "./php/consultaAdmin.php",
+    //     data: parametros,
+    //     error: function(a,b,errorMsg) {
+    //         console.log(errorMsg);
+    //     }
+    //   }).done(function (a) {
+    //     console.log(a);
+    //     console.log("hecho");
+    //   });
 }
 
 // Formulario 3. Crear ud. de medida...................
@@ -767,7 +826,6 @@ function pagUdMedida() {
 function newUdMedida() {
     let nombre = document.getElementById('newUdMedidaName').value;
     let observaciones = document.getElementById('newUdMedidaObservaciones').value;
-
     let parametros = {
         NewUnidadMedida: JSON.stringify({
             descripcion: nombre,
@@ -787,6 +845,112 @@ function newUdMedida() {
         console.log(a);
         console.log("hecho");
       });
+}
+
+function tablaUnidadesMedida(respuesta) {
+    //Datos de unidades recibidos: "id_unidades" - "descripcion" - "observaciones"
+    let unidades = JSON.parse(respuesta);
+
+    //La parte derecha del formulario, falta darle un id,
+    let contenedorDerecho = document.querySelector(".pagForm_columnaRight");
+    let buscador = crearElemento("input", undefined, {
+        id: "buscadorFormDerecho"
+    });
+
+    buscador.addEventListener("input", function (e) {
+        // Convertir a minúsculas y quitar espacios en blanco al inicio y al final.
+        let textoBuscar = this.value.toLowerCase().trim();
+
+        // Obtener todas las filas de la tabla.
+        let filasTabla = tablaBody.querySelectorAll("tr");
+
+        // Mostrar u ocultar según el texto del buscador.
+        filasTabla.forEach(fila => {
+            // Obtener la descripción de la fila y convertirla a minúsculas.
+            let descripcion = fila.querySelector("td").innerHTML.toLowerCase();
+
+            // Mostrar la fila si coincide con el texto buscado o si no se ha ingresado nada en el input.
+            if (descripcion.includes(textoBuscar) || textoBuscar === "") {
+                fila.style.display = ""; // Mostrar la fila.
+            } else {
+                fila.style.display = "none"; // Ocultar la fila.
+            }
+        });
+    });
+
+    contenedorDerecho.appendChild(buscador);
+
+    //Tabla.
+    let tablaUnidades = crearElemento("table", undefined, {
+        class: "table table-responsive table-hover mt-4"
+    });
+
+    let tablaBody = crearElemento("tbody");
+    //Ahora agrego el contenido.
+    unidades.forEach(fila => {
+        let filaBody = crearElemento("tr");
+        let celdaDescripcion = crearElemento("td", fila["descripcion"]);
+        let celdaBotones = crearElemento("td");
+
+        // Crear el div principal con la clase dropdown
+        let divDropdown = crearElemento("div", undefined, {
+            class: "dropdown"
+        });
+
+        // Crear el enlace con los atributos y contenido dados
+        let enlace = crearElemento("a", undefined, {
+            href: "#",
+            role: "button",
+            id: "unidadDropdown_" + fila.id_unidades,
+            "data-bs-toggle": "dropdown",
+            "aria-expanded": "false"
+        });
+
+        // Crear el contenedor del icono
+        let iconContainer = crearElemento("div", undefined, { class: "icon_container" });
+
+        // Crear el icono principal
+        let iconoPrincipal = crearElemento("i", undefined, { id: "iconoPrincipal_" + fila.id_unidades, class: "bi bi-three-dots-vertical" });
+
+        // Agregar el icono principal al contenedor de iconos
+        iconContainer.appendChild(iconoPrincipal);
+
+        // Agregar el contenedor de iconos al enlace
+        enlace.appendChild(iconContainer);
+
+        // Crear el div del menú desplegable con los atributos dados
+        let divDropdownMenu = crearElemento("div", undefined, { class: "dropdown-menu", "aria-labelledby": "unidadDropdown_" + fila.id_unidades });
+
+        // Crear los elementos de las opciones del menú desplegable
+        let opcionModificar = crearElemento("a", undefined, { class: "dropdown-item", href: "#" });
+        let iconoModificar = crearElemento("span", undefined, { class: "bi bi-pencil dropdown_icon_margin" });
+        let textoModificar = crearElemento("span", "Editar");
+        opcionModificar.appendChild(iconoModificar);
+        opcionModificar.appendChild(textoModificar);
+
+        let opcionEliminar = crearElemento("a", undefined, { class: "dropdown-item", href: "#" });
+        let iconoEliminar = crearElemento("span", undefined, { class: "bi bi-trash3 dropdown_icon_margin" });
+        let textoEliminar = crearElemento("span", "Eliminar");
+        opcionEliminar.appendChild(iconoEliminar);
+        opcionEliminar.appendChild(textoEliminar);
+
+        // Agregar las opciones al div del menú desplegable
+        divDropdownMenu.appendChild(opcionModificar);
+        divDropdownMenu.appendChild(opcionEliminar);
+
+        // Agregar el enlace y el menú desplegable al div principal
+        divDropdown.appendChild(enlace);
+        divDropdown.appendChild(divDropdownMenu);
+
+        // Agregar el div principal a la celda de botones
+        celdaBotones.appendChild(divDropdown);
+
+        filaBody.appendChild(celdaDescripcion);
+        filaBody.appendChild(celdaBotones);
+        tablaBody.appendChild(filaBody);
+    });
+    tablaUnidades.appendChild(tablaBody);
+    contenedorDerecho.appendChild(tablaUnidades);
 }
 
 // Apartado PEDIDOS____________________________________________________________________
@@ -818,12 +982,12 @@ function navUsuarios() {
     };
     $.ajax({
         //Ubicacion del archivo php que va a manejar los valores.
-        url: "./php/consultaUsuario.php",
+        url: "./php/consultaAdmin.php",
         //Metodo en que los va a recibir.
         type: "GET",
         data: parametros,
         dataType: "json",
-        success: mostrarUsuarios,
+        success: tablaUsuarios,
         error: function (jqXHR, textStatus, errorThrown) {
             console.error("Error en la solicitud AJAX: " + textStatus, errorThrown);
         }
@@ -843,7 +1007,7 @@ function navListarUsuarios() {
         type: "GET",
         data: parametros,
         dataType: "json",
-        success: mostrarUsuarios,
+        success: tablaUsuarios,
         error: function (jqXHR, textStatus, errorThrown) {
             console.error("Error en la solicitud AJAX: " + textStatus, errorThrown);
         }
@@ -1039,6 +1203,73 @@ function pagAñadirUsuario() {
     formUsuario.appendChild(contenedorBotones); 
 
     contenedorForm.appendChild(formUsuario);
+}
+
+function tablaUsuarios(usuarios) {
+    let contenedor = document.querySelector("#parteInferior");
+    contenedor.innerHTML = "";
+
+    //Buscador.
+    let buscador = crearElemento("input", undefined, {
+        id: "buscadorUsuarios"
+    });
+
+    buscador.addEventListener("input", function (e) {
+        // Convertir a minúsculas y quitar espacios en blanco al inicio y al final.
+        let textoBuscar = this.value.toLowerCase().trim();
+
+        // Obtener todas las filas de la tabla.
+        let filasTabla = tablaBody.querySelectorAll("tr");
+
+        // Mostrar u ocultar según el texto del buscador.
+        filasTabla.forEach(fila => {
+            // Solo se va a buscar por nombre de usuario, nombre y apellidos, se seleccionan solo las columnas correspondientes.
+            let nombreUsuario = fila.querySelector("td:nth-child(3)").innerHTML.toLowerCase();
+            let nombre = fila.querySelector("td:nth-child(4)").innerHTML.toLowerCase();
+            let apellido = fila.querySelector("td:nth-child(5)").innerHTML.toLowerCase();
+
+            // Mostrar la fila si coincide con el texto buscado o si no se ha ingresado nada en el input.
+            if (nombreUsuario.includes(textoBuscar) || nombre.includes(textoBuscar) || apellido.includes(textoBuscar) || textoBuscar === "") {
+                fila.style.display = ""; // Mostrar la fila.
+            } else {
+                fila.style.display = "none"; // Ocultar la fila.
+            }
+        });
+    });
+
+    contenedor.appendChild(buscador);
+
+    //Estructura del titulo de la tabla.
+    let tablaUsuarios = crearElemento("table", undefined, {
+        class: "table table-responsive table-hover mt-4"
+    });
+    let titulosTabla = crearElemento("thead");
+
+    let filaTitulos = crearElemento("tr");
+    let titulos = ["id_usuarios", "admin", "nombre_usuario", "nombre", "apellido", "email", "password", "activo", "observaciones", "telefono"];
+    for (let i = 0; i < titulos.length; i++) {
+        let celdaTitulo = crearElemento("th", titulos[i].charAt(0).toUpperCase() + titulos[i].slice(1).toLowerCase());
+        filaTitulos.appendChild(celdaTitulo);
+    }
+    titulosTabla.appendChild(filaTitulos);
+    tablaUsuarios.appendChild(titulosTabla);
+
+    //Estructura del cuerpo de la tabla.
+    tablaBody = crearElemento("tbody");
+
+
+    usuarios.forEach(usuario => {
+        let filaBody = crearElemento("tr", undefined, {
+            id: "idusuario_" + usuario["id_usuarios"]
+        });
+        for (let i = 0; i < titulos.length; i++) {
+            let celdaBody = crearElemento("td", usuario[titulos[i]]);
+            filaBody.appendChild(celdaBody);
+        }
+        tablaBody.appendChild(filaBody);
+    });
+    tablaUsuarios.appendChild(tablaBody);
+    contenedor.appendChild(tablaUsuarios);
 }
 
 function newUsuario() {

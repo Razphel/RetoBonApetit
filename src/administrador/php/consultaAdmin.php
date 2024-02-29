@@ -37,10 +37,15 @@ if (isset($_REQUEST['categorias']))
     echo json_encode($categorias);
 }
 
-if (isset($_REQUEST['unidades'])) 
+if (isset($_REQUEST['unidadesDeMedida'])) 
 {
     $unidades = BD::imprimirConsultas('unidades');
     echo json_encode($unidades);
+}
+
+if (isset($_REQUEST['claveTodosUsuarios'])) {
+    $todosUsuarios = BD::imprimirConsultas('usuarios');
+    echo json_encode($todosUsuarios);
 }
 
 if (isset($_REQUEST['proveedores'])) 
@@ -48,4 +53,5 @@ if (isset($_REQUEST['proveedores']))
     $proveedores = BD::imprimirConsultas('proveedores');
     echo json_encode($proveedores);
 }
+
 ?>
