@@ -46,3 +46,8 @@ if (isset($_REQUEST['claveTodosUsuarios'])) {
     $todosUsuarios = BD::imprimirConsultas('usuarios');
     echo json_encode($todosUsuarios);
 }
+
+if (isset($_REQUEST['recibirMensajeInicio'])) {
+    $mensaje=BD::imprimirMensajesInicio();
+    echo json_encode($mensaje);
+}

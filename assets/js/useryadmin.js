@@ -436,3 +436,26 @@ function consultarProductos() {
         localStorage.setItem("todosProductos", JSON.stringify(todosProductos));
     }
 }
+
+function obtenerFechaActual() {
+    // Obtener la fecha actual
+    let fechaActual = new Date();
+
+    // Obtener los componentes de la fecha
+    let año = fechaActual.getFullYear();
+    let mes = fechaActual.getMonth() + 1; // Sumar 1 porque los meses van de 0 a 11
+    let dia = fechaActual.getDate();
+
+    // Agregar un cero delante si el día o el mes es menor que 10 para mantener el formato deseado
+    if (mes < 10) {
+        mes = '0' + mes;
+    }
+    if (dia < 10) {
+        dia = '0' + dia;
+    }
+
+    // Formatear la fecha en el formato deseado: 'YYYY-MM-DD'
+    let fechaFormateada = año + '-' + mes + '-' + dia;
+
+    return fechaFormateada;
+}

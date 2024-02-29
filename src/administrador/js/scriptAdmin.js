@@ -80,7 +80,152 @@ function principal() {
         });
     });
 
-    pagInicio();
+    let parametros = {
+        recibirMensajeInicio: true
+    };
+    //Mostrar mensajes para usuarios.
+    $.ajax({
+        //Ubicacion del archivo php que va a manejar los valores.
+        url: "./php/consultaAdmin.php",
+        //Metodo en que los va a recibir.
+        type: "GET",
+        dataType: "json",
+        data: parametros,
+        async: false,
+        success: function (respuesta) {
+
+            //Contenedor general de la pagina.
+            let contenedor = document.querySelector("#contenedor");
+
+            let parteSuperior = crearElemento("div", undefined, {
+                class: "row"
+            });
+
+            //Busco el nombre del usuario.
+            let nombreUsuario = JSON.parse(localStorage.getItem("usuario"));
+            nombreUsuario = nombreUsuario.nombre;
+
+            //Titulo de la pagina.
+            let h1Inicio = crearElemento("h1", "Bienvenido, " + nombreUsuario, {
+                id: "tituloApartado",
+                class: "py-3 mb-3 mt-4"
+            });
+
+            parteSuperior.appendChild(h1Inicio);
+
+            //Contenedor principal de los recuadros de los mensajes.
+            let contenedorMensajes = crearElemento("div", undefined, {
+                class: "row",
+                id: "contenedorMensajes"
+            });
+
+
+            //Manejando la respuesta de la base de datos. Columnas recibidas "descripcion" - "fecha_mensaje"
+            //Siempre se recibe el mas nuevo.
+            let carta = crearElemento("div", undefined, {
+                class: "col-4 d-flex justify-content-between"
+            });
+
+            let contenedorMensaje = crearElemento("div", undefined, {
+                class: "card card_margin p-3 mensajesUser"
+            });
+            let contenedorMensajeTop = crearElemento('div', undefined, {
+                class: "contenedorMensajeTop"
+            });
+            let contenedorMensajeBottom = crearElemento('div', undefined, {
+                class: "contenedorMensajeBottom"
+            });
+            let tituloMensaje = crearElemento("h5", "Mensaje actual", {
+                class: 'titulo_mensajeUser'
+            });
+            let fechaMensaje = crearElemento("p", respuesta.fecha_mensaje, {
+                class: 'fecha_mensajeUser'
+            });
+            let contendorHoraLimite = crearElemento('div', undefined, {
+                class: 'contendorHoraLimite'
+            })
+            let iconMensaje = crearElemento('i', undefined, {
+                class: 'bi bi-stopwatch'
+            })
+            let horaLimite = crearElemento("p", respuesta.hora_limite, undefined);
+
+            contendorHoraLimite.appendChild(iconMensaje);
+            contendorHoraLimite.appendChild(horaLimite);
+
+            let observaciones = crearElemento("p", respuesta.observaciones, undefined);
+
+            contenedorMensajeTop.appendChild(tituloMensaje);
+            contenedorMensajeTop.appendChild(fechaMensaje);
+            contenedorMensajeBottom.appendChild(contendorHoraLimite);
+            contenedorMensajeBottom.appendChild(observaciones);
+
+            //Organizo los elementos y los agrego al div row.
+            contenedorMensaje.appendChild(contenedorMensajeTop);
+            contenedorMensaje.appendChild(contenedorMensajeBottom);
+            carta.appendChild(contenedorMensaje);
+            contenedorMensajes.appendChild(carta);
+
+            //Seccion del input para el mensaje nuevo.
+
+            carta = crearElemento("div", undefined, {
+                class: "col-8 d-flex justify-content-between"
+            });
+
+            contenedorMensaje = crearElemento("div", undefined, {
+                class: "card card_margin p-3 mensajesUser"
+            });
+            contenedorMensajeTop = crearElemento('div', undefined, {
+                class: "contenedorMensajeTop"
+            });
+            contenedorMensajeBottom = crearElemento('div', undefined, {
+                class: "contenedorMensajeBottom"
+            });
+            tituloMensaje = crearElemento("h5", "Nuevo mensaje", {
+                class: 'titulo_mensajeUser'
+            });
+            fechaMensaje = crearElemento("p", obtenerFechaActual(), {
+                class: 'fecha_mensajeUser'
+            });
+            contendorHoraLimite = crearElemento('div', undefined, {
+                class: 'contendorHoraLimite'
+            })
+            iconMensaje = crearElemento('i', undefined, {
+                class: 'bi bi-stopwatch'
+            })
+            horaLimite = crearElemento("input", undefined, {
+                id:"contenidoMensajeNuevo",
+                placeholder: "Escribe el mensaje nuevo"
+            });
+
+            contendorHoraLimite.appendChild(iconMensaje);
+            contendorHoraLimite.appendChild(horaLimite);
+
+            observaciones = crearElemento("p", "", undefined);
+
+            contenedorMensajeTop.appendChild(tituloMensaje);
+            contenedorMensajeTop.appendChild(fechaMensaje);
+            contenedorMensajeBottom.appendChild(contendorHoraLimite);
+            contenedorMensajeBottom.appendChild(observaciones);
+
+            //Organizo los elementos y los agrego al div row.
+            contenedorMensaje.appendChild(contenedorMensajeTop);
+            contenedorMensaje.appendChild(contenedorMensajeBottom);
+            carta.appendChild(contenedorMensaje);
+            contenedorMensajes.appendChild(carta);
+
+            //Agrego el div con la lista de cartas al contenedor superior de la pagina.
+            parteSuperior.appendChild(contenedorMensajes);
+
+            //Agrego el contenedor superior a la pagina.
+            contenedor.appendChild(parteSuperior);
+
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.error("Error en la solicitud AJAX: " + textStatus, errorThrown);
+        }
+    });
+
+
 }
 
 // MANEJADORES COMUNES DE FORMULARIOS PARA BOTONES.........................................
@@ -90,7 +235,7 @@ function limpiarDatos() {
 }
 
 function cancelar() {
-    window.location.href('./');
+    pagInicio();
 }
 
 // Apartado INICIO____________________________________________________________________
@@ -99,6 +244,7 @@ function navInicio() {
 }
 
 function pagInicio() {
+    window.location.replace("../administrador/inicioAdmin.html");
 }
 
 // Apartado CATEGORÍAS________________________________________________________________
@@ -251,7 +397,7 @@ function tablaCategorias(respuesta) {
 
 function tablaCategoriasSimplificada(respuesta) {
     let categorias = JSON.parse(respuesta);
-
+    let contenedor = document.querySelector(".pagForm_columnaRight");
     //Buscador.
     let buscador = crearElemento("input", undefined, {
         id: "buscadorCategorias"
