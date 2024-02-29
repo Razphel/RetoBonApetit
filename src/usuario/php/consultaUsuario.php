@@ -47,3 +47,9 @@ if (isset($_REQUEST['residuos'])) {
     $residuos = BD::imprimirResiduos();
     echo json_encode($residuos);
 }
+
+if (isset($_REQUEST['unidadesDeMedida'])) 
+{
+    $unidades = BD::imprimirConsultas('unidades');
+    echo json_encode($unidades);
+}
