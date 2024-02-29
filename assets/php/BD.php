@@ -267,7 +267,7 @@ class BD
             throw new Exception("ERROR: " . $e->getMessage());
         }
     }
-
+// fsda
     public static function actualizarTramite($tabla, $datos, $id)
 {
     try {
