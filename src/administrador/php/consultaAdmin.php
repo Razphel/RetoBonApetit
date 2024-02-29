@@ -59,7 +59,6 @@ if(isset($_POST['NewSolicitud'])) {
     if ($datosSolicitudJSON && is_string($datosSolicitudJSON)) {
         $datosSolicitud = json_decode($datosSolicitudJSON, true);
 
-        // Verificar si se decodificó correctamente
         if ($datosSolicitud !== null) {
             // Obtener el id_solicitudes del array $datosSolicitud
             $id = $datosSolicitud['id_solicitudes'] ?? null;
@@ -67,7 +66,7 @@ if(isset($_POST['NewSolicitud'])) {
             // Verificar si el id_solicitudes es válido antes de continuar
             if ($id !== null) {
                 // Continuar con la actualización en la base de datos
-                $addActualizar = BD::actualizarRegistro("solicitudes", $datosSolicitud, $id);
+                $addActualizar = BD::actualizarTramite("solicitudes", $datosSolicitud, $id);
                 echo "Actualización exitosa";
             } else {
                 echo "Error: id_solicitudes no válido";

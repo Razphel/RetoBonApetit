@@ -1731,7 +1731,7 @@ function tablaSolicitudes(usuarios) {
             type: 'submit',
             value: 'tramitar',
             class: 'btn btn_custom_1',
-            onclick: `actualizarTramitado()`
+            onclick: `actualizarTramitado(event)`
         });
         
     
@@ -1746,5 +1746,40 @@ function tablaSolicitudes(usuarios) {
 }
 
 
+function actualizarTramitado(event) {
+   
+    let botonClickeado = event.target;
+
+    
+    let fila = botonClickeado.closest('tr');
+
+    //  valor que tiene el campo solicitudes
+    let idSolicitud = fila.querySelector('td:nth-child(2)').innerText;
+
+    // valor que tiene el campo tramitado 
+    let valorTramitado = parseInt(fila.querySelector('td:nth-child(8)').innerText, 10);
+
+    let nuevoValorTramitado = valorTramitado === 0 ? 1 : 0;
+
+    // Crear el objeto NewSolicitud con los datos necesarios
+    let parametros = {
+        NewSolicitud: JSON.stringify({
+            id_solicitudes: idSolicitud,
+            tramitado: nuevoValorTramitado
+        })
+    };
+
+$.ajax({
+    type: "POST",
+    url: `./php/consultaAdmin.php?accion=actualizar&id=${idSolicitud}`,
+    data: parametros,
+    error: function (jqXHR, textStatus, errorThrown) {
+        console.log("Error:", textStatus, errorThrown);
+    }
+}).done(function (respuesta) {
+    console.log("Éxito:", respuesta);
+    navSolicitudes();
+});
+}
 
 // PROVEEDORES 
