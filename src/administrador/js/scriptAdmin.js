@@ -917,7 +917,7 @@ function pagAñadirUsuario() {
         class: 'form-group w-100'
     });
 
-    let labelTelefono = crearElemento('label', 'Nombre', {
+    let labelTelefono = crearElemento('label', 'Teléfono', {
         for: 'newUserTelefono',
         class: 'form-label'
     });

@@ -212,12 +212,26 @@ INSERT INTO producto_categoria (fk_producto,fk_categoria) VALUES (14,5);
 INSERT INTO producto_categoria (fk_producto,fk_categoria) VALUES (15,5);
 INSERT INTO producto_categoria (fk_producto,fk_categoria) VALUES (16,5);
 
-INSERT INTO pedidos (fecha_pedido,fk_proveedor,fk_estado,fk_usuario,observaciones) VALUES ('2024/02/07',1,3,2,'Observacion de prueba');
-INSERT INTO pedidos (fecha_pedido,fk_proveedor,fk_estado,fk_usuario,observaciones) VALUES ('2024/02/07',2,2,2,'Observación de prueba');
+INSERT INTO pedidos (fecha_pedido,fk_proveedor,fk_estado,fk_usuario,observaciones) VALUES ('2024/02/01',1,3,2,'Observacion de prueba');
+INSERT INTO pedidos (fecha_pedido,fk_proveedor,fk_estado,fk_usuario,observaciones) VALUES ('2024/02/08',2,2,2,'Observación de prueba');
+INSERT INTO pedidos (fecha_pedido,fk_proveedor,fk_estado,fk_usuario,observaciones) VALUES ('2024/02/15',2,2,2,'Observación de prueba');
+INSERT INTO pedidos (fecha_pedido,fk_proveedor,fk_estado,fk_usuario,observaciones) VALUES ('2024/02/22',2,2,2,'Observación de prueba');
 
 INSERT INTO linea_pedido (fk_pedido,descripcion,cantidad,unidades,observaciones) VALUES (1,'huevos',6,'cajas','Observación de prueba');
 INSERT INTO linea_pedido (fk_pedido,descripcion,cantidad,unidades,observaciones) VALUES (1,'carne',3.4,'kg','Observación de prueba');
-INSERT INTO linea_pedido (fk_pedido,descripcion,cantidad,unidades,observaciones) VALUES (2,'patatas',4,'sacos','Observación de prueba');
+INSERT INTO linea_pedido (fk_pedido,descripcion,cantidad,unidades,observaciones) VALUES (1,'patatas',4,'sacos','Observación de prueba');
+
+INSERT INTO linea_pedido (fk_pedido,descripcion,cantidad,unidades,observaciones) VALUES (2,'naranjas',4,'sacos','Observación de prueba');
+INSERT INTO linea_pedido (fk_pedido,descripcion,cantidad,unidades,observaciones) VALUES (2,'cebollas',4,'sacos','Observación de prueba');
+INSERT INTO linea_pedido (fk_pedido,descripcion,cantidad,unidades,observaciones) VALUES (2,'ajo',4,'sacos','Observación de prueba');
+
+INSERT INTO linea_pedido (fk_pedido,descripcion,cantidad,unidades,observaciones) VALUES (3,'pimiento rojo',4,'sacos','Observación de prueba');
+INSERT INTO linea_pedido (fk_pedido,descripcion,cantidad,unidades,observaciones) VALUES (3,'calabacín',4,'sacos','Observación de prueba');
+INSERT INTO linea_pedido (fk_pedido,descripcion,cantidad,unidades,observaciones) VALUES (3,'lechuga',4,'sacos','Observación de prueba');
+
+INSERT INTO linea_pedido (fk_pedido,descripcion,cantidad,unidades,observaciones) VALUES (4,'frambuesa',4,'sacos','Observación de prueba');
+INSERT INTO linea_pedido (fk_pedido,descripcion,cantidad,unidades,observaciones) VALUES (4,'mantequilla',4,'sacos','Observación de prueba');
+INSERT INTO linea_pedido (fk_pedido,descripcion,cantidad,unidades,observaciones) VALUES (4,'harina floja',4,'sacos','Observación de prueba');
 
 INSERT INTO residuos (descripcion,observaciones) VALUES ('caja de papel','Observación de prueba para caja de papel');
 INSERT INTO residuos (descripcion,observaciones) VALUES ('bolsa de plástico','Observación de prueba para bolsa de plástico');
