@@ -1079,7 +1079,7 @@ function tablaPedidos(pedidos) {
 }
 
 function pagListarPedidos() { // mostrar el historial de pedidos del admin
-    let tituloPagina = "Usuarios";
+    let tituloPagina = "Lista de pedidos";
     let contenidoSuperior = crearElemento("div", undefined, {
         class: "row contenidoSuperior",
         id: "categorias"
