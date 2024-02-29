@@ -34,9 +34,9 @@
         <!-- layout_container se divide en dos: aside y contenedor principal -->
         <div class="layout_container row">
             <!-- sidebar -->
-            <div class="sidebar col-auto">
-                <div class="sidebar_top">
-                    <div class="logo_container">
+            <div class="sidebar sidebar_user col-auto">
+                <div class="sidebar_top sidebar_top_user">
+                    <div class="logo_container_user">
                         <img src="../../assets/img/logo/logotipo.png" alt="Bon Appétit">
                     </div>
                 </div>
@@ -103,7 +103,7 @@
                     <div class="topbar static-top">
                         <div class="topbar_container">
                             <div class="topbar_left">
-                                <i id="toggleSidebarIcon" class="bi bi-list"></i>
+                                <i id="toggleSidebar" class="bi bi-list"></i>
                             </div>
 
                             <div class="topbar_right">
@@ -136,8 +136,8 @@
                                     <a class="" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
                                         aria-haspopup="true" aria-expanded="false">
                                         <div class="topbar_profile">
-                                            <div class="profile_icon" id="userIcon">
-                                                <!-- todo: aquí voy a poner el icono del usuario -->
+                                            <div id="userIcon" class="profile_icon">
+
                                             </div>
                                             <div class="topbar_profile_info">
                                                 <p class="topbar_profile_name"></p>
@@ -147,10 +147,6 @@
                                     </a>
 
                                     <div class="dropdown-menu dropdown_profile" aria-labelledby="dropdownMenuLink">
-                                        <a id="verPerfil" class="dropdown-item dropdown_inline" href="#">
-                                            <i class="bi bi-person-fill dropdown_icon_margin"></i>
-                                            <p>Ver perfil</p>
-                                        </a>
                                         <a id="cerrarSesion" class="dropdown-item dropdown_inline" href="#">
                                             <i class="bi bi-box-arrow-right dropdown_icon_margin"></i>
                                             <p>Cerrar sesión</p>
@@ -168,20 +164,18 @@
                             <div class="carrito_container">
                                 <div class="cart_top_container">
                                     <div class="cart_top_info">
-                                        <span id="numProdCesta"></span>
-                                        <span>productos en la cesta</span>
+                                        <span id="numProdCesta" class="numProdCesta"></span>
+                                        <span class="texto_topCart">productos en la cesta</span>
                                     </div>
-                                    <i id="cerrarCarrito" class="bi bi-x"></i>
+                                    <i id="cerrarCarrito" class="bi bi-x cerrarCarrito"></i>
                                 </div>
                                 <div class="cart_bottom_container">
-                                    <div class="cart_bottom_product">
-                                        <div id="cesta_item" class="cesta_item"></div>
-                                    </div>
+                                    <div id="cart_bottom_product" class="cart_bottom_product"></div>
                                     <div class="cart_bottom_buttons_container">
                                         <div class="cart_bottom_buttons">
-                                            <input id="btn_limpiarCesta" class="btn btn_custom_2" type="button"
+                                            <input id="btn_limpiarCesta" class="btn btn_custom_2" type="submit"
                                                 value="Vaciar cesta">
-                                            <input id="btn_verPedido" class="btn btn_custom_1" type="button"
+                                            <input id="btn_hacerPedido" class="btn btn_custom_1" type="submit"
                                                 value="Hacer pedido">
                                         </div>
                                     </div>

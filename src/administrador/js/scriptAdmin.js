@@ -88,28 +88,14 @@ function principal() {
     pagInicio();
 }
 
-function mostrarUsuarios(respuesta) {
-    let contenedor = document.querySelector("#contenedor");
-    let contador = 0;
-    contenedor.innerHTML = "";
-    let contenedorResiduos = crearElemento("div", undefined, {
-        id: "ContResiduos",
-        class: "col-3",
-        style: "border:2px black solid; padding:5px"
-    });
+// MANEJADORES COMUNES DE FORMULARIOS PARA BOTONES.........................................
+function limpiarDatos() {
+    let formualario = document.getElementById("formulario");
+    formualario.reset();
+}
 
-    respuesta.forEach(fila => {
-        let residuo = crearElemento("p", undefined, {
-            id: "residuos"
-        });
-
-        for (let i = 0; i < Object.keys(fila).length / 2; i++) {
-            residuo.innerHTML += fila[i] + " ";
-        }
-        contenedorResiduos.appendChild(residuo);
-        contenedor.appendChild(contenedorResiduos);
-        contador++;
-    });
+function cancelar() {
+    window.location.href('./');
 }
 
 // Apartado INICIO____________________________________________________________________
@@ -118,16 +104,26 @@ function navInicio() {
 }
 
 function pagInicio() {
-
 }
 
 // Apartado CATEGORÍAS________________________________________________________________
-function navCategorias() {
-    navListarCategorias();
-}
-
 function navListarCategorias() {
     pagListarCategorias();
+
+    let parametros = {
+        categorias: 'categorias'
+    };
+
+    $.ajax({
+        type: "POST",
+        url: "./php/consultaAdmin.php",
+        data: parametros,
+        async: false,
+        success: tablaCategorias,
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.error("Error en la solicitud AJAX: " + textStatus, errorThrown);
+        }
+    });
 }
 
 function pagListarCategorias() { // mostrar tabla con todas las categorías y sus datos
@@ -149,77 +145,387 @@ function pagListarCategorias() { // mostrar tabla con todas las categorías y su
 
 function navAñadirCategoria() {
     pagAñadirCategoria();
+
+    let parametros = {
+        categorias: 'categorias'
+    };
+    console.log(parametros);
+
+    $.ajax({
+        type: "POST",
+        url: "./php/consultaAdmin.php",
+        data: parametros,
+        async: false,
+        success: tablaCategorias,
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.error("Error en la solicitud AJAX: " + textStatus, errorThrown);
+        }
+    });
+}
+
+function tablaCategorias(respuesta) {
+    let categorias = JSON.parse(respuesta);
+    console.log(categorias);
+
+    let contenedor = document.querySelector("#parteInferior");
+    contenedor.innerHTML = "";
+
+    //Buscador.
+    let buscador = crearElemento("input", undefined, {
+        id: "buscadorCategorias"
+    });
+
+    buscador.addEventListener("input", function (e) {
+        // Convertir a minúsculas y quitar espacios en blanco al inicio y al final.
+        let textoBuscar = this.value.toLowerCase().trim();
+
+        // Obtener todas las filas de la tabla.
+        let filasTabla = tablaBody.querySelectorAll("tr");
+
+        // Mostrar u ocultar según el texto del buscador.
+        filasTabla.forEach(fila => {
+            // Solo se va a buscar por nombre de categoria, se seleccionan solo las columnas correspondientes.
+            let nombreCategoria = fila.querySelector("td:nth-child(2)").innerHTML.toLowerCase();
+
+            // Mostrar la fila si coincide con el texto buscado o si no se ha ingresado nada en el input.
+            if (nombreCategoria.includes(textoBuscar) || textoBuscar === "") {
+                fila.style.display = ""; // Mostrar la fila.
+            } else {
+                fila.style.display = "none"; // Ocultar la fila.
+            }
+        });
+    });
+
+    contenedor.appendChild(buscador);
+
+    //Estructura del titulo de la tabla.
+    let tablaCategorias = crearElemento("table", undefined, {
+        class: "table table-responsive table-hover mt-4"
+    });
+    let titulosTabla = crearElemento("thead");
+
+    let filaTitulos = crearElemento("tr");
+    let titulos = ["id_categorias", "descripcion", "imagenes", "observaciones"];
+    for (let i = 0; i < titulos.length; i++) {
+        let celdaTitulo = crearElemento("th", titulos[i].charAt(0).toUpperCase() + titulos[i].slice(1).toLowerCase());
+        filaTitulos.appendChild(celdaTitulo);
+    }
+    let columnaDeBotones = crearElemento("td");
+    filaTitulos.appendChild(columnaDeBotones);
+    titulosTabla.appendChild(filaTitulos);
+    tablaCategorias.appendChild(titulosTabla);
+
+    //Estructura del cuerpo de la tabla.
+    tablaBody = crearElemento("tbody");
+
+    categorias.forEach(categoria => {
+        let filaBody = crearElemento("tr", undefined, {
+            id: "idcategoria_" + categoria["id_categorias"]
+        });
+        for (let i = 0; i < titulos.length; i++) {
+            if (titulos[i] == "imagenes") {
+                let celdaBody = crearElemento("td");
+                let imagenCategoria = crearElemento("img", undefined, {
+                    src: "../../../assets/img/categorias/" + categoria[titulos[i]]
+                })
+                celdaBody.appendChild(imagenCategoria);
+                filaBody.appendChild(celdaBody);
+            } else {
+                let celdaBody = crearElemento("td", categoria[titulos[i]]);
+                filaBody.appendChild(celdaBody);
+            }
+        }
+        //Botones editar/borrar.
+        let celdaBodyBoton = crearElemento("td");
+
+        let editar = crearElemento('input', undefined, {
+            id: "botonEditarCategoria_" + categoria["id_categorias"],
+            type: "submit",
+            value: "Editar"
+        })
+        let borrar = crearElemento('input', undefined, {
+            id: "botonBorrarCategoria_" + categoria["id_categorias"],
+            type: "submit",
+            value: "Borrar"
+        })
+        celdaBodyBoton.appendChild(editar);
+        celdaBodyBoton.appendChild(borrar);
+
+        filaBody.appendChild(celdaBodyBoton);
+        tablaBody.appendChild(filaBody);
+    });
+    tablaCategorias.appendChild(tablaBody);
+    contenedor.appendChild(tablaCategorias);
 }
 
 // Formulario 1. Crear categorías...................
 function pagAñadirCategoria() {
     crearPlantillaFormularios('Nueva categoría', 'Datos de la nueva categoría', 'Categorías existentes');
-    contenedorForm = document.querySelector('#contenedorForm');
+    let contenedorForm = document.querySelector('#contenedorForm');
 
-    let camposNewCategoria = {
-        nombre: {
-            etiqueta: 'label',
-            contenido: 'Nombre',
-            atributos: {
-                for: 'newNombreCategoria',
-                class: 'form-label'
-            }
-        },
-        inputNombre: {
-            etiqueta: 'input',
-            atributos: {
-                type: 'text',
-                id: 'newNombreCategoria',
-                class: 'form-control',
-                placeholder: 'Nombre de la nueva categoría'
-            }
-        },
-        observaciones: {
-            etiqueta: 'label',
-            contenido: 'Observaciones',
-            atributos: {
-                for: 'newObservacionCategoria',
-                class: 'form-label'
-            }
-        },
-        inputObservaciones: {
-            etiqueta: 'input',
-            atributos: {
-                type: 'text',
-                id: 'newObservacionCategoria',
-                class: 'form-control',
-                placeholder: 'Observación de la nueva categoría'
-            }
-        },
-        btnCancelar: {
-            etiqueta: 'input',
-            atributos: {
-                type: 'submit',
-                value: 'Cancelar',
-                class: 'btn btn_custom_3',
-                onclick: 'cancelar()'
-            }
-        },
-        btnLimpiarDatos: {
-            etiqueta: 'input',
-            atributos: {
-                type: 'submit',
-                value: 'Limpiar datos',
-                class: 'btn btn_custom_2',
-                onclick: 'limpiarDatos()'
-            }
-        },
-        btnCrearCategoria: {
-            etiqueta: 'input',
-            atributos: {
-                type: 'submit',
-                value: 'Crear categoría',
-                class: 'btn btn_custom_1',
-                onclick: 'crearCategoria()'
-            }
-        }
+    let formCategorias = crearElemento('form', undefined, []);
+
+    let contenedorFormTop = crearElemento('div', undefined, { // van el contenedor left y right
+        class: 'form_contenedor_top'
+    });
+
+    let contenedorFormLeft = crearElemento('div', undefined, { // columna izquierda del formulario
+        class: 'form_contenedor_left'
+    });
+
+    let contenedorFormRight = crearElemento('div', undefined, { // columna derecha del formulario
+        class: 'form_contenedor_right'
+    });
+
+    //. BLOQUE 1....................................................
+    let contenedorImagen = crearElemento('div', undefined, {
+        class: 'form-group w-100 form_cat_contenedor_imagen'
+    });
+
+    let labelImagen = crearElemento('label', 'Icono de categoría', {
+        for: 'iconoCategoriaForm',
+        class: 'form-label'
+    });
+    contenedorImagen.appendChild(labelImagen);
+
+    let contenedorImagenSeleccionar = crearElemento('div', undefined, {
+        id: 'contenedorImagenSeleccionar',
+        class: 'dropdown contenedorImagenCategoria'
+    });
+    let etiquetaEnlace = crearElemento('a', undefined, {
+        href: '#',
+        role: 'button',
+        id: 'dropdownImgCategoria',
+        class: 'etiqueta_enlace_categoria',
+        'data-bs-toggle': 'dropdown',
+        'aria-expanded': 'false'
+    });
+    let imagenCategoriaContenedor = crearElemento('div', undefined, {
+        id: 'imagenCategoriaContenedor',
+        class: 'imagenCategoriaContenedor'
+    })
+    let iconSeleccionarImg = crearElemento('i', undefined, { // por defecto aparece un + 
+        class: 'bi bi-xbi bi-plus-lg'
+    });
+
+    imagenCategoriaContenedor.appendChild(iconSeleccionarImg);
+    etiquetaEnlace.appendChild(imagenCategoriaContenedor);
+
+    let contenedorGaleriaImg = crearElemento('div', undefined, {
+        class: 'new_img_categoria_container dropdown-menu'
+    });
+    let estructuraGridGaleria = crearElemento('div', undefined, {
+        class: 'card img_categoria_grid'
+    })
+
+    let imagenCategoria = crearElemento('img', undefined, {
+        id: 'imagenSeleccionada',
+        alt: 'Imagen de categoría'
+    });
+
+    // Mostrar imágenes en el select para seleccionar.......................................
+    // Ruta de la carpeta de imágenes
+    let rutaCarpeta = "../../../assets/img/categorias/";
+
+    // Número de imágenes
+    let numeroImagenes = 26;
+    let imgItemDropdown = '';
+
+    // Crear las opciones del desplegable con las imágenes
+    for (let i = 1; i <= numeroImagenes; i++) {
+        // Generar el nombre de archivo de la imagen
+        let nombreImagen = i + ".png";
+
+        // Eliminar los últimos cuatro caracteres (".png") del nombre de la imagen
+        let nombreImagenSinExtension = nombreImagen.slice(0, -4);
+
+        imgItemDropdown = crearElemento('a', undefined, {
+            id: 'dropdown-item',
+            href: '#'
+        });
+
+        // Crear y agregar la opción al desplegable
+        let imgCategoriaDropdown = crearElemento("img", undefined, {
+            id: 'img_' + nombreImagenSinExtension,
+            class: 'img_dropdown_categoria',
+            src: rutaCarpeta + nombreImagen,
+            alt: nombreImagenSinExtension
+        });
+        imgCategoriaDropdown.addEventListener("click", function () {
+            imagenCategoria.src = rutaCarpeta + nombreImagen;
+        });
+        imgItemDropdown.appendChild(imgCategoriaDropdown);
+        estructuraGridGaleria.appendChild(imgItemDropdown);
+    }
+    console.log(estructuraGridGaleria);
+
+    // Cambiar la imagen seleccionada cuando se elija una opción del desplegable
+    imagenCategoriaContenedor.addEventListener("change", function () {
+        let rutaImagenSeleccionada = imagenCategoriaContenedor.value;
+        imagenCategoria.src = rutaImagenSeleccionada;
+    });
+
+    // imgItemDropdown.appendChild(imagenCategoria); 
+    estructuraGridGaleria.appendChild(imgItemDropdown);
+    contenedorGaleriaImg.appendChild(estructuraGridGaleria);
+
+    contenedorImagenSeleccionar.appendChild(etiquetaEnlace);
+    contenedorImagenSeleccionar.appendChild(contenedorGaleriaImg);
+
+    contenedorImagen.appendChild(contenedorImagenSeleccionar);
+    contenedorFormLeft.appendChild(contenedorImagen);
+
+    //. BLOQUE 2....................................................
+    let contenedorNombre = crearElemento('div', undefined, {
+        class: 'form-group w-100 form_cat_contenedor_nombre'
+    });
+
+    let labelNombre = crearElemento('label', 'Nombre', {
+        for: 'newCategoriaName',
+        class: 'form-label'
+    });
+    contenedorNombre.appendChild(labelNombre);
+
+    let inputNombre = crearElemento('input', undefined, {
+        type: 'text',
+        id: 'newCategoriaName',
+        class: 'form-control',
+        placeholder: 'Nombre de la nueva categoría'
+    });
+    contenedorNombre.appendChild(inputNombre);
+
+    contenedorFormLeft.appendChild(contenedorNombre); // añadir a la columna izquierda del contendor
+
+    //. BLOQUE 3....................................................
+    let contenedorObservaciones = crearElemento('div', undefined, {
+        class: 'form-group w-100 form_cat_contenedor_obser'
+    });
+
+    let labelObservaciones = crearElemento('label', 'Observaciones', {
+        for: 'newObservacionCategoria',
+        class: 'form-label'
+    });
+    contenedorObservaciones.appendChild(labelObservaciones);
+
+    let inputObservaciones = crearElemento('textarea', undefined, {
+        type: 'text',
+        id: 'newObservacionCategoria',
+        class: 'form-control',
+        placeholder: 'Observaciones de la nueva categoría',
+        rows: '5',
+    });
+    contenedorObservaciones.appendChild(inputObservaciones);
+
+    contenedorFormLeft.appendChild(contenedorObservaciones);  // añadir a la columna izquierda del contenedor 
+
+    //. BLOQUE 4....................................................
+    let contenedorBuscarProductos = crearElemento('div', undefined, {
+        class: 'form-group form_cat_contenedor_buscarProd w-100'
+    });
+
+    let contenedorBuscador = crearElemento("div", undefined, {
+        id: "contenedorBuscador",
+        class: "contenedorBuscador input-group"
+    });
+
+    let contenedorBuscadorIcon = crearElemento("div", undefined, {
+        id: "contenedorBuscadorIcon",
+        class: "contenedorBuscadorIcon input-group-prepend input-group"
+    });
+
+    let contenedorIconBuscador = crearElemento("span", undefined, {
+        class: "input-group-text"
+    });
+
+    let iconBuscador = crearElemento("i", undefined, {
+        class: "bi bi-search"
+    });
+
+    contenedorIconBuscador.appendChild(iconBuscador);
+    contenedorBuscadorIcon.appendChild(contenedorIconBuscador);
+    contenedorBuscador.appendChild(contenedorBuscadorIcon);
+
+    let labelProductosCategoria = crearElemento('label', 'Productos de la categoría', {
+        for: 'filtroBuscadorNombre',
+        class: 'form-label'
+    });
+
+    let inputNombreProducto = crearElemento("input", undefined, {
+        id: "filtroBuscadorNombre",
+        type: "text",
+        placeholder: "Agregar productos a la categoría...",
+        class: "form-control filtroBuscador"
+    });
+
+    contenedorBuscadorIcon.appendChild(inputNombreProducto);
+    contenedorBuscarProductos.appendChild(labelProductosCategoria);
+
+    contenedorBuscarProductos.appendChild(contenedorBuscadorIcon);
+
+    contenedorFormRight.appendChild(contenedorBuscarProductos);
+
+    //. BOTONES......................................................
+    let contenedorBotones = crearElemento('div', undefined, {
+        class: 'form-group form_contenedor_botones'
+    });
+
+    let btnCancelar = crearElemento("input", undefined, {
+        type: 'submit',
+        value: 'Cancelar',
+        class: 'btn btn_custom_3',
+        onclick: 'cancelar()'
+    });
+
+    let btnVaciar = crearElemento("input", undefined, {
+        type: 'submit',
+        value: 'Limpiar datos',
+        class: 'btn btn_custom_2',
+        onclick: 'limpiarDatos()'
+    });
+
+    let btnCrearCategoria = crearElemento("input", undefined, {
+        type: 'submit',
+        value: 'Crear categoría',
+        class: 'btn btn_custom_1',
+        onclick: 'crearCategoria()'
+    });
+
+    contenedorBotones.appendChild(btnCancelar);
+    contenedorBotones.appendChild(btnVaciar);
+    contenedorBotones.appendChild(btnCrearCategoria);
+
+    contenedorFormTop.appendChild(contenedorFormLeft);
+    contenedorFormTop.appendChild(contenedorFormRight);
+
+    formCategorias.appendChild(contenedorFormTop);
+    formCategorias.appendChild(contenedorBotones);
+
+    contenedorForm.appendChild(formCategorias);
+}
+
+function newCategoria() {
+    let nombre = document.getElementById('newCategoriaName').value;
+    let observaciones = document.getElementById('newObservacionCategoria').value;
+
+    let parametros = {
+        NewCategoria: JSON.stringify({
+            descripcion: nombre,
+            observaciones: observaciones
+        })
     };
-    crearFormulario(camposNewCategoria, contenedorForm);
+    console.log(parametros);
+
+    $.ajax({
+        type: "POST",
+        url: "./php/consultaAdmin.php",
+        data: parametros,
+        error: function (a, b, errorMsg) {
+            console.log(errorMsg);
+        }
+    }).done(function (a) {
+        console.log(a);
+        console.log("hecho");
+    });
 }
 
 // Apartado PRODUCTOS__________________________________________________________________
@@ -255,199 +561,417 @@ function navAñadirProducto() {
 // Formulario 2. Crear producto.......................
 function pagAñadirProducto() {
     crearPlantillaFormularios('Nuevo producto', 'Datos del nuevo producto', 'Productos existentes');
-    contenedorForm = document.querySelector('#contenedorForm');
+    let contenedorForm = document.querySelector('#contenedorForm');
 
-    let camposNewProductos = {
-        nombre: {
-            etiqueta: 'label',
-            contenido: 'Nombre',
-            atributos: {
-                for: 'newProductName',
-                class: 'form-label'
-            }
-        },
-        inputNombre: {
-            etiqueta: 'input',
-            atributos: {
-                type: 'text',
-                id: 'newProductName',
-                class: 'form-control',
-                placeholder: "Nombre del producto"
-            }
-        },
-        categoria: {
-            etiqueta: 'label',
-            contenido: 'Categoría',
-            atributos: {
-                for: 'newProductCategoria',
-                class: 'form-label'
-            }
-        },
-        inputCategoria: {
-            etiqueta: 'input',
-            atributos: {
-                type: 'text',
-                id: 'newProductCategoria',
-                class: 'form-control',
-                placeholder: 'Categoría asociada al nuevo producto'
-            }
-        },
-        unidadDeMedida: {
-            etiqueta: 'label',
-            contenido: 'Unidad de medida',
-            atributos: {
-                for: 'newProductUdMedida',
-                class: 'form-label'
-            }
-        },
-        inputUnidadDeMedida: {
-            etiqueta: 'input',
-            atributos: {
-                type: 'text',
-                id: 'newProductUdMedida',
-                class: 'form-control',
-                placeholder: 'Unidad de medida del nuevo producto'
-            }
-        },
-        residuos: {
-            etiqueta: 'label',
-            contenido: 'Residuos',
-            atributos: {
-                for: 'newProductResiduos',
-                class: 'form-label'
-            }
-        },
-        inputResiduos: {
-            etiqueta: 'input',
-            atributos: {
-                type: 'text',
-                id: 'newProductResiduos',
-                class: 'form-control',
-                placeholder: 'Residuos del nuevo producto'
-            }
-        },
-        observaciones: {
-            etiqueta: 'label',
-            contenido: 'Observaciones',
-            atributos: {
-                for: 'newProductObservaciones',
-                class: 'form-label'
-            }
-        },
-        inputObservaciones: {
-            etiqueta: 'textarea',
-            atributos: {
-                type: 'text',
-                id: 'newProductObservaciones',
-                class: 'form-control',
-                placeholder: 'Observaciones del nuevo producto'
-            }
-        },
-        // Botones
-        btnCancelar: {
-            etiqueta: 'input',
-            atributos: {
-                type: 'submit',
-                value: 'Cancelar',
-                class: 'btn btn_custom_3',
-                onclick: 'cancelar()'
-            }
-        },
-        btnLimpiarDatos: {
-            etiqueta: 'input',
-            atributos: {
-                type: 'submit',
-                value: 'Limpiar datos',
-                class: 'btn btn_custom_2',
-                onclick: 'limpiarDatos()'
-            }
-        },
-        btnCrearProducto: {
-            etiqueta: 'input',
-            atributos: {
-                type: 'submit',
-                value: 'Crear producto',
-                class: 'btn btn_custom_1',
-                onclick: 'crearProducto()'
-            }
-        }
-    };
-    crearFormulario(camposNewProductos, contenedorForm);
+    let formProductos = crearElemento('form', undefined, []);
+
+    let contenedorFormTop = crearElemento('div', undefined, { // van el contenedor left y right
+        class: 'form_contenedor_top'
+    });
+
+    let contenedorFormLeft = crearElemento('div', undefined, { // columna izquierda del formulario
+        class: 'form_contenedor_left'
+    });
+
+    let contenedorFormRight = crearElemento('div', undefined, { // columna derecha del formulario
+        class: 'form_contenedor_right'
+    });
+
+    //. BLOQUE 1....................................................
+    let contenedorNombre = crearElemento('div', undefined, {
+        class: 'form-group w-100'
+    });
+
+    let labelNombre = crearElemento('label', 'Nombre', {
+        for: 'newNombreProducto',
+        class: 'form-label'
+    });
+    contenedorNombre.appendChild(labelNombre);
+
+    let inputNombre = crearElemento('input', undefined, {
+        type: 'text',
+        id: 'newNombreProducto',
+        class: 'form-control',
+        placeholder: 'Nombre del nuevo producto'
+    });
+    contenedorNombre.appendChild(inputNombre);
+
+    contenedorFormLeft.appendChild(contenedorNombre);
+
+    //. BLOQUE 2....................................................
+    let contenedorUdMedida = crearElemento('div', undefined, {
+        class: 'form-group w-100'
+    });
+
+    let labelUdMedida = crearElemento('label', 'Ud. de medida', {
+        for: 'newProductUdMedida',
+        class: 'form-label'
+    });
+    contenedorUdMedida.appendChild(labelUdMedida);
+
+    let inputUdMedida = crearElemento('input', undefined, {
+        type: 'text',
+        id: 'newProductUdMedida',
+        class: 'form-control',
+        placeholder: 'Ud. de medida del producto'
+    });
+    contenedorUdMedida.appendChild(inputUdMedida);
+
+    contenedorFormLeft.appendChild(contenedorUdMedida);
+
+    //. BLOQUE 3....................................................
+    let contenedorObservaciones = crearElemento('div', undefined, {
+        class: 'form-group w-100 form_cat_contenedor_obser'
+    });
+
+    let labelObservaciones = crearElemento('label', 'Observaciones', {
+        for: 'newProductObservaciones',
+        class: 'form-label'
+    });
+    contenedorObservaciones.appendChild(labelObservaciones);
+
+    let inputObservaciones = crearElemento('textarea', undefined, {
+        type: 'text',
+        id: 'newProductObservaciones',
+        class: 'form-control',
+        placeholder: 'Observaciones del nuevo producto',
+        rows: '5',
+    });
+    contenedorObservaciones.appendChild(inputObservaciones);
+
+    contenedorFormLeft.appendChild(contenedorObservaciones);
+
+    //. BLOQUE 4....................................................
+    let contenedorCategoria = crearElemento('div', undefined, {
+        class: 'form-group w-100'
+    });
+
+    let labelCategoria = crearElemento('label', 'Categoría', {
+        for: 'newProductCategoria',
+        class: 'form-label'
+    });
+    contenedorCategoria.appendChild(labelCategoria);
+
+    let inputCategoria = crearElemento('input', undefined, {
+        type: 'text',
+        id: 'newProductCategoria',
+        class: 'form-control',
+        placeholder: 'Categoría del producto'
+    });
+    contenedorCategoria.appendChild(inputCategoria);
+
+    contenedorFormRight.appendChild(contenedorCategoria);
+
+    //. BLOQUE 5....................................................
+    let contenedorResiduos = crearElemento('div', undefined, {
+        class: 'form-group w-100'
+    });
+
+    let labelResiduos = crearElemento('label', 'Residuos', {
+        for: 'newProductResiduos',
+        class: 'form-label'
+    });
+    contenedorResiduos.appendChild(labelResiduos);
+
+    let inputResiduos = crearElemento('input', undefined, {
+        type: 'text',
+        id: 'newProductResiduos',
+        class: 'form-control',
+        placeholder: 'Residuos del producto'
+    });
+    contenedorResiduos.appendChild(inputResiduos);
+
+    contenedorFormRight.appendChild(contenedorResiduos);
+
+    //. BOTONES......................................................
+    let contenedorBotones = crearElemento('div', undefined, {
+        class: 'form-group form_contenedor_botones'
+    });
+
+    let btnCancelar = crearElemento("input", undefined, {
+        type: 'submit',
+        value: 'Cancelar',
+        class: 'btn btn_custom_3',
+        onclick: 'cancelar()'
+    });
+
+    let btnVaciar = crearElemento("input", undefined, {
+        type: 'submit',
+        value: 'Limpiar datos',
+        class: 'btn btn_custom_2',
+        onclick: 'limpiarDatos()'
+    });
+
+    let btnCrearProducto = crearElemento("input", undefined, {
+        type: 'submit',
+        value: 'Crear producto',
+        class: 'btn btn_custom_1',
+        onclick: 'crearProducto()'
+    });
+
+    contenedorBotones.appendChild(btnCancelar);
+    contenedorBotones.appendChild(btnVaciar);
+    contenedorBotones.appendChild(btnCrearProducto);
+
+    contenedorFormTop.appendChild(contenedorFormLeft);
+    contenedorFormTop.appendChild(contenedorFormRight);
+
+    formProductos.appendChild(contenedorFormTop);
+    formProductos.appendChild(contenedorBotones);
+
+    contenedorForm.appendChild(formProductos);
 }
 
 // Formulario 3. Crear ud. de medida...................
 function navUdMedida() {
-    pagUdMedida()
+    pagUdMedida();
+
+    let parametros = {
+        unidadesDeMedida: 'unidadesMedida'
+    };
+    console.log(parametros);
+
+    $.ajax({
+        type: "POST",
+        url: "./php/consultaAdmin.php",
+        data: parametros,
+        async: false,
+        success: tablaUnidadesMedida,
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.error("Error en la solicitud AJAX: " + textStatus, errorThrown);
+        }
+    });
+}
+//Función que imprime la tabla de Unidades de Medida
+function tablaUnidadesMedida(respuesta) {
+    //Datos de unidades recibidos: "id_unidades" - "descripcion" - "observaciones"
+    let unidades = JSON.parse(respuesta);
+
+    //La parte derecha del formulario, falta darle un id,
+    let contenedorDerecho = document.querySelector(".pagForm_columnaRight");
+    let buscador = crearElemento("input", undefined, {
+        id: "buscadorFormDerecho"
+    });
+
+    buscador.addEventListener("input", function (e) {
+        // Convertir a minúsculas y quitar espacios en blanco al inicio y al final.
+        let textoBuscar = this.value.toLowerCase().trim();
+
+        // Obtener todas las filas de la tabla.
+        let filasTabla = tablaBody.querySelectorAll("tr");
+
+        // Mostrar u ocultar según el texto del buscador.
+        filasTabla.forEach(fila => {
+            // Obtener la descripción de la fila y convertirla a minúsculas.
+            let descripcion = fila.querySelector("td").innerHTML.toLowerCase();
+
+            // Mostrar la fila si coincide con el texto buscado o si no se ha ingresado nada en el input.
+            if (descripcion.includes(textoBuscar) || textoBuscar === "") {
+                fila.style.display = ""; // Mostrar la fila.
+            } else {
+                fila.style.display = "none"; // Ocultar la fila.
+            }
+        });
+    });
+
+    contenedorDerecho.appendChild(buscador);
+
+    //Tabla.
+    let tablaUnidades = crearElemento("table", undefined, {
+        class: "table table-responsive table-hover mt-4"
+    });
+
+    let tablaBody = crearElemento("tbody");
+    //Ahora agrego el contenido.
+    unidades.forEach(fila => {
+        let filaBody = crearElemento("tr");
+        let celdaDescripcion = crearElemento("td", fila["descripcion"]);
+        let celdaBotones = crearElemento("td");
+
+        // Crear el div principal con la clase dropdown
+        let divDropdown = crearElemento("div", undefined, {
+            class: "dropdown"
+        });
+
+        // Crear el enlace con los atributos y contenido dados
+        let enlace = crearElemento("a", undefined, {
+            href: "#",
+            role: "button",
+            id: "unidadDropdown_" + fila.id_unidades,
+            "data-bs-toggle": "dropdown",
+            "aria-expanded": "false"
+        });
+
+        // Crear el contenedor del icono
+        let iconContainer = crearElemento("div", undefined, { class: "icon_container" });
+
+        // Crear el icono principal
+        let iconoPrincipal = crearElemento("i", undefined, { id: "iconoPrincipal_" + fila.id_unidades, class: "bi bi-three-dots-vertical" });
+
+        // Agregar el icono principal al contenedor de iconos
+        iconContainer.appendChild(iconoPrincipal);
+
+        // Agregar el contenedor de iconos al enlace
+        enlace.appendChild(iconContainer);
+
+        // Crear el div del menú desplegable con los atributos dados
+        let divDropdownMenu = crearElemento("div", undefined, { class: "dropdown-menu", "aria-labelledby": "unidadDropdown_" + fila.id_unidades });
+
+        // Crear los elementos de las opciones del menú desplegable
+        let opcionModificar = crearElemento("a", undefined, { class: "dropdown-item", href: "#" });
+        let iconoModificar = crearElemento("span", undefined, { class: "bi bi-pencil dropdown_icon_margin" });
+        let textoModificar = crearElemento("span", "Editar");
+        opcionModificar.appendChild(iconoModificar);
+        opcionModificar.appendChild(textoModificar);
+
+        let opcionEliminar = crearElemento("a", undefined, { class: "dropdown-item", href: "#" });
+        let iconoEliminar = crearElemento("span", undefined, { class: "bi bi-trash3 dropdown_icon_margin" });
+        let textoEliminar = crearElemento("span", "Eliminar");
+        opcionEliminar.appendChild(iconoEliminar);
+        opcionEliminar.appendChild(textoEliminar);
+
+        // Agregar las opciones al div del menú desplegable
+        divDropdownMenu.appendChild(opcionModificar);
+        divDropdownMenu.appendChild(opcionEliminar);
+
+        // Agregar el enlace y el menú desplegable al div principal
+        divDropdown.appendChild(enlace);
+        divDropdown.appendChild(divDropdownMenu);
+
+        // Agregar el div principal a la celda de botones
+        celdaBotones.appendChild(divDropdown);
+
+        filaBody.appendChild(celdaDescripcion);
+        filaBody.appendChild(celdaBotones);
+        tablaBody.appendChild(filaBody);
+    });
+    tablaUnidades.appendChild(tablaBody);
+    contenedorDerecho.appendChild(tablaUnidades);
 }
 
 function pagUdMedida() {
     crearPlantillaFormularios('Nueva unidad de medida', 'Datos de la nueva ud. de medida', 'Ud. de medida existentes');
-    contenedorForm = document.querySelector('#contenedorForm');
+    let contenedorForm = document.querySelector('#contenedorForm');
 
-    let camposNewMedida = {
-        nombre: {
-            etiqueta: 'label',
-            contenido: 'Nombre',
-            atributos: {
-                for: 'newUdMedidaName',
-                class: 'form-label'
-            }
-        },
-        inputNombre: {
-            etiqueta: 'input',
-            atributos: {
-                type: 'text',
-                id: 'newUdMedidaName',
-                class: 'form-control',
-                placeholder: 'Nombre de la nueva unidad de medida'
-            }
-        },
-        observaciones: {
-            etiqueta: 'label',
-            contenido: 'Observaciones',
-            atributos: {
-                for: 'newUdMedidaObservaciones',
-                class: 'form-label'
-            }
-        },
-        inputObservaciones: {
-            etiqueta: 'textarea',
-            atributos: {
-                type: 'text',
-                id: 'newUdMedidaObservaciones',
-                class: 'form-control',
-                placeholder: 'Observaciones de la nueva unidad de medida'
-            }
-        },
-        // Botones
-        btnCancelar: {
-            etiqueta: 'input',
-            atributos: {
-                type: 'submit',
-                value: 'Cancelar',
-                class: 'btn btn_custom_3',
-                onclick: 'cancelar()'
-            }
-        },
-        btnLimpiarDatos: {
-            etiqueta: 'input',
-            atributos: {
-                type: 'submit',
-                value: 'Limpiar datos',
-                class: 'btn btn_custom_2',
-                onclick: 'limpiarDatos()'
-            }
-        },
-        btnCrearMedida: {
-            etiqueta: 'input',
-            atributos: {
-                type: 'submit',
-                value: 'Crear ud. de medida',
-                class: 'btn btn_custom_1'
-            }
-        }
+    let formUdMedida = crearElemento('form', undefined, []);
+
+    let contenedorFormTop = crearElemento('div', undefined, { // van el contenedor left y right
+        class: 'form_contenedor_top'
+    });
+
+    let contenedorFormLeft = crearElemento('div', undefined, { // columna izquierda del formulario
+        class: 'form_contenedor_left'
+    });
+
+    let contenedorFormRight = crearElemento('div', undefined, { // columna derecha del formulario
+        class: 'form_contenedor_right'
+    });
+
+    //. BLOQUE 1....................................................
+    let contenedorNombre = crearElemento('div', undefined, {
+        class: 'form-group w-100'
+    });
+
+    let labelNombre = crearElemento('label', 'Nombre', {
+        for: 'newUdMedidaName',
+        class: 'form-label'
+    });
+    contenedorNombre.appendChild(labelNombre);
+
+    let inputNombre = crearElemento('input', undefined, {
+        type: 'text',
+        id: 'newUdMedidaName',
+        class: 'form-control',
+        placeholder: 'Nombre de la nueva ud. de medida'
+    });
+    contenedorNombre.appendChild(inputNombre);
+
+    contenedorFormLeft.appendChild(contenedorNombre);
+
+    //. BLOQUE 2....................................................
+    let contenedorObservaciones = crearElemento('div', undefined, {
+        class: 'form-group w-100 form_cat_contenedor_obser'
+    });
+
+    let labelObservaciones = crearElemento('label', 'Observaciones', {
+        for: 'newUdMedidaObservaciones',
+        class: 'form-label'
+    });
+    contenedorObservaciones.appendChild(labelObservaciones);
+
+    let inputObservaciones = crearElemento('textarea', undefined, {
+        type: 'text',
+        id: 'newUdMedidaObservaciones',
+        class: 'form-control',
+        placeholder: 'Observaciones de la nueva ud. de medida',
+        rows: '5',
+    });
+    contenedorObservaciones.appendChild(inputObservaciones);
+
+    contenedorFormRight.appendChild(contenedorObservaciones);
+
+    //. BOTONES......................................................
+    let contenedorBotones = crearElemento('div', undefined, {
+        class: 'form-group form_contenedor_botones'
+    });
+
+    let btnCancelar = crearElemento("input", undefined, {
+        type: 'submit',
+        value: 'Cancelar',
+        class: 'btn btn_custom_3',
+        onclick: 'cancelar()'
+    });
+
+    let btnVaciar = crearElemento("input", undefined, {
+        type: 'submit',
+        value: 'Limpiar datos',
+        class: 'btn btn_custom_2',
+        onclick: 'limpiarDatos()'
+    });
+
+    let btnCrearMedida = crearElemento("input", undefined, {
+        type: 'submit',
+        value: 'Crear ud. de medida',
+        class: 'btn btn_custom_1',
+        onclick: 'btnCrearMedida()'
+    });
+
+    contenedorBotones.appendChild(btnCancelar);
+    contenedorBotones.appendChild(btnVaciar);
+    contenedorBotones.appendChild(btnCrearMedida);
+
+    contenedorFormTop.appendChild(contenedorFormLeft);
+    contenedorFormTop.appendChild(contenedorFormRight);
+
+    formUdMedida.appendChild(contenedorFormTop);
+    formUdMedida.appendChild(contenedorBotones);
+
+    contenedorForm.appendChild(formUdMedida);
+}
+
+function newUdMedida() {
+    let nombre = document.getElementById('newUdMedidaName').value;
+    let observaciones = document.getElementById('newUdMedidaObservaciones').value;
+
+    let parametros = {
+        NewUnidadMedida: JSON.stringify({
+            descripcion: nombre,
+            observaciones: observaciones
+        })
     };
-    crearFormulario(camposNewMedida, contenedorForm);
+    console.log(parametros);
+
+    $.ajax({
+        type: "POST",
+        url: "./php/consultaAdmin.php",
+        data: parametros,
+        error: function (a, b, errorMsg) {
+            console.log(errorMsg);
+        }
+    }).done(function (a) {
+        console.log(a);
+        console.log("hecho");
+    });
 }
 
 // Apartado PEDIDOS____________________________________________________________________
@@ -471,28 +995,110 @@ function pagNuevoPedido() {
 }
 
 // Apartado USUARIOS____________________________________________________________________
-function navUsuarios() {
-    navListarUsuarios();
+function tablaUsuarios(usuarios) {
+    let contenedor = document.querySelector("#parteInferior");
+    contenedor.innerHTML = "";
+
+    //Buscador.
+    let buscador = crearElemento("input", undefined, {
+        id: "buscadorUsuarios"
+    });
+
+    buscador.addEventListener("input", function (e) {
+        // Convertir a minúsculas y quitar espacios en blanco al inicio y al final.
+        let textoBuscar = this.value.toLowerCase().trim();
+
+        // Obtener todas las filas de la tabla.
+        let filasTabla = tablaBody.querySelectorAll("tr");
+
+        // Mostrar u ocultar según el texto del buscador.
+        filasTabla.forEach(fila => {
+            // Solo se va a buscar por nombre de usuario, nombre y apellidos, se seleccionan solo las columnas correspondientes.
+            let nombreUsuario = fila.querySelector("td:nth-child(3)").innerHTML.toLowerCase();
+            let nombre = fila.querySelector("td:nth-child(4)").innerHTML.toLowerCase();
+            let apellido = fila.querySelector("td:nth-child(5)").innerHTML.toLowerCase();
+
+            // Mostrar la fila si coincide con el texto buscado o si no se ha ingresado nada en el input.
+            if (nombreUsuario.includes(textoBuscar) || nombre.includes(textoBuscar) || apellido.includes(textoBuscar) || textoBuscar === "") {
+                fila.style.display = ""; // Mostrar la fila.
+            } else {
+                fila.style.display = "none"; // Ocultar la fila.
+            }
+        });
+    });
+
+    contenedor.appendChild(buscador);
+
+    //Estructura del titulo de la tabla.
+    let tablaUsuarios = crearElemento("table", undefined, {
+        class: "table table-responsive table-hover mt-4"
+    });
+    let titulosTabla = crearElemento("thead");
+
+    let filaTitulos = crearElemento("tr");
+    let titulos = ["id_usuarios", "admin", "nombre_usuario", "nombre", "apellido", "email", "password", "activo", "observaciones", "telefono"];
+    for (let i = 0; i < titulos.length; i++) {
+        let celdaTitulo = crearElemento("th", titulos[i].charAt(0).toUpperCase() + titulos[i].slice(1).toLowerCase());
+        filaTitulos.appendChild(celdaTitulo);
+    }
+    let columnaDeBotones = crearElemento("td");
+    filaTitulos.appendChild(columnaDeBotones);
+    titulosTabla.appendChild(filaTitulos);
+    tablaUsuarios.appendChild(titulosTabla);
+
+    //Estructura del cuerpo de la tabla.
+    tablaBody = crearElemento("tbody");
+
+
+    usuarios.forEach(usuario => {
+        let filaBody = crearElemento("tr", undefined, {
+            id: "idusuario_" + usuario["id_usuarios"]
+        });
+        for (let i = 0; i < titulos.length; i++) {
+            let celdaBody = crearElemento("td", usuario[titulos[i]]);
+            filaBody.appendChild(celdaBody);
+        }
+        //Botones editar/borrar.
+        let celdaBodyBoton = crearElemento("td");
+
+        let editar = crearElemento('input', undefined, {
+            id: "botonEditarUsuario_" + usuario["id_usuarios"],
+            type: "submit",
+            value: "Editar"
+        })
+        let borrar = crearElemento('input', undefined, {
+            id: "botonBorrarUsuario_" + usuario["id_usuarios"],
+            type: "submit",
+            value: "Borrar"
+        })
+        celdaBodyBoton.appendChild(editar);
+        celdaBodyBoton.appendChild(borrar);
+
+        filaBody.appendChild(celdaBodyBoton);
+        tablaBody.appendChild(filaBody);
+    });
+    tablaUsuarios.appendChild(tablaBody);
+    contenedor.appendChild(tablaUsuarios);
+}
+
+function navListarUsuarios() {
+    pagListarUsuarios();
 
     let parametros = {
         claveTodosUsuarios: true
     };
     $.ajax({
         //Ubicacion del archivo php que va a manejar los valores.
-        url: "./php/consultaUsuario.php",
+        url: "./php/consultaAdmin.php",
         //Metodo en que los va a recibir.
         type: "GET",
         data: parametros,
         dataType: "json",
-        success: mostrarUsuarios,
+        success: tablaUsuarios,
         error: function (jqXHR, textStatus, errorThrown) {
             console.error("Error en la solicitud AJAX: " + textStatus, errorThrown);
         }
     });
-}
-
-function navListarUsuarios() {
-    pagListarUsuarios();
 }
 
 function pagListarUsuarios() { // mostrar tabla con los usuarios y sus datos
@@ -520,123 +1126,208 @@ function navAñadirUsuario() {
 
 function pagAñadirUsuario() {
     crearPlantillaFormularios('Nuevo usuario', 'Datos del nuevo usuario', 'Usuarios existentes');
-    contenedorForm = document.querySelector('#contenedorForm');
+    let contenedorForm = document.querySelector('#contenedorForm');
 
-    let camposNewUsuario = {
-        nombre: {
-            etiqueta: 'label',
-            contenido: 'Nombre',
-            atributos: {
-                for: 'newUserName',
-                class: 'form-label'
-            }
-        },
-        inputNombre: {
-            etiqueta: 'input',
-            atributos: {
-                type: 'text',
-                id: 'newUserName',
-                class: 'form-control',
-                placeholder: 'Nombre del nuevo usuario'
-            }
-        },
-        activo: {
-            etiqueta: 'label',
-            contenido: 'Activo',
-            atributos: {
-                for: 'userActive',
-                class: 'form-label'
-            }
-        },
-        inputActivo: {
-            etiqueta: 'input',
-            atributos: {
-                type: 'text', //! revisar tipo de input del toggle de usuario activo
-                id: 'userActive',
-                class: 'form-control'
-            }
-        },
-        telefono: {
-            etiqueta: 'label',
-            contenido: 'Teléfono',
-            atributos: {
-                for: 'newUserTelefono',
-                class: 'form-label'
-            }
-        },
-        inputTelefono: {
-            etiqueta: 'input',
-            atributos: {
-                type: 'text',
-                id: 'newUserTelefono',
-                class: 'form-control',
-                placeholder: 'Teléfono del nuevo usuario'
-            }
-        },
-        email: {
-            etiqueta: 'label',
-            contenido: 'Email',
-            atributos: {
-                for: 'newUserEmail',
-                class: 'form-label'
-            }
-        },
-        inputEmail: {
-            etiqueta: 'input',
-            atributos: {
-                type: 'email',
-                id: 'newUserEmail',
-                class: 'form-control',
-                placeholder: 'Email del nuevo usuario'
-            }
-        },
-        observaciones: {
-            etiqueta: 'label',
-            contenido: 'Observaciones',
-            atributos: {
-                for: 'newUserObservacion',
-                class: 'form-label'
-            }
-        },
-        inputObservaciones: {
-            etiqueta: 'textarea',
-            atributos: {
-                type: 'text',
-                id: 'newUserObservacion',
-                class: 'form-control',
-                placeholder: 'Observaciones del nuevo usuario'
-            }
-        },
-        // Botones
-        btnCancelar: {
-            etiqueta: 'input',
-            atributos: {
-                type: 'submit',
-                value: 'Cancelar',
-                class: 'btn btn_custom_3',
-                onclick: 'cancelar()'
-            }
-        },
-        btnLimpiarDatos: {
-            etiqueta: 'input',
-            atributos: {
-                type: 'submit',
-                value: 'Limpiar datos',
-                class: 'btn btn_custom_2',
-                onclick: 'limpiarDatos()'
-            }
-        },
-        btnCrearUsuario: {
-            etiqueta: 'input',
-            contenido: 'Crear ud. de medida',
-            atributos: {
-                type: 'submit',
-                class: 'btn btn_custom_1',
-                onclick: 'crearUsuario()'
-            }
-        }
+    let formUsuario = crearElemento('form', undefined, []);
+
+    let contenedorFormTop = crearElemento('div', undefined, { // van el contenedor left y right
+        class: 'form_contenedor_top'
+    });
+
+    let contenedorFormLeft = crearElemento('div', undefined, { // columna izquierda del formulario
+        class: 'form_contenedor_left'
+    });
+
+    let contenedorFormRight = crearElemento('div', undefined, { // columna derecha del formulario
+        class: 'form_contenedor_right'
+    });
+
+    //. BLOQUE 1....................................................
+    let contenedorNombre = crearElemento('div', undefined, {
+        class: 'form-group w-100'
+    });
+
+    let labelNombre = crearElemento('label', 'Nombre', {
+        for: 'newUserName',
+        class: 'form-label'
+    });
+    contenedorNombre.appendChild(labelNombre);
+
+    let inputNombre = crearElemento('input', undefined, {
+        type: 'text',
+        id: 'newUserName',
+        class: 'form-control',
+        placeholder: 'Nombre del nuevo usuario'
+    });
+    contenedorNombre.appendChild(inputNombre);
+
+    contenedorFormLeft.appendChild(contenedorNombre);
+
+    //. BLOQUE 2....................................................
+    let contenedorTelefono = crearElemento('div', undefined, {
+        class: 'form-group w-100'
+    });
+
+    let labelTelefono = crearElemento('label', 'Nombre', {
+        for: 'newUserTelefono',
+        class: 'form-label'
+    });
+    contenedorTelefono.appendChild(labelTelefono);
+
+    let inputTelefono = crearElemento('input', undefined, {
+        type: 'text',
+        id: 'newUserTelefono',
+        class: 'form-control',
+        placeholder: 'Teléfono del usuario'
+    });
+    contenedorTelefono.appendChild(inputTelefono);
+
+    contenedorFormLeft.appendChild(contenedorTelefono);
+
+    //. BLOQUE 3....................................................
+    let contenedorObservaciones = crearElemento('div', undefined, {
+        class: 'form-group w-100'
+    });
+
+    let labelObservaciones = crearElemento('label', 'Observaciones', {
+        for: 'newUserObservacion',
+        class: 'form-label'
+    });
+    contenedorObservaciones.appendChild(labelObservaciones);
+
+    let inputObservaciones = crearElemento('textarea', undefined, {
+        type: 'text',
+        id: 'newUserObservacion',
+        class: 'form-control',
+        placeholder: 'Observaciones del nuevo usuario',
+        rows: '5',
+    });
+    contenedorObservaciones.appendChild(inputObservaciones);
+
+    contenedorFormLeft.appendChild(contenedorObservaciones);
+
+    //. BLOQUE 4....................................................
+    let contenedorActivo = crearElemento('div', undefined, {
+        class: 'form-group w-100'
+    });
+
+    let labelActivo = crearElemento('label', 'Activo', {
+        for: 'userActive',
+        class: 'form-label'
+    });
+    contenedorActivo.appendChild(labelActivo);
+
+    let toggleContainer = crearElemento('div', undefined, {
+        class: 'form-switch'
+    });
+
+    let toggleActivo = crearElemento('input', undefined, {
+        type: 'checkbox',
+        id: 'userActive',
+        class: 'form-check-input form-switch',
+    });
+    toggleContainer.appendChild(toggleActivo);
+
+    contenedorActivo.appendChild(toggleContainer);
+
+    contenedorFormRight.appendChild(contenedorActivo);
+
+    //. BLOQUE 5....................................................
+    let contenedorEmail = crearElemento('div', undefined, {
+        class: 'form-group w-100'
+    });
+
+    let labelEmail = crearElemento('label', 'Email', {
+        for: 'newUserEmail',
+        class: 'form-label'
+    });
+    contenedorEmail.appendChild(labelEmail);
+
+    let inputEmail = crearElemento('input', undefined, {
+        type: 'text',
+        id: 'newUserEmail',
+        class: 'form-control',
+        placeholder: 'Email del usuario'
+    });
+    contenedorEmail.appendChild(inputEmail);
+
+    contenedorFormRight.appendChild(contenedorEmail);
+
+    //. BOTONES......................................................
+    let contenedorBotones = crearElemento('div', undefined, {
+        class: 'form-group form_contenedor_botones'
+    });
+
+    let btnCancelar = crearElemento("input", undefined, {
+        type: 'submit',
+        value: 'Cancelar',
+        class: 'btn btn_custom_3',
+        onclick: 'cancelar()'
+    });
+
+    let btnVaciar = crearElemento("input", undefined, {
+        type: 'submit',
+        value: 'Limpiar datos',
+        class: 'btn btn_custom_2',
+        onclick: 'limpiarDatos()'
+    });
+
+    let btnCrearUsuario = crearElemento("input", undefined, {
+        type: 'submit',
+        value: 'Crear usuario',
+        class: 'btn btn_custom_1',
+        onclick: 'crearUsuario()'
+    });
+
+    contenedorBotones.appendChild(btnCancelar);
+    contenedorBotones.appendChild(btnVaciar);
+    contenedorBotones.appendChild(btnCrearUsuario);
+
+    contenedorFormTop.appendChild(contenedorFormLeft);
+    contenedorFormTop.appendChild(contenedorFormRight);
+
+    formUsuario.appendChild(contenedorFormTop);
+    formUsuario.appendChild(contenedorBotones);
+
+    contenedorForm.appendChild(formUsuario);
+}
+
+function newUsuario() {
+    let nombreUser = document.getElementById('newUserName').value;
+    let observaciones = document.getElementById('newUserObservacion').value;
+    let nombre = document.getElementById('newName').value;
+    let apellido = document.getElementById('newApellido').value;
+    let password = document.getElementById('newPassword').value;
+    let telefono = document.getElementById('newUserTelefono').value;
+    let email = document.getElementById('newUserEmail').value;
+    let activo = document.getElementById('userActive').value;
+    let admin = document.getElementById('userAdmin').value;
+    let parametros = {
+        NewUsuario: JSON.stringify({
+            admin: admin,
+            nombre_usuario: nombreUser,
+            nombre: nombre,
+            apellido: apellido,
+            email: email,
+            password: password,
+            activo: activo,
+            telefono: telefono,
+            observaciones: observaciones,
+        })
     };
-    crearFormulario(camposNewUsuario, contenedorForm);
+    console.log(parametros);
+
+    $.ajax({
+        type: "POST",
+        url: "./php/consultaAdmin.php",
+        data: parametros,
+        error: function (a, b, errorMsg) {
+            console.log(errorMsg);
+        }
+    }).done(function (a) {
+        console.log(a);
+        console.log("hecho");
+    });
 }
 
 // Apartado PROVEEDORES___________________________________________________________________
@@ -668,139 +1359,219 @@ function pagListarProveedores() {
 
 function navAñadirProveedor() {
     pagAñadirProveedor();
+
+    let parametros = {
+        proveedores: 'proveedores'
+    };
+    console.log(parametros);
+
+    $.ajax({
+        type: "POST",
+        url: "./php/consultaAdmin.php",
+        data: parametros,
+        async: false,
+        success: tablaProveedor,
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.error("Error en la solicitud AJAX: " + textStatus, errorThrown);
+        }
+    });
 }
 
 // Formulario 6. Añadir proveedor.....................
 function pagAñadirProveedor() {
-    // Contenedor general de la pagina
-    let contenedor = document.querySelector("#contenedor");
+    crearPlantillaFormularios('Nuevo proveedor', 'Datos del nuevo proveedor', 'Proveedores existentes');
+    let contenedorForm = document.querySelector('#contenedorForm');
 
-    contenedor.innerHTML = "";
+    let formProveedores = crearElemento('form', undefined, []);
 
-    // Título de la página
-    let h1Inicio = crearElemento("h1", "Nuevo proveedor", {
-        id: "tituloApartado",
-        class: "py-3 mb-3 mt-4"
+    let contenedorFormTop = crearElemento('div', undefined, { // van el contenedor left y right
+        class: 'form_contenedor_top'
     });
 
-    contenedor.appendChild(h1Inicio);
+    let contenedorFormLeft = crearElemento('div', undefined, { // columna izquierda del formulario
+        class: 'form_contenedor_left'
+    });
 
-    let camposNewProveedor = {
-        nombre: {
-            etiqueta: 'label',
-            contenido: 'Nombre',
-            atributos: {
-                for: 'newProvName',
-                class: 'form-label'
-            }
-        },
-        inputNombre: {
-            etiqueta: 'input',
-            atributos: {
-                type: 'text',
-                id: 'newProvName',
-                class: 'form-control',
-                placeholder: 'Nombre del nuevo proveedor'
-            }
-        },
-        telefono: {
-            etiqueta: 'label',
-            contenido: 'Teléfono',
-            atributos: {
-                for: 'newProvTelefono',
-                class: 'form-label'
-            }
-        },
-        inputTelefono: {
-            etiqueta: 'input',
-            atributos: {
-                type: 'text',
-                id: 'newProvTelefono',
-                class: 'form-control',
-                placeholder: 'Teléfono del nuevo proveedor'
-            }
-        },
-        email: {
-            etiqueta: 'label',
-            contenido: 'Email',
-            atributos: {
-                for: 'newProvEmail',
-                class: 'form-label'
-            }
-        },
-        inputEmail: {
-            etiqueta: 'input',
-            atributos: {
-                type: 'email',
-                id: 'newProvEmail',
-                class: 'form-control',
-                placeholder: 'Email del nuevo proveedor'
-            }
-        },
-        direccion: {
-            etiqueta: 'label',
-            contenido: 'Dirección',
-            atributos: {
-                for: 'newProvDireccion',
-                class: 'form-label'
-            }
-        },
-        inputDireccion: {
-            etiqueta: 'input',
-            atributos: {
-                type: 'text',
-                id: 'newProvDireccion',
-                class: 'form-control',
-                placeholder: 'Dirección del nuevo proveedor'
-            }
-        },
-        observaciones: {
-            etiqueta: 'label',
-            contenido: 'Observaciones',
-            atributos: {
-                for: 'newProvObservacion',
-                class: 'form-label'
-            }
-        },
-        inputObservaciones: {
-            etiqueta: 'textarea',
-            atributos: {
-                type: 'text',
-                id: 'newProvObservacion',
-                class: 'form-control',
-                placeholder: 'Observaciones del nuevo proveedor'
-            }
-        },
-        // Botones
-        btnCancelar: {
-            etiqueta: 'input',
-            atributos: {
-                type: 'submit',
-                value: 'Cancelar',
-                class: 'btn btn_custom_3',
-                onclick: 'cancelar()'
-            }
-        },
-        btnLimpiarDatos: {
-            etiqueta: 'input',
-            atributos: {
-                type: 'submit',
-                value: 'Limpiar datos',
-                class: 'btn btn_custom_2',
-                onclick: 'limpiarDatos()'
-            }
-        },
-        btnCrearProveedor: {
-            etiqueta: 'input',
-            contenido: 'Crear proveedor',
-            atributos: {
-                type: 'submit',
-                class: 'btn btn_custom_1',
-                onclick: 'crearProveedor()'
-            }
-        }
+    let contenedorFormRight = crearElemento('div', undefined, { // columna derecha del formulario
+        class: 'form_contenedor_right'
+    });
+
+    //. BLOQUE 1....................................................
+    let contenedorNombre = crearElemento('div', undefined, {
+        class: 'form-group w-100'
+    });
+
+    let labelNombre = crearElemento('label', 'Nombre', {
+        for: 'newProvName',
+        class: 'form-label'
+    });
+    contenedorNombre.appendChild(labelNombre);
+
+    let inputNombre = crearElemento('input', undefined, {
+        type: 'text',
+        id: 'newProvName',
+        class: 'form-control',
+        placeholder: 'Nombre del nuevo proveedor'
+    });
+    contenedorNombre.appendChild(inputNombre);
+
+    contenedorFormLeft.appendChild(contenedorNombre);
+
+    //. BLOQUE 2....................................................
+    let contenedorTelefono = crearElemento('div', undefined, {
+        class: 'form-group w-100'
+    });
+
+    let labelTelefono = crearElemento('label', 'Nombre', {
+        for: 'newProvTelefono',
+        class: 'form-label'
+    });
+    contenedorTelefono.appendChild(labelTelefono);
+
+    let inputTelefono = crearElemento('input', undefined, {
+        type: 'text',
+        id: 'newProvTelefono',
+        class: 'form-control',
+        placeholder: 'Teléfono del proveedor'
+    });
+    contenedorTelefono.appendChild(inputTelefono);
+
+    contenedorFormRight.appendChild(contenedorTelefono);
+
+    //. BLOQUE 3....................................................
+    let contenedorEmail = crearElemento('div', undefined, {
+        class: 'form-group w-100'
+    });
+
+    let labelEmail = crearElemento('label', 'Email', {
+        for: 'newProvEmail',
+        class: 'form-label'
+    });
+    contenedorEmail.appendChild(labelEmail);
+
+    let inputEmail = crearElemento('input', undefined, {
+        type: 'text',
+        id: 'newProvEmail',
+        class: 'form-control',
+        placeholder: 'Email del proveedor'
+    });
+    contenedorEmail.appendChild(inputEmail);
+
+    contenedorFormRight.appendChild(contenedorEmail);
+
+    //. BLOQUE 3....................................................
+    let contenedorDireccion = crearElemento('div', undefined, {
+        class: 'form-group w-100'
+    });
+
+    let labelDireccion = crearElemento('label', 'Dirección', {
+        for: 'newProvDireccion',
+        class: 'form-label'
+    });
+    contenedorDireccion.appendChild(labelDireccion);
+
+    let inputDireccion = crearElemento('input', undefined, {
+        type: 'text',
+        id: 'newProvDireccion',
+        class: 'form-control',
+        placeholder: 'Dirección del proveedor'
+    });
+    contenedorDireccion.appendChild(inputDireccion);
+
+    contenedorFormLeft.appendChild(contenedorDireccion);
+
+    //. BLOQUE 5....................................................
+    let contenedorObservaciones = crearElemento('div', undefined, {
+        class: 'form-group w-100'
+    });
+
+    let labelObservaciones = crearElemento('label', 'Observaciones', {
+        for: 'newProvObservacion',
+        class: 'form-label'
+    });
+    contenedorObservaciones.appendChild(labelObservaciones);
+
+    let inputObservaciones = crearElemento('textarea', undefined, {
+        type: 'text',
+        id: 'newProvObservacion',
+        class: 'form-control',
+        placeholder: 'Observaciones del nuevo usuario',
+        rows: '5',
+    });
+    contenedorObservaciones.appendChild(inputObservaciones);
+
+    contenedorFormLeft.appendChild(contenedorObservaciones);
+
+    //. BOTONES......................................................
+    let contenedorBotones = crearElemento('div', undefined, {
+        class: 'form-group form_contenedor_botones'
+    });
+
+    let btnCancelar = crearElemento("input", undefined, {
+        type: 'submit',
+        value: 'Cancelar',
+        class: 'btn btn_custom_3',
+        onclick: 'cancelar()'
+    });
+
+    let btnVaciar = crearElemento("input", undefined, {
+        type: 'submit',
+        value: 'Limpiar datos',
+        class: 'btn btn_custom_2',
+        onclick: 'limpiarDatos()'
+    });
+
+    let btnCrearUsuario = crearElemento("input", undefined, {
+        type: 'submit',
+        value: 'Crear usuario',
+        class: 'btn btn_custom_1',
+        onclick: 'crearProveedor()'
+    });
+
+    contenedorBotones.appendChild(btnCancelar);
+    contenedorBotones.appendChild(btnVaciar);
+    contenedorBotones.appendChild(btnCrearUsuario);
+
+    contenedorFormTop.appendChild(contenedorFormLeft);
+    contenedorFormTop.appendChild(contenedorFormRight);
+
+    formProveedores.appendChild(contenedorFormTop);
+    formProveedores.appendChild(contenedorBotones);
+
+    contenedorForm.appendChild(formProveedores);
+}
+
+function tablaProveedores() {
+}
+
+function newProveedor() {
+    let nombre = document.getElementById('newProvName').value;
+    let observaciones = document.getElementById('newProvObservacion').value;
+    let email = document.getElementById('newProvEmail').value;
+    let telefono = document.getElementById('newProvTelefono').value;
+    let direccion = document.getElementById('newProvDireccion').value;
+    let parametros = {
+        NewProveedor: JSON.stringify({
+            descripcion: nombre,
+            telefono: telefono,
+            email: email,
+            direccion: direccion,
+            observaciones: observaciones
+        })
     };
-    crearFormulario(camposNewProveedor, contenedor);
+    console.log(parametros);
+
+    $.ajax({
+        type: "POST",
+        url: "./php/consultaAdmin.php",
+        data: parametros,
+        error: function (a, b, errorMsg) {
+            console.log(errorMsg);
+        }
+    }).done(function (a) {
+        console.log(a);
+        console.log("hecho");
+    });
 }
 
 // Apartado RESIDUOS_______________________________________________________________________

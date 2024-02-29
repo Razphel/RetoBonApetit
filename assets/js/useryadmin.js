@@ -43,8 +43,71 @@ function principal() {
     nombreApellido.innerHTML = usuarioActual.nombre + " " + usuarioActual.apellido;
     nombreCuenta.innerHTML = usuarioActual.id_usuario;
 
+    // Abrir y cerrar el sidebar
+
+    let sidebarVisible = localStorage.getItem("sidebarVisible");
+
+    if (sidebarVisible === "false") {
+        $(".sidebar").addClass("sidebar-hidden");
+        $(".page_container").addClass("content-sidebar-hidden");
+    }
+
+    // Click del icono
+    $("#toggleSidebar").click(function () {
+        toggleSidebar();
+    });
+
     modoColor();
     generarIconUser();
+}
+
+function generarIconUser() {
+    let parametros = {
+        iconoUsuario: true
+    }
+
+    $.ajax({
+        url: "../../assets/php/iconoSesion.php",
+        type: "GET",
+        data: parametros,
+        success: function (colorIconoUsuario) {
+            let userIcon = document.getElementById('userIcon');
+            userIcon.style.backgroundColor = JSON.parse(colorIconoUsuario);
+
+            let usuarioActual = JSON.parse(localStorage.getItem("usuario"));
+            let nombre = usuarioActual.nombre;
+            let apellido = usuarioActual.apellido;
+            let siglas = nombre.substring(0, 1) + apellido.substring(0, 1);
+            userIcon.textContent = siglas;
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.error("Error en la solicitud AJAX: " + textStatus, errorThrown);
+        }
+    });
+}
+
+function cerrarSesion() {
+    let parametros = {
+        cerrarSesion: true
+    }
+
+    $.ajax({
+        url: "../../assets/php/iconoSesion.php",
+        type: "GET",
+        data: parametros,
+        success: function () {
+            localStorage.removeItem("usuario");
+            window.location.replace("../../../sesion.html");
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.error("Error en la solicitud AJAX: " + textStatus, errorThrown);
+        }
+    });
+}
+
+function toggleSidebar() {
+    $(".sidebar").toggleClass("sidebar-hidden");
+    $(".page_container").toggleClass("content-sidebar-hidden");
 }
 
 function modoColor() {
@@ -69,6 +132,7 @@ function modoColor() {
     });
 }
 
+
 function cerrarSesion() {
     localStorage.removeItem("usuario");
 
@@ -84,7 +148,7 @@ function mostrarMensajeVacio(titulo, texto, textoBoton) {
     let divLabelEmpty = crearElemento("div", undefined, { class: "label_empty card p-4 align-items-center mt-4" });
     let h4 = crearElemento("h4", titulo);
     let p = crearElemento("p", texto);
-    let button = crearElemento("button", textoBoton, { type: "button", class: "btn btn_custom_1 mt-3" });
+    let button = crearElemento("input", textoBoton, { id: "botonMensajeVacio", type: "submit", class: "btn btn_custom_1 mt-3" });
 
     // Construir la estructura
     divLabelEmpty.appendChild(h4);
@@ -128,37 +192,61 @@ function crearFormulario(campos, contenedor) {
     contenedor.appendChild(formulario);
 }
 
-// Contenedor con borde punteado que aparece cuando una tabla está vacía o no tiene contenido
-function mostrarMensajeVacio(titulo, texto, textoBoton) {
-    let divRow = document.createElement("div");
-    divRow.classList.add("row");
+/*
+    Función dinámica para crear la estructura de los pop up
+        - Permite crear un popup con título y contenido
+        - Permite crear un popup solo con contenido (sin título)
+*/
 
-    let divCol = document.createElement("div");
-    divCol.classList.add("col-6", "col-sm-3", "col-md-3", "col-lg-12");
+function crearPopup(titulo = "", contenido = "") {
+    let overlay = crearElemento("div", undefined, {
+        id: "overlay",
+        class: "overlay"
+    });
+    document.body.appendChild(overlay);
 
-    let divLabelEmpty = document.createElement("div");
-    divLabelEmpty.classList.add("label_empty", "card", "p-4", "align-items-center", "mt-4");
+    // Cerrar el pop-up al hacer clic en el fondo oscuro
+    overlay.addEventListener("click", function () {
+        popupContainer.remove();
+        overlay.remove();
+    });
 
-    let h4 = document.createElement("h4");
-    h4.textContent = titulo;
+    // Crear el contenedor del popup
+    let popupContainer = crearElemento("div", undefined, {
+        id: "popupContainer",
+        class: "popupContainer card"
+    });
 
-    let p = document.createElement("p");
-    p.textContent = texto;
+    // Crear el icono de cruz para cerrar el popup
+    let iconoCerrar = crearElemento("i", undefined, {
+        class: "bi bi-x-lg iconoCerrarPopup"
+    });
 
-    let button = document.createElement("button");
-    button.setAttribute("type", "button");
-    button.classList.add("btn", "btn_custom_1", "mt-3");
-    button.textContent = textoBoton;
+    // Agregar el evento de clic para cerrar el popup al hacer clic en el icono de cruz
+    iconoCerrar.addEventListener("click", function () {
+        popupContainer.remove();
+        overlay.remove();
+    });
+    popupContainer.appendChild(iconoCerrar);
 
-    // Construir la estructura
-    divLabelEmpty.appendChild(h4);
-    divLabelEmpty.appendChild(p);
-    divLabelEmpty.appendChild(button);
+    let popupContent = crearElemento("div", undefined, {
+        id: 'contenedorPopup',
+        class: "popupContent card-body"
+    });
 
-    divCol.appendChild(divLabelEmpty);
-    divRow.appendChild(divCol);
+    let tituloPopup = crearElemento("h1", titulo, {
+        class: "mt-2 mb-4"
+    });
+    popupContent.appendChild(tituloPopup);
 
-    return divRow;
+    if (contenido) {
+        popupContent.appendChild(contenido);
+    }
+
+    popupContainer.appendChild(popupContent);
+
+    // Agregar el popup al cuerpo del documento
+    document.body.appendChild(popupContainer);
 }
 
 /*
@@ -282,11 +370,11 @@ function crearPlantillaFormularios(tituloPagina, tituloLeft, tituloRight) {
 
     // Crear la parte inferior de la página con container_left y container_right
     let parteInferior = crearElemento('div', undefined, {
-        class: 'row'
+        class: 'row pagForm_columnas'
     });
 
     let container_left = crearElemento('div', undefined, {
-        class: 'container_left card p-4 col-12 col-lg-8 mb-sm-4 mb-lg-0'
+        class: 'container_left pagForm_columnaLeft card p-4 col-12 col-lg-8 mb-sm-4 mb-lg-0'
     });
     let titulo_container_left = crearElemento('h4', tituloLeft, {
         class: 'mb-5'
@@ -299,9 +387,9 @@ function crearPlantillaFormularios(tituloPagina, tituloLeft, tituloRight) {
     container_left.appendChild(contenedorForm);
 
     let container_right = crearElemento('div', undefined, {
-        class: 'container_right card p-4 col-12 col-lg-4'
+        class: 'container_right pagForm_columnaRight card p-4 col-12 col-lg-4'
     });
-    let titulo_container_right = crearElemento('div', tituloRight, {
+    let titulo_container_right = crearElemento('h4', tituloRight, {
         class: 'mb-5'
     });
     container_right.appendChild(titulo_container_right);
@@ -311,6 +399,10 @@ function crearPlantillaFormularios(tituloPagina, tituloLeft, tituloRight) {
 
     contenedor.appendChild(parteSuperior);
     contenedor.appendChild(parteInferior);
+}
+
+function crearPlantillaTablaPopUp() {
+
 }
 
 // Consulta general para recibir productos. La funcion devuelve un array de objetos literales con los datos de los productos.
