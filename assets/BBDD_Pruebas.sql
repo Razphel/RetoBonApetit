@@ -134,8 +134,8 @@ CONSTRAINT fk_residuos_generados_estadoresiduos FOREIGN KEY (fk_estadoresiduo) R
 
 CREATE TABLE mensajes(
 id_mensajes INT AUTO_INCREMENT PRIMARY KEY,
-descripcion VARCHAR(200),
 fecha_mensaje DATE,
+hora_limite TEXT,
 observaciones TEXT,
 fk_usuario INT,
 
@@ -143,19 +143,23 @@ CONSTRAINT fk_usuario_mensajes FOREIGN KEY (fk_usuario) REFERENCES usuarios(id_u
 );
 
 INSERT INTO estados (descripcion) VALUES ('En reparto'),('Entregado'),('En preparacion'),('Problemas con el envio');
-INSERT INTO proveedores (descripcion,telefono,email,direccion,observaciones) VALUES ('CARREFOUR','111111111','carrefour@gmail.com','Calle prueba 1, 22','observaciones pruebas');
-INSERT INTO proveedores (descripcion,telefono,email,direccion,observaciones) VALUES ('EL CORTE INGLES','222222222','elcorteingles@gmail.com','Calle prueba 2, 32','observaciones prueba');
-INSERT INTO proveedores (descripcion,telefono,email,direccion,observaciones) VALUES ('MERCADONA','333333333','mercadona@gmail.com','Calle prueba 3, 12','observaciones prueba');
-INSERT INTO usuarios (admin,nombre_usuario,nombre,apellido,email,password,activo,observaciones,telefono) VALUES (1,'ADMINISTRADOR1','Yris','Guti','admin1@gmail.com','1234',1,'observaciones pruebas','888888888');
-INSERT INTO usuarios (admin,nombre_usuario,nombre,apellido,email,password,activo,observaciones,telefono) VALUES (0,'USUARIO1','Laura','apellido1','usuario1@gmail.com','1235',1,'observaciones prueba','99999999');
-INSERT INTO usuarios (admin,nombre_usuario,nombre,apellido,email,password,activo,observaciones,telefono) VALUES (0,'sagaz','Hoid','Raphael','usuario1@gmail.com','1235',1,'observaciones prueba','99999999');
 
-INSERT INTO solicitudes (fecha_solicitud,descripcion,unidades,cantidad,observaciones,tramitado,fk_usuario) VALUES ('2024/02/07','huevos','cajas',6,'observaciones prueba',1,2);
-INSERT INTO solicitudes (fecha_solicitud,descripcion,unidades,cantidad,observaciones,tramitado,fk_usuario) VALUES ('2025/03/12','cosaRandom2','gramos',3.4,'observaciones prueba',0,2);
-INSERT INTO solicitudes (fecha_solicitud,descripcion,unidades,cantidad,observaciones,tramitado,fk_usuario) VALUES ('2023/12/07','cosaRandom3','cajas',6,'observaciones prueba',1,2);
-INSERT INTO solicitudes (fecha_solicitud,descripcion,unidades,cantidad,observaciones,tramitado,fk_usuario) VALUES ('2022/02/27','cosaRandom4','kg',3.4,'observaciones prueba',0,2);
-INSERT INTO solicitudes (fecha_solicitud,descripcion,unidades,cantidad,observaciones,tramitado,fk_usuario) VALUES ('2024/04/07','cosaRandom5','botellas',6,'observaciones prueba',1,2);
-INSERT INTO solicitudes (fecha_solicitud,descripcion,unidades,cantidad,observaciones,tramitado,fk_usuario) VALUES ('2024/12/17','carne','kg',3.4,'observaciones prueba',0,2);
+INSERT INTO usuarios (admin,nombre_usuario,nombre,apellido,email,password,activo,observaciones,telefono) VALUES (1,'admin','Brayan','Alfredo','admin@gmail.com','1234',1,'Observaciones pruebas','888888888');
+INSERT INTO usuarios (admin,nombre_usuario,nombre,apellido,email,password,activo,observaciones,telefono) VALUES (0,'user1','Yris','Gutiérrez','usuario@gmail.com','1234',1,'Observaciones prueba','99999999');
+INSERT INTO usuarios (admin,nombre_usuario,nombre,apellido,email,password,activo,observaciones,telefono) VALUES (0,'user2','Laura','Pérez','usuario@gmail.com','1234',1,'Observaciones prueba','99999999');
+INSERT INTO usuarios (admin,nombre_usuario,nombre,apellido,email,password,activo,observaciones,telefono) VALUES (0,'user3','Héctor','Solana','usuario@gmail.com','1234',1,'Observaciones prueba','99999999');
+INSERT INTO usuarios (admin,nombre_usuario,nombre,apellido,email,password,activo,observaciones,telefono) VALUES (0,'user4','Antonio','Costas','usuario@gmail.com','1234',1,'Observaciones prueba','99999999');
+
+INSERT INTO proveedores (descripcion,telefono,email,direccion,observaciones) VALUES ('Carrefour','111111111','carrefour@gmail.com','Calle prueba 1, 22','Observaciones pruebas');
+INSERT INTO proveedores (descripcion,telefono,email,direccion,observaciones) VALUES ('El Corte Inglés','222222222','elcorteingles@gmail.com','Calle prueba 2, 32','Observaciones prueba');
+INSERT INTO proveedores (descripcion,telefono,email,direccion,observaciones) VALUES ('Mercadona','333333333','mercadona@gmail.com','Calle prueba 3, 12','Observaciones prueba');
+
+INSERT INTO solicitudes (fecha_solicitud,descripcion,unidades,cantidad,observaciones,tramitado,fk_usuario) VALUES ('2024/02/07','huevos','cajas',6,'observaciones prueba',1,1);
+INSERT INTO solicitudes (fecha_solicitud,descripcion,unidades,cantidad,observaciones,tramitado,fk_usuario) VALUES ('2025/03/12','producto','g',3.4,'Observaciones prueba',0,1);
+INSERT INTO solicitudes (fecha_solicitud,descripcion,unidades,cantidad,observaciones,tramitado,fk_usuario) VALUES ('2023/12/07','producto','caja',6,'Observaciones prueba',1,1);
+INSERT INTO solicitudes (fecha_solicitud,descripcion,unidades,cantidad,observaciones,tramitado,fk_usuario) VALUES ('2022/02/27','producto','kg',3.4,'Observaciones prueba',0,1);
+INSERT INTO solicitudes (fecha_solicitud,descripcion,unidades,cantidad,observaciones,tramitado,fk_usuario) VALUES ('2024/04/07','producto','unidad',6,'Observaciones prueba',1,1);
+INSERT INTO solicitudes (fecha_solicitud,descripcion,unidades,cantidad,observaciones,tramitado,fk_usuario) VALUES ('2024/12/17','carne','kg',3.4,'Observaciones prueba',0,1);
 
 INSERT INTO categorias (descripcion,observaciones,imagenes) VALUES ('Carnicería','Observación de prueba para carnicería','5.png');
 INSERT INTO categorias (descripcion,observaciones,imagenes) VALUES ('Pastelería','Observación de prueba para pastelería','2.png');
@@ -208,19 +212,33 @@ INSERT INTO producto_categoria (fk_producto,fk_categoria) VALUES (14,5);
 INSERT INTO producto_categoria (fk_producto,fk_categoria) VALUES (15,5);
 INSERT INTO producto_categoria (fk_producto,fk_categoria) VALUES (16,5);
 
-INSERT INTO pedidos (fecha_pedido,fk_proveedor,fk_estado,fk_usuario,observaciones) VALUES ('2024/02/07',1,3,2,'observacion kaladin');
-INSERT INTO pedidos (fecha_pedido,fk_proveedor,fk_estado,fk_usuario,observaciones) VALUES ('2024/02/07',2,2,2,'observacion dalinar');
+INSERT INTO pedidos (fecha_pedido,fk_proveedor,fk_estado,fk_usuario,observaciones) VALUES ('2024/02/01',1,3,2,'Observacion de prueba');
+INSERT INTO pedidos (fecha_pedido,fk_proveedor,fk_estado,fk_usuario,observaciones) VALUES ('2024/02/08',2,2,2,'Observación de prueba');
+INSERT INTO pedidos (fecha_pedido,fk_proveedor,fk_estado,fk_usuario,observaciones) VALUES ('2024/02/15',2,2,2,'Observación de prueba');
+INSERT INTO pedidos (fecha_pedido,fk_proveedor,fk_estado,fk_usuario,observaciones) VALUES ('2024/02/22',2,2,2,'Observación de prueba');
 
 INSERT INTO linea_pedido (fk_pedido,descripcion,cantidad,unidades,observaciones) VALUES (1,'huevos',6,'cajas','Observación de prueba');
 INSERT INTO linea_pedido (fk_pedido,descripcion,cantidad,unidades,observaciones) VALUES (1,'carne',3.4,'kg','Observación de prueba');
-INSERT INTO linea_pedido (fk_pedido,descripcion,cantidad,unidades,observaciones) VALUES (2,'patatas',4,'sacos','Observación de prueba');
+INSERT INTO linea_pedido (fk_pedido,descripcion,cantidad,unidades,observaciones) VALUES (1,'patatas',4,'sacos','Observación de prueba');
+
+INSERT INTO linea_pedido (fk_pedido,descripcion,cantidad,unidades,observaciones) VALUES (2,'naranjas',4,'sacos','Observación de prueba');
+INSERT INTO linea_pedido (fk_pedido,descripcion,cantidad,unidades,observaciones) VALUES (2,'cebollas',4,'sacos','Observación de prueba');
+INSERT INTO linea_pedido (fk_pedido,descripcion,cantidad,unidades,observaciones) VALUES (2,'ajo',4,'sacos','Observación de prueba');
+
+INSERT INTO linea_pedido (fk_pedido,descripcion,cantidad,unidades,observaciones) VALUES (3,'pimiento rojo',4,'sacos','Observación de prueba');
+INSERT INTO linea_pedido (fk_pedido,descripcion,cantidad,unidades,observaciones) VALUES (3,'calabacín',4,'sacos','Observación de prueba');
+INSERT INTO linea_pedido (fk_pedido,descripcion,cantidad,unidades,observaciones) VALUES (3,'lechuga',4,'sacos','Observación de prueba');
+
+INSERT INTO linea_pedido (fk_pedido,descripcion,cantidad,unidades,observaciones) VALUES (4,'frambuesa',4,'sacos','Observación de prueba');
+INSERT INTO linea_pedido (fk_pedido,descripcion,cantidad,unidades,observaciones) VALUES (4,'mantequilla',4,'sacos','Observación de prueba');
+INSERT INTO linea_pedido (fk_pedido,descripcion,cantidad,unidades,observaciones) VALUES (4,'harina floja',4,'sacos','Observación de prueba');
 
 INSERT INTO residuos (descripcion,observaciones) VALUES ('caja de papel','Observación de prueba para caja de papel');
-INSERT INTO residuos (descripcion,observaciones) VALUES ('bolsa de plastico','Observación de prueba para bolsa de plástico');
+INSERT INTO residuos (descripcion,observaciones) VALUES ('bolsa de plástico','Observación de prueba para bolsa de plástico');
 INSERT INTO residuos (descripcion,observaciones) VALUES ('botella de cristal','Observación de prueba para botella de cristal');
 INSERT INTO residuos (descripcion,observaciones) VALUES ('bandeja','Observación de prueba para bandeja');
 
-INSERT INTO mensajes (descripcion,fecha_mensaje,observaciones,fk_usuario) VALUES ('Fecha límite para solicitud 1','2025/02/27','Observación de prueba',1);
-INSERT INTO mensajes (descripcion,fecha_mensaje,observaciones,fk_usuario) VALUES ('Fecha límite para solicitud 2','2023/02/27','Observación de prueba',1);
-INSERT INTO mensajes (descripcion,fecha_mensaje,observaciones,fk_usuario) VALUES ('Fecha límite para solicitud 3','2022/02/27','Observación de prueba',1);
-INSERT INTO mensajes (descripcion,fecha_mensaje,observaciones,fk_usuario) VALUES ('Fecha límite para solicitud 4','2024/02/27','Observación de prueba',1);
+INSERT INTO mensajes (fecha_mensaje, hora_limite, observaciones,fk_usuario) VALUES ('2025/02/27', 'Hora límite para solicitud 23:59', 'Observación de prueba para mensaje de administrador',1);
+INSERT INTO mensajes (fecha_mensaje, hora_limite, observaciones,fk_usuario) VALUES ('2023/02/27', 'Hora límite para solicitud 2', 'Observación de prueba',1);
+INSERT INTO mensajes (fecha_mensaje, hora_limite, observaciones,fk_usuario) VALUES ('2022/02/27', 'Hora límite para solicitud 3', 'Observación de prueba',1);
+INSERT INTO mensajes (fecha_mensaje, hora_limite, observaciones,fk_usuario) VALUES ('2024/02/27', 'Hora límite para solicitud 4', 'Observación de prueba',1);

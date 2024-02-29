@@ -23,7 +23,7 @@ window.addEventListener("load", principal);
 
 function principal() {
     let usuarioActual = JSON.parse(localStorage.getItem("usuario"));
-
+    
     //Antes de cargar la pagina del usuario, se comprueba que no se haya accedido sin una sesion valida.
     if (localStorage.getItem("usuario")) {
         let usuarioActual = JSON.parse(localStorage.getItem("usuario"));
@@ -57,36 +57,8 @@ function principal() {
         toggleSidebar();
     });
 
-    modoColor();
+    modoColor(); 
     generarIconUser();
-}
-
-function toggleSidebar() {
-    $(".sidebar").toggleClass("sidebar-hidden");
-    $(".page_container").toggleClass("content-sidebar-hidden");
-}
-
-
-function modoColor() {
-    const iconoPrincipal = document.getElementById("iconoPrincipal");
-
-    // Event listener para cambiar entre los modos oscuro y claro
-    document.getElementById("modoOscuro").addEventListener("click", function () {
-        // Cambiar la clase del icono principal al modo oscuro
-        iconoPrincipal.classList.replace("bi-brightness-high", "bi-moon");
-
-        // Agregar la clase "darkMode" al cuerpo del documento
-        document.body.classList.add("darkMode");
-    });
-
-    // Event listener para cambiar entre los modos oscuro y claro
-    document.getElementById("modoClaro").addEventListener("click", function () {
-        // Cambiar la clase del icono principal al modo claro
-        iconoPrincipal.classList.replace("bi-moon", "bi-brightness-high");
-
-        // Eliminar la clase "darkMode" del cuerpo del documento
-        document.body.classList.remove("darkMode");
-    });
 }
 
 function generarIconUser() {
@@ -133,6 +105,33 @@ function cerrarSesion() {
     });
 }
 
+function toggleSidebar() {
+    $(".sidebar").toggleClass("sidebar-hidden");
+    $(".page_container").toggleClass("content-sidebar-hidden");
+}
+
+function modoColor() {
+    const iconoPrincipal = document.getElementById("iconoPrincipal");
+
+    // Event listener para cambiar entre los modos oscuro y claro
+    document.getElementById("modoOscuro").addEventListener("click", function() {
+        // Cambiar la clase del icono principal al modo oscuro
+        iconoPrincipal.classList.replace("bi-brightness-high", "bi-moon");
+
+        // Agregar la clase "darkMode" al cuerpo del documento
+        document.body.classList.add("darkMode");
+    });
+
+    // Event listener para cambiar entre los modos oscuro y claro
+    document.getElementById("modoClaro").addEventListener("click", function() {
+        // Cambiar la clase del icono principal al modo claro
+        iconoPrincipal.classList.replace("bi-moon", "bi-brightness-high");
+
+        // Eliminar la clase "darkMode" del cuerpo del documento
+        document.body.classList.remove("darkMode");
+    });
+}
+
 // Contenedor con borde punteado que aparece cuando una tabla está vacía o no tiene contenido
 function mostrarMensajeVacio(titulo, texto, textoBoton) {
     let divRow = crearElemento("div", undefined, { class: "row" });
@@ -140,7 +139,8 @@ function mostrarMensajeVacio(titulo, texto, textoBoton) {
     let divLabelEmpty = crearElemento("div", undefined, { class: "label_empty card p-4 align-items-center mt-4" });
     let h4 = crearElemento("h4", titulo);
     let p = crearElemento("p", texto);
-    let button = crearElemento("button", textoBoton, {id:"botonMensajeVacio", type: "button", class: "btn btn_custom_1 mt-3" });
+    let button = crearElemento("input", textoBoton, { id:"botonMensajeVacio", type: "submit", class: "btn btn_custom_1 mt-3" });
+
     // Construir la estructura
     divLabelEmpty.appendChild(h4);
     divLabelEmpty.appendChild(p);
@@ -163,6 +163,24 @@ function crearElemento(etiqueta, contenido, atributos) {
         }
     }
     return elementoNuevo;
+}
+
+/* Función dinámica para crear formularios
+    - elementoPadre (se especifica el elemento HTML en el cual se va a insertar el formulario)
+    - campos(recibe un array de objetos con todos los elementos a incluir en el formulario)
+*/
+function crearFormulario(campos, contenedor) {
+    const formulario = document.createElement('form');
+
+    // Recorrer las claves del objeto campos
+    for (const nombreCampo in campos) {
+        const campo = campos[nombreCampo];
+        const elemento = crearElemento(campo.etiqueta, campo.contenido, campo.atributos);
+
+        // Agregar el elemento al formulario
+        formulario.appendChild(elemento);
+    }
+    contenedor.appendChild(formulario);
 }
 
 /*
@@ -220,24 +238,6 @@ function crearPopup(titulo = "", contenido = "") {
 
     // Agregar el popup al cuerpo del documento
     document.body.appendChild(popupContainer);
-}
-
-/* Función dinámica para crear formularios
-    - elementoPadre (se especifica el elemento HTML en el cual se va a insertar el formulario)
-    - campos(recibe un array de objetos con todos los elementos a incluir en el formulario)
-*/
-function crearFormulario(campos, contenedor) {
-    const formulario = document.createElement('form');
-
-    // Recorrer las claves del objeto campos
-    for (const nombreCampo in campos) {
-        const campo = campos[nombreCampo];
-        const elemento = crearElemento(campo.etiqueta, campo.contenido, campo.atributos);
-
-        // Agregar el elemento al formulario
-        formulario.appendChild(elemento);
-    }
-    contenedor.appendChild(formulario);
 }
 
 /*
@@ -368,28 +368,32 @@ function crearPlantillaFormularios(tituloPagina, tituloLeft, tituloRight) {
         class: 'container_left pagForm_columnaLeft card p-4 col-12 col-lg-8 mb-sm-4 mb-lg-0'
     });
     let titulo_container_left = crearElemento('h4', tituloLeft, {
-        class: 'mb-5'
+        class: 'mb-5' 
     });
     let contenedorForm = crearElemento('div', undefined, {
         id: 'contenedorForm'
     });
 
-    container_left.appendChild(titulo_container_left);
-    container_left.appendChild(contenedorForm);
+    container_left.appendChild(titulo_container_left); 
+    container_left.appendChild(contenedorForm); 
 
     let container_right = crearElemento('div', undefined, {
         class: 'container_right pagForm_columnaRight card p-4 col-12 col-lg-4'
     });
-    let titulo_container_right = crearElemento('div', tituloRight, {
+    let titulo_container_right = crearElemento('h4', tituloRight, {
         class: 'mb-5'
     });
-    container_right.appendChild(titulo_container_right);
+    container_right.appendChild(titulo_container_right); 
 
     parteInferior.appendChild(container_left);
     parteInferior.appendChild(container_right);
 
     contenedor.appendChild(parteSuperior);
     contenedor.appendChild(parteInferior);
+}
+
+function crearPlantillaTablaPopUp() {
+
 }
 
 // Consulta general para recibir productos. La funcion devuelve un array de objetos literales con los datos de los productos.
