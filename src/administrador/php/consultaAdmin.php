@@ -51,3 +51,22 @@ if (isset($_REQUEST['recibirMensajeInicio'])) {
     $mensaje=BD::imprimirMensajesInicio();
     echo json_encode($mensaje);
 }
+
+if (isset($_REQUEST['enviarNuevoMensaje'])) {
+    $tabla="mensajes";
+    $mensaje=$_REQUEST['nuevoMensaje'];
+    $hora=$_REQUEST['nuevaHoraLimite'];
+    $id_usuario=$_REQUEST['id_usuario'];
+    $fechaActual=$_REQUEST['fecha'];
+
+    $datos = array(
+        "fecha_mensaje" => $fechaActual,
+        "hora_limite" => $hora,
+        "observaciones" => $mensaje,
+        "fk_usuario" => $id_usuario
+    );
+
+    BD::insertarRegistro($tabla, $datos);
+
+    echo json_encode(true);
+}

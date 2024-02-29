@@ -192,20 +192,42 @@ function principal() {
             iconMensaje = crearElemento('i', undefined, {
                 class: 'bi bi-stopwatch'
             })
+
+            let labelHoralimite = crearElemento("label", "Hora limite para la solicitud: ", {
+                for: "contenidoHoraLimiteNueva"
+            })
+
             horaLimite = crearElemento("input", undefined, {
-                id:"contenidoMensajeNuevo",
-                placeholder: "Escribe el mensaje nuevo"
+                id: "contenidoHoraLimiteNueva",
+                placeholder: "Nueva hora limite"
             });
 
             contendorHoraLimite.appendChild(iconMensaje);
+            contendorHoraLimite.appendChild(labelHoralimite);
             contendorHoraLimite.appendChild(horaLimite);
 
-            observaciones = crearElemento("p", "", undefined);
+            let labelMensajeNuevo = crearElemento("label", "Mensaje nuevo: ", {
+                for: "mensajeNuevo"
+            })
+
+            observaciones = crearElemento("textarea", undefined, {
+                id: "mensajeNuevo",
+                placeholder: "Mensaje nuevo."
+            });
+
+            let botonEnviarMensaje = crearElemento("button", "Enviar", {
+                id: "botonEnviarMensaje",
+                class: "n btn_custom_1"
+            });
+
+            botonEnviarMensaje.addEventListener("click", enviarMensaje);
 
             contenedorMensajeTop.appendChild(tituloMensaje);
             contenedorMensajeTop.appendChild(fechaMensaje);
             contenedorMensajeBottom.appendChild(contendorHoraLimite);
+            contenedorMensajeBottom.appendChild(labelMensajeNuevo);
             contenedorMensajeBottom.appendChild(observaciones);
+            contenedorMensajeBottom.appendChild(botonEnviarMensaje);
 
             //Organizo los elementos y los agrego al div row.
             contenedorMensaje.appendChild(contenedorMensajeTop);
@@ -2224,4 +2246,41 @@ function navResiduos() {
 }
 
 function pagResiduos() {
+}
+
+function enviarMensaje(e) {
+    let usuarioActual = JSON.parse(localStorage.getItem("usuario"));
+
+    let idUsuario = usuarioActual.clavePrimaria;
+    let horaLimite = document.querySelector("#contenidoHoraLimiteNueva").value;
+    let mensaje = document.querySelector("#mensajeNuevo").value;
+    let fechaActual = obtenerFechaActual();
+
+    if (horaLimite.trim() != "" || mensaje.trim() != "") {
+
+        let parametros = {
+            enviarNuevoMensaje: true,
+            nuevaHoraLimite: horaLimite,
+            nuevoMensaje: mensaje,
+            id_usuario: idUsuario,
+            fecha: fechaActual
+        };
+
+        //Insertar mensaje nuevo.
+        $.ajax({
+            //Ubicacion del archivo php que va a manejar los valores.
+            url: "./php/consultaAdmin.php",
+            //Metodo en que los va a recibir.
+            type: "GET",
+            dataType: "json",
+            data: parametros,
+            async: false,
+            success: pagInicio,
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.error("Error en la solicitud AJAX: " + textStatus, errorThrown);
+            }
+        });
+
+    }
+
 }
