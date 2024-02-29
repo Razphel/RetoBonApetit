@@ -139,7 +139,7 @@ function mostrarMensajeVacio(titulo, texto, textoBoton) {
     let divLabelEmpty = crearElemento("div", undefined, { class: "label_empty card p-4 align-items-center mt-4" });
     let h4 = crearElemento("h4", titulo);
     let p = crearElemento("p", texto);
-    let button = crearElemento("input", textoBoton, { id:"botonMensajeVacio", type: "submit", class: "btn btn_custom_1 mt-3" });
+    let button = crearElemento("input", textoBoton, { id:"botonMensajeVacio", type: "submit", value: "Hacer solicitud", class: "btn btn_custom_1 mt-3" });
 
     // Construir la estructura
     divLabelEmpty.appendChild(h4);

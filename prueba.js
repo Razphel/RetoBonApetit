@@ -85,6 +85,7 @@ function mensajesInicio(respuesta) {
     //Contenedor general de la pagina.
     let contenedor = document.querySelector("#contenedor");
 
+    //Contenedor de botones de categorias y h1 con el titulo de la vista inicio.
     let parteSuperior = crearElemento("div", undefined, {
         class: "row"
     });
@@ -113,43 +114,14 @@ function mensajesInicio(respuesta) {
         class: "col-4 d-flex justify-content-between"
     });
     let contenedorMensaje = crearElemento("div", undefined, {
-        class: "card card_margin p-3 mensajesUser"
+        class: "label_effect card card_margin p-3 mb-3"
     });
-    let contenedorMensajeTop = crearElemento('div', undefined, {
-        class: "contenedorMensajeTop"
-    });
-    let contenedorMensajeBottom = crearElemento('div', undefined, {
-        class: "contenedorMensajeBottom"
-    });
-    let tituloMensaje = crearElemento("h5", "Mensaje del administrador", {
-        class: 'titulo_mensajeUser'
-    });
-    let fechaMensaje = crearElemento("p", respuesta.fecha_mensaje, {
-        class: 'fecha_mensajeUser'
-    });
-    let contenedorHoraLimite = crearElemento('div', undefined, {
-        class: 'contenedorHoraLimite'
-    })
-    let iconMensaje = crearElemento('i', undefined, {
-        class: 'bi bi-stopwatch'
-    })
-    let horaLimite = crearElemento("p", respuesta.hora_limite, {
-        class: 'horaLimiteTexto'
-    });
-
-    contenedorHoraLimite.appendChild(iconMensaje);
-    contenedorHoraLimite.appendChild(horaLimite);
-
-    let observaciones = crearElemento("p", respuesta.observaciones, undefined);
-
-    contenedorMensajeTop.appendChild(tituloMensaje);
-    contenedorMensajeTop.appendChild(fechaMensaje);
-    contenedorMensajeBottom.appendChild(contenedorHoraLimite);
-    contenedorMensajeBottom.appendChild(observaciones);
+    let mensaje = crearElemento("p", respuesta.descripcion, undefined);
+    let fechaMensaje = crearElemento("p", respuesta.fecha_mensaje, undefined);
 
     //Organizo los elementos y los agrego al div row.
-    contenedorMensaje.appendChild(contenedorMensajeTop);
-    contenedorMensaje.appendChild(contenedorMensajeBottom);
+    contenedorMensaje.appendChild(mensaje);
+    contenedorMensaje.appendChild(fechaMensaje);
     carta.appendChild(contenedorMensaje);
     contenedorMensajes.appendChild(carta);
 
@@ -163,28 +135,16 @@ function mensajesInicio(respuesta) {
 function inicioSolicitudes(respuesta) {
     let contenedor = document.querySelector("#contenedor");
 
-    let parteInferior = crearElemento('div', undefined, {
-        class: 'row'
-    });
-
-    let tituloSolicitudes = crearElemento("h1", "Solicitudes recientes", {
-        id: "tituloApartado",
-        class: "py-3 mb-2 mt-5"
-    });
-
-    parteInferior.appendChild(tituloSolicitudes);
-
-    let contenedorSolicitudes = crearElemento("div", undefined, {
-        class: 'contenedor_solicitudesInicio'
-    })
-
     //Se comprueba primero que exista algo en el historial de solicitudes.
-    if (respuesta && respuesta.length > 0) {
-        //Aquí se agrupan los pedidos agrupados por día.
+    if (respuesta[0] != null) {
+        let pedidos = respuesta;
+
+        //Aqui se agrupan los pedidos agrupados por día.
         let pedidosAgrupados = {};
 
-        // Iterar sobre los pedidos para agruparlos por día
-        respuesta.forEach(pedido => {
+        // Itera sobre cada pedido.
+        pedidos.forEach(pedido => {
+            // Extrae la fecha del pedido.
             let fechaPedido = pedido.fecha_pedido;
 
             // Si la fecha del pedido no es una clave en pedidosAgrupados, agrégala con un array vacío.
@@ -196,113 +156,60 @@ function inicioSolicitudes(respuesta) {
             pedidosAgrupados[fechaPedido].push(pedido);
         });
 
-        // Contador para limitar a solo los tres primeros días
-        let contadorDias = 0;
+        console.log(pedidosAgrupados);
 
-        // Iterar sobre los pedidos agrupados por día y mostrar solo los tres primeros días
         for (let fecha in pedidosAgrupados) {
+            //Cada fecha es un array de objetos literales, cada objeto es un pedido.
+            let cartaPedidos = crearElemento("div");
+            let fechaPedido = crearElemento("h1", fecha);
 
-            // Verificar si ya hemos mostrado tres días
-            if (contadorDias >= 3) {
-                break; // Salir del bucle si ya hemos mostrado tres días
+            cartaPedidos.appendChild(fechaPedido);
+            for (let i = 0; i < pedidosAgrupados[fecha].length; i++) {
+                let pedido = pedidosAgrupados[fecha][i];
+                let textoPedidos = crearElemento("p", pedido.descripcion + " " + pedido.cantidad + " " + pedido.unidades);
+                cartaPedidos.appendChild(textoPedidos);
             }
+            contenedor.appendChild(cartaPedidos);
 
-            // Cada fecha es un array de objetos literales, cada objeto es un pedido.
-            let cartaPedidos = crearElemento("div", undefined, {
-                class: 'card label_effect w-100 usuarioInicioCarta'
-            });
-
-            let carta_containerTop = crearElemento('div', undefined, {
-                class: 'carta_containerTop'
-            });
-
-            let fechaPedido = crearElemento("p", fecha);
-
-            let contenedorTexto = crearElemento("div", undefined, {
-                class: "contenedorTexto w-100"
-            });
-
-            let botonCarta = crearElemento('input', undefined, {
-                type: 'submit',
-                value: 'Ver pedido',
-                class: 'btn btn_custom_1'
-            });
-
-            let contadorProductos = 0;
-            
-            pedidosAgrupados[fecha].forEach(pedido => {
-                let producto = crearElemento("p", pedido.descripcion, {
-                    class: 'producto_cartaUsuario'
-                });
-                let cantidadyunidades = crearElemento("p", pedido.cantidad + " " + pedido.unidades, {
-                    class: 'cantidadyud_cartaUsuario'
-                });
-                let filaTexto = crearElemento("div", undefined, {
-                    class: "filaCartaSolicitud"
-                }); 
-
-                filaTexto.appendChild(producto); 
-                filaTexto.appendChild(cantidadyunidades); 
-                contenedorTexto.appendChild(filaTexto); 
-
-                contadorProductos++; 
-            });
-
-            let contenedorContador = crearElemento('span', undefined, {
-                class: 'contadorProductosCarta'
-            });
-            let contadorElemento = crearElemento('span', contadorProductos, {
-                class: 'textoContador'
-            }); 
-
-            let contadorTextoFijo = crearElemento('span', ' prod.', {
-                class: 'textoContador'
-            });
-
-            contenedorContador.appendChild(contadorElemento); 
-            contenedorContador.appendChild(contadorTextoFijo); 
-
-            carta_containerTop.appendChild(fechaPedido);
-            carta_containerTop.appendChild(contenedorContador);
-
-            cartaPedidos.appendChild(carta_containerTop); 
-            cartaPedidos.appendChild(contenedorTexto);
-            cartaPedidos.appendChild(botonCarta);
-
-            contadorDias++; // Incrementar el contador de días mostrados
-
-            contenedorSolicitudes.appendChild(cartaPedidos);
         }
+
+        // let historial = crearElemento("table", undefined, {
+        //     class: "table table-responsive table-hover mt-4"
+        // });
+        // let tablaTitulos = crearElemento("thead");
+
+        // //Creo los titulos de las tablas.
+        // let titulos = crearElemento("tr", undefined, undefined);
+        // //Segun el formato en el que se recibe el objeto, tengo que usar sus elementos de la mitad al final.
+        // let prueba = Object.keys(respuesta[0]);
+        // for (let i = prueba.length / 2; i < prueba.length; i++) {
+        //     //Creo cada elemento y lo agrego a la fila del titulo.
+        //     let filaTitulo = crearElemento("th", prueba[i]);
+        //     titulos.appendChild(filaTitulo);
+        // }
+
+        // //Agrego el titulo a la tabla.
+        // tablaTitulos.appendChild(titulos);
+        // historial.appendChild(tablaTitulos);
+
+        // let tablaBody = crearElemento("tbody");
+        // //Ahora agrego el contenido.
+        // respuesta.forEach(fila => {
+        //     let filaNormal = crearElemento("tr", undefined, undefined);
+        //     for (let i = 0; i < Object.keys(fila).length / 2; i++) {
+        //         let elementoFila = crearElemento("td", fila[i], undefined);
+        //         filaNormal.appendChild(elementoFila);
+        //     }
+        //     tablaBody.appendChild(filaNormal);
+        // });
+        // historial.appendChild(tablaBody);
+        // contenedor.appendChild(historial);
     } else {
-        // Manejar el caso en que no haya pedidos.
-        let mensajeVacio = mostrarMensajeVacio("No hay pedidos", "¿Hacer un pedido?", "Ver productos");
-        parteInferior.appendChild(mensajeVacio);
+        let sinHistorial = crearElemento("p", "Historial Vacio.", undefined)
+        contenedor.appendChild(sinHistorial);
     }
 
-    parteInferior.appendChild(contenedorSolicitudes); 
-    contenedor.appendChild(parteInferior);
 }
-
-// Página productos___________________________________________________________________
-function navProductos() {
-    let parametros = {
-        categoria: 'categorias'
-    };
-    //Mostrar categorias.
-    $.ajax({
-        //Ubicacion del archivo php que va a manejar los valores.
-        url: "./php/consultaUsuario.php",
-        //Metodo en que los va a recibir.
-        type: "GET",
-        dataType: "json",
-        data: parametros,
-        success: pagProductos,
-        error: function (jqXHR, textStatus, errorThrown) {
-            console.error("Error en la solicitud AJAX: " + textStatus, errorThrown);
-        }
-    });
-}
-
 
 // Página productos___________________________________________________________________
 function navProductos() {
@@ -790,7 +697,7 @@ function imprimirFiltroTabla(nombre = null, categoria = null, unidades = null) {
         value: "Hacer solicitud",
     });
 
-    botonSolicitud.addEventListener("click", manejadorSolicitud); 
+    botonSolicitud.addEventListener("click", manejadorSolicitud);
 
     inputNombre.addEventListener("input", manejadorFiltro);
     contenedorBuscadorIcon.appendChild(inputNombre);
@@ -810,7 +717,7 @@ function manejadorSolicitud(e) {
 }
 
 function crearSelect(opciones,idSelect) {
-    let select = crearElemento("select",undefined,{id: idSelect, class: 'form-select'});
+    let select = crearElemento("select",undefined,{id: idSelect});
     for (let key in opciones) {
         let opcion = crearElemento("option", opciones[key], {value: opciones[key]}); 
         // console.log('Clave:', key);
@@ -842,11 +749,10 @@ function mostrarPopup(datosUsuario) {
     });
 
     let textoInfo = crearElemento("p", `Solicitud del usuario ${datosUsuario.nombre} ${datosUsuario.apellido} para añadir un producto nuevo.`, {
-        id: "observacionesNuevoProducto",
         class: "mb-5"
     });
 
-    contenedorPopup.appendChild(textoInfo); 
+    contenedorPopup.appendChild(textoInfo);
 
     //. BLOQUE 1....................................................
     let contenedorNombre = crearElemento('div', undefined, {
@@ -866,7 +772,7 @@ function mostrarPopup(datosUsuario) {
         type: "text"
     });
     contenedorNombre.appendChild(labelNombre);
-    contenedorNombre.appendChild(nombreProducto); 
+    contenedorNombre.appendChild(nombreProducto);
     formulario.appendChild(contenedorNombre);
 
     //. BLOQUE 2....................................................
@@ -888,7 +794,7 @@ function mostrarPopup(datosUsuario) {
         value: 0
     });
     contenedorCantidad.appendChild(labelCantidad);
-    contenedorCantidad.appendChild(cantidadProducto); 
+    contenedorCantidad.appendChild(cantidadProducto);
     formulario.appendChild(contenedorCantidad);
 
     //. BLOQUE 3....................................................
@@ -920,8 +826,8 @@ function mostrarPopup(datosUsuario) {
     });
 
     let select = crearSelect(unidadesSeleccionadas,'unidadesNuevoProducto');
-    contenedorUdMedida.appendChild(labelUdMedida);
     contenedorUdMedida.appendChild(select); 
+    contenedorUdMedida.appendChild(labelUdMedida);
     // contenedorUdMedida.appendChild(udMedidaProducto);
     formulario.appendChild(contenedorUdMedida);
 
@@ -940,13 +846,13 @@ function mostrarPopup(datosUsuario) {
         id: "observacionesNuevoProducto",
         class: "form-control",
         placeholder: 'Observaciones del nuevo producto',
-        rows: '3', 
+        rows: '3',
     });
     contenedorObservaciones.appendChild(labelObservaciones);
-    contenedorObservaciones.appendChild(observacionesProducto); 
+    contenedorObservaciones.appendChild(observacionesProducto);
     formulario.appendChild(contenedorObservaciones);
 
-    contenedorPopup.appendChild(formulario); 
+    contenedorPopup.appendChild(formulario);
 
     //. BOTONES......................................................
     let contenedorBotones = crearElemento('div', undefined, {
@@ -962,7 +868,7 @@ function mostrarPopup(datosUsuario) {
 
     let btnVaciar = crearElemento("input", undefined, {
         type: 'submit',
-        value: 'Limpiar datos',
+        value: 'Limpiar Datos',
         class: 'btn btn_custom_2',
         onclick: 'limpiarDatos()'
     });
@@ -978,7 +884,7 @@ function mostrarPopup(datosUsuario) {
         let nombre = document.querySelector("#nombreNuevoProducto").value;
         let cantidadRecibida = parseFloat(document.querySelector("#cantidadNuevoProducto").value);
         let unidadRecibida = document.querySelector("#unidadesNuevoProducto").value;
-                // console.log(unidad);
+        // console.log(unidad);
         let observaciones = document.querySelector("#observacionesNuevoProducto").value;
 
         //Se crea el nuevo producto.
@@ -1000,10 +906,10 @@ function mostrarPopup(datosUsuario) {
     contenedorBotones.appendChild(btnVaciar);
     contenedorBotones.appendChild(botonAñadirCesta);
 
-    contenedorPopup.appendChild(contenedorBotones); 
+    contenedorPopup.appendChild(contenedorBotones);
 
     // Agregar el contenido del pop-up al contenedor
-    popupContainer.appendChild(contenedorPopup); 
+    popupContainer.appendChild(contenedorPopup);
 
     // Agregar el contenedor del pop-up al body
     document.body.appendChild(popupContainer);
@@ -1020,7 +926,6 @@ function mostrarPopup(datosUsuario) {
 function agregarCestaDesdePopup(datosProducto) {
     // Lógica para añadir a la cesta desde el pop-up
     let cesta = JSON.parse(localStorage.getItem("cesta")) || [];
-
     // Verificar si el producto ya está en la cesta
     let productoEnCestaIndex = cesta.findIndex(item =>
         item.nombre_producto === datosProducto.nombre_producto
@@ -1038,6 +943,7 @@ function agregarCestaDesdePopup(datosProducto) {
 
     // Actualizar la visualización de la cesta (puedes hacerlo llamando a la función correspondiente)
     manejadorCarrito();
+    console.log(cesta);
 }
 
 function imprimirTablaProductos(nombre = null, categoria = null, unidades = null) {
@@ -1103,7 +1009,7 @@ function imprimirTablaProductos(nombre = null, categoria = null, unidades = null
                 let celdaBody = crearElemento("td");
 
                 if (index === 0) {
-                    celdaBody.classList.add("tabla_nombreLargo"); 
+                    celdaBody.classList.add("tabla_nombreLargo");
                 }
 
                 if (index === 1) {
@@ -1164,6 +1070,8 @@ function imprimirTablaProductos(nombre = null, categoria = null, unidades = null
         contenedorTablaProductos.innerHTML = "";
         let mensajeVacio = mostrarMensajeVacio("No hay productos", "¿Hacer una solicitud de producto?", "Hacer solicitud");
         contenedorTablaProductos.appendChild(mensajeVacio);
+        let botonMensajeVacio = document.querySelector("#botonMensajeVacio");
+        botonMensajeVacio.addEventListener("click", manejadorSolicitud);
     }
 }
 
@@ -1444,7 +1352,7 @@ function hacerPedido() {
 
     let btnVaciar = crearElemento("input", undefined, {
         type: 'submit',
-        value: 'Limpiar datos',
+        value: 'Limpiar Datos',
         class: 'btn btn_custom_2',
         onclick: 'limpiarDatos()'
     });
@@ -1453,7 +1361,7 @@ function hacerPedido() {
         type: 'submit',
         value: 'Enviar solicitud',
         class: 'btn btn_custom_1',
-        onclick: 'crearProducto()'
+        onclick: 'InsertarSolicitud()'
     });
 
     contenedorBotones.appendChild(btnCancelar);
@@ -1474,6 +1382,11 @@ function limpiarDatos() {
     formulario.reset();
 }
 
+function InsertarSolicitud()
+{
+    console.log(cesta);
+}
+
 function cancelar() {
-    window.location.href('./');
+    window.location.replace('./inicioUsuario.html');
 }
