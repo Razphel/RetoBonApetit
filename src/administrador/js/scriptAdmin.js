@@ -1727,10 +1727,15 @@ function tablaSolicitudes(usuarios) {
     
 
         let celdaBoton = crearElemento("td");
-        let botonActivarDesactivar = crearElemento("button", "Activar/Desactivar");
-
+        // let botonActivarDesactivar = crearElemento("button", "Activar/Desactivar");
+        let botonTramitado = crearElemento("input", undefined, {
+            type: 'submit',
+            value: 'tramitar',
+            class: 'btn btn_custom_1',
+            onclick: 'actualizarTramitado()'
+        });
     
-        celdaBoton.appendChild(botonActivarDesactivar);
+        celdaBoton.appendChild(botonTramitado);
         filaBody.appendChild(celdaBoton);
         tablaBody.appendChild(filaBody);
     });
