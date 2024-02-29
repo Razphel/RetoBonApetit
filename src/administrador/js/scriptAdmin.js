@@ -1007,7 +1007,8 @@ function tablaPedidos(pedidos) {
 
     //Buscador.
     let buscador = crearElemento("input", undefined, {
-        id: "buscadorPedidos"
+        id: "buscadorPedidos",
+        placeholder: "Buscador de pedidos"
     });
 
     buscador.addEventListener("input", function (e) {
@@ -1110,7 +1111,8 @@ function tablaUsuarios(usuarios) {
 
     //Buscador.
     let buscador = crearElemento("input", undefined, {
-        id: "buscadorUsuarios"
+        id: "buscadorUsuarios",
+        placeholder: "Buscador de usuarios"
     });
 
     buscador.addEventListener("input", function (e) {
@@ -1494,7 +1496,7 @@ function tablaProveedores(proveedores) {
     //Buscador.
     let buscador = crearElemento("input", undefined, {
         id: "buscadorProveedores",
-        placeholder: "Busca el proveedor",
+        placeholder: "Buscador de proveedor",
     });
 
     buscador.addEventListener("input", function (e) {
@@ -1849,7 +1851,8 @@ function tablaSolicitudes(usuarios) {
 
     //Buscador.
     let buscador = crearElemento("input", undefined, {
-        id: "buscadorUsuarios"
+        id: "buscadorSolicitudes",
+        placeholder: "Buscador de solicitudes"
     });
 
     buscador.addEventListener("input", function (e) {
