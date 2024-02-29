@@ -466,30 +466,38 @@ function crearSelect(opciones,idSelect) {
     return select; 
 }
 
+function crearCheckbox(opciones,idCheckbox) {
+    let select = crearElemento("select",undefined,{id: idSelect});
+    for (let key in opciones) {
+        let opcion = crearElemento("option", opciones[key], {value: key}); 
+        // console.log('Clave:', key);
+        // console.log('Valor:', opciones[key]);
+        select.appendChild(opcion);
+      }
+    return select; 
+}
+
 function selectUnidades(respuesta)
 {
 let unidades = JSON.parse(respuesta);
-console.log(unidades);
+//console.log(unidades);
 let guardarDescripcion = []; 
 for (let i = 0; i < unidades.length; i++) {
     guardarDescripcion[unidades[i].id_unidades] = unidades[i].descripcion;
 }
-console.log(guardarDescripcion);
+//console.log(guardarDescripcion);
 return guardarDescripcion;
 }
 
-function crearCheckBox(opciones, nombreGrupo) 
+function selectCategoria(respuesta)
 {
-    let grupoCheckboxes = document.createElement('div');
-
-    for (let clave in opciones) {
-            let label = crearElemento('label');
-            let checkbox = crearElemento('input',undefined,{type:'checkbox', name: nombreGrupo, value: clave});
-
-            label.appendChild(checkbox);
-            grupoCheckboxes.appendChild(label);
-        }
-    return grupoCheckboxes;
+let categorias = JSON.parse(respuesta);
+let guardarDescripcion = []; 
+for (let i = 0; i < categorias.length; i++) {
+    guardarDescripcion[categorias[i].id_categorias] = categorias[i].descripcion;
+}
+console.log(guardarDescripcion);
+return guardarDescripcion;
 }
 
 // Formulario 2. Crear producto.......................
@@ -536,7 +544,7 @@ function pagAñadirProducto() {
     let parametros = {
         unidadesDeMedida: 'unidadesMedida' 
     };
-    console.log(parametros);
+    //console.log(parametros);
 
     $.ajax({
         type: "POST",
@@ -550,7 +558,7 @@ function pagAñadirProducto() {
             console.error("Error en la solicitud AJAX: " + textStatus, errorThrown);
         }
     });
-    // console.log(unidadesSeleccionadas);
+    //console.log(unidadesSeleccionadas);
 
     let contenedorUdMedida = crearElemento('div', undefined, {
         class: 'form-group w-100'
@@ -569,8 +577,8 @@ function pagAñadirProducto() {
     //     placeholder: 'Ud. de medida del producto'
     // });
     // contenedorUdMedida.appendChild(inputUdMedida); 
-    let select = crearSelect(unidadesSeleccionadas,'unidadesNewProducto');
-    contenedorUdMedida.appendChild(select); 
+    let selectUni = crearSelect(unidadesSeleccionadas,'unidadesNewProducto');
+    contenedorUdMedida.appendChild(selectUni); 
     contenedorFormLeft.appendChild(contenedorUdMedida);
 
     //. BLOQUE 3....................................................
@@ -592,10 +600,26 @@ function pagAñadirProducto() {
         rows: '5', 
     });
     contenedorObservaciones.appendChild(inputObservaciones); 
-
     contenedorFormLeft.appendChild(contenedorObservaciones);
 
     //. BLOQUE 4....................................................
+    let parametros2 = {
+        categorias: 'categorias' 
+    };
+    // console.log(parametros2);
+
+    $.ajax({
+        type: "POST",
+        url: "./php/consultaAdmin.php",
+        data: parametros2,
+        async: false,
+        success: function(respuesta) {
+            categoriaSeleccionada = selectCategoria(respuesta);
+        }, 
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.error("Error en la solicitud AJAX: " + textStatus, errorThrown);
+        }
+    });
     let contenedorCategoria = crearElemento('div', undefined, {
         class: 'form-group w-100'
     });
@@ -605,15 +629,9 @@ function pagAñadirProducto() {
         class: 'form-label'
     });
     contenedorCategoria.appendChild(labelCategoria);
-    opciones = {
-        2: 'mondongo',
-        3: 'matanga',
-        4: 'te odio'
-    };
-    contenedorCategoria.appendChild(crearCheckBox(opciones,'tumadre'));
-    // contenedorCategoria.appendChild(inputCategoria); 
-
-    // contenedorFormRight.appendChild(contenedorCategoria);
+    let selectCat = crearSelect(categoriaSeleccionada,'categoriasNewProducto');
+    contenedorCategoria.appendChild(selectCat);  
+    contenedorFormRight.appendChild(contenedorCategoria);
 
     //. BLOQUE 5....................................................
     let contenedorResiduos = crearElemento('div', undefined, {
@@ -679,6 +697,7 @@ function newProducto()
     let nombre = document.getElementById('newNombreProducto').value;
     let observaciones = document.getElementById('newProductObservaciones').value;
     let unidades = document.getElementById('unidadesNewProducto').value
+    let categorias = document.getElementById('categoriaNewProducto').value;
 
     let parametros = {
         NewUnidadMedida: JSON.stringify({
