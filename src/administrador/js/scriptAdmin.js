@@ -151,7 +151,7 @@ function navAñadirCategoria() {
         url: "./php/consultaAdmin.php",
         data: parametros,
         async: false,
-        success: tablaCategorias,
+        success: tablaCategoriasSimplificada,
         error: function (jqXHR, textStatus, errorThrown) {
             console.error("Error en la solicitud AJAX: " + textStatus, errorThrown);
         }
@@ -243,6 +243,78 @@ function tablaCategorias(respuesta) {
         celdaBodyBoton.appendChild(borrar);
 
         filaBody.appendChild(celdaBodyBoton);
+        tablaBody.appendChild(filaBody);
+    });
+    tablaCategorias.appendChild(tablaBody);
+    contenedor.appendChild(tablaCategorias);
+}
+
+function tablaCategoriasSimplificada(respuesta) {
+    let categorias = JSON.parse(respuesta);
+
+    //Buscador.
+    let buscador = crearElemento("input", undefined, {
+        id: "buscadorCategorias"
+    });
+
+    buscador.addEventListener("input", function (e) {
+        // Convertir a minúsculas y quitar espacios en blanco al inicio y al final.
+        let textoBuscar = this.value.toLowerCase().trim();
+
+        // Obtener todas las filas de la tabla.
+        let filasTabla = tablaBody.querySelectorAll("tr");
+
+        // Mostrar u ocultar según el texto del buscador.
+        filasTabla.forEach(fila => {
+            // Solo se va a buscar por nombre de categoria, se seleccionan solo las columnas correspondientes.
+            let nombreCategoria = fila.querySelector("td:nth-child(2)").innerHTML.toLowerCase();
+
+            // Mostrar la fila si coincide con el texto buscado o si no se ha ingresado nada en el input.
+            if (nombreCategoria.includes(textoBuscar) || textoBuscar === "") {
+                fila.style.display = ""; // Mostrar la fila.
+            } else {
+                fila.style.display = "none"; // Ocultar la fila.
+            }
+        });
+    });
+
+    contenedor.appendChild(buscador);
+
+    //Estructura del titulo de la tabla.
+    let tablaCategorias = crearElemento("table", undefined, {
+        class: "table table-responsive table-hover mt-4"
+    });
+    let titulosTabla = crearElemento("thead");
+
+    let filaTitulos = crearElemento("tr");
+    let titulos = ["imagenes", "descripcion"];
+    for (let i = 0; i < titulos.length; i++) {
+        let celdaTitulo = crearElemento("th", titulos[i].charAt(0).toUpperCase() + titulos[i].slice(1).toLowerCase());
+        filaTitulos.appendChild(celdaTitulo);
+    }
+    titulosTabla.appendChild(filaTitulos);
+    tablaCategorias.appendChild(titulosTabla);
+
+    //Estructura del cuerpo de la tabla.
+    tablaBody = crearElemento("tbody");
+
+    categorias.forEach(categoria => {
+        let filaBody = crearElemento("tr", undefined, {
+            id: "idcategoria_" + categoria["id_categorias"]
+        });
+        for (let i = 0; i < titulos.length; i++) {
+            if (titulos[i] == "imagenes") {
+                let celdaBody = crearElemento("td");
+                let imagenCategoria = crearElemento("img", undefined, {
+                    src: "../../../assets/img/categorias/" + categoria[titulos[i]]
+                })
+                celdaBody.appendChild(imagenCategoria);
+                filaBody.appendChild(celdaBody);
+            } else {
+                let celdaBody = crearElemento("td", categoria[titulos[i]]);
+                filaBody.appendChild(celdaBody);
+            }
+        }
         tablaBody.appendChild(filaBody);
     });
     tablaCategorias.appendChild(tablaBody);
@@ -348,7 +420,21 @@ function pagAñadirCategoria() {
         imgItemDropdown.appendChild(imgCategoriaDropdown);
         estructuraGridGaleria.appendChild(imgItemDropdown);
     }
-    console.log(estructuraGridGaleria);
+    let imagenes = estructuraGridGaleria.querySelectorAll("img");
+    for (let i = 0; i < imagenes.length; i++) {
+        imagenes[i].addEventListener("click", function (e) {
+            let textoDividido = this.id.split("_");
+            let imagenSeleccioanda = parseInt(textoDividido[1]);
+
+            imagenCategoriaContenedor.innerHTML = "";
+            //Se cambia el color de fondo a transparente.
+            imagenCategoriaContenedor.style.backgroundColor = "#fff0";
+            let imagenNueva = crearElemento("img", undefined, {
+                src: "../../../assets/img/categorias/" + imagenSeleccioanda + ".png"
+            })
+            imagenCategoriaContenedor.appendChild(imagenNueva);
+        });
+    }
 
     // Cambiar la imagen seleccionada cuando se elija una opción del desplegable
     imagenCategoriaContenedor.addEventListener("change", function () {
@@ -750,12 +836,19 @@ function imprimirTablaProductos(nombre = null, categoria = null, unidades = null
     }
 }
 
-function manejadorProductoPopup(e) {
-    crearPopup("Datos del producto");
-    let contenedorPopup = document.querySelector('#contenedorPopup');
-    let contenidoFila = this.querySelectorAll("td");
-    console.log(contenidoFila);
-}
+// function manejadorProductoPopup(e) {
+
+
+//     crearPopup("Vista previa de "+ nombreProducto);
+//     let contenedorPopup = document.querySelector('#contenedorPopup');
+//     let contenidoFila = this.querySelectorAll("td");
+
+//     let nombreProducto = contenidoFila[1].innerHTML;
+//     let categoriaFila = contenidoFila[2].innerHTML;
+//     let unidades = contenidoFila[3].innerHTML;
+//     let observaciones = contenidoFila[4].innerHTML;
+
+// }
 
 function manejadorCategoria(e) {
     let textoDividido = this.id.split("_");
