@@ -748,6 +748,7 @@ function mostrarPopup(datosUsuario) {
     let popupContainer = document.querySelector('#popupContainer');
     let contenedorPopup = document.querySelector('#contenedorPopup');
     let formulario = crearElemento('form', undefined, {
+        id: 'formulario',
         class: 'w-100 contenedorFormPopup'
     });
 

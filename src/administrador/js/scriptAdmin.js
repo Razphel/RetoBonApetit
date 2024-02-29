@@ -927,7 +927,7 @@ function pagAñadirUsuario() {
         type: 'text',
         id: 'newUserApellido',
         class: 'form-control',
-        placeholder: 'Apellido del usuario'
+        placeholder: 'Apellido de la persona'
     });
     contenedorApellido.appendChild(inputApellido); 
     contenedorFormRight.appendChild(contenedorApellido);
