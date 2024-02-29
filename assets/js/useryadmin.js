@@ -23,12 +23,12 @@ window.addEventListener("load", principal);
 
 function principal() {
     let usuarioActual = JSON.parse(localStorage.getItem("usuario"));
-    
+
     //Antes de cargar la pagina del usuario, se comprueba que no se haya accedido sin una sesion valida.
     if (localStorage.getItem("usuario")) {
         let usuarioActual = JSON.parse(localStorage.getItem("usuario"));
         if (usuarioActual.nombre === "") {
-            window.location.replace("../../../sesion.html");
+            window.location.replace("   ../../../sesion.html");
         }
     } else {
         //Redirige al usuario a la página de sesion no existen datos en el localStorage.
@@ -57,7 +57,7 @@ function principal() {
         toggleSidebar();
     });
 
-    modoColor(); 
+    modoColor();
     generarIconUser();
 }
 
@@ -114,7 +114,7 @@ function modoColor() {
     const iconoPrincipal = document.getElementById("iconoPrincipal");
 
     // Event listener para cambiar entre los modos oscuro y claro
-    document.getElementById("modoOscuro").addEventListener("click", function() {
+    document.getElementById("modoOscuro").addEventListener("click", function () {
         // Cambiar la clase del icono principal al modo oscuro
         iconoPrincipal.classList.replace("bi-brightness-high", "bi-moon");
 
@@ -123,13 +123,22 @@ function modoColor() {
     });
 
     // Event listener para cambiar entre los modos oscuro y claro
-    document.getElementById("modoClaro").addEventListener("click", function() {
+    document.getElementById("modoClaro").addEventListener("click", function () {
         // Cambiar la clase del icono principal al modo claro
         iconoPrincipal.classList.replace("bi-moon", "bi-brightness-high");
 
         // Eliminar la clase "darkMode" del cuerpo del documento
         document.body.classList.remove("darkMode");
     });
+}
+
+
+function cerrarSesion() {
+    localStorage.removeItem("usuario");
+
+    setTimeout(function () {
+        window.location.replace("../../../sesion.html");
+    }, 500);
 }
 
 // Contenedor con borde punteado que aparece cuando una tabla está vacía o no tiene contenido
@@ -139,7 +148,7 @@ function mostrarMensajeVacio(titulo, texto, textoBoton) {
     let divLabelEmpty = crearElemento("div", undefined, { class: "label_empty card p-4 align-items-center mt-4" });
     let h4 = crearElemento("h4", titulo);
     let p = crearElemento("p", texto);
-    let button = crearElemento("input", textoBoton, { id:"botonMensajeVacio", type: "submit", class: "btn btn_custom_1 mt-3" });
+    let button = crearElemento("input", textoBoton, { id: "botonMensajeVacio", type: "submit", class: "btn btn_custom_1 mt-3" });
 
     // Construir la estructura
     divLabelEmpty.appendChild(h4);
@@ -368,14 +377,14 @@ function crearPlantillaFormularios(tituloPagina, tituloLeft, tituloRight) {
         class: 'container_left pagForm_columnaLeft card p-4 col-12 col-lg-8 mb-sm-4 mb-lg-0'
     });
     let titulo_container_left = crearElemento('h4', tituloLeft, {
-        class: 'mb-5' 
+        class: 'mb-5'
     });
     let contenedorForm = crearElemento('div', undefined, {
         id: 'contenedorForm'
     });
 
-    container_left.appendChild(titulo_container_left); 
-    container_left.appendChild(contenedorForm); 
+    container_left.appendChild(titulo_container_left);
+    container_left.appendChild(contenedorForm);
 
     let container_right = crearElemento('div', undefined, {
         class: 'container_right pagForm_columnaRight card p-4 col-12 col-lg-4'
@@ -383,7 +392,7 @@ function crearPlantillaFormularios(tituloPagina, tituloLeft, tituloRight) {
     let titulo_container_right = crearElemento('h4', tituloRight, {
         class: 'mb-5'
     });
-    container_right.appendChild(titulo_container_right); 
+    container_right.appendChild(titulo_container_right);
 
     parteInferior.appendChild(container_left);
     parteInferior.appendChild(container_right);
@@ -436,3 +445,42 @@ function consultarProductos() {
         localStorage.setItem("todosProductos", JSON.stringify(todosProductos));
     }
 }
+
+// genera el icono de usuario
+function generarIconUser() {
+    let usuarioActual = JSON.parse(localStorage.getItem("usuario"));
+    let nombre = usuarioActual.nombre;
+    let apellido = usuarioActual.apellido;
+    const siglas = nombre.substring(0, 1) + apellido.substring(0, 1);
+    const userIcon = document.getElementById('userIcon');
+    userIcon.textContent = siglas;
+    userIcon.style.backgroundColor = getRandomColor();
+}
+
+// genera un color aleatorio, se usa en el icono de usuario
+function getRandomColor() {
+    const letters = '0123456789ABCDEF';
+    let color = '#';
+    for (let i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 13)];
+    }
+    return color;
+}
+
+//FUNCION ICONO BARRA LATERAL
+document.addEventListener("DOMContentLoaded", function () {
+    $(".bi.bi-list").click(function () {
+        toggleSidebar();
+    });
+});
+
+//FUNCION ICONO BARRA LATERAL
+function toggleSidebar() {
+    $(".sidebar").toggleClass("sidebar-hidden");
+    $(".page_container").toggleClass("content-sidebar-hidden");
+
+    // Guardar el estado de visibilidad en el almacenamiento local
+    let sidebarVisible = $(".sidebar").hasClass("sidebar-hidden") ? "false" : "true";
+    localStorage.setItem("sidebarVisible", sidebarVisible);
+}
+;
