@@ -254,7 +254,7 @@ class BD
     {
         try {
             $conexion = self::conexionBD();
-            $sql = "SELECT descripcion,fecha_mensaje
+            $sql = "SELECT fecha_mensaje, hora_limite, observaciones
             FROM mensajes 
             ORDER BY fecha_mensaje DESC
             LIMIT 1";
