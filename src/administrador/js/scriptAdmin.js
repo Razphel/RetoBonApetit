@@ -535,6 +535,7 @@ function navProductos() {
 
 function navListarProductos() {
     pagListarProductos();
+
 }
 
 function pagListarProductos() { // mostrar tabla con todos los productos y sus datos
@@ -552,7 +553,341 @@ function pagListarProductos() { // mostrar tabla con todos los productos y sus d
 
     // Crear la plantilla genérica
     crearPlantillaGenerica1(tituloPagina, contenidoSuperior, contenidoInferior);
+
+
 }
+
+function imprimirTablaProductos(nombre = null, categoria = null, unidades = null) {
+    let todosProductos = JSON.parse(localStorage.getItem("todosProductos"));
+
+    let contenedorTablaProductos = document.querySelector("#contenedorTablaProductos");
+    if (contenedorTablaProductos == null) {
+        contenedorTablaProductos = crearElemento("div", undefined, {
+            class: "row",
+            id: "contenedorTablaProductos"
+        });
+    } else {
+        contenedorTablaProductos.innerHTML = "";
+    }
+
+    let tabla = crearElemento("table", undefined, {
+        id: "tabla",
+        class: "table table-responsive table-hover mt-4"
+    });
+    let tablaHead = crearElemento("thead");
+    let tablaBody = crearElemento("tbody");
+
+    let filaHead = crearElemento("tr");
+    let celdaCheckbox = crearElemento("th");
+    let inputCheckbox = crearElemento("input", undefined, {
+        type: "checkbox",
+        class: "genericoCheckCabecera"
+    });
+    celdaCheckbox.appendChild(inputCheckbox);
+    filaHead.appendChild(celdaCheckbox);
+
+    let titulos = ["Producto", "Categoría", "Unidades", "Observaciones", ""];
+    let productosEncontrados = false;
+
+    titulos.forEach(titulo => {
+        let celdaHead = crearElemento("th", titulo);
+        filaHead.appendChild(celdaHead);
+    });
+
+    for (let i = 0; i < todosProductos.length; i++) {
+        let filaBody = crearElemento("tr");
+
+        let celdaCheckbox = crearElemento("td");
+        let inputCheckbox = crearElemento("input", undefined, {
+            type: "checkbox",
+            class: "genericoCheck"
+        });
+        celdaCheckbox.appendChild(inputCheckbox);
+        filaBody.appendChild(celdaCheckbox);
+
+        let datosProducto = [
+            todosProductos[i]["nombre_producto"],
+            todosProductos[i]["nombre_categoria"],
+            todosProductos[i]["nombre_unidades"],
+            todosProductos[i]["nombre_observaciones"]
+        ];
+
+        if ((nombre === null || todosProductos[i]["nombre_producto"].toLowerCase().includes(nombre.toLowerCase())) &&
+            (categoria === null || todosProductos[i]["id_categoria"] == categoria) &&
+            (unidades === null || todosProductos[i]["nombre_unidades"] == unidades)) {
+
+            datosProducto.forEach((dato, index) => {
+                let celdaBody = crearElemento("td");
+
+                if (index === 0) {
+                    celdaBody.classList.add("tabla_nombreLargo");
+                }
+
+                if (index === 1) {
+                    celdaBody.classList.add("tabla_nombreLargo");
+
+                    let imagenCategoria = crearElemento("img", undefined, {
+                        src: `../../../assets/img/categorias/${todosProductos[i]["imagen_categoria"]}`,
+                        width: "35px",
+                    });
+                    celdaBody.appendChild(imagenCategoria);
+                }
+                celdaBody.innerHTML += dato;
+                filaBody.appendChild(celdaBody);
+
+                // Verificar si la celda actual es para la columna de observaciones
+                if (index === 3) {
+                    celdaBody.classList.add("tabla_observaciones");
+                }
+            });
+
+            //Los id de inputCantidad y botonAñadir concuerdan con la posicion del producto en el array.
+            //Esto se va a utilizar para identificar que producto se va a guardar en la cesta.
+            let celdaBoton = crearElemento("td", undefined, {
+                class: "td_alignRight"
+            });
+            let inputCantidad = crearElemento("input", undefined, {
+                type: "number",
+                min: "0",
+                value: "0",
+                id: "inputCantidad_" + i,
+                class: "form-control form-control-sm"
+            });
+            let botonAñadir = crearElemento("input", undefined, {
+                id: "botonAñadir_" + i,
+                type: "submit",
+                class: "btn btn_custom_1 btn_sm",
+                value: "Añadir"
+            })
+            botonAñadir.addEventListener("click", agregarCesta);
+            botonAñadir.addEventListener("click", manejadorCarrito);
+            celdaBoton.appendChild(inputCantidad);
+            celdaBoton.appendChild(botonAñadir);
+            filaBody.appendChild(celdaBoton);
+
+            tablaBody.appendChild(filaBody);
+            productosEncontrados = true;
+        }
+    }
+
+    tablaHead.appendChild(filaHead);
+    tabla.appendChild(tablaHead);
+    tabla.appendChild(tablaBody);
+
+    contenedorTablaProductos.appendChild(tabla);
+    contenedor.appendChild(contenedorTablaProductos);
+
+    if (!productosEncontrados) {
+        contenedorTablaProductos.innerHTML = "";
+        let mensajeVacio = mostrarMensajeVacio("No hay productos", "¿Hacer una solicitud de producto?", "Hacer solicitud");
+        contenedorTablaProductos.appendChild(mensajeVacio);
+        let botonMensajeVacio = document.querySelector("#botonMensajeVacio");
+        botonMensajeVacio.addEventListener("click", manejadorSolicitud);
+    }
+}
+
+function manejadorCategoria(e) {
+    let textoDividido = this.id.split("_");
+    let idCategoria = textoDividido[1];
+
+    filtroCategoria(idCategoria);
+}
+
+function manejadorFiltro(e) {
+    let nombre = document.getElementById("filtroBuscadorNombre").value.trim();
+    let categoria = document.getElementById("filtroDesplegableCategoria").value;
+    let unidades = document.getElementById("filtroDesplegableUnidades").value;
+
+    // Si la opción por defecto está seleccionada, asigna null
+    if (categoria === "Categorías") {
+        categoria = null;
+    }
+    if (unidades === "Ud. de medida") {
+        unidades = null;
+    }
+
+    imprimirTablaProductos(nombre, categoria, unidades);
+}
+
+function filtroCategoria(id_categoriaRecibido) {
+    //Contenedor principal de la pagina.
+    let contenedor = document.querySelector("#contenedor");
+
+    //Se cambia el titulo de la pagina para que coincida con los productos.
+    let tituloApartado = document.querySelector("#tituloApartado");
+    if (tituloApartado != null && tituloApartado.innerHTML != "Productos") {
+        tituloApartado.innerHTML = "Productos";
+    }
+
+    // En caso de que sea la primera vez que cargue la pagina, va a haber una seccion con id historial. Lo elimino
+    let historial = document.querySelector("#historial");
+    if (historial != null) {
+        historial.remove();
+    }
+
+    // Contenedor inferior de la pagina. La tabla se crea por separado del inicio y las categorias.
+    // Este contenedor se crea si no existe todavia.
+    let parteInferior = document.querySelector("#parteInferior");
+    if (document.querySelector("#parteInferior") == null) {
+        parteInferior = crearElemento("div", undefined, {
+            id: "parteInferior",
+            class: "mt-5"
+        });
+    }
+
+    contenedor.appendChild(parteInferior);
+
+    imprimirFiltroTabla(null, id_categoriaRecibido, null);
+    imprimirTablaProductos(null, id_categoriaRecibido, null);
+}
+
+function imprimirFiltroTabla(nombre = null, categoria = null, unidades = null) {
+    let todosProductos = JSON.parse(localStorage.getItem("todosProductos"));
+    let parteInferior = document.querySelector("#parteInferior");
+
+    let contenedorFiltroLabelySelect = crearElemento("div", undefined, { // contiene el div contenedorFiltroLabel y contenedorFiltroLeft
+        id: "contenedorFiltroLabelySelect",
+        class: "contenedorFiltroLabelySelect"
+    });
+
+    let contenedorFiltroLabel = crearElemento("div", undefined, { // contiene el icono de filtros y el texto "Filtrar por"
+        id: "contenedorFiltroLabel",
+        class: "contenedorFiltroLabel"
+    });
+
+    // Crear el icono de filtros
+    let iconoFiltros = document.createElement("i");
+    iconoFiltros.classList.add("bi", "bi-sliders");
+
+    let labelFiltros = crearElemento("p", "Filtrar por", {
+        id: "labelFiltro"
+    });
+
+    contenedorFiltroLabel.appendChild(iconoFiltros);
+    contenedorFiltroLabel.appendChild(labelFiltros);
+
+    let contenedorFiltroLeft = crearElemento("div", undefined, {
+        id: "contenedorFiltroLeft",
+        class: "contenedorFiltroLeft"
+    });
+
+    // Crear el contenedor del filtro
+    // Se renueva el filtro.
+    let contenedorFiltro = document.querySelector("#filtro");
+    if (contenedorFiltro != null) {
+        contenedorFiltro.remove();
+    }
+
+    contenedorFiltro = crearElemento("div", undefined, {
+        id: "filtro",
+        class: "row contenedorFiltros"
+    });
+
+    // Crear el desplegable para las categorías
+    let selectCategoria = crearElemento("select", undefined, {
+        id: "filtroDesplegableCategoria",
+        class: "form-select selectFiltros"
+    });
+
+    selectCategoria.addEventListener("change", manejadorFiltro);
+    let optionDefaultCategoria = document.createElement("option");
+    optionDefaultCategoria.text = "Categorías";
+    selectCategoria.add(optionDefaultCategoria);
+    let categorias = [...new Set(todosProductos.map(producto => producto.id_categoria))];
+    categorias.forEach(id => {
+        let optionCategoria = document.createElement("option");
+        optionCategoria.text = todosProductos.find(producto => producto.id_categoria == id).nombre_categoria;
+        optionCategoria.value = id;
+        if (id == categoria) {
+            optionCategoria.selected = true;
+        }
+        selectCategoria.add(optionCategoria);
+    });
+
+    contenedorFiltroLeft.appendChild(selectCategoria);
+
+    // Crear el desplegable para las unidades
+    let selectUnidades = crearElemento("select", undefined, {
+        id: "filtroDesplegableUnidades",
+        class: "form-select selectFiltros"
+    });
+
+    selectUnidades.addEventListener("change", manejadorFiltro);
+    let optionDefaultUnidades = document.createElement("option");
+    optionDefaultUnidades.text = "Ud. de medida";
+    selectUnidades.add(optionDefaultUnidades);
+    let unidadesFiltro = [...new Set(todosProductos.map(producto => producto.nombre_unidades))];
+    unidadesFiltro.forEach(unidad => {
+        let optionUnidad = document.createElement("option");
+        optionUnidad.text = unidad;
+        if (unidad == unidades) {
+            optionUnidad.selected = true;
+        }
+        selectUnidades.add(optionUnidad);
+    });
+    contenedorFiltroLeft.appendChild(selectUnidades);
+
+    contenedorFiltroLabelySelect.appendChild(contenedorFiltroLabel);
+    contenedorFiltroLabelySelect.appendChild(contenedorFiltroLeft);
+
+    contenedorFiltro.appendChild(contenedorFiltroLabelySelect);
+
+    let contenedorFiltroRight = crearElemento("div", undefined, {
+        id: "contenedorFiltroRight",
+        class: "contenedorFiltroRight"
+    });
+
+    let contenedorBuscador = crearElemento("div", undefined, {
+        id: "contenedorBuscador",
+        class: "contenedorBuscador input-group"
+    });
+
+    let contenedorBuscadorIcon = crearElemento("div", undefined, {
+        id: "contenedorBuscadorIcon",
+        class: "contenedorBuscadorIcon input-group-prepend input-group"
+    });
+
+    let contenedorIconBuscador = crearElemento("span", undefined, {
+        class: "input-group-text searchbar"
+    });
+
+    let iconBuscador = crearElemento("i", undefined, {
+        class: "bi bi-search"
+    });
+
+    contenedorIconBuscador.appendChild(iconBuscador);
+    contenedorBuscadorIcon.appendChild(contenedorIconBuscador);
+    contenedorBuscador.appendChild(contenedorBuscadorIcon);
+
+    // Crear el campo de texto para el nombre
+    let inputNombre = crearElemento("input", undefined, {
+        id: "filtroBuscadorNombre",
+        type: "text",
+        placeholder: "Buscar por nombre de producto...",
+        class: "form-control searchbar filtroBuscador",
+        value: nombre || ""
+    });
+
+    let botonSolicitud = crearElemento("input", undefined, {
+        type: "submit",
+        id: "botonSolicitud",
+        class: "btn btn_custom_1",
+        value: "Hacer solicitud",
+    });
+
+    botonSolicitud.addEventListener("click", manejadorSolicitud);
+
+    inputNombre.addEventListener("input", manejadorFiltro);
+    contenedorBuscadorIcon.appendChild(inputNombre);
+    contenedorFiltroRight.appendChild(contenedorBuscador);
+    contenedorFiltroRight.appendChild(botonSolicitud);
+
+    contenedorFiltro.appendChild(contenedorFiltroRight);
+
+    // Añadir el contenedor del filtro al DOM
+    parteInferior.appendChild(contenedorFiltro);
+}
+
 
 function navAñadirProducto() {
     pagAñadirProducto();

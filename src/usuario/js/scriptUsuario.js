@@ -116,12 +116,12 @@ function mensajesInicio(respuesta) {
     let contenedorMensaje = crearElemento("div", undefined, {
         class: "label_effect card card_margin p-3 mb-3"
     });
-    let mensaje = crearElemento("p", respuesta.descripcion, undefined);
+    let mensaje = crearElemento("p", respuesta.hora_limite, undefined);
     let fechaMensaje = crearElemento("p", respuesta.fecha_mensaje, undefined);
 
     //Organizo los elementos y los agrego al div row.
-    contenedorMensaje.appendChild(mensaje);
     contenedorMensaje.appendChild(fechaMensaje);
+    contenedorMensaje.appendChild(mensaje);
     carta.appendChild(contenedorMensaje);
     contenedorMensajes.appendChild(carta);
 
@@ -691,7 +691,6 @@ function mostrarPopup(datosUsuario) {
     });
 
     let textoInfo = crearElemento("p", `Solicitud del usuario ${datosUsuario.nombre} ${datosUsuario.apellido} para añadir un producto nuevo.`, {
-        id: "observacionesNuevoProducto",
         class: "mb-5"
     });
 
@@ -815,7 +814,6 @@ function mostrarPopup(datosUsuario) {
         let cantidadRecibida = parseFloat(document.querySelector("#cantidadNuevoProducto").value);
         let unidad = document.querySelector("#unidadNuevoProducto").value;
         let observaciones = document.querySelector("#observacionesNuevoProducto").value;
-
         //Se crea el nuevo producto.
         let nuevoProducto = {
             nombre_producto: nombre,
