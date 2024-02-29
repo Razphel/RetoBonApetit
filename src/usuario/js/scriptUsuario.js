@@ -185,8 +185,9 @@ function inicioSolicitudes(respuesta) {
 
 // Página productos___________________________________________________________________
 function navProductos() {
+
     let parametros = {
-        categoria: 'categorias'
+        categorias: 'categorias'
     };
     //Mostrar categorias.
     $.ajax({
@@ -201,6 +202,7 @@ function navProductos() {
             console.error("Error en la solicitud AJAX: " + textStatus, errorThrown);
         }
     });
+    
 }
 
 function pagProductos(respuesta) {
@@ -270,213 +272,6 @@ function pagProductos(respuesta) {
     contenedor.appendChild(parteInferior);
     imprimirFiltroTabla();
     imprimirTablaProductos();
-
-}
-
-// Página pedidos_____________________________________________________________________
-function navPedidos() {
-    //Mostrar Historial.
-    //Se almacena en esta letiable la información recogida desde el main.
-    let usuarioActual = JSON.parse(localStorage.getItem("usuario"));
-
-    let parametros = {
-        //UsuarioActual contiene todos los campos de usuario que se han almacenado anteriormente en principal .
-        //Y clavePrimaria ha sido creada en el js de controlUsuario en la funcion manejarRespuesta.
-        claveUsuario: usuarioActual.clavePrimaria
-    };
-
-    $.ajax({
-        //Ubicacion del archivo php que va a manejar los valores.
-        url: "./php/consultaUsuario.php",
-        //Metodo en que los va a recibir.
-        type: "GET",
-        data: parametros,
-        dataType: "json",
-        //La funcion que se ejecuta segun el resultado.
-        success: pagPedidos,
-        error: function (jqXHR, textStatus, errorThrown) {
-            console.error("Error en la solicitud AJAX: " + textStatus, errorThrown);
-        }
-    });
-}
-
-function pagPedidos(respuesta) {
-    let contenedor = document.querySelector("#contenedor");
-    contenedor.innerHTML = "";
-
-    let pedidosTopUser = crearElemento("div", undefined, undefined);
-    let h1Pedidos = crearElemento("h1", "Pedidos", {
-        id: "tituloApartado",
-        class: "py-3 mb-3 mt-4"
-    });
-
-    pedidosTopUser.appendChild(h1Pedidos);
-    contenedor.appendChild(pedidosTopUser);
-
-    //Se comprueba primero que exista algo en el historial de solicitudes.
-    if (respuesta[0] != null) {
-        let historial = crearElemento("table", undefined, {
-            class: "table table-responsive table-hover mt-4"
-        });
-        let tablaTitulos = crearElemento("thead");
-
-        //Creo los titulos de las tablas.
-        let titulos = crearElemento("tr", undefined, undefined);
-        //Segun el formato en el que se recibe el objeto, tengo que usar sus elementos de la mitad al final.
-        let prueba = Object.keys(respuesta[0]);
-        for (let i = prueba.length / 2; i < prueba.length; i++) {
-            //Creo cada elemento y lo agrego a la fila del titulo.
-            let filaTitulo = crearElemento("th", prueba[i]);
-            titulos.appendChild(filaTitulo);
-        }
-
-        //Agrego el titulo a la tabla.
-        tablaTitulos.appendChild(titulos);
-        historial.appendChild(tablaTitulos);
-
-        let tablaBody = crearElemento("tbody");
-        //Ahora agrego el contenido.
-        respuesta.forEach(fila => {
-            let filaNormal = crearElemento("tr", undefined, undefined);
-            for (let i = 0; i < Object.keys(fila).length / 2; i++) {
-                let elementoFila = crearElemento("td", fila[i], undefined);
-                filaNormal.appendChild(elementoFila);
-            }
-            tablaBody.appendChild(filaNormal);
-        });
-        historial.appendChild(tablaBody);
-        contenedor.appendChild(historial);
-    } else {
-        let sinHistorial = crearElemento("p", "Historial Vacio.", undefined)
-        contenedor.appendChild(sinHistorial);
-    }
-}
-
-// Página proveedores_________________________________________________________________
-function navProveedores() {
-    let parametros = {
-        claveProveedores: true
-    };
-    $.ajax({
-        //Ubicacion del archivo php que va a manejar los valores.
-        url: "./php/consultaUsuario.php",
-        //Metodo en que los va a recibir.
-        type: "GET",
-        data: parametros,
-        dataType: "json",
-        success: pagProveedores,
-        error: function (jqXHR, textStatus, errorThrown) {
-            console.error("Error en la solicitud AJAX: " + textStatus, errorThrown);
-        }
-    });
-}
-
-function pagProveedores(proveedores) {
-    //Datos recibidos de proveedores: "id_proveedores" - "descripcion" - "telefono" - "email" - "direccion" - "observaciones"
-    let contenedor = document.querySelector("#contenedor");
-    contenedor.innerHTML = "";
-
-    let provTopUser = crearElemento("div", undefined, undefined);
-    let h1Proveedores = crearElemento("h1", "Proveedores", {
-        id: "tituloApartado",
-        class: "py-3 mb-3 mt-4"
-    });
-
-    provTopUser.appendChild(h1Proveedores);
-    contenedor.appendChild(provTopUser);
-
-    //Estructura del titulo de la tabla.
-    let tablaProveedores = crearElemento("table", undefined, {
-        class: "table table-responsive table-hover mt-4"
-    });
-    let titulosTabla = crearElemento("thead");
-    let filaTitulos = crearElemento("tr");
-    let titulos = ["descripcion", "telefono", "email", "direccion", "observaciones"];
-    for (let i = 0; i < titulos.length; i++) {
-        let celdaTitulo = crearElemento("th", titulos[i].charAt(0).toUpperCase() + titulos[i].slice(1).toLowerCase());
-        filaTitulos.appendChild(celdaTitulo);
-    }
-    titulosTabla.appendChild(filaTitulos);
-    tablaProveedores.appendChild(titulosTabla);
-
-    //Estructura del cuerpo de la tabla.
-    tablaBody = crearElemento("tbody");
-
-
-    proveedores.forEach(proveedor => {
-        let filaBody = crearElemento("tr");
-        for (let i = 0; i < titulos.length; i++) {
-            let celdaBody = crearElemento("td", proveedor[titulos[i]]);
-            filaBody.appendChild(celdaBody);
-        }
-        tablaBody.appendChild(filaBody);
-    });
-    tablaProveedores.appendChild(tablaBody);
-    contenedor.appendChild(tablaProveedores);
-
-}
-
-// Página residuos____________________________________________________________________
-function navResiduos() {
-    let parametros = {
-        claveResiduos: true
-    };
-    $.ajax({
-        //Ubicacion del archivo php que va a manejar los valores.
-        url: "./php/consultaUsuario.php",
-        //Metodo en que los va a recibir.
-        type: "GET",
-        data: parametros,
-        dataType: "json",
-        success: pagResiduos,
-        error: function (jqXHR, textStatus, errorThrown) {
-            console.error("Error en la solicitud AJAX: " + textStatus, errorThrown);
-        }
-    });
-}
-
-function pagResiduos(residuos) {
-    //Datos recibidos de residuos: "id_reciduos" - "descripcion" - "observaciones"
-    let contenedor = document.querySelector("#contenedor");
-    contenedor.innerHTML = "";
-
-    let resiTopUser = crearElemento("div", undefined, undefined);
-    let h1Residuos = crearElemento("h1", "Residuos", {
-        id: "tituloApartado",
-        class: "py-3 mb-3 mt-4"
-    });
-
-    resiTopUser.appendChild(h1Residuos);
-    contenedor.appendChild(resiTopUser);
-
-    //Estructura del titulo de la tabla.
-    let tablaReciduos = crearElemento("table", undefined, {
-        class: "table table-responsive table-hover mt-4"
-    });
-    let titulosTabla = crearElemento("thead");
-    let filaTitulos = crearElemento("tr");
-    let titulos = ["descripcion", "observaciones"];
-    for (let i = 0; i < titulos.length; i++) {
-        let celdaTitulo = crearElemento("th", titulos[i].charAt(0).toUpperCase() + titulos[i].slice(1).toLowerCase());
-        filaTitulos.appendChild(celdaTitulo);
-    }
-    titulosTabla.appendChild(filaTitulos);
-    tablaReciduos.appendChild(titulosTabla);
-
-    //Estructura del cuerpo de la tabla.
-    tablaBody = crearElemento("tbody");
-
-
-    residuos.forEach(residuo => {
-        let filaBody = crearElemento("tr");
-        for (let i = 0; i < titulos.length; i++) {
-            let celdaBody = crearElemento("td", residuo[titulos[i]]);
-            filaBody.appendChild(celdaBody);
-        }
-        tablaBody.appendChild(filaBody);
-    });
-    tablaReciduos.appendChild(tablaBody);
-    contenedor.appendChild(tablaReciduos);
 
 }
 
@@ -688,6 +483,342 @@ function manejadorSolicitud(e) {
     mostrarPopup(datosUsuario);
 }
 
+function imprimirTablaProductos(nombre = null, categoria = null, unidades = null) {
+    let todosProductos = JSON.parse(localStorage.getItem("todosProductos"));
+
+    let contenedorTablaProductos = document.querySelector("#contenedorTablaProductos");
+    if (contenedorTablaProductos == null) {
+        contenedorTablaProductos = crearElemento("div", undefined, {
+            class: "row",
+            id: "contenedorTablaProductos"
+        });
+    } else {
+        contenedorTablaProductos.innerHTML = "";
+    }
+
+    let tabla = crearElemento("table", undefined, {
+        id: "tabla",
+        class: "table table-responsive table-hover mt-4"
+    });
+    let tablaHead = crearElemento("thead");
+    let tablaBody = crearElemento("tbody");
+
+    let filaHead = crearElemento("tr");
+    let celdaCheckbox = crearElemento("th");
+    let inputCheckbox = crearElemento("input", undefined, {
+        type: "checkbox",
+        class: "genericoCheckCabecera"
+    });
+    celdaCheckbox.appendChild(inputCheckbox);
+    filaHead.appendChild(celdaCheckbox);
+
+    let titulos = ["Producto", "Categoría", "Unidades", "Observaciones", ""];
+    let productosEncontrados = false;
+
+    titulos.forEach(titulo => {
+        let celdaHead = crearElemento("th", titulo);
+        filaHead.appendChild(celdaHead);
+    });
+
+    for (let i = 0; i < todosProductos.length; i++) {
+        let filaBody = crearElemento("tr");
+
+        let celdaCheckbox = crearElemento("td");
+        let inputCheckbox = crearElemento("input", undefined, {
+            type: "checkbox",
+            class: "genericoCheck"
+        });
+        celdaCheckbox.appendChild(inputCheckbox);
+        filaBody.appendChild(celdaCheckbox);
+
+        let datosProducto = [
+            todosProductos[i]["nombre_producto"],
+            todosProductos[i]["nombre_categoria"],
+            todosProductos[i]["nombre_unidades"],
+            todosProductos[i]["nombre_observaciones"]
+        ];
+
+        if ((nombre === null || todosProductos[i]["nombre_producto"].toLowerCase().includes(nombre.toLowerCase())) &&
+            (categoria === null || todosProductos[i]["id_categoria"] == categoria) &&
+            (unidades === null || todosProductos[i]["nombre_unidades"] == unidades)) {
+
+            datosProducto.forEach((dato, index) => {
+                let celdaBody = crearElemento("td");
+
+                if (index === 0) {
+                    celdaBody.classList.add("tabla_nombreLargo");
+                }
+
+                if (index === 1) {
+                    celdaBody.classList.add("tabla_nombreLargo");
+
+                    let imagenCategoria = crearElemento("img", undefined, {
+                        src: `../../../assets/img/categorias/${todosProductos[i]["imagen_categoria"]}`,
+                        width: "35px",
+                    });
+                    celdaBody.appendChild(imagenCategoria);
+                }
+                celdaBody.innerHTML += dato;
+                filaBody.appendChild(celdaBody);
+
+                // Verificar si la celda actual es para la columna de observaciones
+                if (index === 3) {
+                    celdaBody.classList.add("tabla_observaciones");
+                }
+            });
+
+            //Los id de inputCantidad y botonAñadir concuerdan con la posicion del producto en el array.
+            //Esto se va a utilizar para identificar que producto se va a guardar en la cesta.
+            let celdaBoton = crearElemento("td", undefined, {
+                class: "td_alignRight"
+            });
+            let inputCantidad = crearElemento("input", undefined, {
+                type: "number",
+                min: "0",
+                value: "0",
+                id: "inputCantidad_" + i,
+                class: "form-control form-control-sm"
+            });
+            let botonAñadir = crearElemento("input", undefined, {
+                id: "botonAñadir_" + i,
+                type: "submit",
+                class: "btn btn_custom_1 btn_sm",
+                value: "Añadir"
+            })
+            botonAñadir.addEventListener("click", agregarCesta);
+            botonAñadir.addEventListener("click", manejadorCarrito);
+            celdaBoton.appendChild(inputCantidad);
+            celdaBoton.appendChild(botonAñadir);
+            filaBody.appendChild(celdaBoton);
+
+            tablaBody.appendChild(filaBody);
+            productosEncontrados = true;
+        }
+    }
+
+    tablaHead.appendChild(filaHead);
+    tabla.appendChild(tablaHead);
+    tabla.appendChild(tablaBody);
+
+    contenedorTablaProductos.appendChild(tabla);
+    contenedor.appendChild(contenedorTablaProductos);
+
+    if (!productosEncontrados) {
+        contenedorTablaProductos.innerHTML = "";
+        let mensajeVacio = mostrarMensajeVacio("No hay productos", "¿Hacer una solicitud de producto?", "Hacer solicitud");
+        contenedorTablaProductos.appendChild(mensajeVacio);
+        let botonMensajeVacio = document.querySelector("#botonMensajeVacio");
+        botonMensajeVacio.addEventListener("click", manejadorSolicitud);
+    }
+}
+
+// Página pedidos_____________________________________________________________________
+function navPedidos() {
+    //Mostrar Historial.
+    //Se almacena en esta letiable la información recogida desde el main.
+    let usuarioActual = JSON.parse(localStorage.getItem("usuario"));
+
+    let parametros = {
+        //UsuarioActual contiene todos los campos de usuario que se han almacenado anteriormente en principal .
+        //Y clavePrimaria ha sido creada en el js de controlUsuario en la funcion manejarRespuesta.
+        claveUsuario: usuarioActual.clavePrimaria
+    };
+
+    $.ajax({
+        //Ubicacion del archivo php que va a manejar los valores.
+        url: "./php/consultaUsuario.php",
+        //Metodo en que los va a recibir.
+        type: "GET",
+        data: parametros,
+        dataType: "json",
+        //La funcion que se ejecuta segun el resultado.
+        success: pagPedidos,
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.error("Error en la solicitud AJAX: " + textStatus, errorThrown);
+        }
+    });
+}
+
+function pagPedidos(respuesta) {
+    let contenedor = document.querySelector("#contenedor");
+    contenedor.innerHTML = "";
+
+    let pedidosTopUser = crearElemento("div", undefined, undefined);
+    let h1Pedidos = crearElemento("h1", "Pedidos", {
+        id: "tituloApartado",
+        class: "py-3 mb-3 mt-4"
+    });
+
+    pedidosTopUser.appendChild(h1Pedidos);
+    contenedor.appendChild(pedidosTopUser);
+
+    //Se comprueba primero que exista algo en el historial de solicitudes.
+    if (respuesta[0] != null) {
+        let historial = crearElemento("table", undefined, {
+            class: "table table-responsive table-hover mt-4"
+        });
+        let tablaTitulos = crearElemento("thead");
+
+        //Creo los titulos de las tablas.
+        let titulos = crearElemento("tr", undefined, undefined);
+        //Segun el formato en el que se recibe el objeto, tengo que usar sus elementos de la mitad al final.
+        let prueba = Object.keys(respuesta[0]);
+        for (let i = prueba.length / 2; i < prueba.length; i++) {
+            //Creo cada elemento y lo agrego a la fila del titulo.
+            let filaTitulo = crearElemento("th", prueba[i]);
+            titulos.appendChild(filaTitulo);
+        }
+
+        //Agrego el titulo a la tabla.
+        tablaTitulos.appendChild(titulos);
+        historial.appendChild(tablaTitulos);
+
+        let tablaBody = crearElemento("tbody");
+        //Ahora agrego el contenido.
+        respuesta.forEach(fila => {
+            let filaNormal = crearElemento("tr", undefined, undefined);
+            for (let i = 0; i < Object.keys(fila).length / 2; i++) {
+                let elementoFila = crearElemento("td", fila[i], undefined);
+                filaNormal.appendChild(elementoFila);
+            }
+            tablaBody.appendChild(filaNormal);
+        });
+        historial.appendChild(tablaBody);
+        contenedor.appendChild(historial);
+    } else {
+        let sinHistorial = crearElemento("p", "Historial Vacio.", undefined)
+        contenedor.appendChild(sinHistorial);
+    }
+}
+
+// Página proveedores_________________________________________________________________
+function navProveedores() {
+    let parametros = {
+        claveProveedores: true
+    };
+    $.ajax({
+        //Ubicacion del archivo php que va a manejar los valores.
+        url: "./php/consultaUsuario.php",
+        //Metodo en que los va a recibir.
+        type: "GET",
+        data: parametros,
+        dataType: "json",
+        success: pagProveedores,
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.error("Error en la solicitud AJAX: " + textStatus, errorThrown);
+        }
+    });
+}
+
+function pagProveedores(proveedores) {
+    //Datos recibidos de proveedores: "id_proveedores" - "descripcion" - "telefono" - "email" - "direccion" - "observaciones"
+    let contenedor = document.querySelector("#contenedor");
+    contenedor.innerHTML = "";
+
+    let provTopUser = crearElemento("div", undefined, undefined);
+    let h1Proveedores = crearElemento("h1", "Proveedores", {
+        id: "tituloApartado",
+        class: "py-3 mb-3 mt-4"
+    });
+
+    provTopUser.appendChild(h1Proveedores);
+    contenedor.appendChild(provTopUser);
+
+    //Estructura del titulo de la tabla.
+    let tablaProveedores = crearElemento("table", undefined, {
+        class: "table table-responsive table-hover mt-4"
+    });
+    let titulosTabla = crearElemento("thead");
+    let filaTitulos = crearElemento("tr");
+    let titulos = ["descripcion", "telefono", "email", "direccion", "observaciones"];
+    for (let i = 0; i < titulos.length; i++) {
+        let celdaTitulo = crearElemento("th", titulos[i].charAt(0).toUpperCase() + titulos[i].slice(1).toLowerCase());
+        filaTitulos.appendChild(celdaTitulo);
+    }
+    titulosTabla.appendChild(filaTitulos);
+    tablaProveedores.appendChild(titulosTabla);
+
+    //Estructura del cuerpo de la tabla.
+    tablaBody = crearElemento("tbody");
+
+
+    proveedores.forEach(proveedor => {
+        let filaBody = crearElemento("tr");
+        for (let i = 0; i < titulos.length; i++) {
+            let celdaBody = crearElemento("td", proveedor[titulos[i]]);
+            filaBody.appendChild(celdaBody);
+        }
+        tablaBody.appendChild(filaBody);
+    });
+    tablaProveedores.appendChild(tablaBody);
+    contenedor.appendChild(tablaProveedores);
+
+}
+
+// Página residuos____________________________________________________________________
+function navResiduos() {
+    let parametros = {
+        claveResiduos: true
+    };
+    $.ajax({
+        //Ubicacion del archivo php que va a manejar los valores.
+        url: "./php/consultaUsuario.php",
+        //Metodo en que los va a recibir.
+        type: "GET",
+        data: parametros,
+        dataType: "json",
+        success: pagResiduos,
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.error("Error en la solicitud AJAX: " + textStatus, errorThrown);
+        }
+    });
+}
+
+function pagResiduos(residuos) {
+    //Datos recibidos de residuos: "id_reciduos" - "descripcion" - "observaciones"
+    let contenedor = document.querySelector("#contenedor");
+    contenedor.innerHTML = "";
+
+    let resiTopUser = crearElemento("div", undefined, undefined);
+    let h1Residuos = crearElemento("h1", "Residuos", {
+        id: "tituloApartado",
+        class: "py-3 mb-3 mt-4"
+    });
+
+    resiTopUser.appendChild(h1Residuos);
+    contenedor.appendChild(resiTopUser);
+
+    //Estructura del titulo de la tabla.
+    let tablaReciduos = crearElemento("table", undefined, {
+        class: "table table-responsive table-hover mt-4"
+    });
+    let titulosTabla = crearElemento("thead");
+    let filaTitulos = crearElemento("tr");
+    let titulos = ["descripcion", "observaciones"];
+    for (let i = 0; i < titulos.length; i++) {
+        let celdaTitulo = crearElemento("th", titulos[i].charAt(0).toUpperCase() + titulos[i].slice(1).toLowerCase());
+        filaTitulos.appendChild(celdaTitulo);
+    }
+    titulosTabla.appendChild(filaTitulos);
+    tablaReciduos.appendChild(titulosTabla);
+
+    //Estructura del cuerpo de la tabla.
+    tablaBody = crearElemento("tbody");
+
+
+    residuos.forEach(residuo => {
+        let filaBody = crearElemento("tr");
+        for (let i = 0; i < titulos.length; i++) {
+            let celdaBody = crearElemento("td", residuo[titulos[i]]);
+            filaBody.appendChild(celdaBody);
+        }
+        tablaBody.appendChild(filaBody);
+    });
+    tablaReciduos.appendChild(tablaBody);
+    contenedor.appendChild(tablaReciduos);
+
+}
+
 function mostrarPopup(datosUsuario) {
     crearPopup('Solicitud de nuevo producto');
     let popupContainer = document.querySelector('#popupContainer');
@@ -877,135 +1008,6 @@ function agregarCestaDesdePopup(datosProducto) {
 
     // Actualizar la visualización de la cesta (puedes hacerlo llamando a la función correspondiente)
     manejadorCarrito();
-}
-
-function imprimirTablaProductos(nombre = null, categoria = null, unidades = null) {
-    let todosProductos = JSON.parse(localStorage.getItem("todosProductos"));
-
-    let contenedorTablaProductos = document.querySelector("#contenedorTablaProductos");
-    if (contenedorTablaProductos == null) {
-        contenedorTablaProductos = crearElemento("div", undefined, {
-            class: "row",
-            id: "contenedorTablaProductos"
-        });
-    } else {
-        contenedorTablaProductos.innerHTML = "";
-    }
-
-    let tabla = crearElemento("table", undefined, {
-        id: "tabla",
-        class: "table table-responsive table-hover mt-4"
-    });
-    let tablaHead = crearElemento("thead");
-    let tablaBody = crearElemento("tbody");
-
-    let filaHead = crearElemento("tr");
-    let celdaCheckbox = crearElemento("th");
-    let inputCheckbox = crearElemento("input", undefined, {
-        type: "checkbox",
-        class: "genericoCheckCabecera"
-    });
-    celdaCheckbox.appendChild(inputCheckbox);
-    filaHead.appendChild(celdaCheckbox);
-
-    let titulos = ["Producto", "Categoría", "Unidades", "Observaciones", ""];
-    let productosEncontrados = false;
-
-    titulos.forEach(titulo => {
-        let celdaHead = crearElemento("th", titulo);
-        filaHead.appendChild(celdaHead);
-    });
-
-    for (let i = 0; i < todosProductos.length; i++) {
-        let filaBody = crearElemento("tr");
-
-        let celdaCheckbox = crearElemento("td");
-        let inputCheckbox = crearElemento("input", undefined, {
-            type: "checkbox",
-            class: "genericoCheck"
-        });
-        celdaCheckbox.appendChild(inputCheckbox);
-        filaBody.appendChild(celdaCheckbox);
-
-        let datosProducto = [
-            todosProductos[i]["nombre_producto"],
-            todosProductos[i]["nombre_categoria"],
-            todosProductos[i]["nombre_unidades"],
-            todosProductos[i]["nombre_observaciones"]
-        ];
-
-        if ((nombre === null || todosProductos[i]["nombre_producto"].toLowerCase().includes(nombre.toLowerCase())) &&
-            (categoria === null || todosProductos[i]["id_categoria"] == categoria) &&
-            (unidades === null || todosProductos[i]["nombre_unidades"] == unidades)) {
-
-            datosProducto.forEach((dato, index) => {
-                let celdaBody = crearElemento("td");
-
-                if (index === 0) {
-                    celdaBody.classList.add("tabla_nombreLargo");
-                }
-
-                if (index === 1) {
-                    celdaBody.classList.add("tabla_nombreLargo");
-
-                    let imagenCategoria = crearElemento("img", undefined, {
-                        src: `../../../assets/img/categorias/${todosProductos[i]["imagen_categoria"]}`,
-                        width: "35px",
-                    });
-                    celdaBody.appendChild(imagenCategoria);
-                }
-                celdaBody.innerHTML += dato;
-                filaBody.appendChild(celdaBody);
-
-                // Verificar si la celda actual es para la columna de observaciones
-                if (index === 3) {
-                    celdaBody.classList.add("tabla_observaciones");
-                }
-            });
-
-            //Los id de inputCantidad y botonAñadir concuerdan con la posicion del producto en el array.
-            //Esto se va a utilizar para identificar que producto se va a guardar en la cesta.
-            let celdaBoton = crearElemento("td", undefined, {
-                class: "td_alignRight"
-            });
-            let inputCantidad = crearElemento("input", undefined, {
-                type: "number",
-                min: "0",
-                value: "0",
-                id: "inputCantidad_" + i,
-                class: "form-control form-control-sm"
-            });
-            let botonAñadir = crearElemento("input", undefined, {
-                id: "botonAñadir_" + i,
-                type: "submit",
-                class: "btn btn_custom_1 btn_sm",
-                value: "Añadir"
-            })
-            botonAñadir.addEventListener("click", agregarCesta);
-            botonAñadir.addEventListener("click", manejadorCarrito);
-            celdaBoton.appendChild(inputCantidad);
-            celdaBoton.appendChild(botonAñadir);
-            filaBody.appendChild(celdaBoton);
-
-            tablaBody.appendChild(filaBody);
-            productosEncontrados = true;
-        }
-    }
-
-    tablaHead.appendChild(filaHead);
-    tabla.appendChild(tablaHead);
-    tabla.appendChild(tablaBody);
-
-    contenedorTablaProductos.appendChild(tabla);
-    contenedor.appendChild(contenedorTablaProductos);
-
-    if (!productosEncontrados) {
-        contenedorTablaProductos.innerHTML = "";
-        let mensajeVacio = mostrarMensajeVacio("No hay productos", "¿Hacer una solicitud de producto?", "Hacer solicitud");
-        contenedorTablaProductos.appendChild(mensajeVacio);
-        let botonMensajeVacio = document.querySelector("#botonMensajeVacio");
-        botonMensajeVacio.addEventListener("click", manejadorSolicitud);
-    }
 }
 
 function agregarCesta(e) {

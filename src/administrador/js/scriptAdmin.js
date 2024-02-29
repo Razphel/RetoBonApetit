@@ -34,12 +34,10 @@ function principal() {
     // Apartado inicio
     document.querySelector("#navInicio").addEventListener("click", navInicio);
     // Apartado categorías
-    document.querySelector("#navCategorias").addEventListener("click", navCategorias);
     document.querySelector("#navListarCategorias").addEventListener("click", navListarCategorias);
     document.querySelector("#navAñadirCategoria").addEventListener("click", navAñadirCategoria);
     document.querySelector("#shortcut_categoria").addEventListener("click", navAñadirCategoria);
     // Apartado productos
-    document.querySelector("#navProductos").addEventListener("click", navProductos);
     document.querySelector("#navListarProductos").addEventListener("click", navListarProductos);
     document.querySelector("#navAñadirProducto").addEventListener("click", navAñadirProducto);
     document.querySelector("#shortcut_producto").addEventListener("click", navAñadirProducto);
@@ -48,17 +46,14 @@ function principal() {
     // Apartado solicitudes
     document.querySelector("#navSolicitudes").addEventListener("click", navSolicitudes);
     // Apartado pedidos
-    document.querySelector("#navPedidos").addEventListener("click", navPedidos);
     document.querySelector("#navListarPedidos").addEventListener("click", navListarPedidos);
     document.querySelector("#navNuevoPedido").addEventListener("click", navNuevoPedido);
     document.querySelector("#shortcut_pedido").addEventListener("click", navNuevoPedido);
     // Apartado usuarios
-    document.querySelector("#navUsuarios").addEventListener("click", navUsuarios);
     document.querySelector("#navListarUsuarios").addEventListener("click", navListarUsuarios);
     document.querySelector("#navAñadirUsuario").addEventListener("click", navAñadirUsuario);
     document.querySelector("#shortcut_usuario").addEventListener("click", navAñadirUsuario);
     // Apartado proveedores
-    document.querySelector("#navProveedores").addEventListener("click", navProveedores);
     document.querySelector("#navListarProveedores").addEventListener("click", navListarProveedores);
     document.querySelector("#navAñadirProveedor").addEventListener("click", navAñadirProveedor);
     document.querySelector("#shortcut_proveedor").addEventListener("click", navAñadirProveedor);
@@ -165,7 +160,6 @@ function navAñadirCategoria() {
 
 function tablaCategorias(respuesta) {
     let categorias = JSON.parse(respuesta);
-    console.log(categorias);
 
     //Buscador.
     let buscador = crearElemento("input", undefined, {
@@ -531,27 +525,100 @@ function navProductos() {
 }
 
 function navListarProductos() {
-    pagListarProductos();
+    let contenedor = document.querySelector("#contenedor");
+    // Antes que nada, se limpia el contenedor.
+    contenedor.innerHTML = "";
 
+    // Contenedor de botones de categorias y h1 con el titulo de la vista inicio.
+    let parteSuperior = crearElemento("div", undefined, undefined);
+    let h1Inicio = crearElemento("h1", "Productos", {
+        id: "tituloApartado",
+        class: "py-3 mb-3 mt-4"
+    });
+
+    parteSuperior.appendChild(h1Inicio);
+    contenedor.appendChild(parteSuperior);
+
+    // Contenedor inferior de la pagina. La tabla se crea por separado del inicio y las categorias.
+    // Este contenedor se crea si no existe todavia.
+    let parteInferior = document.querySelector("#parteInferior");
+    if (document.querySelector("#parteInferior") == null) {
+        parteInferior = crearElemento("div", undefined, {
+            id: "parteInferior",
+            class: "mt-5"
+        });
+    }
+    contenedor.appendChild(parteInferior);
+    imprimirFiltroTabla();
+    imprimirTablaProductos();
 }
 
-function pagListarProductos() { // mostrar tabla con todos los productos y sus datos
-    // Contenido para la parte superior
-    let tituloPagina = "Productos";
-    let contenidoSuperior = crearElemento("div", undefined, {
-        class: "row contenidoSuperior"
+function pagListarProductos(respuesta) {
+    let contenedor = document.querySelector("#contenedor");
+
+    // Antes que nada, se limpia el contenedor.
+    contenedor.innerHTML = "";
+
+    // Contenedor de botones de categorias y h1 con el titulo de la vista inicio.
+    let parteSuperior = crearElemento("div", undefined, undefined);
+    let h1Inicio = crearElemento("h1", "Productos", {
+        id: "tituloApartado",
+        class: "py-3 mb-3 mt-4"
     });
 
-    // Contenido para la parte inferior
-    let contenidoInferior = document.createElement("div", undefined, {
-        id: 'row contenidoInferior',
-        class: 'contenidoInferior'
+    parteSuperior.appendChild(h1Inicio);
+
+    let categorias = crearElemento("div", undefined, {
+        class: "row",
+        id: "categorias"
     });
 
-    // Crear la plantilla genérica
-    crearPlantillaGenerica1(tituloPagina, contenidoSuperior, contenidoInferior);
+    respuesta.forEach(fila => {
+        let carta = crearElemento("div", undefined, {
+            class: "col-6 col-sm-3 col-md-3 col-lg-3"
+        });
 
+        // Le doy un id al contenedor para usarlo en el manejador.
+        let divCarta = crearElemento("div", undefined, {
+            id: "idCategoria_" + fila.id_categorias,
+            class: "label_effect card card_margin p-3 mb-3",
+            "data-toggle": "tooltip"
+        });
 
+        // Le doy un manejador a cada boton que usa el id para consultar las categorias.
+        divCarta.addEventListener("click", manejadorCategoria);
+
+        let p = crearElemento("p", fila.descripcion, undefined);
+        let img = crearElemento("img", undefined, {
+            src: "../../../assets/img/categorias/" + fila.imagenes,
+            alt: fila.descripcion
+        });
+
+        //Organizo los elementos y los agrego al div row.
+        divCarta.appendChild(img);
+        divCarta.appendChild(p);
+        carta.appendChild(divCarta);
+        categorias.appendChild(carta);
+    });
+
+    //Agrego el div con la lista de cartas al contenedor superior de la pagina.
+    parteSuperior.appendChild(categorias);
+
+    //Agrego el contenedor superior a la pagina.
+    contenedor.appendChild(parteSuperior);
+
+    // Contenedor inferior de la pagina. La tabla se crea por separado del inicio y las categorias.
+    // Este contenedor se crea si no existe todavia.
+    let parteInferior = document.querySelector("#parteInferior");
+    if (document.querySelector("#parteInferior") == null) {
+        parteInferior = crearElemento("div", undefined, {
+            id: "parteInferior",
+            class: "mt-5"
+        });
+    }
+    contenedor.appendChild(parteInferior);
+    imprimirFiltroTabla();
+    imprimirTablaProductos();
 }
 
 function imprimirTablaProductos(nombre = null, categoria = null, unidades = null) {
@@ -594,6 +661,8 @@ function imprimirTablaProductos(nombre = null, categoria = null, unidades = null
     for (let i = 0; i < todosProductos.length; i++) {
         let filaBody = crearElemento("tr");
 
+        filaBody.addEventListener("click", manejadorProductoPopup);
+
         let celdaCheckbox = crearElemento("td");
         let inputCheckbox = crearElemento("input", undefined, {
             type: "checkbox",
@@ -629,7 +698,10 @@ function imprimirTablaProductos(nombre = null, categoria = null, unidades = null
                     });
                     celdaBody.appendChild(imagenCategoria);
                 }
+
+
                 celdaBody.innerHTML += dato;
+
                 filaBody.appendChild(celdaBody);
 
                 // Verificar si la celda actual es para la columna de observaciones
@@ -638,28 +710,23 @@ function imprimirTablaProductos(nombre = null, categoria = null, unidades = null
                 }
             });
 
-            //Los id de inputCantidad y botonAñadir concuerdan con la posicion del producto en el array.
-            //Esto se va a utilizar para identificar que producto se va a guardar en la cesta.
+            //Los id de los botones concuerdan con la posicion del producto en el array.
+            //Esto se va a utilizar para identificar que producto esta en cada boton.
             let celdaBoton = crearElemento("td", undefined, {
                 class: "td_alignRight"
             });
-            let inputCantidad = crearElemento("input", undefined, {
-                type: "number",
-                min: "0",
-                value: "0",
-                id: "inputCantidad_" + i,
-                class: "form-control form-control-sm"
+            let botonEditar = crearElemento("i", undefined, {
+                id: "botonEditar_" + i,
+                class: "bi bi-pencil-square",
             });
-            let botonAñadir = crearElemento("input", undefined, {
-                id: "botonAñadir_" + i,
-                type: "submit",
-                class: "btn btn_custom_1 btn_sm",
-                value: "Añadir"
+            let botonBorrar = crearElemento("i", undefined, {
+                id: "botonBorrar_" + i,
+                class: "bi bi-trash3",
             })
-            botonAñadir.addEventListener("click", agregarCesta);
-            botonAñadir.addEventListener("click", manejadorCarrito);
-            celdaBoton.appendChild(inputCantidad);
-            celdaBoton.appendChild(botonAñadir);
+            // botonAñadir.addEventListener("click", agregarCesta);
+            // botonAñadir.addEventListener("click", manejadorCarrito);
+            celdaBoton.appendChild(botonEditar);
+            celdaBoton.appendChild(botonBorrar);
             filaBody.appendChild(celdaBoton);
 
             tablaBody.appendChild(filaBody);
@@ -679,8 +746,15 @@ function imprimirTablaProductos(nombre = null, categoria = null, unidades = null
         let mensajeVacio = mostrarMensajeVacio("No hay productos", "¿Hacer una solicitud de producto?", "Hacer solicitud");
         contenedorTablaProductos.appendChild(mensajeVacio);
         let botonMensajeVacio = document.querySelector("#botonMensajeVacio");
-        botonMensajeVacio.addEventListener("click", manejadorSolicitud);
+        // botonMensajeVacio.addEventListener("click", manejadorSolicitud);
     }
+}
+
+function manejadorProductoPopup(e) {
+    crearPopup("Datos del producto");
+    let contenedorPopup = document.querySelector('#contenedorPopup');
+    let contenidoFila = this.querySelectorAll("td");
+    console.log(contenidoFila);
 }
 
 function manejadorCategoria(e) {
@@ -865,26 +939,25 @@ function imprimirFiltroTabla(nombre = null, categoria = null, unidades = null) {
         value: nombre || ""
     });
 
-    let botonSolicitud = crearElemento("input", undefined, {
+    let botonNuevoProducto = crearElemento("input", undefined, {
         type: "submit",
-        id: "botonSolicitud",
+        id: "botonNuevoProducto",
         class: "btn btn_custom_1",
-        value: "Hacer solicitud",
+        value: "Nuevo producto",
     });
 
-    botonSolicitud.addEventListener("click", manejadorSolicitud);
+    // botonNuevoProducto.addEventListener("click", manejadorSolicitud);
 
     inputNombre.addEventListener("input", manejadorFiltro);
     contenedorBuscadorIcon.appendChild(inputNombre);
     contenedorFiltroRight.appendChild(contenedorBuscador);
-    contenedorFiltroRight.appendChild(botonSolicitud);
+    contenedorFiltroRight.appendChild(botonNuevoProducto);
 
     contenedorFiltro.appendChild(contenedorFiltroRight);
 
     // Añadir el contenedor del filtro al DOM
     parteInferior.appendChild(contenedorFiltro);
 }
-
 
 function navAñadirProducto() {
     pagAñadirProducto();
