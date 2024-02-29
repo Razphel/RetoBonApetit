@@ -1581,3 +1581,173 @@ function navResiduos() {
 
 function pagResiduos() {
 }
+
+// apartado solicitudes_____________________________________________________________________
+
+
+function navSolicitudes() {
+    
+    
+    pagSolicitudes();
+
+    let parametros = {
+        solicitudes: true
+    };
+    $.ajax({
+        //Ubicacion del archivo php que va a manejar los valores.
+        url: "./php/consultaAdmin.php",
+        //Metodo en que los va a recibir.
+        type: "GET",
+        data: parametros,
+        dataType: "json",
+        success: tablaSolicitudes,
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.error("Error en la solicitud AJAX: " + textStatus, errorThrown);
+        }
+    });
+}
+
+function pagSolicitudes() { // mostrar tabla con los usuarios y sus datos
+    // Contenido para la parte superior
+    let tituloPagina = "Usuarios";
+    let contenidoSuperior = crearElemento("div", undefined, {
+        class: "row contenidoSuperior",
+        id: "categorias"
+    });
+
+    // Contenido para la parte inferior
+    let contenidoInferior = document.createElement("div", undefined, {
+        id: 'row contenidoInferior',
+        class: 'contenidoInferior'
+    });
+
+    // Crear la plantilla genérica
+    crearPlantillaGenerica1(tituloPagina, contenidoSuperior, contenidoInferior);
+}
+
+function tablaSolicitudes(usuarios) {
+    let contenedor = document.querySelector("#parteInferior");
+    contenedor.innerHTML = "";
+
+    //Buscador.
+    let buscador = crearElemento("input", undefined, {
+        id: "buscadorUsuarios"
+    });
+
+    buscador.addEventListener("input", function (e) {
+        // Convertir a minúsculas y quitar espacios en blanco al inicio y al final.
+        let textoBuscar = this.value.toLowerCase().trim();
+
+        // Obtener todas las filas de la tabla.
+        let filasTabla = tablaBody.querySelectorAll("tr");
+
+        // Mostrar u ocultar según el texto del buscador.
+        filasTabla.forEach(fila => {
+            // Solo se va a buscar por nombre de usuario, nombre y apellidos, se seleccionan solo las columnas correspondientes.
+            let nombreUsuario = fila.querySelector("td:nth-child(1)").innerHTML.toLowerCase();
+
+            // Mostrar la fila si coincide con el texto buscado o si no se ha ingresado nada en el input.
+            if (nombreUsuario.includes(textoBuscar) ||   textoBuscar === "") {
+                fila.style.display = ""; // Mostrar la fila.
+            } else {
+                fila.style.display = "none"; // Ocultar la fila.
+            }
+        });
+    });
+
+    contenedor.appendChild(buscador);
+
+
+
+// Filtro de tramitado.
+    let filtroTramitado = crearElemento("select", undefined, {
+        id: "filtroTramitado",
+        class: "form-select",
+    });
+
+    let opcionTodos = crearElemento("option", "Todos");
+    let opcionTramitado = crearElemento("option", "Tramitado");
+    let opcionNoTramitado = crearElemento("option", "No Tramitado");
+
+    filtroTramitado.appendChild(opcionTodos);
+    filtroTramitado.appendChild(opcionTramitado);
+    filtroTramitado.appendChild(opcionNoTramitado);
+
+    filtroTramitado.addEventListener("change", function (e) {
+        let valorSeleccionado = this.value.toLowerCase().trim();
+
+        let filasTabla = tablaBody.querySelectorAll("tr");
+
+        filasTabla.forEach(fila => {
+            let tramitado = parseInt(fila.querySelector("td:nth-child(8)").innerHTML, 10);
+
+            if ((valorSeleccionado === "todos") || (valorSeleccionado === "tramitado" && tramitado === 1) || (valorSeleccionado === "no tramitado" && tramitado === 0)) {
+                fila.style.display = ""; // Mostrar la fila.
+            } else {
+                fila.style.display = "none"; // Ocultar la fila.
+            }
+        });
+    });
+
+    contenedor.appendChild(filtroTramitado);
+
+    //Estructura del titulo de la tabla.
+    
+    let tablaUsuarios = crearElemento("table", undefined, {
+        class: "table table-responsive table-hover mt-4"
+    });
+    
+    let titulosTabla = crearElemento("thead");
+
+    let filaTitulos = crearElemento("tr");
+    let titulos = ["nombre","id_solicitudes", "fecha_solicitud", "descripcion", "unidades", "cantidad", "observaciones", "tramitado", "fk_usuario"];
+    for (let i = 0; i < titulos.length; i++) {
+        let celdaTitulo = crearElemento("th", titulos[i].charAt(0).toUpperCase() + titulos[i].slice(1).toLowerCase());
+        filaTitulos.appendChild(celdaTitulo);
+    }
+    let columnaDeBotones = crearElemento("td");
+    filaTitulos.appendChild(columnaDeBotones);
+    titulosTabla.appendChild(filaTitulos);
+    tablaUsuarios.appendChild(titulosTabla);
+
+    //Estructura del cuerpo de la tabla.
+    tablaBody = crearElemento("tbody");
+
+
+
+    usuarios.forEach(usuario => {
+        let filaBody = crearElemento("tr", undefined, {
+            id: "nombre" + usuario["nombre"]
+        });
+    
+        for (let i = 0; i < titulos.length; i++) {
+            let celdaBody = crearElemento("td", usuario[titulos[i]]);
+            filaBody.appendChild(celdaBody);
+        }
+    
+
+        let celdaBoton = crearElemento("td");
+        let botonActivarDesactivar = crearElemento("button", "Activar/Desactivar");
+        botonActivarDesactivar.addEventListener("click", function () {
+            // Lógica para obtener el id de la solicitud y el estado actual del tramitado.
+            let idSolicitud = obtenerIdSolicitudDesdeFila(filaBody);
+            let estadoActualTramitado = obtenerEstadoTramitadoDesdeFila(filaBody);
+    
+            // Cambia el estado actual y realiza la actualización en el servidor.
+            let nuevoEstadoTramitado = (estadoActualTramitado === 1) ? 0 : 1;
+            actualizarTramitadoEnBD(idSolicitud, nuevoEstadoTramitado);
+        });
+    
+        celdaBoton.appendChild(botonActivarDesactivar);
+        filaBody.appendChild(celdaBoton);
+        tablaBody.appendChild(filaBody);
+    });
+ 
+
+    tablaUsuarios.appendChild(tablaBody);
+    contenedor.appendChild(tablaUsuarios);
+}
+
+
+
+// PROVEEDORES 

@@ -91,6 +91,26 @@ class BD
         return $filas;
     }
 
+    public static function imprimirSolicitudes($tablaImprimir)
+    {
+        try {
+            $conexion = self::conexionBD();
+            $sql = "SELECT solicitudes.*, usuarios.nombre FROM solicitudes inner join  usuarios on solicitudes.fk_usuario = usuarios.id_usuarios";
+
+            $resultado = $conexion->query($sql);
+
+            // Crear un array para almacenar todas las filas        
+            $filas = [];
+            // Recorrer los resultados y almacenar cada fila en el array        
+            while ($fila = $resultado->fetch()) {
+                $filas[] = $fila;
+            }
+        } catch (Exception $e) {
+            throw new Exception("ERROR: " + $e);
+        }
+        //Esta consulta te devuelve un array de arrays con todos los datos de la tabla producto.
+        return $filas;
+    }
     public static function imprimirSolicitudesInicio($usuarioInicioSesion)
     {
         try {
@@ -190,6 +210,33 @@ class BD
             throw new Exception("ERROR: " . $e->getMessage());
         }
     }
+
+    public static function actualizarCampo($tabla, $campo, $nuevoValor, $condicion)
+{
+    try {
+        $conexion = self::conexionBD();
+
+        $sql = "UPDATE $tabla SET $campo = ? WHERE $condicion";
+        $consulta = $conexion->prepare($sql);
+
+        // Ejecutar la consulta preparada con el nuevo valor
+        $consulta->execute([$nuevoValor]);
+
+        // Verificar si se realizaron cambios
+        $filasAfectadas = $consulta->rowCount();
+
+        if ($filasAfectadas > 0) {
+            // Actualización exitosa
+            return true;
+        } else {
+            // No se realizaron cambios o la condición no coincidió
+            return false;
+        }
+
+    } catch (PDOException $e) {
+        throw new Exception("ERROR: " . $e->getMessage());
+    }
+}
 
     public static function eliminarRegistro($tabla, $id)
     {
@@ -295,3 +342,4 @@ class BD
         return $filas;
     }
 }
+

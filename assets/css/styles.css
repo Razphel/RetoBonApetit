@@ -1353,3 +1353,9 @@ body {
 #popupObservaciones {
     margin-bottom: 10px; /* Margen inferior para separar las observaciones de los elementos siguientes */
 }
+
+#filtroTramitado{
+    display: flex;
+    white-space: nowrap;
+    width: 500px;
+}

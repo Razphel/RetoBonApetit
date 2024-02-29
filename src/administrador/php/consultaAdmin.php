@@ -36,6 +36,10 @@ if (isset($_REQUEST['unidadesDeMedida'])) {
     $unidades = BD::imprimirConsultas('unidades');
     echo json_encode($unidades);
 }
+if (isset($_REQUEST['solicitudes'])) {
+    $solicitudes = BD::imprimirSolicitudes('solicitudes');
+    echo json_encode($solicitudes);
+}
 
 if (isset($_REQUEST['proveedores'])) {
     $proveedores = BD::imprimirConsultas('proveedores');
@@ -45,4 +49,18 @@ if (isset($_REQUEST['proveedores'])) {
 if (isset($_REQUEST['claveTodosUsuarios'])) {
     $todosUsuarios = BD::imprimirConsultas('usuarios');
     echo json_encode($todosUsuarios);
+}
+
+
+if (isset($_REQUEST['actualizarTramitado']) && isset($_REQUEST['idSolicitud'])) {
+    $idSolicitud = $_REQUEST['idSolicitud'];
+    $tramitado = $_REQUEST['actualizarTramitado'];
+
+    // Convertir el valor booleano a un entero (0 o 1) para almacenar en la base de datos
+    $valorTramitado = $tramitado ? 1 : 0;
+
+    // Actualiza el campo 'tramitado' en la tabla 'solicitudes'
+    $actualizacionExitosa = BD::actualizarCampo('solicitudes', 'tramitado', $valorTramitado, "id_solicitud = $idSolicitud");
+
+    echo json_encode($actualizacionExitosa);
 }
