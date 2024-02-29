@@ -192,9 +192,9 @@ class BD
     {
         try {
             $conexion = self::conexionBD();
-            $sql = "SELECT pedidos.fecha_pedido,linea_pedido.descripcion,linea_pedido.cantidad,linea_pedido.unidades,linea_pedido.observaciones 
-            FROM pedidos inner join linea_pedido 
-            ON pedidos.id_pedidos = linea_pedido.fk_pedido";
+            $sql = "SELECT usuarios.nombre,pedidos.fecha_pedido,linea_pedido.descripcion,linea_pedido.cantidad,linea_pedido.unidades,linea_pedido.observaciones 
+            FROM linea_pedido inner join pedidos
+            ON linea_pedido.fk_pedido =  pedidos.id_pedidos inner join usuarios on pedidos.fk_usuario = usuarios.id_usuarios inner join solicitudes on usuarios.id_usuarios = solicitudes.fk_usuario where solicitudes.tramitado = 1" ;
 
             $resultado = $conexion->query($sql);
 

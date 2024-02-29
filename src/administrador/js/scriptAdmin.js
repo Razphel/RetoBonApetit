@@ -976,14 +976,123 @@ function newUdMedida() {
 
 // Apartado PEDIDOS____________________________________________________________________
 function navPedidos() {
-    navListarPedidos();
+
 }
+
 
 function navListarPedidos() {
     pagListarPedidos();
+    
+
+    let parametros = {
+        pedidos: true
+    };
+    $.ajax({
+        //Ubicacion del archivo php que va a manejar los valores.
+        url: "./php/consultaAdmin.php",
+        //Metodo en que los va a recibir.
+        type: "GET",
+        data: parametros,
+        dataType: "json",
+        success: tablaPedidos,
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.error("Error en la solicitud AJAX: " + textStatus, errorThrown);
+        }
+    });
+}
+
+function tablaPedidos(pedidos) {
+    let contenedor = document.querySelector("#parteInferior");
+    contenedor.innerHTML = "";
+
+    //Buscador.
+    let buscador = crearElemento("input", undefined, {
+        id: "buscadorPedidos"
+    });
+
+    buscador.addEventListener("input", function (e) {
+        // Convertir a minúsculas y quitar espacios en blanco al inicio y al final.
+        let textoBuscar = this.value.toLowerCase().trim();
+
+        // Obtener todas las filas de la tabla.
+        let filasTabla = tablaBody.querySelectorAll("tr");
+
+        // Mostrar u ocultar según el texto del buscador.
+        filasTabla.forEach(fila => {
+            // Solo se va a buscar por nombre de usuario, nombre y apellidos, se seleccionan solo las columnas correspondientes.
+            let nombreUsuario = fila.querySelector("td:nth-child(1)").innerHTML.toLowerCase();
+            let producto = fila.querySelector("td:nth-child(3)").innerHTML.toLowerCase();
+          
+            // Mostrar la fila si coincide con el texto buscado o si no se ha ingresado nada en el input.
+            
+            if (nombreUsuario.includes(textoBuscar) || producto.includes(textoBuscar)  || textoBuscar === "") {
+                fila.style.display = ""; // Mostrar la fila.
+            } else {
+                fila.style.display = "none"; // Ocultar la fila.
+            }
+        });
+    });
+
+    contenedor.appendChild(buscador);
+
+    //Estructura del titulo de la tabla.
+    let tablaPedidos = crearElemento("table", undefined, {
+        class: "table table-responsive table-hover mt-4"
+    });
+    let titulosTabla = crearElemento("thead");
+
+    let filaTitulos = crearElemento("tr");
+    let titulos = ["nombre","fecha_pedido","descripcion","cantidad","unidades","observaciones" ];
+    for (let i = 0; i < titulos.length; i++) {
+        let tituloMostrar = titulos[i] === "descripcion" ? "Producto" : titulos[i];
+        let celdaTitulo = crearElemento("th", tituloMostrar.charAt(0).toUpperCase() + tituloMostrar.slice(1).toLowerCase());
+
+        filaTitulos.appendChild(celdaTitulo);
+    }
+    let columnaDeBotones = crearElemento("td");
+    filaTitulos.appendChild(columnaDeBotones);
+    titulosTabla.appendChild(filaTitulos);
+    tablaPedidos.appendChild(titulosTabla);
+
+    //Estructura del cuerpo de la tabla.
+    tablaBody = crearElemento("tbody");
+
+
+    pedidos.forEach(pedidos => {
+        let filaBody = crearElemento("tr", undefined, {
+            id: "idpedidos_" + pedidos["id_pedidos"]
+        });
+        for (let i = 0; i < titulos.length; i++) {
+            let celdaBody = crearElemento("td", pedidos[titulos[i]]);
+            filaBody.appendChild(celdaBody);
+        }
+        //Botones editar/borrar.
+        let celdaBodyBoton = crearElemento("td");
+
+
+
+        filaBody.appendChild(celdaBodyBoton);
+        tablaBody.appendChild(filaBody);
+    });
+    tablaPedidos.appendChild(tablaBody);
+    contenedor.appendChild(tablaPedidos);
 }
 
 function pagListarPedidos() { // mostrar el historial de pedidos del admin
+    let tituloPagina = "Usuarios";
+    let contenidoSuperior = crearElemento("div", undefined, {
+        class: "row contenidoSuperior",
+        id: "categorias"
+    });
+
+    // Contenido para la parte inferior
+    let contenidoInferior = document.createElement("div", undefined, {
+        id: 'row contenidoInferior',
+        class: 'contenidoInferior'
+    });
+
+    // Crear la plantilla genérica
+    crearPlantillaGenerica1(tituloPagina, contenidoSuperior, contenidoInferior);
 }
 
 function navNuevoPedido() {
