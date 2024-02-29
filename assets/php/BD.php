@@ -188,6 +188,29 @@ class BD
         return $filas;
     }
 
+    public static function imprimirTodosPedidos()
+    {
+        try {
+            $conexion = self::conexionBD();
+            $sql = "SELECT pedidos.fecha_pedido,linea_pedido.descripcion,linea_pedido.cantidad,linea_pedido.unidades,linea_pedido.observaciones 
+            FROM pedidos inner join linea_pedido 
+            ON pedidos.id_pedidos = linea_pedido.fk_pedido";
+
+            $resultado = $conexion->query($sql);
+
+            // Crear un array para almacenar todas las filas
+            $filas = [];
+            // Recorrer los resultados y almacenar cada fila en el array
+            while ($fila = $resultado->fetch()) {
+                $filas[] = $fila;
+            }
+        } catch (Exception $e) {
+            throw new Exception("ERROR: " + $e);
+        }
+        //Esta consulta te devuelve un array de arrays con todos los datos de la tabla producto.
+        return $filas;
+    }
+
     //Con la intencionalidad de que la siguiente funcion sea capaz de insertar datos en cualquier tabla, pasaremos por parametro el nombre de la tabla y un array asociativo en el cual 
     //el array_key serán los campos del registro y el valor asociado serán los datos que queremos introducir en la base de datos
     public static function insertarRegistro($tabla, $datos)
@@ -293,6 +316,9 @@ class BD
         throw new Exception("ERROR: " . $e->getMessage());
     }
 }
+
+
+
 
     // $datos1 = [
     //     "admin" => "1",
