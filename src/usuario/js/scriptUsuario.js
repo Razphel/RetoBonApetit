@@ -136,15 +136,16 @@ function inicioSolicitudes(respuesta) {
     let contenedor = document.querySelector("#contenedor");
 
     //Se comprueba primero que exista algo en el historial de solicitudes.
-    if (respuesta[0] != null) {
-        let pedidos = respuesta;
+    if (respuesta && respuesta.length > 0) {
+        //Ordenar los pedidos por fecha de manera descendente.
+        respuesta.sort((a, b) => new Date(b.fecha_pedido) - new Date(a.fecha_pedido));
 
-        //Aqui se agrupan los pedidos agrupados por día.
+        //Aquí se agrupan los pedidos agrupados por día.
         let pedidosAgrupados = {};
 
-        // Itera sobre cada pedido.
-        pedidos.forEach(pedido => {
-            // Extrae la fecha del pedido.
+        //Recorro los tres primeros días solamente.
+        for (let i = 0; i < Math.min(respuesta.length, 3); i++) {
+            let pedido = respuesta[i];
             let fechaPedido = pedido.fecha_pedido;
 
             // Si la fecha del pedido no es una clave en pedidosAgrupados, agrégala con un array vacío.
@@ -154,12 +155,10 @@ function inicioSolicitudes(respuesta) {
 
             // Agrega el pedido al array correspondiente en pedidosAgrupados.
             pedidosAgrupados[fechaPedido].push(pedido);
-        });
-
-        console.log(pedidosAgrupados);
+        }
 
         for (let fecha in pedidosAgrupados) {
-            //Cada fecha es un array de objetos literales, cada objeto es un pedido.
+            // Cada fecha es un array de objetos literales, cada objeto es un pedido.
             let cartaPedidos = crearElemento("div");
             let fechaPedido = crearElemento("h1", fecha);
 
@@ -170,46 +169,13 @@ function inicioSolicitudes(respuesta) {
                 cartaPedidos.appendChild(textoPedidos);
             }
             contenedor.appendChild(cartaPedidos);
-
         }
-
-        // let historial = crearElemento("table", undefined, {
-        //     class: "table table-responsive table-hover mt-4"
-        // });
-        // let tablaTitulos = crearElemento("thead");
-
-        // //Creo los titulos de las tablas.
-        // let titulos = crearElemento("tr", undefined, undefined);
-        // //Segun el formato en el que se recibe el objeto, tengo que usar sus elementos de la mitad al final.
-        // let prueba = Object.keys(respuesta[0]);
-        // for (let i = prueba.length / 2; i < prueba.length; i++) {
-        //     //Creo cada elemento y lo agrego a la fila del titulo.
-        //     let filaTitulo = crearElemento("th", prueba[i]);
-        //     titulos.appendChild(filaTitulo);
-        // }
-
-        // //Agrego el titulo a la tabla.
-        // tablaTitulos.appendChild(titulos);
-        // historial.appendChild(tablaTitulos);
-
-        // let tablaBody = crearElemento("tbody");
-        // //Ahora agrego el contenido.
-        // respuesta.forEach(fila => {
-        //     let filaNormal = crearElemento("tr", undefined, undefined);
-        //     for (let i = 0; i < Object.keys(fila).length / 2; i++) {
-        //         let elementoFila = crearElemento("td", fila[i], undefined);
-        //         filaNormal.appendChild(elementoFila);
-        //     }
-        //     tablaBody.appendChild(filaNormal);
-        // });
-        // historial.appendChild(tablaBody);
-        // contenedor.appendChild(historial);
     } else {
-        let sinHistorial = crearElemento("p", "Historial Vacio.", undefined)
-        contenedor.appendChild(sinHistorial);
+        // Manejar el caso en que no haya pedidos.
+        contenedor.textContent = "No hay pedidos disponibles.";
     }
-
 }
+
 
 // Página productos___________________________________________________________________
 function navProductos() {
