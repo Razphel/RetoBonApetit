@@ -1728,15 +1728,7 @@ function tablaSolicitudes(usuarios) {
 
         let celdaBoton = crearElemento("td");
         let botonActivarDesactivar = crearElemento("button", "Activar/Desactivar");
-        botonActivarDesactivar.addEventListener("click", function () {
-            // Lógica para obtener el id de la solicitud y el estado actual del tramitado.
-            let idSolicitud = obtenerIdSolicitudDesdeFila(filaBody);
-            let estadoActualTramitado = obtenerEstadoTramitadoDesdeFila(filaBody);
-    
-            // Cambia el estado actual y realiza la actualización en el servidor.
-            let nuevoEstadoTramitado = (estadoActualTramitado === 1) ? 0 : 1;
-            actualizarTramitadoEnBD(idSolicitud, nuevoEstadoTramitado);
-        });
+
     
         celdaBoton.appendChild(botonActivarDesactivar);
         filaBody.appendChild(celdaBoton);
