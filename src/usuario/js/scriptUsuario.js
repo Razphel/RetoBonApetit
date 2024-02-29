@@ -943,7 +943,6 @@ function agregarCestaDesdePopup(datosProducto) {
 
     // Actualizar la visualización de la cesta (puedes hacerlo llamando a la función correspondiente)
     manejadorCarrito();
-    console.log(cesta);
 }
 
 function imprimirTablaProductos(nombre = null, categoria = null, unidades = null) {
@@ -1361,7 +1360,7 @@ function hacerPedido() {
         type: 'submit',
         value: 'Enviar solicitud',
         class: 'btn btn_custom_1',
-        onclick: 'InsertarSolicitud()'
+        onclick: 'enviarSolicitud()'
     });
 
     contenedorBotones.appendChild(btnCancelar);
@@ -1382,11 +1381,66 @@ function limpiarDatos() {
     formulario.reset();
 }
 
-function InsertarSolicitud()
-{
-    console.log(cesta);
+function enviarSolicitud()
+{   
+    let fecha = new Date();
+    let dia = fecha.getDate();
+    let mes = fecha.getMonth() +1;
+    let year = fecha.getFullYear();
+    let  fechaInsertar = year +"/" + mes + "/" + dia;
+    let cesta = JSON.parse(localStorage.getItem("cesta"));
+    let usuario = JSON.parse(localStorage.getItem("usuario")).clavePrimaria;
+    // console.log(cesta);
+    for (let i = 0; i < cesta.length; i++) 
+    {   
+        let descripcion = "";
+        let unidades = "";
+        let cantidad = "";
+        let observaciones = "";
+        let arrayAux = [];
+        let UnaSolicitud = cesta[i];
+        // console.log(UnaSolicitud)
+        for(let clave in UnaSolicitud)
+        {   
+            descripcion = UnaSolicitud['nombre_producto'];
+            unidades = UnaSolicitud['nombre_unidades'];
+            cantidad = UnaSolicitud['cantidad'];
+            observaciones = UnaSolicitud['nombre_observaciones'];
+        }
+        InsertarSolicitud(fechaInsertar,descripcion,unidades,cantidad,observaciones,usuario);
+        console.log(arrayAux);
+    }
+
 }
 
+function InsertarSolicitud(fechaInsertar,descripcion,unidades,cantidad,observaciones,usuario)
+{   
+    let parametros = {
+        NewSolicitud: JSON.stringify({
+            fecha_solicitud: fechaInsertar,
+            descripcion: descripcion,
+            unidades: unidades,
+            cantidad: cantidad,
+            observaciones: observaciones,
+            tramitado: 0,
+            fk_usuario: usuario
+        })
+    };
+    console.log(parametros);
+
+    $.ajax({
+        type: "POST",
+        url: "./php/consultaUsuario.php",
+        data: parametros,
+        error: function(a,b,errorMsg) {
+            console.log(errorMsg);
+        }
+    }).done(function (a) {
+        console.log(a);
+        console.log("hecho");
+    });
+
+}
 function cancelar() {
     window.location.replace('./inicioUsuario.html');
 }
