@@ -1331,13 +1331,30 @@ function newUsuario() {
 }
 
 // Apartado PROVEEDORES___________________________________________________________________
-function navProveedores() {
-    pagListarProveedores();
-}
+
 
 function navListarProveedores() {
     pagListarProveedores();
+
+    let parametros = {
+        proveedores: true
+    };
+    $.ajax({
+        //Ubicacion del archivo php que va a manejar los valores.
+        url: "./php/consultaAdmin.php",
+        //Metodo en que los va a recibir.
+        type: "GET",
+        data: parametros,
+        dataType: "json",
+        success: tablaProveedores,
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.error("Error en la solicitud AJAX: " + textStatus, errorThrown);
+        }
+    });
 }
+
+
+
 
 function pagListarProveedores() {
     // Contenido para la parte superior
@@ -1357,6 +1374,99 @@ function pagListarProveedores() {
     crearPlantillaGenerica1(tituloPagina, contenidoSuperior, contenidoInferior);
 }
 
+// Tabla pàra proveedores
+function tablaProveedores(proveedores) {
+    let contenedor = document.querySelector("#parteInferior");
+    contenedor.innerHTML = "";
+    // let texto = crearElemento("h1","Buscador",{
+    //     id: "textoBuscador"
+    // });
+    // contenedor.appendChild(texto);
+    //Buscador.
+    let buscador = crearElemento("input", undefined, {
+        id: "buscadorProveedores",
+        placeholder: "Busca el proveedor",
+    });
+
+    buscador.addEventListener("input", function (e) {
+        // Convertir a minúsculas y quitar espacios en blanco al inicio y al final.
+        let textoBuscar = this.value.toLowerCase().trim();
+
+        // Obtener todas las filas de la tabla.
+        let filasTabla = tablaBody.querySelectorAll("tr");
+
+        // Mostrar u ocultar según el texto del buscador.
+        filasTabla.forEach(fila => {
+
+            let nombreProveedor = fila.querySelector("td:nth-child(3)").innerHTML.toLowerCase();
+            let nombre = fila.querySelector("td:nth-child(4)").innerHTML.toLowerCase();
+            let apellido = fila.querySelector("td:nth-child(5)").innerHTML.toLowerCase();
+
+            // Mostrar la fila si coincide con el texto buscado o si no se ha ingresado nada en el input.
+            if (nombreProveedor.includes(textoBuscar) || nombre.includes(textoBuscar) || apellido.includes(textoBuscar) || textoBuscar === "") {
+                fila.style.display = ""; // Mostrar la fila.
+            } else {
+                fila.style.display = "none"; // Ocultar la fila.
+            }
+        });
+    });
+
+    contenedor.appendChild(buscador);
+
+    //Estructura del titulo de la tabla.
+    let tablaProveedores = crearElemento("table", undefined, {
+        class: "table table-responsive table-hover mt-4"
+    });
+    let titulosTabla = crearElemento("thead");
+
+    let filaTitulos = crearElemento("tr");
+    let titulos = ["id_proveedores", "descripcion", "telefono", "email", "direccion", "observaciones"];
+
+    for (let i = 0; i < titulos.length; i++) {
+
+        let tituloMostrar = titulos[i] === "descripcion" ? "nombre" : titulos[i];
+        let celdaTitulo = crearElemento("th", tituloMostrar.charAt(0).toUpperCase() + tituloMostrar.slice(1).toLowerCase());
+        filaTitulos.appendChild(celdaTitulo);
+    }
+    let columnaDeBotones = crearElemento("td");
+    filaTitulos.appendChild(columnaDeBotones);
+    titulosTabla.appendChild(filaTitulos);
+    tablaProveedores.appendChild(titulosTabla);
+
+    //Estructura del cuerpo de la tabla.
+    tablaBody = crearElemento("tbody");
+
+
+    proveedores.forEach(proveedores => {
+        let filaBody = crearElemento("tr", undefined, {
+            id: "id_proveedores" + proveedores["id_proveedores"]
+        });
+        for (let i = 0; i < titulos.length; i++) {
+            let celdaBody = crearElemento("td", proveedores[titulos[i]]);
+            filaBody.appendChild(celdaBody);
+        }
+        //Botones editar/borrar.
+        let celdaBodyBoton = crearElemento("td");
+
+        let editar = crearElemento('input', undefined, {
+            id: "botonEditarProveedores_" + proveedores["id_proveedores"],
+            type: "submit",
+            value: "Editar"
+        })
+        let borrar = crearElemento('input', undefined, {
+            id: "botonBorrarProveedores_" + proveedores["id_proveedores"],
+            type: "submit",
+            value: "Borrar"
+        })
+        celdaBodyBoton.appendChild(editar);
+        celdaBodyBoton.appendChild(borrar);
+
+        filaBody.appendChild(celdaBodyBoton);
+        tablaBody.appendChild(filaBody);
+    });
+    tablaProveedores.appendChild(tablaBody);
+    contenedor.appendChild(tablaProveedores);
+}
 function navAñadirProveedor() {
     pagAñadirProveedor();
 
@@ -1541,8 +1651,7 @@ function pagAñadirProveedor() {
     contenedorForm.appendChild(formProveedores);
 }
 
-function tablaProveedores() {
-}
+
 
 function newProveedor() {
     let nombre = document.getElementById('newProvName').value;
@@ -1782,4 +1891,4 @@ $.ajax({
 });
 }
 
-// PROVEEDORES 
+
