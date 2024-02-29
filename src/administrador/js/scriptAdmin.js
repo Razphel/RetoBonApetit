@@ -688,62 +688,20 @@ function pagUdMedida() {
     });
 
     let labelNombre = crearElemento('label', 'Nombre', {
-        for: 'newUserName',
+        for: 'newUdMedidaName',
         class: 'form-label'
     });
     contenedorNombre.appendChild(labelNombre);
 
     let inputNombre = crearElemento('input', undefined, {
         type: 'text',
-        id: 'newUserName',
+        id: 'newUdMedidaName',
         class: 'form-control',
         placeholder: 'Nombre de la nueva ud. de medida'
     });
     contenedorNombre.appendChild(inputNombre); 
 
     contenedorFormLeft.appendChild(contenedorNombre);
-
-    //. BLOQUE 2....................................................
-    let contenedorApellido = crearElemento('div', undefined, {
-        class: 'form-group w-100'
-    });
-
-    let labelApellido = crearElemento('label', 'Apellido', {
-        for: 'newUserApellido',
-        class: 'form-label'
-    });
-    contenedorNombre.appendChild(labelApellido);
-
-    let inputApellido = crearElemento('input', undefined, {
-        type: 'text',
-        id: 'newUserApellido',
-        class: 'form-control',
-        placeholder: 'Apellido del nuevo usuario'
-    });
-    contenedorApellido.appendChild(inputApellido); 
-
-    contenedorFormRight.appendChild(contenedorApellido);
-
-    //. BLOQUE 3....................................................
-    let contenedorUsername = crearElemento('div', undefined, {
-        class: 'form-group w-100'
-    });
-
-    let labelUsername = crearElemento('label', 'Apellido', {
-        for: 'newUsername',
-        class: 'form-label'
-    });
-    contenedorNombre.appendChild(labelUsername);
-
-    let inputUsername = crearElemento('input', undefined, {
-        type: 'text',
-        id: 'newUsername',
-        class: 'form-control',
-        placeholder: 'Apellido del nuevo usuario'
-    });
-    contenedorUsername.appendChild(inputUsername); 
-
-    contenedorFormRight.appendChild(contenedorUsername);
 
     //. BLOQUE 2....................................................
     let contenedorObservaciones = crearElemento('div', undefined, {
@@ -765,7 +723,7 @@ function pagUdMedida() {
     });
     contenedorObservaciones.appendChild(inputObservaciones); 
 
-    contenedorFormLeft.appendChild(contenedorObservaciones);
+    contenedorFormRight.appendChild(contenedorObservaciones);
 
     //. BOTONES......................................................
     let contenedorBotones = crearElemento('div', undefined, {
@@ -948,13 +906,93 @@ function pagAñadirUsuario() {
         type: 'text',
         id: 'newUserName',
         class: 'form-control',
-        placeholder: 'Nombre del nuevo usuario'
+        placeholder: 'Nombre de la persona'
     });
     contenedorNombre.appendChild(inputNombre); 
 
     contenedorFormLeft.appendChild(contenedorNombre);
 
     //. BLOQUE 2....................................................
+    let contenedorApellido = crearElemento('div', undefined, {
+        class: 'form-group w-100'
+    });
+
+    let labelApellido = crearElemento('label', 'Apellido', {
+        for: 'newUserApellido',
+        class: 'form-label'
+    });
+    contenedorApellido.appendChild(labelApellido);
+
+    let inputApellido = crearElemento('input', undefined, {
+        type: 'text',
+        id: 'newUserApellido',
+        class: 'form-control',
+        placeholder: 'Apellido del usuario'
+    });
+    contenedorApellido.appendChild(inputApellido); 
+    contenedorFormRight.appendChild(contenedorApellido);
+
+    //. BLOQUE 3....................................................
+    let contenedorUsername = crearElemento('div', undefined, {
+        class: 'form-group w-100'
+    });
+
+    let labelUsername = crearElemento('label', 'Nombre de usuario', {
+        for: 'newUsername',
+        class: 'form-label'
+    });
+    contenedorUsername.appendChild(labelUsername);
+
+    let inputUsername = crearElemento('input', undefined, {
+        type: 'text',
+        id: 'newUsername',
+        class: 'form-control',
+        placeholder: 'Nombre de usuario'
+    });
+    contenedorUsername.appendChild(inputUsername); 
+    contenedorFormLeft.appendChild(contenedorUsername);
+
+    //. BLOQUE 4....................................................
+    let contenedorPassword = crearElemento('div', undefined, {
+        class: 'form-group w-100'
+    });
+
+    let labelPassword = crearElemento('label', 'Contraseña', {
+        for: 'newUserPassword',
+        class: 'form-label'
+    });
+    contenedorPassword.appendChild(labelPassword);
+
+    let inputPassword = crearElemento('input', undefined, {
+        type: 'text',
+        id: 'newUserPassword',
+        class: 'form-control',
+        placeholder: 'Contraseña del usuario'
+    });
+    contenedorPassword.appendChild(inputPassword); 
+    contenedorFormRight.appendChild(contenedorPassword);
+
+    //. BLOQUE 5....................................................
+    let contenedorEmail = crearElemento('div', undefined, {
+        class: 'form-group w-100'
+    });
+
+    let labelEmail = crearElemento('label', 'Email', {
+        for: 'newUserEmail',
+        class: 'form-label'
+    });
+    contenedorEmail.appendChild(labelEmail);
+
+    let inputEmail = crearElemento('input', undefined, {
+        type: 'text',
+        id: 'newUserEmail',
+        class: 'form-control',
+        placeholder: 'Email del usuario'
+    });
+    contenedorEmail.appendChild(inputEmail); 
+    contenedorFormLeft.appendChild(contenedorEmail);
+
+    //. BLOQUE 6....................................................
     let contenedorTelefono = crearElemento('div', undefined, {
         class: 'form-group w-100'
     });
@@ -972,10 +1010,9 @@ function pagAñadirUsuario() {
         placeholder: 'Teléfono del usuario'
     });
     contenedorTelefono.appendChild(inputTelefono); 
+    contenedorFormRight.appendChild(contenedorTelefono);
 
-    contenedorFormLeft.appendChild(contenedorTelefono);
-
-    //. BLOQUE 3....................................................
+    //. BLOQUE 7....................................................
     let contenedorObservaciones = crearElemento('div', undefined, {
         class: 'form-group w-100'
     });
@@ -998,51 +1035,53 @@ function pagAñadirUsuario() {
     contenedorFormLeft.appendChild(contenedorObservaciones);
 
     //. BLOQUE 4....................................................
-    let contenedorActivo = crearElemento('div', undefined, {
-        class: 'form-group w-100'
+    let contenedorEstado = crearElemento('div', undefined, {
+        class: 'form-group w-100 contenedorFormUser'
     });
 
-    let labelActivo = crearElemento('label', 'Activo', {
+    let labelActivo = crearElemento('label', 'Estado', {
         for: 'userActive',
         class: 'form-label'
     });
-    contenedorActivo.appendChild(labelActivo);
+    contenedorEstado.appendChild(labelActivo);
 
-    let toggleContainer = crearElemento('div', undefined, {
-        class: 'form-switch'
-    });
+    let contenedorToggleAdmin = crearElemento('div', undefined, {
+        class: 'form-switch container_toggle_admin mt-2 mb-2'
+    })
     
-    let toggleActivo = crearElemento('input', undefined, {
+    let toggleAdmin = crearElemento('input', undefined, {
+        type: 'checkbox',
+        id: 'userAdmin',
+        class: 'form-check-input form-switch',
+    });
+
+    let toggleAdminLabel = crearElemento('p', 'Administrador', {
+        class: 'labelToggleAdmin'
+    });
+    contenedorToggleAdmin.appendChild(toggleAdmin);
+    contenedorToggleAdmin.appendChild(toggleAdminLabel);
+
+    contenedorEstado.appendChild(contenedorToggleAdmin);
+
+    let contenedorToggleActive = crearElemento('div', undefined, {
+        class: 'form-switch container_toggle_active'
+    })
+    
+    let toggleActive = crearElemento('input', undefined, {
         type: 'checkbox',
         id: 'userActive',
         class: 'form-check-input form-switch',
     });
-    toggleContainer.appendChild(toggleActivo);
 
-    contenedorActivo.appendChild(toggleContainer); 
-
-    contenedorFormRight.appendChild(contenedorActivo);
-
-    //. BLOQUE 5....................................................
-    let contenedorEmail = crearElemento('div', undefined, {
-        class: 'form-group w-100'
+    let toggleActiveLabel = crearElemento('p', 'Activo', {
+        class: 'labelToggleActive'
     });
+    contenedorToggleActive.appendChild(toggleActive);
+    contenedorToggleActive.appendChild(toggleActiveLabel);
 
-    let labelEmail = crearElemento('label', 'Email', {
-        for: 'newUserEmail',
-        class: 'form-label'
-    });
-    contenedorEmail.appendChild(labelEmail);
+    contenedorEstado.appendChild(contenedorToggleActive);
 
-    let inputEmail = crearElemento('input', undefined, {
-        type: 'text',
-        id: 'newUserEmail',
-        class: 'form-control',
-        placeholder: 'Email del usuario'
-    });
-    contenedorEmail.appendChild(inputEmail); 
-
-    contenedorFormRight.appendChild(contenedorEmail);
+    contenedorFormRight.appendChild(contenedorEstado);
 
     //. BOTONES......................................................
     let contenedorBotones = crearElemento('div', undefined, {
