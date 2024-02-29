@@ -52,15 +52,3 @@ if (isset($_REQUEST['claveTodosUsuarios'])) {
 }
 
 
-if (isset($_REQUEST['actualizarTramitado']) && isset($_REQUEST['idSolicitud'])) {
-    $idSolicitud = $_REQUEST['idSolicitud'];
-    $tramitado = $_REQUEST['actualizarTramitado'];
-
-    // Convertir el valor booleano a un entero (0 o 1) para almacenar en la base de datos
-    $valorTramitado = $tramitado ? 1 : 0;
-
-    // Actualiza el campo 'tramitado' en la tabla 'solicitudes'
-    $actualizacionExitosa = BD::actualizarCampo('solicitudes', 'tramitado', $valorTramitado, "id_solicitud = $idSolicitud");
-
-    echo json_encode($actualizacionExitosa);
-}
