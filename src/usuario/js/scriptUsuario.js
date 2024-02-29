@@ -926,7 +926,6 @@ function mostrarPopup(datosUsuario) {
 function agregarCestaDesdePopup(datosProducto) {
     // Lógica para añadir a la cesta desde el pop-up
     let cesta = JSON.parse(localStorage.getItem("cesta")) || [];
-
     // Verificar si el producto ya está en la cesta
     let productoEnCestaIndex = cesta.findIndex(item =>
         item.nombre_producto === datosProducto.nombre_producto
@@ -944,6 +943,7 @@ function agregarCestaDesdePopup(datosProducto) {
 
     // Actualizar la visualización de la cesta (puedes hacerlo llamando a la función correspondiente)
     manejadorCarrito();
+    console.log(cesta);
 }
 
 function imprimirTablaProductos(nombre = null, categoria = null, unidades = null) {
