@@ -217,9 +217,16 @@ INSERT INTO pedidos (fecha_pedido,fk_proveedor,fk_estado,fk_usuario,observacione
 INSERT INTO pedidos (fecha_pedido,fk_proveedor,fk_estado,fk_usuario,observaciones) VALUES ('2024/02/15',2,1,2,'Observación de prueba');
 INSERT INTO pedidos (fecha_pedido,fk_proveedor,fk_estado,fk_usuario,observaciones) VALUES ('2024/02/22',2,1,2,'Observación de prueba');
 
+INSERT INTO linea_pedido (fk_pedido,descripcion,cantidad,unidades,observaciones) VALUES (1,'pimiento verde italiano',3,'kg','Observación de prueba');
+INSERT INTO linea_pedido (fk_pedido,descripcion,cantidad,unidades,observaciones) VALUES (1,'manzana reineta',3,'kg','Observación de prueba');
 INSERT INTO linea_pedido (fk_pedido,descripcion,cantidad,unidades,observaciones) VALUES (1,'huevos',6,'cajas','Observación de prueba');
 INSERT INTO linea_pedido (fk_pedido,descripcion,cantidad,unidades,observaciones) VALUES (1,'carne',3.4,'kg','Observación de prueba');
-INSERT INTO linea_pedido (fk_pedido,descripcion,cantidad,unidades,observaciones) VALUES (1,'patatas',4,'sacos','Observación de prueba');
+INSERT INTO linea_pedido (fk_pedido,descripcion,cantidad,unidades,observaciones) VALUES (1,'patatas',6,'kg','Observación de prueba');
+INSERT INTO linea_pedido (fk_pedido,descripcion,cantidad,unidades,observaciones) VALUES (1,'limones',4,'kg','Observación de prueba');
+INSERT INTO linea_pedido (fk_pedido,descripcion,cantidad,unidades,observaciones) VALUES (1,'calabacín',8,'kg','Observación de prueba');
+INSERT INTO linea_pedido (fk_pedido,descripcion,cantidad,unidades,observaciones) VALUES (1,'grosellas',6,'kg','Observación de prueba');
+INSERT INTO linea_pedido (fk_pedido,descripcion,cantidad,unidades,observaciones) VALUES (1,'ajos',3,'kg','Observación de prueba');
+INSERT INTO linea_pedido (fk_pedido,descripcion,cantidad,unidades,observaciones) VALUES (1,'bacon',4,'kg','Observación de prueba');
 
 INSERT INTO linea_pedido (fk_pedido,descripcion,cantidad,unidades,observaciones) VALUES (2,'naranjas',4,'sacos','Observación de prueba');
 INSERT INTO linea_pedido (fk_pedido,descripcion,cantidad,unidades,observaciones) VALUES (2,'cebollas',4,'sacos','Observación de prueba');
