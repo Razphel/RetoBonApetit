@@ -1063,12 +1063,12 @@ function mostrarPopup(datosUsuario) {
         id: "btn_solicitudNuevoProducto",
         class: 'btn btn_custom_1'
     });
-    botonAñadirCesta.addEventListener("submit", function () {
+
+    botonAñadirCesta.addEventListener("click", function () {
         //Se reciben los datos.
         let nombre = document.querySelector("#nombreNuevoProducto").value;
         let cantidadRecibida = parseFloat(document.querySelector("#cantidadNuevoProducto").value);
         let unidadRecibida = document.querySelector("#unidadesNuevoProducto").value;
-        // console.log(unidad);
         let observaciones = document.querySelector("#observacionesNuevoProducto").value;
 
         //Se crea el nuevo producto.
