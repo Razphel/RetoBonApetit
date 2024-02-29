@@ -173,6 +173,10 @@ INSERT INTO residuos (descripcion,observaciones) VALUES ('caja de papel','observ
 INSERT INTO residuos (descripcion,observaciones) VALUES ('bolsa de plastico','observacion dalinar');
 INSERT INTO residuos (descripcion,observaciones) VALUES ('botellas de cristal','observacion adolin');
 INSERT INTO residuos (descripcion,observaciones) VALUES ('malla de frutas/hortalizas','observacion sagaz');
+INSERT INTO residuos (descripcion,observaciones) VALUES ('matanga','observacion kaladin');
+INSERT INTO residuos (descripcion,observaciones) VALUES ('matanga3','observacion dalinar');
+INSERT INTO residuos (descripcion,observaciones) VALUES ('botellas de papel','observacion adolin');
+INSERT INTO residuos (descripcion,observaciones) VALUES ('mierda','observacion sagaz');
 INSERT INTO productos (descripcion,fk_unidad,observaciones) VALUES ('carne de ternera',2,'observacion kaladin');
 INSERT INTO productos (descripcion,fk_unidad,observaciones) VALUES ('huevos',1,'observacion dalinar');
 INSERT INTO productos (descripcion,fk_unidad,observaciones) VALUES ('patatas',2,'observacion adolin');

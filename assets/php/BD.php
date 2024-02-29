@@ -114,6 +114,30 @@ class BD
         }
         //Esta consulta te devuelve un array de arrays con todos los datos de la tabla producto.
         return $filas;
+    }   
+
+    public static function imprimirSolicitudesInicioAdministrador()
+    {
+        try {
+            $conexion = self::conexionBD();
+            $sql = "SELECT fecha_solicitud,descripcion,unidades, cantidad,observaciones 
+            FROM solicitudes 
+            ORDER BY fecha_solicitud DESC
+            LIMIT 3";
+
+            $resultado = $conexion->query($sql);
+
+            // Crear un array para almacenar todas las filas        
+            $filas = [];
+            // Recorrer los resultados y almacenar cada fila en el array        
+            while ($fila = $resultado->fetch()) {
+                $filas[] = $fila;
+            }
+        } catch (Exception $e) {
+            throw new Exception("ERROR: " + $e);
+        }
+        //Esta consulta te devuelve un array de arrays con todos los datos de la tabla producto.
+        return $filas;
     }
 
     public static function imprimirPedidos($usuarioInicioSesion)
@@ -124,6 +148,29 @@ class BD
             FROM pedidos inner join linea_pedido 
             ON pedidos.id_pedidos = linea_pedido.fk_pedido 
             where pedidos.fk_usuario = $usuarioInicioSesion";
+
+            $resultado = $conexion->query($sql);
+
+            // Crear un array para almacenar todas las filas        
+            $filas = [];
+            // Recorrer los resultados y almacenar cada fila en el array        
+            while ($fila = $resultado->fetch()) {
+                $filas[] = $fila;
+            }
+        } catch (Exception $e) {
+            throw new Exception("ERROR: " + $e);
+        }
+        //Esta consulta te devuelve un array de arrays con todos los datos de la tabla producto.
+        return $filas;
+    }
+
+    public static function imprimirTodosPedidos()
+    {
+        try {
+            $conexion = self::conexionBD();
+            $sql = "SELECT pedidos.fecha_pedido,linea_pedido.descripcion,linea_pedido.cantidad,linea_pedido.unidades,linea_pedido.observaciones 
+            FROM pedidos inner join linea_pedido 
+            ON pedidos.id_pedidos = linea_pedido.fk_pedido";
 
             $resultado = $conexion->query($sql);
 
@@ -191,17 +238,68 @@ class BD
         }
     }
 
-    public static function eliminarRegistro($tabla, $id)
+    public static function seleccionarIdProductoNuevo()
     {
         try {
             $conexion = self::conexionBD();
-            $sql = "DELETE FROM $tabla where id_$tabla =" . $id;
-            $resultado = $conexion->exec($sql);
+            $sql = "SELECT id_productos
+            FROM productos 
+            ORDER BY id_productos DESC
+            LIMIT 1";
+
+            $resultado = $conexion->query($sql);
+
+            $fila = $resultado->fetch();
+            $idProducto = $fila['id_productos'];
+
+            //Devolver solo el valor de id_producto
+            return $idProducto;
+        } catch (Exception $e) {
+            throw new Exception($e);
+        }
+    }
+
+    public static function insertarNewProductoTransaccion($datos1, $datos2, $datos3)
+    {
+        try {
+            $conexion = self::conexionBD();
+            $conexion->beginTransaction(); 
+
+            self::insertarRegistro($tabla1, $datos1);
+            self::insertarRegistro($tabla2, $datos2);
+            self::insertarRegistro($tabla3, $datos3);
+
+            $conexion->commit(); 
             return true;
         } catch (PDOException $e) {
+            $conexion->rollBack(); 
             throw new Exception("ERROR: " . $e->getMessage());
         }
     }
+       
+    // $datos1 = [
+    // "descripcion" => "Producto mierda",
+    // "fk_unidad" => 3
+    // "observaciones" => "Observacion mierda",
+    // ];
+    // $datos2 = [
+    
+    // ];
+    // $datos3 = [
+
+    // ];
+
+    public static function eliminarRegistro($tabla, $id)
+{
+    try {
+        $conexion = self::conexionBD();
+        $sql = "DELETE FROM $tabla where id_$tabla =" . $id;
+        $resultado = $conexion->exec($sql);
+        return true;
+    } catch (PDOException $e) {
+        throw new Exception("ERROR: " . $e->getMessage());
+    }
+}
 
     public static function actualizarRegistro($tabla, $datos, $id)
     {
@@ -294,4 +392,7 @@ class BD
         //Esta consulta te devuelve un array de arrays con todos los datos de la tabla producto.
         return $filas;
     }
+
 }
+// $ultimoproducto = BD::seleccionarIdProductoNuevo();
+// echo $ultimoproducto;

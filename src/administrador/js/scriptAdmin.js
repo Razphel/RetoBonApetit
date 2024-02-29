@@ -46,7 +46,7 @@ function principal() {
         document.querySelector("#navUdMedida").addEventListener("click", navUdMedida);
         document.querySelector("#shortcut_medida").addEventListener("click", navUdMedida);
     // Apartado solicitudes
-    document.querySelector("#navSolicitudes").addEventListener("click", navSolicitudes);
+    // document.querySelector("#navSolicitudes").addEventListener("click", navSolicitudes);
     // Apartado pedidos
     document.querySelector("#navPedidos").addEventListener("click", navPedidos);
         document.querySelector("#navListarPedidos").addEventListener("click", navListarPedidos);
@@ -466,38 +466,58 @@ function crearSelect(opciones,idSelect) {
     return select; 
 }
 
-function crearCheckbox(opciones,idCheckbox) {
-    let select = crearElemento("select",undefined,{id: idSelect});
+function crearCheckboxes(opciones) {
+let grupoCheckboxes = document.getElementById('contenedorResiduos');
     for (let key in opciones) {
-        let opcion = crearElemento("option", opciones[key], {value: key}); 
-        // console.log('Clave:', key);
-        // console.log('Valor:', opciones[key]);
-        select.appendChild(opcion);
-      }
-    return select; 
+        let divCheckbox = crearElemento('div',undefined,{id:'contedorCheckbox'})
+        let checkbox = crearElemento('input', undefined, {
+            type: 'checkbox',
+            id: key
+        });
+
+        let label = crearElemento('label', opciones[key], {
+            for: key,
+            style: 'padding-left: 5px'
+        });
+        divCheckbox.appendChild(checkbox);
+        divCheckbox.appendChild(label);
+        grupoCheckboxes.appendChild(divCheckbox);
+    }
+}
+
+function checkboxResiduos(respuesta)
+{
+    let residuos = JSON.parse(respuesta);
+    //console.log(residuos);
+    let guardarDescripcion = []; 
+    for (let i = 0; i < residuos.length; i++) {
+        guardarDescripcion[residuos[i].id_residuos] = residuos[i].descripcion;
+    }
+    console.log(guardarDescripcion);
+    return guardarDescripcion;
 }
 
 function selectUnidades(respuesta)
 {
-let unidades = JSON.parse(respuesta);
-//console.log(unidades);
-let guardarDescripcion = []; 
-for (let i = 0; i < unidades.length; i++) {
-    guardarDescripcion[unidades[i].id_unidades] = unidades[i].descripcion;
-}
-//console.log(guardarDescripcion);
-return guardarDescripcion;
+    let unidades = JSON.parse(respuesta);
+    //console.log(unidades);
+    let guardarDescripcion = []; 
+    for (let i = 0; i < unidades.length; i++) {
+        guardarDescripcion[unidades[i].id_unidades] = unidades[i].descripcion;
+    }
+    //console.log(guardarDescripcion);
+    return guardarDescripcion;
 }
 
 function selectCategoria(respuesta)
 {
-let categorias = JSON.parse(respuesta);
-let guardarDescripcion = []; 
-for (let i = 0; i < categorias.length; i++) {
-    guardarDescripcion[categorias[i].id_categorias] = categorias[i].descripcion;
-}
-console.log(guardarDescripcion);
-return guardarDescripcion;
+    let categorias = JSON.parse(respuesta);
+    let guardarDescripcion = []; 
+        for (let i = 0; i < categorias.length; i++) {
+            guardarDescripcion[categorias[i].id_categorias] = categorias[i].descripcion;
+        }
+    //console.log(guardarDescripcion);
+    return guardarDescripcion;
 }
 
 // Formulario 2. Crear producto.......................
@@ -625,17 +645,36 @@ function pagAñadirProducto() {
     });
 
     let labelCategoria = crearElemento('label', 'Categoría', {
-        for: 'newProductCategoria',
+        for: 'categoriaNewProducto',
         class: 'form-label'
     });
     contenedorCategoria.appendChild(labelCategoria);
-    let selectCat = crearSelect(categoriaSeleccionada,'categoriasNewProducto');
+    let selectCat = crearSelect(categoriaSeleccionada,'categoriaNewProducto');
     contenedorCategoria.appendChild(selectCat);  
     contenedorFormRight.appendChild(contenedorCategoria);
 
     //. BLOQUE 5....................................................
+    let parametros3 = {
+        residuos: 'residuos' 
+    };
+    console.log(parametros);
+
+    $.ajax({
+        type: "POST",
+        url: "./php/consultaAdmin.php",
+        data: parametros3,
+        async: false,
+        success:function(respuesta) {
+            residuosSeleccion = checkboxResiduos(respuesta);
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.error("Error en la solicitud AJAX: " + textStatus, errorThrown);
+        }
+    });
     let contenedorResiduos = crearElemento('div', undefined, {
-        class: 'form-group w-100'
+        class: 'form-group w-100',
+        id: 'contenedorResiduos',
+        style: 'display: grid; grid-column-templates: 1fr;max-height:200px ;overflow-y:auto; gap:10px'
     });
 
     let labelResiduos = crearElemento('label', 'Residuos', {
@@ -643,15 +682,6 @@ function pagAñadirProducto() {
         class: 'form-label'
     });
     contenedorResiduos.appendChild(labelResiduos);
-
-    let inputResiduos = crearElemento('input', undefined, {
-        type: 'text',
-        id: 'newProductResiduos',
-        class: 'form-control',
-        placeholder: 'Residuos del producto'
-    });
-    contenedorResiduos.appendChild(inputResiduos); 
-
     contenedorFormRight.appendChild(contenedorResiduos);
 
     //. BOTONES......................................................
@@ -691,6 +721,8 @@ function pagAñadirProducto() {
     formProductos.appendChild(contenedorBotones); 
 
     contenedorForm.appendChild(formProductos);
+    //Es necesario ejecutar esta función aquí porque es cuando acaba de crearse el formulario
+    crearCheckboxes(residuosSeleccion);
 }
 function newProducto()
 {
@@ -698,7 +730,15 @@ function newProducto()
     let observaciones = document.getElementById('newProductObservaciones').value;
     let unidades = document.getElementById('unidadesNewProducto').value
     let categorias = document.getElementById('categoriaNewProducto').value;
-
+    let checkboxesMarcados = document.querySelectorAll('#contenedorResiduos input[type="checkbox"]');
+    let arrCheckbox = [];
+    checkboxesMarcados.forEach(checkbox => {
+        if(checkbox.checked)
+        {
+        arrCheckbox.push(checkbox.id);
+        }
+    });
+    console.log(arrCheckbox);
     let parametros = {
         NewUnidadMedida: JSON.stringify({
             descripcion: nombre,

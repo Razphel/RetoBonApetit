@@ -43,6 +43,12 @@ if (isset($_REQUEST['unidadesDeMedida']))
     echo json_encode($unidades);
 }
 
+if (isset($_REQUEST['residuos'])) 
+{
+    $residuos = BD::imprimirConsultas('residuos');
+    echo json_encode($residuos);
+}
+
 if (isset($_REQUEST['claveTodosUsuarios'])) {
     $todosUsuarios = BD::imprimirConsultas('usuarios');
     echo json_encode($todosUsuarios);
@@ -53,5 +59,6 @@ if (isset($_REQUEST['proveedores']))
     $proveedores = BD::imprimirConsultas('proveedores');
     echo json_encode($proveedores);
 }
+
 
 ?>
