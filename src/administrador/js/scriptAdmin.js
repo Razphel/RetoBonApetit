@@ -2103,6 +2103,87 @@ function pagAñadirUsuario() {
     formUsuario.appendChild(contenedorBotones);
 
     contenedorForm.appendChild(formUsuario);
+
+    let parametros = {
+        claveTodosUsuarios: true
+    };
+    $.ajax({
+        //Ubicacion del archivo php que va a manejar los valores.
+        url: "./php/consultaAdmin.php",
+        //Metodo en que los va a recibir.
+        type: "GET",
+        data: parametros,
+        dataType: "json",
+        success: tablaUsuariosSimplificada,
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.error("Error en la solicitud AJAX: " + textStatus, errorThrown);
+        }
+    });
+}
+
+function tablaUsuariosSimplificada(respuesta) {
+    let usuarios = respuesta;
+    let contenedor = document.querySelector(".pagForm_columnaRight");
+    //Buscador.
+    let buscador = crearElemento("input", undefined, {
+        id: "buscadorCategorias"
+    });
+
+    buscador.addEventListener("input", function (e) {
+        // Convertir a minúsculas y quitar espacios en blanco al inicio y al final.
+        let textoBuscar = this.value.toLowerCase().trim();
+
+        // Obtener todas las filas de la tabla.
+        let filasTabla = tablaBody.querySelectorAll("tr");
+
+        // Mostrar u ocultar según el texto del buscador.
+        filasTabla.forEach(fila => {
+            // Solo se va a buscar por nombre de categoria, se seleccionan solo las columnas correspondientes.
+            let idUsuario = fila.querySelector("td:nth-child(1)").innerHTML.toLowerCase();
+            let nombreUsuario = fila.querySelector("td:nth-child(2)").innerHTML.toLowerCase();
+            let apellidoUsuario = fila.querySelector("td:nth-child(3)").innerHTML.toLowerCase();
+
+            // Mostrar la fila si coincide con el texto buscado o si no se ha ingresado nada en el input.
+            if (idUsuario.includes(textoBuscar) || nombreUsuario.includes(textoBuscar) || apellidoUsuario.includes(textoBuscar) || textoBuscar === "") {
+                fila.style.display = ""; // Mostrar la fila.
+            } else {
+                fila.style.display = "none"; // Ocultar la fila.
+            }
+        });
+    });
+
+    contenedor.appendChild(buscador);
+
+    //Estructura del titulo de la tabla.
+    let tablaUsuarios = crearElemento("table", undefined, {
+        class: "table table-responsive table-hover mt-4"
+    });
+    let titulosTabla = crearElemento("thead");
+
+    let filaTitulos = crearElemento("tr");
+    let titulos = ["nombre de usuario", "nombre", "apellido"];
+    for (let i = 0; i < titulos.length; i++) {
+        let celdaTitulo = crearElemento("th", titulos[i].charAt(0).toUpperCase() + titulos[i].slice(1).toLowerCase());
+        filaTitulos.appendChild(celdaTitulo);
+    }
+    titulosTabla.appendChild(filaTitulos);
+    tablaUsuarios.appendChild(titulosTabla);
+
+    //Estructura del cuerpo de la tabla.
+    tablaBody = crearElemento("tbody");
+    titulos = ["nombre_usuario", "nombre", "apellido"];
+
+    usuarios.forEach(usuario => {
+        let filaBody = crearElemento("tr", undefined);
+        for (let i = 0; i < titulos.length; i++) {
+            let celdaBody = crearElemento("td", usuario[titulos[i]]);
+            filaBody.appendChild(celdaBody);
+
+        }
+        tablaBody.appendChild(filaBody);
+    });
+    tablaUsuarios.appendChild(tablaBody);
+    contenedor.appendChild(tablaUsuarios);
 }
 
 function newUsuario() {
