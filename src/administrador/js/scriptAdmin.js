@@ -2249,6 +2249,54 @@ function pagListarProveedores() {
 
     // Crear la plantilla genérica
     crearPlantillaGenerica1(tituloPagina, contenidoSuperior, contenidoInferior);
+
+    let parametros = {
+        proveedores: true
+    };
+    $.ajax({
+        //Ubicacion del archivo php que va a manejar los valores.
+        url: "./php/consultaAdmin.php",
+        //Metodo en que los va a recibir.
+        type: "GET",
+        data: parametros,
+        dataType: "json",
+        success: tablaProveedores,
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.error("Error en la solicitud AJAX: " + textStatus, errorThrown);
+        }
+    });
+}
+
+function tablaProveedores(proveedores) {
+    //Estructura del titulo de la tabla.
+    let contenedor = document.querySelector("#contenedor");
+    let tablaProveedores = crearElemento("table", undefined, {
+        class: "table table-responsive table-hover mt-4"
+    });
+    let titulosTabla = crearElemento("thead");
+    let filaTitulos = crearElemento("tr");
+    let titulos = ["descripcion", "telefono", "email", "direccion", "observaciones"];
+    for (let i = 0; i < titulos.length; i++) {
+        let celdaTitulo = crearElemento("th", titulos[i].charAt(0).toUpperCase() + titulos[i].slice(1).toLowerCase());
+        filaTitulos.appendChild(celdaTitulo);
+    }
+    titulosTabla.appendChild(filaTitulos);
+    tablaProveedores.appendChild(titulosTabla);
+
+    //Estructura del cuerpo de la tabla.
+    tablaBody = crearElemento("tbody");
+
+
+    proveedores.forEach(proveedor => {
+        let filaBody = crearElemento("tr");
+        for (let i = 0; i < titulos.length; i++) {
+            let celdaBody = crearElemento("td", proveedor[titulos[i]]);
+            filaBody.appendChild(celdaBody);
+        }
+        tablaBody.appendChild(filaBody);
+    });
+    tablaProveedores.appendChild(tablaBody);
+    contenedor.appendChild(tablaProveedores);
 }
 
 function navAñadirProveedor() {
@@ -2433,9 +2481,6 @@ function pagAñadirProveedor() {
     formProveedores.appendChild(contenedorBotones);
 
     contenedorForm.appendChild(formProveedores);
-}
-
-function tablaProveedores() {
 }
 
 function newProveedor() {
