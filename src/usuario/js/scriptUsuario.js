@@ -85,7 +85,6 @@ function mensajesInicio(respuesta) {
     //Contenedor general de la pagina.
     let contenedor = document.querySelector("#contenedor");
 
-    //Contenedor de botones de categorias y h1 con el titulo de la vista inicio.
     let parteSuperior = crearElemento("div", undefined, {
         class: "row"
     });
@@ -114,14 +113,41 @@ function mensajesInicio(respuesta) {
         class: "col-4 d-flex justify-content-between"
     });
     let contenedorMensaje = crearElemento("div", undefined, {
-        class: "label_effect card card_margin p-3 mb-3"
+        class: "card card_margin p-3 mensajesUser"
     });
-    let mensaje = crearElemento("p", respuesta.hora_limite, undefined);
-    let fechaMensaje = crearElemento("p", respuesta.fecha_mensaje, undefined);
+    let contenedorMensajeTop = crearElemento('div', undefined, {
+        class: "contenedorMensajeTop"
+    });
+    let contenedorMensajeBottom = crearElemento('div', undefined, {
+        class: "contenedorMensajeBottom"
+    });
+    let tituloMensaje = crearElemento("h5", "Mensaje del administrador", {
+        class: 'titulo_mensajeUser'
+    });
+    let fechaMensaje = crearElemento("p", respuesta.fecha_mensaje, {
+        class: 'fecha_mensajeUser'
+    });
+    let contendorHoraLimite = crearElemento('div', undefined, {
+        class: 'contendorHoraLimite'
+    })
+    let iconMensaje = crearElemento('i', undefined, {
+        class: 'bi bi-stopwatch'
+    })
+    let horaLimite = crearElemento("p", respuesta.hora_limite, undefined);
+
+    contendorHoraLimite.appendChild(iconMensaje);
+    contendorHoraLimite.appendChild(horaLimite);
+
+    let observaciones = crearElemento("p", respuesta.observaciones, undefined);
+
+    contenedorMensajeTop.appendChild(tituloMensaje);
+    contenedorMensajeTop.appendChild(fechaMensaje);
+    contenedorMensajeBottom.appendChild(contendorHoraLimite);
+    contenedorMensajeBottom.appendChild(observaciones);
 
     //Organizo los elementos y los agrego al div row.
-    contenedorMensaje.appendChild(fechaMensaje);
-    contenedorMensaje.appendChild(mensaje);
+    contenedorMensaje.appendChild(contenedorMensajeTop);
+    contenedorMensaje.appendChild(contenedorMensajeBottom);
     carta.appendChild(contenedorMensaje);
     contenedorMensajes.appendChild(carta);
 
@@ -202,7 +228,7 @@ function navProductos() {
             console.error("Error en la solicitud AJAX: " + textStatus, errorThrown);
         }
     });
-    
+
 }
 
 function pagProductos(respuesta) {
@@ -824,10 +850,12 @@ function mostrarPopup(datosUsuario) {
     let popupContainer = document.querySelector('#popupContainer');
     let contenedorPopup = document.querySelector('#contenedorPopup');
     let formulario = crearElemento('form', undefined, {
+        id: 'formulario',
         class: 'w-100 contenedorFormPopup'
     });
 
     let textoInfo = crearElemento("p", `Solicitud del usuario ${datosUsuario.nombre} ${datosUsuario.apellido} para añadir un producto nuevo.`, {
+        id: "observacionesNuevoProducto",
         class: "mb-5"
     });
 
@@ -848,7 +876,8 @@ function mostrarPopup(datosUsuario) {
         id: "nombreNuevoProducto",
         class: 'form-control',
         placeholder: "Nombre del nuevo producto",
-        type: "text"
+        type: "text",
+        required: true
     });
     contenedorNombre.appendChild(labelNombre);
     contenedorNombre.appendChild(nombreProducto);
@@ -870,7 +899,8 @@ function mostrarPopup(datosUsuario) {
         class: 'form-control',
         type: 'number',
         min: 0,
-        value: 0
+        value: 0,
+        required: true
     });
     contenedorCantidad.appendChild(labelCantidad);
     contenedorCantidad.appendChild(cantidadProducto);
@@ -891,7 +921,8 @@ function mostrarPopup(datosUsuario) {
         id: "unidadNuevoProducto",
         class: 'form-control',
         placeholder: "Ej.: kg, litros, caja...",
-        type: "text"
+        type: "text",
+        required: true
     });
     contenedorUdMedida.appendChild(labelUdMedida);
     contenedorUdMedida.appendChild(udMedidaProducto);
@@ -945,12 +976,13 @@ function mostrarPopup(datosUsuario) {
         id: "btn_solicitudNuevoProducto",
         class: 'btn btn_custom_1'
     });
-    botonAñadirCesta.addEventListener("click", function () {
+    botonAñadirCesta.addEventListener("submit", function () {
         //Se reciben los datos.
         let nombre = document.querySelector("#nombreNuevoProducto").value;
         let cantidadRecibida = parseFloat(document.querySelector("#cantidadNuevoProducto").value);
         let unidad = document.querySelector("#unidadNuevoProducto").value;
         let observaciones = document.querySelector("#observacionesNuevoProducto").value;
+
         //Se crea el nuevo producto.
         let nuevoProducto = {
             nombre_producto: nombre,
@@ -970,7 +1002,7 @@ function mostrarPopup(datosUsuario) {
     contenedorBotones.appendChild(btnVaciar);
     contenedorBotones.appendChild(botonAñadirCesta);
 
-    contenedorPopup.appendChild(contenedorBotones);
+    formulario.appendChild(contenedorBotones);
 
     // Agregar el contenido del pop-up al contenedor
     popupContainer.appendChild(contenedorPopup);

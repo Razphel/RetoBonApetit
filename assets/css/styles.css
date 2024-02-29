@@ -519,6 +519,14 @@ textarea::placeholder {
     border-color: var(--accent-01); 
 }
 
+.container_toggle_admin, .container_toggle_active {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 10px;
+}
+
 /* Dropdown galería imágenes nueva categoría */
 .imagenCategoriaContenedor {
     width: 70px; 

@@ -21,7 +21,7 @@ if (isset($_REQUEST['claveUsuarioInicioSolicitud'])) {
     echo json_encode($claveUsuarioInicioSolicitud);
 }
 
-if (isset($_REQUEST['categoria'])) {
+if (isset($_REQUEST['categorias'])) {
     $categorias = BD::imprimirConsultas('categorias');
     echo json_encode($categorias);
 }
