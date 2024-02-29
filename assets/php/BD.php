@@ -265,10 +265,15 @@ class BD
             $conexion = self::conexionBD();
             $conexion->beginTransaction(); 
 
-            self::insertarRegistro($tabla1, $datos1);
-            self::insertarRegistro($tabla2, $datos2);
-            self::insertarRegistro($tabla3, $datos3);
-
+            self::insertarRegistro('productos', $datos1);
+            $id_productoNuevo = self::seleccionarIdProductoNuevo();
+            $datos2['fk_producto'] = $id_productoNuevo;
+            $datos3['fk_producto'] = $id_productoNuevo;
+            self::insertarRegistro('producto_categoria', $datos2);
+            // foreach ($datos3 as $key => $value) 
+            // {
+            //     self::insertarRegistro('producto_residuos', $datos3[key]);
+            // }
             $conexion->commit(); 
             return true;
         } catch (PDOException $e) {
@@ -283,10 +288,12 @@ class BD
     // "observaciones" => "Observacion mierda",
     // ];
     // $datos2 = [
-    
+    // "fk_categoria" => 2
     // ];
     // $datos3 = [
-
+    //"fk_residuos" => 1,
+    //"fk_residuos" => 2,
+    //"fk_residuos" => 4,
     // ];
 
     public static function eliminarRegistro($tabla, $id)
@@ -393,6 +400,74 @@ class BD
         return $filas;
     }
 
+    public static function actualizarTramite($tabla, $datos, $id)
+    {
+        try {
+            $conexion = self::conexionBD();
+            $columnasvalores = [];
+    
+            foreach ($datos as $columna => $value) {
+    
+                if ($columna === 'tramitado') {
+                    $columnas_valores[] = "$columna = ?";
+                } else {
+                    $columnas_valores[] = "$columna = ?";
+                }
+            }
+    
+            $columnas_valores = implode(",", $columnas_valores);
+            $sql = "UPDATE $tabla SET $columnas_valores WHERE id$tabla = $id";
+            $consulta = $conexion->prepare($sql);
+    
+            $consulta->execute(array_values($datos));
+            return true;
+        } catch (PDOException $e) {
+            throw new Exception("ERROR: " . $e->getMessage());
+        }
+    }
+    // public static function imprimirTodosPedidos()
+    // {
+    //     try {
+    //         $conexion = self::conexionBD();
+    //         $sql = "SELECT usuarios.nombre,pedidos.fecha_pedido,linea_pedido.descripcion,linea_pedido.cantidad,linea_pedido.unidades,linea_pedido.observaciones 
+    //         FROM linea_pedido inner join pedidos
+    //         ON linea_pedido.fk_pedido =  pedidos.id_pedidos 
+    //         inner join usuarios 
+    //         on pedidos.fk_usuario = usuarios.id_usuarios 
+    //         inner join solicitudes 
+    //         on usuarios.id_usuarios = solicitudes.fk_usuario 
+    //         where solicitudes.tramitado = 1" ;
+
+    //         $resultado = $conexion->query($sql);
+
+    //         // Crear un array para almacenar todas las filas
+    //         $filas = [];
+    //         // Recorrer los resultados y almacenar cada fila en el array
+    //         while ($fila = $resultado->fetch()) {
+    //             $filas[] = $fila;
+    //         }
+    //     } catch (Exception $e) {
+    //         throw new Exception("ERROR: " + $e);
+    //     }
+    //     //Esta consulta te devuelve un array de arrays con todos los datos de la tabla producto.
+    //     return $filas;
+    // }
+
 }
 // $ultimoproducto = BD::seleccionarIdProductoNuevo();
 // echo $ultimoproducto;
+    $datos1 = [
+    "descripcion" => "Producto mierda",
+    "fk_unidad" => 3,
+    "observaciones" => "Observacion mierda"
+    ];
+    $datos2 = [
+    "fk_categoria" => 2
+    ];
+    $datos3 = [
+    "fk_residuos" => 1,
+    "fk_residuos" => 2,
+    "fk_residuos" => 4,
+    ];
+
+    BD::insertarNewProductoTransaccion($datos1,$datos2,$datos3);
