@@ -1249,6 +1249,30 @@ body {
     background: linear-gradient(to right, rgba(255, 255, 255, 0) 50%, rgba(49, 49, 49, 0.726) 80%);
 }
 
+.darkMode .texto_topCart {
+    color: var(--text-light-color);
+}
+
+.darkMode .numProdCesta {
+    color: var(--text-light-color);
+}
+
+.darkMode .contadorProductosCarta {
+    background-color: rgb(92, 92, 92);
+}
+
+.darkMode .textoContador {
+    color: var(--light-color);
+}
+
+.darkMode .contenedorMensajeTop {
+    border-bottom: solid thin rgb(94, 94, 94);
+}
+
+.darkMode .filaCartaSolicitud {
+    border-bottom: solid thin rgb(94, 94, 94);
+}
+
 /* ETIQUETAS INDIVIDUALES________________________________________________gen_01 */
 /* Cesta.......................................gen_cesta */
 .carritoLateral {

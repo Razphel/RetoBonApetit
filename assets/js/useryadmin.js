@@ -139,7 +139,7 @@ function mostrarMensajeVacio(titulo, texto, textoBoton) {
     let divLabelEmpty = crearElemento("div", undefined, { class: "label_empty card p-4 align-items-center mt-4" });
     let h4 = crearElemento("h4", titulo);
     let p = crearElemento("p", texto);
-    let button = crearElemento("input", textoBoton, { id:"botonMensajeVacio", type: "submit", value: "Hacer solicitud", class: "btn btn_custom_1 mt-3" });
+    let button = crearElemento("input", undefined, { id:"botonMensajeVacio", type: "submit", value: textoBoton, class: "btn btn_custom_1 mt-3" });
 
     // Construir la estructura
     divLabelEmpty.appendChild(h4);
@@ -435,4 +435,27 @@ function consultarProductos() {
 
         localStorage.setItem("todosProductos", JSON.stringify(todosProductos));
     }
+}
+
+function obtenerFechaActual() {
+    // Obtener la fecha actual
+    let fechaActual = new Date();
+
+    // Obtener los componentes de la fecha
+    let año = fechaActual.getFullYear();
+    let mes = fechaActual.getMonth() + 1; // Sumar 1 porque los meses van de 0 a 11
+    let dia = fechaActual.getDate();
+
+    // Agregar un cero delante si el día o el mes es menor que 10 para mantener el formato deseado
+    if (mes < 10) {
+        mes = '0' + mes;
+    }
+    if (dia < 10) {
+        dia = '0' + dia;
+    }
+
+    // Formatear la fecha en el formato deseado: 'YYYY-MM-DD'
+    let fechaFormateada = año + '-' + mes + '-' + dia;
+
+    return fechaFormateada;
 }
