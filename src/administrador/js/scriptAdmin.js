@@ -688,20 +688,62 @@ function pagUdMedida() {
     });
 
     let labelNombre = crearElemento('label', 'Nombre', {
-        for: 'newUdMedidaName',
+        for: 'newUserName',
         class: 'form-label'
     });
     contenedorNombre.appendChild(labelNombre);
 
     let inputNombre = crearElemento('input', undefined, {
         type: 'text',
-        id: 'newUdMedidaName',
+        id: 'newUserName',
         class: 'form-control',
         placeholder: 'Nombre de la nueva ud. de medida'
     });
     contenedorNombre.appendChild(inputNombre); 
 
     contenedorFormLeft.appendChild(contenedorNombre);
+
+    //. BLOQUE 2....................................................
+    let contenedorApellido = crearElemento('div', undefined, {
+        class: 'form-group w-100'
+    });
+
+    let labelApellido = crearElemento('label', 'Apellido', {
+        for: 'newUserApellido',
+        class: 'form-label'
+    });
+    contenedorNombre.appendChild(labelApellido);
+
+    let inputApellido = crearElemento('input', undefined, {
+        type: 'text',
+        id: 'newUserApellido',
+        class: 'form-control',
+        placeholder: 'Apellido del nuevo usuario'
+    });
+    contenedorApellido.appendChild(inputApellido); 
+
+    contenedorFormRight.appendChild(contenedorApellido);
+
+    //. BLOQUE 3....................................................
+    let contenedorUsername = crearElemento('div', undefined, {
+        class: 'form-group w-100'
+    });
+
+    let labelUsername = crearElemento('label', 'Apellido', {
+        for: 'newUsername',
+        class: 'form-label'
+    });
+    contenedorNombre.appendChild(labelUsername);
+
+    let inputUsername = crearElemento('input', undefined, {
+        type: 'text',
+        id: 'newUsername',
+        class: 'form-control',
+        placeholder: 'Apellido del nuevo usuario'
+    });
+    contenedorUsername.appendChild(inputUsername); 
+
+    contenedorFormRight.appendChild(contenedorUsername);
 
     //. BLOQUE 2....................................................
     let contenedorObservaciones = crearElemento('div', undefined, {
@@ -723,7 +765,7 @@ function pagUdMedida() {
     });
     contenedorObservaciones.appendChild(inputObservaciones); 
 
-    contenedorFormRight.appendChild(contenedorObservaciones);
+    contenedorFormLeft.appendChild(contenedorObservaciones);
 
     //. BOTONES......................................................
     let contenedorBotones = crearElemento('div', undefined, {
