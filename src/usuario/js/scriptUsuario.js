@@ -134,18 +134,13 @@ function mensajesInicio(respuesta) {
 
 function inicioSolicitudes(respuesta) {
     let contenedor = document.querySelector("#contenedor");
-
     //Se comprueba primero que exista algo en el historial de solicitudes.
     if (respuesta && respuesta.length > 0) {
-        //Ordenar los pedidos por fecha de manera descendente.
-        respuesta.sort((a, b) => new Date(b.fecha_pedido) - new Date(a.fecha_pedido));
-
         //Aquí se agrupan los pedidos agrupados por día.
         let pedidosAgrupados = {};
 
-        //Recorro los tres primeros días solamente.
-        for (let i = 0; i < Math.min(respuesta.length, 3); i++) {
-            let pedido = respuesta[i];
+        // Iterar sobre los pedidos para agruparlos por día
+        respuesta.forEach(pedido => {
             let fechaPedido = pedido.fecha_pedido;
 
             // Si la fecha del pedido no es una clave en pedidosAgrupados, agrégala con un array vacío.
@@ -155,26 +150,37 @@ function inicioSolicitudes(respuesta) {
 
             // Agrega el pedido al array correspondiente en pedidosAgrupados.
             pedidosAgrupados[fechaPedido].push(pedido);
-        }
+        });
 
+        // Contador para limitar a solo los tres primeros días
+        let contadorDias = 0;
+
+        // Iterar sobre los pedidos agrupados por día y mostrar solo los tres primeros días
         for (let fecha in pedidosAgrupados) {
+            // Verificar si ya hemos mostrado tres días
+            if (contadorDias >= 3) {
+                break; // Salir del bucle si ya hemos mostrado tres días
+            }
+
             // Cada fecha es un array de objetos literales, cada objeto es un pedido.
             let cartaPedidos = crearElemento("div");
             let fechaPedido = crearElemento("h1", fecha);
 
             cartaPedidos.appendChild(fechaPedido);
-            for (let i = 0; i < pedidosAgrupados[fecha].length; i++) {
-                let pedido = pedidosAgrupados[fecha][i];
+            pedidosAgrupados[fecha].forEach(pedido => {
                 let textoPedidos = crearElemento("p", pedido.descripcion + " " + pedido.cantidad + " " + pedido.unidades);
                 cartaPedidos.appendChild(textoPedidos);
-            }
+            });
             contenedor.appendChild(cartaPedidos);
+
+            contadorDias++; // Incrementar el contador de días mostrados
         }
     } else {
         // Manejar el caso en que no haya pedidos.
         contenedor.textContent = "No hay pedidos disponibles.";
     }
 }
+
 
 
 // Página productos___________________________________________________________________

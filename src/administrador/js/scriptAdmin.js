@@ -167,9 +167,6 @@ function tablaCategorias(respuesta) {
     let categorias = JSON.parse(respuesta);
     console.log(categorias);
 
-    let contenedor = document.querySelector("#parteInferior");
-    contenedor.innerHTML = "";
-
     //Buscador.
     let buscador = crearElemento("input", undefined, {
         id: "buscadorCategorias"
