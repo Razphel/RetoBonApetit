@@ -716,16 +716,39 @@ function manejadorSolicitud(e) {
     mostrarPopup(datosUsuario);
 }
 
+function crearSelect(opciones,idSelect) {
+    let select = crearElemento("select",undefined,{id: idSelect});
+    for (let key in opciones) {
+        let opcion = crearElemento("option", opciones[key], {value: opciones[key]}); 
+        // console.log('Clave:', key);
+        // console.log('Valor:', opciones[key]);
+        select.appendChild(opcion);
+      }
+    return select; 
+}
+
+function selectUnidades(respuesta)
+{
+    let unidades = JSON.parse(respuesta);
+    console.log(unidades);
+    let guardarDescripcion = []; 
+    for (let i = 0; i < unidades.length; i++) {
+        guardarDescripcion[unidades[i].id_unidades] = unidades[i].descripcion;
+    }
+    console.log(guardarDescripcion);
+    return guardarDescripcion;
+}
+
 function mostrarPopup(datosUsuario) {
     crearPopup('Solicitud de nuevo producto');
     let popupContainer = document.querySelector('#popupContainer');
     let contenedorPopup = document.querySelector('#contenedorPopup');
     let formulario = crearElemento('form', undefined, {
+        id: 'formulario',
         class: 'w-100 contenedorFormPopup'
     });
 
     let textoInfo = crearElemento("p", `Solicitud del usuario ${datosUsuario.nombre} ${datosUsuario.apellido} para añadir un producto nuevo.`, {
-        id: "observacionesNuevoProducto",
         class: "mb-5"
     });
 
@@ -775,6 +798,24 @@ function mostrarPopup(datosUsuario) {
     formulario.appendChild(contenedorCantidad);
 
     //. BLOQUE 3....................................................
+    let parametros = {
+        unidadesDeMedida: 'unidadesMedida' 
+    };
+    console.log(parametros);
+
+    $.ajax({
+        type: "POST",
+        url: "./php/consultaUsuario.php",
+        data: parametros,
+        async: false,
+        success: function(respuesta) {
+            unidadesSeleccionadas = selectUnidades(respuesta);
+        }, 
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.error("Error en la solicitud AJAX: " + textStatus, errorThrown);
+        }
+    });
+    
     let contenedorUdMedida = crearElemento('div', undefined, {
         class: 'w-100 contenedor_item_popup'
     });
@@ -784,15 +825,10 @@ function mostrarPopup(datosUsuario) {
         class: 'form-label label_popup'
     });
 
-    //Contenido del popub.
-    let udMedidaProducto = crearElemento("input", undefined, {
-        id: "unidadNuevoProducto",
-        class: 'form-control',
-        placeholder: "Ej.: kg, litros, caja...",
-        type: "text"
-    });
+    let select = crearSelect(unidadesSeleccionadas,'unidadesNuevoProducto');
+    contenedorUdMedida.appendChild(select); 
     contenedorUdMedida.appendChild(labelUdMedida);
-    contenedorUdMedida.appendChild(udMedidaProducto);
+    // contenedorUdMedida.appendChild(udMedidaProducto);
     formulario.appendChild(contenedorUdMedida);
 
     //. BLOQUE 4....................................................
@@ -832,7 +868,7 @@ function mostrarPopup(datosUsuario) {
 
     let btnVaciar = crearElemento("input", undefined, {
         type: 'submit',
-        value: 'Limpiar datos',
+        value: 'Limpiar Datos',
         class: 'btn btn_custom_2',
         onclick: 'limpiarDatos()'
     });
@@ -847,13 +883,14 @@ function mostrarPopup(datosUsuario) {
         //Se reciben los datos.
         let nombre = document.querySelector("#nombreNuevoProducto").value;
         let cantidadRecibida = parseFloat(document.querySelector("#cantidadNuevoProducto").value);
-        let unidad = document.querySelector("#unidadNuevoProducto").value;
+        let unidadRecibida = document.querySelector("#unidadesNuevoProducto").value;
+        // console.log(unidad);
         let observaciones = document.querySelector("#observacionesNuevoProducto").value;
 
         //Se crea el nuevo producto.
         let nuevoProducto = {
             nombre_producto: nombre,
-            nombre_unidades: unidad,
+            nombre_unidades: unidadRecibida,
             nombre_observaciones: observaciones,
             cantidad: cantidadRecibida
         };
@@ -1315,7 +1352,7 @@ function hacerPedido() {
 
     let btnVaciar = crearElemento("input", undefined, {
         type: 'submit',
-        value: 'Limpiar datos',
+        value: 'Limpiar Datos',
         class: 'btn btn_custom_2',
         onclick: 'limpiarDatos()'
     });
@@ -1324,7 +1361,7 @@ function hacerPedido() {
         type: 'submit',
         value: 'Enviar solicitud',
         class: 'btn btn_custom_1',
-        onclick: 'crearProducto()'
+        onclick: 'InsertarSolicitud()'
     });
 
     contenedorBotones.appendChild(btnCancelar);
@@ -1345,6 +1382,12 @@ function limpiarDatos() {
     formulario.reset();
 }
 
+function InsertarSolicitud()
+{
+
+}
+
 function cancelar() {
-    window.location.href('./');
+    console.log('mondog');
+    window.location.replace('./inicioUsuario.html');
 }
