@@ -167,7 +167,7 @@ function inicioSolicitudes(respuesta) {
         class: 'row'
     });
 
-    let tituloSolicitudes = crearElemento("h1", "Solicitudes recientes", {
+    let tituloSolicitudes = crearElemento("h1", "Pedidos recientes", {
         id: "tituloApartado",
         class: "py-3 mb-2 mt-5"
     });
@@ -929,7 +929,6 @@ function mostrarPopup(datosUsuario) {
     });
 
     let textoInfo = crearElemento("p", `Solicitud del usuario ${datosUsuario.nombre} ${datosUsuario.apellido} para añadir un producto nuevo.`, {
-        id: "observacionesNuevoProducto",
         class: "mb-5"
     });
 
@@ -951,7 +950,7 @@ function mostrarPopup(datosUsuario) {
         class: 'form-control',
         placeholder: "Nombre del nuevo producto",
         type: "text",
-        required:true
+        required: true
     });
     contenedorNombre.appendChild(labelNombre);
     contenedorNombre.appendChild(nombreProducto);
@@ -974,7 +973,7 @@ function mostrarPopup(datosUsuario) {
         type: 'number',
         min: 0,
         value: 0,
-        required:true
+        required: true
     });
     contenedorCantidad.appendChild(labelCantidad);
     contenedorCantidad.appendChild(cantidadProducto);
@@ -1030,7 +1029,7 @@ function mostrarPopup(datosUsuario) {
         class: "form-control",
         placeholder: 'Observaciones del nuevo producto',
         rows: '3',
-        required:true
+        required: true
     });
     contenedorObservaciones.appendChild(labelObservaciones);
     contenedorObservaciones.appendChild(observacionesProducto);
@@ -1438,7 +1437,7 @@ function hacerPedido() {
         type: 'submit',
         value: 'Enviar solicitud',
         class: 'btn btn_custom_1',
-        onclick: 'crearProducto()'
+        onclick: 'enviarSolicitud()'
     });
 
     contenedorBotones.appendChild(btnCancelar);
@@ -1452,6 +1451,68 @@ function hacerPedido() {
 
     contenedorForm.appendChild(contenedorFormTop);
     contenedorForm.appendChild(formulario);
+}
+
+function enviarSolicitud() {
+    let fecha = new Date();
+    let dia = fecha.getDate();
+    let mes = fecha.getMonth() + 1;
+    let year = fecha.getFullYear();
+    let fechaInsertar = year + "/" + mes + "/" + dia;
+    let cesta = JSON.parse(localStorage.getItem("cesta"));
+    let usuario = JSON.parse(localStorage.getItem("usuario")).clavePrimaria;
+    // console.log(cesta);
+    for (let i = 0; i < cesta.length; i++) {
+        let descripcion = "";
+        let unidades = "";
+        let cantidad = "";
+        let observaciones = "";
+        let arrayAux = [];
+        let UnaSolicitud = cesta[i];
+        // console.log(UnaSolicitud)
+        for (let clave in UnaSolicitud) {
+            descripcion = UnaSolicitud['nombre_producto'];
+            unidades = UnaSolicitud['nombre_unidades'];
+            cantidad = UnaSolicitud['cantidad'];
+            observaciones = UnaSolicitud['nombre_observaciones'];
+        }
+        InsertarSolicitud(fechaInsertar, descripcion, unidades, cantidad, observaciones, usuario);
+        console.log(arrayAux);
+    }
+
+    vaciarCarrito();
+    principal();
+}
+
+function InsertarSolicitud(fechaInsertar, descripcion, unidades, cantidad, observaciones, usuario) {
+    let parametros = {
+        NewSolicitud: JSON.stringify({
+            fecha_solicitud: fechaInsertar,
+            descripcion: descripcion,
+            unidades: unidades,
+            cantidad: cantidad,
+            observaciones: observaciones,
+            tramitado: 0,
+            fk_usuario: usuario
+        })
+    };
+    console.log(parametros);
+
+    $.ajax({
+        type: "POST",
+        url: "./php/consultaUsuario.php",
+        data: parametros,
+        error: function (a, b, errorMsg) {
+            console.log(errorMsg);
+        }
+    }).done(function (a) {
+        console.log(a);
+        console.log("hecho");
+    });
+
+}
+function cancelar() {
+    window.location.replace('./inicioUsuario.html');
 }
 
 function limpiarDatos() {

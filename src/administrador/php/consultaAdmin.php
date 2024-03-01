@@ -32,6 +32,13 @@ if (isset($_REQUEST['categorias'])) {
     echo json_encode($categorias);
 }
 
+if (isset($_REQUEST['residuos'])) 
+{
+    $residuos = BD::imprimirConsultas('residuos');
+    echo json_encode($residuos);
+} 
+
+
 if (isset($_REQUEST['unidadesDeMedida'])) {
     $unidades = BD::imprimirConsultas('unidades');
     echo json_encode($unidades);

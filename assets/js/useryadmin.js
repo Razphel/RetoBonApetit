@@ -96,6 +96,7 @@ function cerrarSesion() {
         type: "GET",
         data: parametros,
         success: function () {
+            vaciarCarrito();
             localStorage.removeItem("usuario");
             window.location.replace("../../../sesion.html");
         },
@@ -103,6 +104,13 @@ function cerrarSesion() {
             console.error("Error en la solicitud AJAX: " + textStatus, errorThrown);
         }
     });
+
+
+}
+
+function vaciarCarrito(e) {
+    //Limpio la cesta del almacenamiento.
+    localStorage.removeItem("cesta");
 }
 
 function toggleSidebar() {

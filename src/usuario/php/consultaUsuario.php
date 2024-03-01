@@ -53,3 +53,10 @@ if (isset($_REQUEST['unidadesDeMedida']))
     $unidades = BD::imprimirConsultas('unidades');
     echo json_encode($unidades);
 }
+
+if(isset($_POST['NewSolicitud']))
+{   
+    echo var_dump($_REQUEST['NewSolicitud']);
+    $solicitudInsertar = json_decode($_REQUEST['NewSolicitud'],true);
+    $addSolicitud = BD::insertarRegistro("solicitudes",$solicitudInsertar);
+}

@@ -220,7 +220,7 @@ function principal() {
                 rows: "5"
             });
 
-            
+
             contenedorObservaciones.appendChild(labelMensajeNuevo);
             contenedorObservaciones.appendChild(observacionNueva);
 
@@ -502,7 +502,9 @@ function pagAñadirCategoria() {
     crearPlantillaFormularios('Nueva categoría', 'Datos de la nueva categoría', 'Categorías existentes');
     let contenedorForm = document.querySelector('#contenedorForm');
 
-    let formCategorias = crearElemento('form', undefined, []);
+    let formCategorias = crearElemento('form', undefined, {
+        id: "formulario"
+    });
 
     let contenedorFormTop = crearElemento('div', undefined, { // van el contenedor left y right
         class: 'form_contenedor_top'
@@ -1234,7 +1236,9 @@ function pagAñadirProducto() {
     crearPlantillaFormularios('Nuevo producto', 'Datos del nuevo producto', 'Productos existentes');
     let contenedorForm = document.querySelector('#contenedorForm');
 
-    let formProductos = crearElemento('form', undefined, []);
+    let formProductos = crearElemento('form', undefined, {
+        id: "formulario"
+    });
 
     let contenedorFormTop = crearElemento('div', undefined, { // van el contenedor left y right
         class: 'form_contenedor_top'
@@ -1594,7 +1598,9 @@ function pagUdMedida() {
     crearPlantillaFormularios('Nueva unidad de medida', 'Datos de la nueva ud. de medida', 'Ud. de medida existentes');
     let contenedorForm = document.querySelector('#contenedorForm');
 
-    let formUdMedida = crearElemento('form', undefined, []);
+    let formUdMedida = crearElemento('form', undefined, {
+        id: "formulario"
+    });
 
     let contenedorFormTop = crearElemento('div', undefined, { // van el contenedor left y right
         class: 'form_contenedor_top'
@@ -1674,7 +1680,7 @@ function pagUdMedida() {
         type: 'submit',
         value: 'Crear ud. de medida',
         class: 'btn btn_custom_1',
-        onclick: 'btnCrearMedida()'
+        onclick: 'newUdMedida()'
     });
 
     contenedorBotones.appendChild(btnCancelar);
@@ -1723,7 +1729,7 @@ function navPedidos() {
 
 function navListarPedidos() {
     pagListarPedidos();
-    
+
 
     let parametros = {
         pedidos: true
@@ -1764,10 +1770,10 @@ function tablaPedidos(pedidos) {
             // Solo se va a buscar por nombre de usuario, nombre y apellidos, se seleccionan solo las columnas correspondientes.
             let nombreUsuario = fila.querySelector("td:nth-child(1)").innerHTML.toLowerCase();
             let producto = fila.querySelector("td:nth-child(3)").innerHTML.toLowerCase();
-          
+
             // Mostrar la fila si coincide con el texto buscado o si no se ha ingresado nada en el input.
-            
-            if (nombreUsuario.includes(textoBuscar) || producto.includes(textoBuscar)  || textoBuscar === "") {
+
+            if (nombreUsuario.includes(textoBuscar) || producto.includes(textoBuscar) || textoBuscar === "") {
                 fila.style.display = ""; // Mostrar la fila.
             } else {
                 fila.style.display = "none"; // Ocultar la fila.
@@ -1784,7 +1790,7 @@ function tablaPedidos(pedidos) {
     let titulosTabla = crearElemento("thead");
 
     let filaTitulos = crearElemento("tr");
-    let titulos = ["nombre","fecha_pedido","descripcion","cantidad","unidades","observaciones" ];
+    let titulos = ["nombre", "fecha_pedido", "descripcion", "cantidad", "unidades", "observaciones"];
     for (let i = 0; i < titulos.length; i++) {
         let tituloMostrar = titulos[i] === "descripcion" ? "Producto" : titulos[i];
         let celdaTitulo = crearElemento("th", tituloMostrar.charAt(0).toUpperCase() + tituloMostrar.slice(1).toLowerCase());
@@ -1979,7 +1985,9 @@ function pagAñadirUsuario() {
     crearPlantillaFormularios('Nuevo usuario', 'Datos del nuevo usuario', 'Usuarios existentes');
     let contenedorForm = document.querySelector('#contenedorForm');
 
-    let formUsuario = crearElemento('form', undefined, []);
+    let formUsuario = crearElemento('form', undefined, {
+        id: "formulario"
+    });
 
     let contenedorFormTop = crearElemento('div', undefined, { // van el contenedor left y right
         class: 'form_contenedor_top'
@@ -2443,7 +2451,9 @@ function pagAñadirProveedor() {
     crearPlantillaFormularios('Nuevo proveedor', 'Datos del nuevo proveedor', 'Proveedores existentes');
     let contenedorForm = document.querySelector('#contenedorForm');
 
-    let formProveedores = crearElemento('form', undefined, []);
+    let formProveedores = crearElemento('form', undefined, {
+        id: "formualario"
+    });
 
     let contenedorFormTop = crearElemento('div', undefined, { // van el contenedor left y right
         class: 'form_contenedor_top'
@@ -2586,7 +2596,7 @@ function pagAñadirProveedor() {
         type: 'submit',
         value: 'Crear usuario',
         class: 'btn btn_custom_1',
-        onclick: 'crearProveedor()'
+        onclick: 'newProveedor()'
     });
 
     contenedorBotones.appendChild(btnCancelar);
@@ -2680,8 +2690,8 @@ function enviarMensaje(e) {
 
 
 function navSolicitudes() {
-    
-    
+
+
     pagSolicitudes();
 
     let parametros = {
@@ -2742,7 +2752,7 @@ function tablaSolicitudes(usuarios) {
             let nombreUsuario = fila.querySelector("td:nth-child(1)").innerHTML.toLowerCase();
 
             // Mostrar la fila si coincide con el texto buscado o si no se ha ingresado nada en el input.
-            if (nombreUsuario.includes(textoBuscar) ||   textoBuscar === "") {
+            if (nombreUsuario.includes(textoBuscar) || textoBuscar === "") {
                 fila.style.display = ""; // Mostrar la fila.
             } else {
                 fila.style.display = "none"; // Ocultar la fila.
@@ -2754,7 +2764,7 @@ function tablaSolicitudes(usuarios) {
 
 
 
-// Filtro de tramitado.
+    // Filtro de tramitado.
     let filtroTramitado = crearElemento("select", undefined, {
         id: "filtroTramitado",
         class: "form-select",
@@ -2787,15 +2797,15 @@ function tablaSolicitudes(usuarios) {
     contenedor.appendChild(filtroTramitado);
 
     //Estructura del titulo de la tabla.
-    
+
     let tablaUsuarios = crearElemento("table", undefined, {
         class: "table table-responsive table-hover mt-4"
     });
-    
+
     let titulosTabla = crearElemento("thead");
 
     let filaTitulos = crearElemento("tr");
-    let titulos = ["nombre","id_solicitudes", "fecha_solicitud", "descripcion", "unidades", "cantidad", "observaciones", "tramitado", "fk_usuario"];
+    let titulos = ["nombre", "id_solicitudes", "fecha_solicitud", "descripcion", "unidades", "cantidad", "observaciones", "tramitado", "fk_usuario"];
     for (let i = 0; i < titulos.length; i++) {
         let celdaTitulo = crearElemento("th", titulos[i].charAt(0).toUpperCase() + titulos[i].slice(1).toLowerCase());
         filaTitulos.appendChild(celdaTitulo);
@@ -2814,12 +2824,12 @@ function tablaSolicitudes(usuarios) {
         let filaBody = crearElemento("tr", undefined, {
             id: "nombre" + usuario["nombre"]
         });
-    
+
         for (let i = 0; i < titulos.length; i++) {
             let celdaBody = crearElemento("td", usuario[titulos[i]]);
             filaBody.appendChild(celdaBody);
         }
-    
+
 
         let celdaBoton = crearElemento("td");
         let botonTramitado = crearElemento("input", undefined, {
@@ -2828,13 +2838,13 @@ function tablaSolicitudes(usuarios) {
             class: 'btn btn_custom_1',
             onclick: `actualizarTramitado(event)`
         });
-        
-    
+
+
         celdaBoton.appendChild(botonTramitado);
         filaBody.appendChild(celdaBoton);
         tablaBody.appendChild(filaBody);
     });
- 
+
 
     tablaUsuarios.appendChild(tablaBody);
     contenedor.appendChild(tablaUsuarios);
@@ -2842,10 +2852,10 @@ function tablaSolicitudes(usuarios) {
 
 
 function actualizarTramitado(event) {
-   
+
     let botonClickeado = event.target;
 
-    
+
     let fila = botonClickeado.closest('tr');
 
     //  valor que tiene el campo solicitudes
@@ -2864,15 +2874,15 @@ function actualizarTramitado(event) {
         })
     };
 
-$.ajax({
-    type: "POST",
-    url: `./php/consultaAdmin.php?accion=actualizar&id=${idSolicitud}`,
-    data: parametros,
-    error: function (jqXHR, textStatus, errorThrown) {
-        console.log("Error:", textStatus, errorThrown);
-    }
-}).done(function (respuesta) {
-    console.log("Éxito:", respuesta);
-    navSolicitudes();
-});
+    $.ajax({
+        type: "POST",
+        url: `./php/consultaAdmin.php?accion=actualizar&id=${idSolicitud}`,
+        data: parametros,
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.log("Error:", textStatus, errorThrown);
+        }
+    }).done(function (respuesta) {
+        console.log("Éxito:", respuesta);
+        navSolicitudes();
+    });
 }

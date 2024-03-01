@@ -147,7 +147,7 @@ class BD
             $conexion = self::conexionBD();
             $sql = "SELECT usuarios.nombre,pedidos.fecha_pedido,linea_pedido.descripcion,linea_pedido.cantidad,linea_pedido.unidades,linea_pedido.observaciones 
             FROM linea_pedido inner join pedidos
-            ON linea_pedido.fk_pedido =  pedidos.id_pedidos inner join usuarios on pedidos.fk_usuario = usuarios.id_usuarios inner join solicitudes on usuarios.id_usuarios = solicitudes.fk_usuario where solicitudes.tramitado = 1" ;
+            ON linea_pedido.fk_pedido =  pedidos.id_pedidos inner join usuarios on pedidos.fk_usuario = usuarios.id_usuarios inner join solicitudes on usuarios.id_usuarios = solicitudes.fk_usuario where solicitudes.tramitado = 1";
 
             $resultado = $conexion->query($sql);
 
@@ -244,6 +244,75 @@ class BD
             throw new Exception("ERROR: " . $e->getMessage());
         }
     }
+    public static function seleccionarIdProductoNuevo()
+    {
+        try {
+            $conexion = self::conexionBD();
+            $sql = "SELECT id_productos
+            FROM productos 
+            ORDER BY id_productos DESC
+            LIMIT 1";
+
+            $resultado = $conexion->query($sql);
+
+            $fila = $resultado->fetch();
+            $idProducto = $fila['id_productos'];
+
+            //Devolver solo el valor de id_producto
+            return $idProducto;
+        } catch (Exception $e) {
+            throw new Exception($e);
+        }
+    }
+
+    public static function insertarNewProductoTransaccion($datos1, $datos2, $datos3)
+    {
+        try {
+            $conexion = self::conexionBD();
+            $conexion->beginTransaction();
+
+            self::insertarRegistro('productos', $datos1);
+            $id_productoNuevo = self::seleccionarIdProductoNuevo();
+            $datos2['fk_producto'] = $id_productoNuevo;
+            self::insertarRegistro('producto_categoria', $datos2);
+            foreach ($datos3 as $key => $value) {
+                $insertarProductoResiduos = [
+                    "fk_producto" => $id_productoNuevo,
+                    "fk_residuo" => $datos3[$key]
+                ];
+                self::insertarRegistro('producto_residuo', $insertarProductoResiduos);
+            }
+            $conexion->commit();
+            return true;
+        } catch (PDOException $e) {
+            $conexion->rollBack();
+            throw new Exception("ERROR: " . $e->getMessage());
+        }
+    }
+
+    public static function imprimirSolicitudesInicioAdministrador()
+    {
+        try {
+            $conexion = self::conexionBD();
+            $sql = "SELECT fecha_solicitud,descripcion,unidades, cantidad,observaciones 
+            FROM solicitudes 
+            ORDER BY fecha_solicitud DESC
+            LIMIT 3";
+
+            $resultado = $conexion->query($sql);
+
+            // Crear un array para almacenar todas las filas        
+            $filas = [];
+            // Recorrer los resultados y almacenar cada fila en el array        
+            while ($fila = $resultado->fetch()) {
+                $filas[] = $fila;
+            }
+        } catch (Exception $e) {
+            throw new Exception("ERROR: " + $e);
+        }
+        //Esta consulta te devuelve un array de arrays con todos los datos de la tabla producto.
+        return $filas;
+    }
 
     // $datos1 = [
     //     "admin" => "1",
@@ -273,30 +342,30 @@ class BD
     // BD::actualizarRegistro("categorias",$datos3,$id);
     //CREAR CONSULTA QUE IMPRIME LAS TRES ULTIMAS SOLICITUDES PARA EL ADMINISTRADOR
     public static function actualizarTramite($tabla, $datos, $id)
-{
-    try {
-        $conexion = self::conexionBD();
-        $columnas_valores = [];
+    {
+        try {
+            $conexion = self::conexionBD();
+            $columnas_valores = [];
 
-        foreach ($datos as $columna => $value) {
+            foreach ($datos as $columna => $value) {
 
-            if ($columna === 'tramitado') {
-                $columnas_valores[] = "$columna = ?";
-            } else {
-                $columnas_valores[] = "$columna = ?";
+                if ($columna === 'tramitado') {
+                    $columnas_valores[] = "$columna = ?";
+                } else {
+                    $columnas_valores[] = "$columna = ?";
+                }
             }
+
+            $columnas_valores = implode(",", $columnas_valores);
+            $sql = "UPDATE $tabla SET $columnas_valores WHERE id_$tabla = $id";
+            $consulta = $conexion->prepare($sql);
+
+            $consulta->execute(array_values($datos));
+            return true;
+        } catch (PDOException $e) {
+            throw new Exception("ERROR: " . $e->getMessage());
         }
-
-        $columnas_valores = implode(",", $columnas_valores);
-        $sql = "UPDATE $tabla SET $columnas_valores WHERE id_$tabla = $id";
-        $consulta = $conexion->prepare($sql);
-
-        $consulta->execute(array_values($datos));
-        return true;
-    } catch (PDOException $e) {
-        throw new Exception("ERROR: " . $e->getMessage());
     }
-}
 
     public static function imprimirMensajesInicio()
     {
@@ -342,5 +411,4 @@ class BD
         //Esta consulta te devuelve un array de arrays con todos los datos de la tabla producto.
         return $filas;
     }
-
 }
