@@ -1584,43 +1584,8 @@ function tablaProveedores(respuesta) {
 
     contenedor.appendChild(buscador);
 
-    //Estructura del titulo de la tabla.
-    let tablaCategorias = crearElemento("table", undefined, {
-        class: "table table-responsive table-hover mt-4"
-    });
-    let titulosTabla = crearElemento("thead");
-
-    let filaTitulos = crearElemento("tr");
-    let titulos = ["id_categorias", "descripcion", "imagenes", "observaciones"];
-    for (let i = 0; i < titulos.length; i++) {
-        let celdaTitulo = crearElemento("th", titulos[i].charAt(0).toUpperCase() + titulos[i].slice(1).toLowerCase());
-        filaTitulos.appendChild(celdaTitulo);
-    }
-    let columnaDeBotones = crearElemento("td");
-    filaTitulos.appendChild(columnaDeBotones);
-    titulosTabla.appendChild(filaTitulos);
-    tablaCategorias.appendChild(titulosTabla);
-
-    //Estructura del cuerpo de la tabla.
-    tablaBody = crearElemento("tbody");
-
-    categorias.forEach(categoria => {
-        let filaBody = crearElemento("tr", undefined, {
-            id: "idcategoria_" + categoria["id_categorias"]
-        });
-        for (let i = 0; i < titulos.length; i++) {
-            if (titulos[i] == "imagenes") {
-                let celdaBody = crearElemento("td");
-                let imagenCategoria = crearElemento("img", undefined, {
-                    src: "../../../assets/img/categorias/" + categoria[titulos[i]]
-                })
-                celdaBody.appendChild(imagenCategoria);
-                filaBody.appendChild(celdaBody);
-            } else {
-                let celdaBody = crearElemento("td", categoria[titulos[i]]);
-                filaBody.appendChild(celdaBody);
-            }
-        }
+    
+    
         //Botones editar/borrar.
         let celdaBodyBoton = crearElemento("td");
 
