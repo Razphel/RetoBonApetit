@@ -1541,8 +1541,108 @@ function pagAñadirProveedor() {
     contenedorForm.appendChild(formProveedores);
 }
 
-function tablaProveedores() {
+function tablaProveedores(respuesta) {
+    let proveedores = JSON.parse(respuesta);
+    console.log(proveedores);
+
+    let contenedor = document.querySelector("#parteInferior");
+    contenedor.innerHTML = "";
+
+    // buscador que debo de hacer con brayan
+
+
+
 }
+
+/* function tablaCategorias(respuesta) {
+
+    //Buscador.
+    let buscador = crearElemento("input", undefined, {
+        id: "buscadorCategorias"
+    });
+
+    buscador.addEventListener("input", function (e) {
+        // Convertir a minúsculas y quitar espacios en blanco al inicio y al final.
+        let textoBuscar = this.value.toLowerCase().trim();
+
+        // Obtener todas las filas de la tabla.
+        let filasTabla = tablaBody.querySelectorAll("tr");
+
+        // Mostrar u ocultar según el texto del buscador.
+        filasTabla.forEach(fila => {
+            // Solo se va a buscar por nombre de categoria, se seleccionan solo las columnas correspondientes.
+            let nombreCategoria = fila.querySelector("td:nth-child(2)").innerHTML.toLowerCase();
+
+            // Mostrar la fila si coincide con el texto buscado o si no se ha ingresado nada en el input.
+            if (nombreCategoria.includes(textoBuscar) || textoBuscar === "") {
+                fila.style.display = ""; // Mostrar la fila.
+            } else {
+                fila.style.display = "none"; // Ocultar la fila.
+            }
+        });
+    });
+
+    contenedor.appendChild(buscador);
+
+    //Estructura del titulo de la tabla.
+    let tablaCategorias = crearElemento("table", undefined, {
+        class: "table table-responsive table-hover mt-4"
+    });
+    let titulosTabla = crearElemento("thead");
+
+    let filaTitulos = crearElemento("tr");
+    let titulos = ["id_categorias", "descripcion", "imagenes", "observaciones"];
+    for (let i = 0; i < titulos.length; i++) {
+        let celdaTitulo = crearElemento("th", titulos[i].charAt(0).toUpperCase() + titulos[i].slice(1).toLowerCase());
+        filaTitulos.appendChild(celdaTitulo);
+    }
+    let columnaDeBotones = crearElemento("td");
+    filaTitulos.appendChild(columnaDeBotones);
+    titulosTabla.appendChild(filaTitulos);
+    tablaCategorias.appendChild(titulosTabla);
+
+    //Estructura del cuerpo de la tabla.
+    tablaBody = crearElemento("tbody");
+
+    categorias.forEach(categoria => {
+        let filaBody = crearElemento("tr", undefined, {
+            id: "idcategoria_" + categoria["id_categorias"]
+        });
+        for (let i = 0; i < titulos.length; i++) {
+            if (titulos[i] == "imagenes") {
+                let celdaBody = crearElemento("td");
+                let imagenCategoria = crearElemento("img", undefined, {
+                    src: "../../../assets/img/categorias/" + categoria[titulos[i]]
+                })
+                celdaBody.appendChild(imagenCategoria);
+                filaBody.appendChild(celdaBody);
+            } else {
+                let celdaBody = crearElemento("td", categoria[titulos[i]]);
+                filaBody.appendChild(celdaBody);
+            }
+        }
+        //Botones editar/borrar.
+        let celdaBodyBoton = crearElemento("td");
+
+        let editar = crearElemento('input', undefined, {
+            id: "botonEditarCategoria_" + categoria["id_categorias"],
+            type: "submit",
+            value: "Editar"
+        })
+        let borrar = crearElemento('input', undefined, {
+            id: "botonBorrarCategoria_" + categoria["id_categorias"],
+            type: "submit",
+            value: "Borrar"
+        })
+        celdaBodyBoton.appendChild(editar);
+        celdaBodyBoton.appendChild(borrar);
+
+        filaBody.appendChild(celdaBodyBoton);
+        tablaBody.appendChild(filaBody);
+    });
+    tablaCategorias.appendChild(tablaBody);
+    contenedor.appendChild(tablaCategorias);
+} */
 
 function newProveedor() {
     let nombre = document.getElementById('newProvName').value;
