@@ -244,6 +244,10 @@ INSERT INTO residuos (descripcion,observaciones) VALUES ('caja de papel','Observ
 INSERT INTO residuos (descripcion,observaciones) VALUES ('bolsa de plástico','Observación de prueba para bolsa de plástico');
 INSERT INTO residuos (descripcion,observaciones) VALUES ('botella de cristal','Observación de prueba para botella de cristal');
 INSERT INTO residuos (descripcion,observaciones) VALUES ('bandeja','Observación de prueba para bandeja');
+INSERT INTO residuos (descripcion,observaciones) VALUES ('caja de papel','Observación de prueba para caja de papel');
+INSERT INTO residuos (descripcion,observaciones) VALUES ('bolsa de plástico','Observación de prueba para bolsa de plástico');
+INSERT INTO residuos (descripcion,observaciones) VALUES ('botella de cristal','Observación de prueba para botella de cristal');
+INSERT INTO residuos (descripcion,observaciones) VALUES ('bandeja','Observación de prueba para bandeja');
 
 INSERT INTO mensajes (fecha_mensaje, hora_limite, observaciones,fk_usuario) VALUES ('2025/02/27', 'Hora límite para solicitud 23:59', 'Observación de prueba para mensaje de administrador',1);
 INSERT INTO mensajes (fecha_mensaje, hora_limite, observaciones,fk_usuario) VALUES ('2023/02/27', 'Hora límite para solicitud 2', 'Observación de prueba',1);

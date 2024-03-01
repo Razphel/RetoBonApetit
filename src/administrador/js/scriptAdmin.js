@@ -1231,14 +1231,74 @@ function navAñadirProducto() {
     pagAñadirProducto();
 }
 
+function crearSelect(opciones, idSelect) {
+    let select = crearElemento("select", undefined, { id: idSelect });
+    for (let key in opciones) {
+        let opcion = crearElemento("option", opciones[key], { value: key });
+        // console.log('Clave:', key);
+        // console.log('Valor:', opciones[key]);
+        select.appendChild(opcion);
+    }
+    return select;
+}
+
+function crearCheckboxes(opciones) {
+    let grupoCheckboxes = document.getElementById('contenedorResiduos');
+    for (let key in opciones) {
+        let divCheckbox = crearElemento('div', undefined, { id: 'contedorCheckbox' })
+        let checkbox = crearElemento('input', undefined, {
+            type: 'checkbox',
+            id: key
+        });
+
+        let label = crearElemento('label', opciones[key], {
+            for: key,
+            style: 'padding-left: 5px'
+        });
+        divCheckbox.appendChild(checkbox);
+        divCheckbox.appendChild(label);
+        grupoCheckboxes.appendChild(divCheckbox);
+    }
+}
+
+function checkboxResiduos(respuesta) {
+    let residuos = JSON.parse(respuesta);
+    //console.log(residuos);
+    let guardarDescripcion = [];
+    for (let i = 0; i < residuos.length; i++) {
+        guardarDescripcion[residuos[i].id_residuos] = residuos[i].descripcion;
+    }
+    console.log(guardarDescripcion);
+    return guardarDescripcion;
+}
+
+function selectUnidades(respuesta) {
+    let unidades = JSON.parse(respuesta);
+    //console.log(unidades);
+    let guardarDescripcion = [];
+    for (let i = 0; i < unidades.length; i++) {
+        guardarDescripcion[unidades[i].id_unidades] = unidades[i].descripcion;
+    }
+    //console.log(guardarDescripcion);
+    return guardarDescripcion;
+}
+
+function selectCategoria(respuesta) {
+    let categorias = JSON.parse(respuesta);
+    let guardarDescripcion = [];
+    for (let i = 0; i < categorias.length; i++) {
+        guardarDescripcion[categorias[i].id_categorias] = categorias[i].descripcion;
+    }
+    //console.log(guardarDescripcion);
+    return guardarDescripcion;
+}
+
 // Formulario 2. Crear producto.......................
 function pagAñadirProducto() {
     crearPlantillaFormularios('Nuevo producto', 'Datos del nuevo producto', 'Productos existentes');
     let contenedorForm = document.querySelector('#contenedorForm');
 
-    let formProductos = crearElemento('form', undefined, {
-        id: "formulario"
-    });
+    let formProductos = crearElemento('form', undefined, { id: 'formulario' });
 
     let contenedorFormTop = crearElemento('div', undefined, { // van el contenedor left y right
         class: 'form_contenedor_top'
@@ -1274,6 +1334,25 @@ function pagAñadirProducto() {
     contenedorFormLeft.appendChild(contenedorNombre);
 
     //. BLOQUE 2....................................................
+    let parametros = {
+        unidadesDeMedida: 'unidadesMedida'
+    };
+    //console.log(parametros);
+
+    $.ajax({
+        type: "POST",
+        url: "./php/consultaAdmin.php",
+        data: parametros,
+        async: false,
+        success: function (respuesta) {
+            unidadesSeleccionadas = selectUnidades(respuesta);
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.error("Error en la solicitud AJAX: " + textStatus, errorThrown);
+        }
+    });
+    //console.log(unidadesSeleccionadas);
+
     let contenedorUdMedida = crearElemento('div', undefined, {
         class: 'form-group w-100'
     });
@@ -1284,14 +1363,15 @@ function pagAñadirProducto() {
     });
     contenedorUdMedida.appendChild(labelUdMedida);
 
-    let inputUdMedida = crearElemento('input', undefined, {
-        type: 'text',
-        id: 'newProductUdMedida',
-        class: 'form-control',
-        placeholder: 'Ud. de medida del producto'
-    });
-    contenedorUdMedida.appendChild(inputUdMedida);
-
+    // let inputUdMedida = crearElemento('input', undefined, {
+    //     type: 'text',
+    //     id: 'newProductUdMedida',
+    //     class: 'form-control',
+    //     placeholder: 'Ud. de medida del producto'
+    // });
+    // contenedorUdMedida.appendChild(inputUdMedida); 
+    let selectUni = crearSelect(unidadesSeleccionadas, 'unidadesNewProducto');
+    contenedorUdMedida.appendChild(selectUni);
     contenedorFormLeft.appendChild(contenedorUdMedida);
 
     //. BLOQUE 3....................................................
@@ -1313,33 +1393,61 @@ function pagAñadirProducto() {
         rows: '5',
     });
     contenedorObservaciones.appendChild(inputObservaciones);
-
     contenedorFormLeft.appendChild(contenedorObservaciones);
 
     //. BLOQUE 4....................................................
+    let parametros2 = {
+        categorias: 'categorias'
+    };
+    // console.log(parametros2);
+
+    $.ajax({
+        type: "POST",
+        url: "./php/consultaAdmin.php",
+        data: parametros2,
+        async: false,
+        success: function (respuesta) {
+            categoriaSeleccionada = selectCategoria(respuesta);
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.error("Error en la solicitud AJAX: " + textStatus, errorThrown);
+        }
+    });
     let contenedorCategoria = crearElemento('div', undefined, {
         class: 'form-group w-100'
     });
 
     let labelCategoria = crearElemento('label', 'Categoría', {
-        for: 'newProductCategoria',
+        for: 'categoriaNewProducto',
         class: 'form-label'
     });
     contenedorCategoria.appendChild(labelCategoria);
-
-    let inputCategoria = crearElemento('input', undefined, {
-        type: 'text',
-        id: 'newProductCategoria',
-        class: 'form-control',
-        placeholder: 'Categoría del producto'
-    });
-    contenedorCategoria.appendChild(inputCategoria);
-
+    let selectCat = crearSelect(categoriaSeleccionada, 'categoriaNewProducto');
+    contenedorCategoria.appendChild(selectCat);
     contenedorFormRight.appendChild(contenedorCategoria);
 
     //. BLOQUE 5....................................................
+    let parametros3 = {
+        residuos: 'residuos'
+    };
+    console.log(parametros);
+
+    $.ajax({
+        type: "POST",
+        url: "./php/consultaAdmin.php",
+        data: parametros3,
+        async: false,
+        success: function (respuesta) {
+            residuosSeleccion = checkboxResiduos(respuesta);
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.error("Error en la solicitud AJAX: " + textStatus, errorThrown);
+        }
+    });
     let contenedorResiduos = crearElemento('div', undefined, {
-        class: 'form-group w-100'
+        class: 'form-group w-100',
+        id: 'contenedorResiduos',
+        style: 'display: grid; grid-column-templates: 1fr;max-height:200px ;overflow-y:auto; gap:10px'
     });
 
     let labelResiduos = crearElemento('label', 'Residuos', {
@@ -1347,15 +1455,6 @@ function pagAñadirProducto() {
         class: 'form-label'
     });
     contenedorResiduos.appendChild(labelResiduos);
-
-    let inputResiduos = crearElemento('input', undefined, {
-        type: 'text',
-        id: 'newProductResiduos',
-        class: 'form-control',
-        placeholder: 'Residuos del producto'
-    });
-    contenedorResiduos.appendChild(inputResiduos);
-
     contenedorFormRight.appendChild(contenedorResiduos);
 
     //. BOTONES......................................................
@@ -1381,7 +1480,7 @@ function pagAñadirProducto() {
         type: 'submit',
         value: 'Crear producto',
         class: 'btn btn_custom_1',
-        onclick: 'crearProducto()'
+        onclick: 'newProducto()'
     });
 
     contenedorBotones.appendChild(btnCancelar);
@@ -1395,8 +1494,48 @@ function pagAñadirProducto() {
     formProductos.appendChild(contenedorBotones);
 
     contenedorForm.appendChild(formProductos);
-
+    //Es necesario ejecutar esta función aquí porque es cuando acaba de crearse el formulario
+    crearCheckboxes(residuosSeleccion);
     tablaProductosSimplificada();
+}
+
+function newProducto() {
+    let nombre = document.getElementById('newNombreProducto').value;
+    let observaciones = document.getElementById('newProductObservaciones').value;
+    let unidades = document.getElementById('unidadesNewProducto').value
+    let categorias = document.getElementById('categoriaNewProducto').value;
+    let checkboxesMarcados = document.querySelectorAll('#contenedorResiduos input[type="checkbox"]');
+    let arrCheckbox = [];
+    checkboxesMarcados.forEach(checkbox => {
+        if (checkbox.checked) {
+            arrCheckbox.push(checkbox.id);
+        }
+    });
+    let parametros = {
+        descripcion: nombre,
+        fk_unidad: unidades,
+        observaciones: observaciones,
+    };
+    console.log(parametros);
+    console.log(categorias);
+    console.log(arrCheckbox);
+    $.ajax({
+        type: "POST",
+        url: "./php/consultaAdmin.php",
+        data: {
+            NewUnidadMedida: JSON.stringify(parametros),
+            categoriaNewProducto: JSON.stringify({
+                fk_categoria: categorias
+            }),
+            residuosNewProducto: JSON.stringify(arrCheckbox)
+        },
+        error: function (a, b, errorMsg) {
+            console.log(errorMsg);
+        }
+    }).done(function (a) {
+        console.log(a);
+        console.log("hecho");
+    });
 }
 
 function tablaProductosSimplificada() {
@@ -2048,14 +2187,14 @@ function pagAñadirUsuario() {
     });
 
     let labelUsername = crearElemento('label', 'Nombre de usuario', {
-        for: 'newUsername',
+        for: 'newName',
         class: 'form-label'
     });
     contenedorUsername.appendChild(labelUsername);
 
     let inputUsername = crearElemento('input', undefined, {
         type: 'text',
-        id: 'newUsername',
+        id: 'newName',
         class: 'form-control',
         placeholder: 'Nombre de usuario'
     });
@@ -2213,10 +2352,10 @@ function pagAñadirUsuario() {
     });
 
     let btnCrearUsuario = crearElemento("input", undefined, {
-        type: 'submit',
+        type: 'button',
         value: 'Crear usuario',
         class: 'btn btn_custom_1',
-        onclick: 'crearUsuario()'
+        onclick: 'newUsuario()'
     });
 
     contenedorBotones.appendChild(btnCancelar);
@@ -2317,12 +2456,26 @@ function newUsuario() {
     let nombreUser = document.getElementById('newUserName').value;
     let observaciones = document.getElementById('newUserObservacion').value;
     let nombre = document.getElementById('newName').value;
-    let apellido = document.getElementById('newApellido').value;
-    let password = document.getElementById('newPassword').value;
+    let apellido = document.getElementById('newUserApellido').value;
+    let password = document.getElementById('newUserPassword').value;
     let telefono = document.getElementById('newUserTelefono').value;
     let email = document.getElementById('newUserEmail').value;
-    let activo = document.getElementById('userActive').value;
+    let activo = document.getElementById('userActive').checked;
     let admin = document.getElementById('userAdmin').value;
+
+
+    if (activo) {
+        activo = 1;
+    } else {
+        activo = 0;
+    }
+
+    if (admin) {
+        admin = 1;
+    } else {
+        admin = 0;
+    }
+
     let parametros = {
         NewUsuario: JSON.stringify({
             admin: admin,
@@ -2452,7 +2605,7 @@ function pagAñadirProveedor() {
     let contenedorForm = document.querySelector('#contenedorForm');
 
     let formProveedores = crearElemento('form', undefined, {
-        id: "formualario"
+        id: "formulario"
     });
 
     let contenedorFormTop = crearElemento('div', undefined, { // van el contenedor left y right
@@ -2594,7 +2747,7 @@ function pagAñadirProveedor() {
 
     let btnCrearUsuario = crearElemento("input", undefined, {
         type: 'submit',
-        value: 'Crear usuario',
+        value: 'Crear proveedor',
         class: 'btn btn_custom_1',
         onclick: 'newProveedor()'
     });
