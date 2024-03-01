@@ -1411,6 +1411,8 @@ function enviarSolicitud()
         console.log(arrayAux);
     }
 
+    vaciarCarrito();
+    principal();
 }
 
 function InsertarSolicitud(fechaInsertar,descripcion,unidades,cantidad,observaciones,usuario)
