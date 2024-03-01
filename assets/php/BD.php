@@ -140,6 +140,29 @@ class BD
         return $filas;
     }
 
+
+    public static function imprimirTodosPedidos()
+    {
+        try {
+            $conexion = self::conexionBD();
+            $sql = "SELECT usuarios.nombre,pedidos.fecha_pedido,linea_pedido.descripcion,linea_pedido.cantidad,linea_pedido.unidades,linea_pedido.observaciones 
+            FROM linea_pedido inner join pedidos
+            ON linea_pedido.fk_pedido =  pedidos.id_pedidos inner join usuarios on pedidos.fk_usuario = usuarios.id_usuarios inner join solicitudes on usuarios.id_usuarios = solicitudes.fk_usuario where solicitudes.tramitado = 1" ;
+
+            $resultado = $conexion->query($sql);
+
+            // Crear un array para almacenar todas las filas
+            $filas = [];
+            // Recorrer los resultados y almacenar cada fila en el array
+            while ($fila = $resultado->fetch()) {
+                $filas[] = $fila;
+            }
+        } catch (Exception $e) {
+            throw new Exception("ERROR: " + $e);
+        }
+        //Esta consulta te devuelve un array de arrays con todos los datos de la tabla producto.
+        return $filas;
+    }
     public static function CategoriasProductos()
     {
         try {
@@ -249,6 +272,31 @@ class BD
     // $id = 7;
     // BD::actualizarRegistro("categorias",$datos3,$id);
     //CREAR CONSULTA QUE IMPRIME LAS TRES ULTIMAS SOLICITUDES PARA EL ADMINISTRADOR
+    public static function actualizarTramite($tabla, $datos, $id)
+{
+    try {
+        $conexion = self::conexionBD();
+        $columnas_valores = [];
+
+        foreach ($datos as $columna => $value) {
+
+            if ($columna === 'tramitado') {
+                $columnas_valores[] = "$columna = ?";
+            } else {
+                $columnas_valores[] = "$columna = ?";
+            }
+        }
+
+        $columnas_valores = implode(",", $columnas_valores);
+        $sql = "UPDATE $tabla SET $columnas_valores WHERE id_$tabla = $id";
+        $consulta = $conexion->prepare($sql);
+
+        $consulta->execute(array_values($datos));
+        return true;
+    } catch (PDOException $e) {
+        throw new Exception("ERROR: " . $e->getMessage());
+    }
+}
 
     public static function imprimirMensajesInicio()
     {

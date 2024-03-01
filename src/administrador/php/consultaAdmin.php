@@ -41,6 +41,16 @@ if (isset($_REQUEST['proveedores'])) {
     $proveedores = BD::imprimirConsultas('proveedores');
     echo json_encode($proveedores);
 }
+if (isset($_REQUEST['solicitudes'])) {
+    $solicitudes = BD::imprimirConsultas('solicitudes');
+    echo json_encode($solicitudes);
+}
+
+if (isset($_REQUEST['pedidos'])) {
+    $pedidos = BD::imprimirConsultas('pedidos');
+    echo json_encode($pedidos);
+}
+
 
 if (isset($_REQUEST['claveTodosUsuarios'])) {
     $todosUsuarios = BD::imprimirConsultas('usuarios');
@@ -70,3 +80,33 @@ if (isset($_REQUEST['enviarNuevoMensaje'])) {
 
     echo json_encode(true);
 }
+
+
+if (isset($_POST['NewSolicitud'])) {
+    $datosSolicitudJSON = $_POST['NewSolicitud'];
+
+    // Verificar si es un JSON válido
+    if ($datosSolicitudJSON && is_string($datosSolicitudJSON)) {
+        $datosSolicitud = json_decode($datosSolicitudJSON, true);
+
+        if ($datosSolicitud !== null) {
+            // Obtener el id_solicitudes del array $datosSolicitud
+            $id = $datosSolicitud['id_solicitudes'] ?? null;
+
+            // Verificar si el id_solicitudes es válido antes de continuar
+            if ($id !== null) {
+                // Continuar con la actualización en la base de datos
+                $addActualizar = BD::actualizarTramite("solicitudes", $datosSolicitud, $id);
+                echo "Actualización exitosa";
+            } else {
+                echo "Error: id_solicitudes no válido";
+            }
+        } else {
+            echo "Error al decodificar el JSON";
+        }
+    } else {
+        echo "Solicitud no es un JSON válido";
+    }
+}
+
+
