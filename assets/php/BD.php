@@ -268,12 +268,16 @@ class BD
             self::insertarRegistro('productos', $datos1);
             $id_productoNuevo = self::seleccionarIdProductoNuevo();
             $datos2['fk_producto'] = $id_productoNuevo;
-            $datos3['fk_producto'] = $id_productoNuevo;
+            echo var_dump($datos2);
             self::insertarRegistro('producto_categoria', $datos2);
-            // foreach ($datos3 as $key => $value) 
-            // {
-            //     self::insertarRegistro('producto_residuos', $datos3[key]);
-            // }
+            foreach ($datos3 as $key => $value) 
+            {   
+                $insertarProductoResiduos = [
+                    "fk_producto" => $id_productoNuevo,
+                    "fk_residuo" => $datos3[$key]
+                ];
+                self::insertarRegistro('producto_residuo', $insertarProductoResiduos);
+            }
             $conexion->commit(); 
             return true;
         } catch (PDOException $e) {
@@ -281,20 +285,7 @@ class BD
             throw new Exception("ERROR: " . $e->getMessage());
         }
     }
-       
-    // $datos1 = [
-    // "descripcion" => "Producto mierda",
-    // "fk_unidad" => 3
-    // "observaciones" => "Observacion mierda",
-    // ];
-    // $datos2 = [
-    // "fk_categoria" => 2
-    // ];
-    // $datos3 = [
-    //"fk_residuos" => 1,
-    //"fk_residuos" => 2,
-    //"fk_residuos" => 4,
-    // ];
+    
 
     public static function eliminarRegistro($tabla, $id)
 {
@@ -326,34 +317,6 @@ class BD
             throw new Exception("ERROR: " . $e->getMessage());
         }
     }
-
-    // $datos1 = [
-    //     "admin" => "1",
-    //     "nombre_usuario" => "Coral",
-    //     "nombre" => "Corey",
-    //     "apellido" => "Isbell",
-    //     "email" => "coreyisbell22@gmail.com",
-    //     "password" => "0000",
-    //     "activo" => 1,
-    //     "observaciones" => "es un friki",
-    //     "telefono" => "666666666"
-    // ];
-    // BD::insertarRegistro("usuarios",$datos1);
-    // $datos2 = [
-    //     "descripcion" => "marisco",
-    //     "imagenes" => "pesacado.png",
-    //     "observaciones" => "El pescado es mejor",
-    // ];
-    // BD::insertarRegistro("categorias",$datos2);
-    // BD::eliminarRegistro("usuarios",7);
-    // $datos3 = [
-    //     "descripcion" => "ODIOELMARISCO",
-    //     "imagenes" => "marisco.png",
-    //     "observaciones" => "VIVA EL PESCADO"
-    // ];
-    // $id = 7;
-    // BD::actualizarRegistro("categorias",$datos3,$id);
-    //CREAR CONSULTA QUE IMPRIME LAS TRES ULTIMAS SOLICITUDES PARA EL ADMINISTRADOR
 
     public static function imprimirMensajesInicio()
     {
@@ -447,27 +410,52 @@ class BD
     //             $filas[] = $fila;
     //         }
     //     } catch (Exception $e) {
-    //         throw new Exception("ERROR: " + $e);
+    //         throw new Exception("ERROR: " .$e);
     //     }
     //     //Esta consulta te devuelve un array de arrays con todos los datos de la tabla producto.
     //     return $filas;
     // }
 
-}
-// $ultimoproducto = BD::seleccionarIdProductoNuevo();
-// echo $ultimoproducto;
-    $datos1 = [
-    "descripcion" => "Producto mierda",
-    "fk_unidad" => 3,
-    "observaciones" => "Observacion mierda"
-    ];
-    $datos2 = [
-    "fk_categoria" => 2
-    ];
-    $datos3 = [
-    "fk_residuos" => 1,
-    "fk_residuos" => 2,
-    "fk_residuos" => 4,
-    ];
+}   
+    //----------MIS PRUEBAS--------------------
+    // $datos1 = [
+    //     "admin" => "1",
+    //     "nombre_usuario" => "Coral",
+    //     "nombre" => "Corey",
+    //     "apellido" => "Isbell",
+    //     "email" => "coreyisbell22@gmail.com",
+    //     "password" => "0000",
+    //     "activo" => 1,
+    //     "observaciones" => "es un friki",
+    //     "telefono" => "666666666"
+    // ];
+    // BD::insertarRegistro("usuarios",$datos1);
+    // $datos2 = [
+    //     "descripcion" => "marisco",
+    //     "imagenes" => "pesacado.png",
+    //     "observaciones" => "El pescado es mejor",
+    // ];
+    // BD::insertarRegistro("categorias",$datos2);
+    // BD::eliminarRegistro("usuarios",7);
+    // $datos3 = [
+    //     "descripcion" => "ODIOELMARISCO",
+    //     "imagenes" => "marisco.png",
+    //     "observaciones" => "VIVA EL PESCADO"
+    // ];
+    // $id = 7;
+    // BD::actualizarRegistro("categorias",$datos3,$id);
+    // $ultimoproducto = BD::seleccionarIdProductoNuevo();
+    // echo $ultimoproducto;
+    // $datos1 = [
+    // "descripcion" => "Producto mierda version 32",
+    // "fk_unidad" => 3,
+    // "observaciones" => "Observacion mierda"
+    // ];
+    // $datos2 = [
+    // "fk_categoria" => 2
+    // ];
+    // $datos3 = [1,2,3]
+    // 
+    // 
 
-    BD::insertarNewProductoTransaccion($datos1,$datos2,$datos3);
+    // BD::insertarNewProductoTransaccion($datos1,$datos2,$datos3);

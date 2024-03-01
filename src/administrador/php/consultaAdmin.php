@@ -31,6 +31,17 @@ if(isset($_POST['NewUsuario']))
     $addUsuario = BD::insertarRegistro("usuarios",$usuarioInsertar);
 }
 
+if(isset($_POST['NewProducto']) && isset($_POST['categoriaNewProducto']) && isset($_POST['residuosNewProducto']))
+{   
+    echo var_dump($_REQUEST['NewProducto']);
+    echo var_dump($_REQUEST['categoriaNewProducto']);
+    echo var_dump($_REQUEST['residuosNewProducto']);
+    $productoInsertar = json_decode($_REQUEST['NewProducto'],true);
+    $categoriaNewProducto = json_decode($_REQUEST['categoriaNewProducto'],true);
+    $residuosNewProducto = json_decode($_REQUEST['residuosNewProducto'],true);
+    $addProducto = BD::insertarNewProductoTransaccion($productoInsertar,$categoriaNewProducto,$residuosNewProducto);
+}
+
 if (isset($_REQUEST['categorias'])) 
 {
     $categorias = BD::imprimirConsultas('categorias');

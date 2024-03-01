@@ -738,27 +738,31 @@ function newProducto()
         arrCheckbox.push(checkbox.id);
         }
     });
-    console.log(arrCheckbox);
     let parametros = {
-        NewUnidadMedida: JSON.stringify({
             descripcion: nombre,
+            fk_unidad: unidades,
             observaciones: observaciones,
-            unidades: unidades
-        })
     };
     console.log(parametros);
-
-    // $.ajax({
-    //     type: "POST",
-    //     url: "./php/consultaAdmin.php",
-    //     data: parametros,
-    //     error: function(a,b,errorMsg) {
-    //         console.log(errorMsg);
-    //     }
-    //   }).done(function (a) {
-    //     console.log(a);
-    //     console.log("hecho");
-    //   });
+    console.log(categorias);
+    console.log(arrCheckbox);
+    $.ajax({
+        type: "POST",
+        url: "./php/consultaAdmin.php",
+        data: {
+            NewUnidadMedida: JSON.stringify(parametros),
+            categoriaNewProducto: JSON.stringify ({
+                fk_categoria: categorias
+            }),
+            residuosNewProducto: JSON.stringify(arrCheckbox)
+        },
+        error: function(a,b,errorMsg) {
+            console.log(errorMsg);
+        }
+      }).done(function (a) {
+        console.log(a);
+        console.log("hecho");
+      });
 }
 
 // Formulario 3. Crear ud. de medida...................
