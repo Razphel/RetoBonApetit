@@ -187,37 +187,47 @@ function principal() {
                 class: 'fecha_mensajeUser'
             });
             contendorHoraLimite = crearElemento('div', undefined, {
-                class: 'contendorHoraLimite'
-            })
-            iconMensaje = crearElemento('i', undefined, {
-                class: 'bi bi-stopwatch'
+                class: 'form-group contendorHoraLimite'
             })
 
-            let labelHoralimite = crearElemento("label", "Hora limite para la solicitud: ", {
-                for: "contenidoHoraLimiteNueva"
+            let labelHoralimite = crearElemento("label", "Hora limite de envío de solicitudes", {
+                for: "contenidoHoraLimiteNueva",
+                class: "form-label"
             })
 
             horaLimite = crearElemento("input", undefined, {
                 id: "contenidoHoraLimiteNueva",
-                placeholder: "Nueva hora limite"
+                placeholder: "Hora límite",
+
             });
 
-            contendorHoraLimite.appendChild(iconMensaje);
             contendorHoraLimite.appendChild(labelHoralimite);
             contendorHoraLimite.appendChild(horaLimite);
 
-            let labelMensajeNuevo = crearElemento("label", "Mensaje nuevo: ", {
-                for: "mensajeNuevo"
-            })
-
-            observaciones = crearElemento("textarea", undefined, {
-                id: "mensajeNuevo",
-                placeholder: "Mensaje nuevo."
+            let labelMensajeNuevo = crearElemento("label", "Mensaje nuevo", {
+                for: "mensajeNuevo",
+                class: "form-label"
             });
 
-            let botonEnviarMensaje = crearElemento("button", "Enviar", {
+            let contenedorObservaciones = crearElemento('div', undefined, {
+                class: 'form-group contenedorObservaciones'
+            });
+
+            let observacionNueva = crearElemento("textarea", undefined, {
+                id: "mensajeNuevo",
+                placeholder: "Mensaje nuevo",
+                class: "form-control",
+                rows: "5"
+            });
+
+            
+            contenedorObservaciones.appendChild(labelMensajeNuevo);
+            contenedorObservaciones.appendChild(observacionNueva);
+
+            let botonEnviarMensaje = crearElemento("input", "Enviar", {
+                type: "submit",
                 id: "botonEnviarMensaje",
-                class: "n btn_custom_1"
+                class: "btn btn_custom_1"
             });
 
             botonEnviarMensaje.addEventListener("click", enviarMensaje);
@@ -225,8 +235,7 @@ function principal() {
             contenedorMensajeTop.appendChild(tituloMensaje);
             contenedorMensajeTop.appendChild(fechaMensaje);
             contenedorMensajeBottom.appendChild(contendorHoraLimite);
-            contenedorMensajeBottom.appendChild(labelMensajeNuevo);
-            contenedorMensajeBottom.appendChild(observaciones);
+            contenedorMensajeBottom.appendChild(contenedorObservaciones);
             contenedorMensajeBottom.appendChild(botonEnviarMensaje);
 
             //Organizo los elementos y los agrego al div row.
