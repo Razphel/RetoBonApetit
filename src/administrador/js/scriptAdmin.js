@@ -34,44 +34,39 @@ function principal() {
     // Apartado inicio
     document.querySelector("#navInicio").addEventListener("click", navInicio);
     // Apartado categorías
-    document.querySelector("#navCategorias").addEventListener("click", navCategorias);
-        document.querySelector("#navListarCategorias").addEventListener("click", navListarCategorias);
-        document.querySelector("#navAñadirCategoria").addEventListener("click", navAñadirCategoria);
-        document.querySelector("#shortcut_categoria").addEventListener("click", navAñadirCategoria);
+    document.querySelector("#navListarCategorias").addEventListener("click", navListarCategorias);
+    document.querySelector("#navAñadirCategoria").addEventListener("click", navAñadirCategoria);
+    document.querySelector("#shortcut_categoria").addEventListener("click", navAñadirCategoria);
     // Apartado productos
-    document.querySelector("#navProductos").addEventListener("click", navProductos);
-        document.querySelector("#navListarProductos").addEventListener("click", navListarProductos);
-        document.querySelector("#navAñadirProducto").addEventListener("click", navAñadirProducto);
-        document.querySelector("#shortcut_producto").addEventListener("click", navAñadirProducto);
-        document.querySelector("#navUdMedida").addEventListener("click", navUdMedida);
-        document.querySelector("#shortcut_medida").addEventListener("click", navUdMedida);
+    document.querySelector("#navListarProductos").addEventListener("click", navListarProductos);
+    document.querySelector("#navAñadirProducto").addEventListener("click", navAñadirProducto);
+    document.querySelector("#shortcut_producto").addEventListener("click", navAñadirProducto);
+    document.querySelector("#navUdMedida").addEventListener("click", navUdMedida);
+    document.querySelector("#shortcut_medida").addEventListener("click", navUdMedida);
     // Apartado solicitudes
     document.querySelector("#navSolicitudes").addEventListener("click", navSolicitudes);
     // Apartado pedidos
-    document.querySelector("#navPedidos").addEventListener("click", navPedidos);
-        document.querySelector("#navListarPedidos").addEventListener("click", navListarPedidos);
-        document.querySelector("#navNuevoPedido").addEventListener("click", navNuevoPedido);
-        document.querySelector("#shortcut_pedido").addEventListener("click", navNuevoPedido);
+    document.querySelector("#navListarPedidos").addEventListener("click", navListarPedidos);
+    document.querySelector("#navNuevoPedido").addEventListener("click", navNuevoPedido);
+    document.querySelector("#shortcut_pedido").addEventListener("click", navNuevoPedido);
     // Apartado usuarios
-    document.querySelector("#navUsuarios").addEventListener("click", navUsuarios);
-        document.querySelector("#navListarUsuarios").addEventListener("click", navListarUsuarios);
-        document.querySelector("#navAñadirUsuario").addEventListener("click", navAñadirUsuario);
-        document.querySelector("#shortcut_usuario").addEventListener("click", navAñadirUsuario);
+    document.querySelector("#navListarUsuarios").addEventListener("click", navListarUsuarios);
+    document.querySelector("#navAñadirUsuario").addEventListener("click", navAñadirUsuario);
+    document.querySelector("#shortcut_usuario").addEventListener("click", navAñadirUsuario);
     // Apartado proveedores
-    document.querySelector("#navProveedores").addEventListener("click", navProveedores);
-        document.querySelector("#navListarProveedores").addEventListener("click", navListarProveedores);
-        document.querySelector("#navAñadirProveedor").addEventListener("click", navAñadirProveedor);
-        document.querySelector("#shortcut_proveedor").addEventListener("click", navAñadirProveedor);
-        document.querySelector("#cerrarSesion").addEventListener("click", cerrarSesion);
+    document.querySelector("#navListarProveedores").addEventListener("click", navListarProveedores);
+    document.querySelector("#navAñadirProveedor").addEventListener("click", navAñadirProveedor);
+    document.querySelector("#shortcut_proveedor").addEventListener("click", navAñadirProveedor);
+    document.querySelector("#cerrarSesion").addEventListener("click", cerrarSesion);
     // Apartado residuos
-    document.querySelector("#navResiduos").addEventListener("click", navResiduos); 
+    document.querySelector("#navResiduos").addEventListener("click", navResiduos);
 
     // Seleccionar los elementos clickeables del menú
     const menuItems = document.querySelectorAll('.active');
 
     // Iterar sobre cada elemento y agregar un manejador de eventos 'click'
     menuItems.forEach(item => {
-        item.addEventListener('click', function() {
+        item.addEventListener('click', function () {
             // Remover la clase 'gray-bg' de todos los contenedores 'nav_container'
             document.querySelectorAll('.nav_container').forEach(container => {
                 container.classList.remove('gray-bg');
@@ -79,13 +74,179 @@ function principal() {
 
             // Obtener el contenedor 'nav_container' del elemento clickeado
             const navContainer = this.querySelector('.nav_container');
-            
+
             // Agregar la clase 'gray-bg' al contenedor 'nav_container' del elemento clickeado
             navContainer.classList.add('gray-bg');
         });
     });
 
-    pagInicio(); 
+    let parametros = {
+        recibirMensajeInicio: true
+    };
+    //Mostrar mensajes para usuarios.
+    $.ajax({
+        //Ubicacion del archivo php que va a manejar los valores.
+        url: "./php/consultaAdmin.php",
+        //Metodo en que los va a recibir.
+        type: "GET",
+        dataType: "json",
+        data: parametros,
+        async: false,
+        success: function (respuesta) {
+
+            //Contenedor general de la pagina.
+            let contenedor = document.querySelector("#contenedor");
+
+            let parteSuperior = crearElemento("div", undefined, {
+                class: "row"
+            });
+
+            //Busco el nombre del usuario.
+            let nombreUsuario = JSON.parse(localStorage.getItem("usuario"));
+            nombreUsuario = nombreUsuario.nombre;
+
+            //Titulo de la pagina.
+            let h1Inicio = crearElemento("h1", "Bienvenido, " + nombreUsuario, {
+                id: "tituloApartado",
+                class: "py-3 mb-3 mt-4"
+            });
+
+            parteSuperior.appendChild(h1Inicio);
+
+            //Contenedor principal de los recuadros de los mensajes.
+            let contenedorMensajes = crearElemento("div", undefined, {
+                class: "row",
+                id: "contenedorMensajes"
+            });
+
+
+            //Manejando la respuesta de la base de datos. Columnas recibidas "descripcion" - "fecha_mensaje"
+            //Siempre se recibe el mas nuevo.
+            let carta = crearElemento("div", undefined, {
+                class: "col-4 d-flex justify-content-between"
+            });
+
+            let contenedorMensaje = crearElemento("div", undefined, {
+                class: "card card_margin p-3 mensajesUser"
+            });
+            let contenedorMensajeTop = crearElemento('div', undefined, {
+                class: "contenedorMensajeTop"
+            });
+            let contenedorMensajeBottom = crearElemento('div', undefined, {
+                class: "contenedorMensajeBottom"
+            });
+            let tituloMensaje = crearElemento("h5", "Mensaje actual", {
+                class: 'titulo_mensajeUser'
+            });
+            let fechaMensaje = crearElemento("p", respuesta.fecha_mensaje, {
+                class: 'fecha_mensajeUser'
+            });
+            let contendorHoraLimite = crearElemento('div', undefined, {
+                class: 'contendorHoraLimite'
+            })
+            let iconMensaje = crearElemento('i', undefined, {
+                class: 'bi bi-stopwatch'
+            })
+            let horaLimite = crearElemento("p", respuesta.hora_limite, undefined);
+
+            contendorHoraLimite.appendChild(iconMensaje);
+            contendorHoraLimite.appendChild(horaLimite);
+
+            let observaciones = crearElemento("p", respuesta.observaciones, undefined);
+
+            contenedorMensajeTop.appendChild(tituloMensaje);
+            contenedorMensajeTop.appendChild(fechaMensaje);
+            contenedorMensajeBottom.appendChild(contendorHoraLimite);
+            contenedorMensajeBottom.appendChild(observaciones);
+
+            //Organizo los elementos y los agrego al div row.
+            contenedorMensaje.appendChild(contenedorMensajeTop);
+            contenedorMensaje.appendChild(contenedorMensajeBottom);
+            carta.appendChild(contenedorMensaje);
+            contenedorMensajes.appendChild(carta);
+
+            //Seccion del input para el mensaje nuevo.
+
+            carta = crearElemento("div", undefined, {
+                class: "col-8 d-flex justify-content-between"
+            });
+
+            contenedorMensaje = crearElemento("div", undefined, {
+                class: "card card_margin p-3 mensajesUser"
+            });
+            contenedorMensajeTop = crearElemento('div', undefined, {
+                class: "contenedorMensajeTop"
+            });
+            contenedorMensajeBottom = crearElemento('div', undefined, {
+                class: "contenedorMensajeBottom"
+            });
+            tituloMensaje = crearElemento("h5", "Nuevo mensaje", {
+                class: 'titulo_mensajeUser'
+            });
+            fechaMensaje = crearElemento("p", obtenerFechaActual(), {
+                class: 'fecha_mensajeUser'
+            });
+            contendorHoraLimite = crearElemento('div', undefined, {
+                class: 'contendorHoraLimite'
+            })
+            iconMensaje = crearElemento('i', undefined, {
+                class: 'bi bi-stopwatch'
+            })
+
+            let labelHoralimite = crearElemento("label", "Hora limite para la solicitud: ", {
+                for: "contenidoHoraLimiteNueva"
+            })
+
+            horaLimite = crearElemento("input", undefined, {
+                id: "contenidoHoraLimiteNueva",
+                placeholder: "Nueva hora limite"
+            });
+
+            contendorHoraLimite.appendChild(iconMensaje);
+            contendorHoraLimite.appendChild(labelHoralimite);
+            contendorHoraLimite.appendChild(horaLimite);
+
+            let labelMensajeNuevo = crearElemento("label", "Mensaje nuevo: ", {
+                for: "mensajeNuevo"
+            })
+
+            observaciones = crearElemento("textarea", undefined, {
+                id: "mensajeNuevo",
+                placeholder: "Mensaje nuevo."
+            });
+
+            let botonEnviarMensaje = crearElemento("button", "Enviar", {
+                id: "botonEnviarMensaje",
+                class: "n btn_custom_1"
+            });
+
+            botonEnviarMensaje.addEventListener("click", enviarMensaje);
+
+            contenedorMensajeTop.appendChild(tituloMensaje);
+            contenedorMensajeTop.appendChild(fechaMensaje);
+            contenedorMensajeBottom.appendChild(contendorHoraLimite);
+            contenedorMensajeBottom.appendChild(labelMensajeNuevo);
+            contenedorMensajeBottom.appendChild(observaciones);
+            contenedorMensajeBottom.appendChild(botonEnviarMensaje);
+
+            //Organizo los elementos y los agrego al div row.
+            contenedorMensaje.appendChild(contenedorMensajeTop);
+            contenedorMensaje.appendChild(contenedorMensajeBottom);
+            carta.appendChild(contenedorMensaje);
+            contenedorMensajes.appendChild(carta);
+
+            //Agrego el div con la lista de cartas al contenedor superior de la pagina.
+            parteSuperior.appendChild(contenedorMensajes);
+
+            //Agrego el contenedor superior a la pagina.
+            contenedor.appendChild(parteSuperior);
+
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.error("Error en la solicitud AJAX: " + textStatus, errorThrown);
+        }
+    });
+
 }
 
 // MANEJADORES COMUNES DE FORMULARIOS PARA BOTONES.........................................
@@ -95,24 +256,35 @@ function limpiarDatos() {
 }
 
 function cancelar() {
-    window.location.href('./');
+    pagInicio();
+}
+// Apartado INICIO____________________________________________________________________
+function pagInicio() {
+    window.location.replace("../administrador/inicioAdmin.html");
 }
 
-// Apartado INICIO____________________________________________________________________
 function navInicio() {
     pagInicio(); 
 }
 
-function pagInicio() {
-}
-
 // Apartado CATEGORÍAS________________________________________________________________
-function navCategorias() { 
-    navListarCategorias(); 
-}
-
 function navListarCategorias() {
     pagListarCategorias();
+
+    let parametros = {
+        categorias: 'categorias'
+    };
+
+    $.ajax({
+        type: "POST",
+        url: "./php/consultaAdmin.php",
+        data: parametros,
+        async: false,
+        success: tablaCategorias,
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.error("Error en la solicitud AJAX: " + textStatus, errorThrown);
+        }
+    });
 }
 
 function pagListarCategorias() { // mostrar tabla con todas las categorías y sus datos
@@ -136,7 +308,7 @@ function navAñadirCategoria() {
     pagAñadirCategoria();
 
     let parametros = {
-        categorias: 'categorias' 
+        categorias: 'categorias'
     };
     console.log(parametros);
 
@@ -145,15 +317,179 @@ function navAñadirCategoria() {
         url: "./php/consultaAdmin.php",
         data: parametros,
         async: false,
-        success: tablaCategorias,
+        success: tablaCategoriasSimplificada,
         error: function (jqXHR, textStatus, errorThrown) {
             console.error("Error en la solicitud AJAX: " + textStatus, errorThrown);
         }
     });
 }
 
+function tablaCategorias(respuesta) {
+    let categorias = JSON.parse(respuesta);
+
+    //Buscador.
+    let buscador = crearElemento("input", undefined, {
+        id: "buscadorCategorias"
+    });
+
+    buscador.addEventListener("input", function (e) {
+        // Convertir a minúsculas y quitar espacios en blanco al inicio y al final.
+        let textoBuscar = this.value.toLowerCase().trim();
+
+        // Obtener todas las filas de la tabla.
+        let filasTabla = tablaBody.querySelectorAll("tr");
+
+        // Mostrar u ocultar según el texto del buscador.
+        filasTabla.forEach(fila => {
+            // Solo se va a buscar por nombre de categoria, se seleccionan solo las columnas correspondientes.
+            let nombreCategoria = fila.querySelector("td:nth-child(2)").innerHTML.toLowerCase();
+
+            // Mostrar la fila si coincide con el texto buscado o si no se ha ingresado nada en el input.
+            if (nombreCategoria.includes(textoBuscar) || textoBuscar === "") {
+                fila.style.display = ""; // Mostrar la fila.
+            } else {
+                fila.style.display = "none"; // Ocultar la fila.
+            }
+        });
+    });
+
+    contenedor.appendChild(buscador);
+
+    //Estructura del titulo de la tabla.
+    let tablaCategorias = crearElemento("table", undefined, {
+        class: "table table-responsive table-hover mt-4"
+    });
+    let titulosTabla = crearElemento("thead");
+
+    let filaTitulos = crearElemento("tr");
+    let titulos = ["id_categorias", "descripcion", "imagenes", "observaciones"];
+    for (let i = 0; i < titulos.length; i++) {
+        let celdaTitulo = crearElemento("th", titulos[i].charAt(0).toUpperCase() + titulos[i].slice(1).toLowerCase());
+        filaTitulos.appendChild(celdaTitulo);
+    }
+    let columnaDeBotones = crearElemento("td");
+    filaTitulos.appendChild(columnaDeBotones);
+    titulosTabla.appendChild(filaTitulos);
+    tablaCategorias.appendChild(titulosTabla);
+
+    //Estructura del cuerpo de la tabla.
+    tablaBody = crearElemento("tbody");
+
+    categorias.forEach(categoria => {
+        let filaBody = crearElemento("tr", undefined, {
+            id: "idcategoria_" + categoria["id_categorias"]
+        });
+        for (let i = 0; i < titulos.length; i++) {
+            if (titulos[i] == "imagenes") {
+                let celdaBody = crearElemento("td");
+                let imagenCategoria = crearElemento("img", undefined, {
+                    src: "../../../assets/img/categorias/" + categoria[titulos[i]]
+                })
+                celdaBody.appendChild(imagenCategoria);
+                filaBody.appendChild(celdaBody);
+            } else {
+                let celdaBody = crearElemento("td", categoria[titulos[i]]);
+                filaBody.appendChild(celdaBody);
+            }
+        }
+        //Botones editar/borrar.
+        let celdaBodyBoton = crearElemento("td");
+
+        let editar = crearElemento('input', undefined, {
+            id: "botonEditarCategoria_" + categoria["id_categorias"],
+            type: "submit",
+            value: "Editar"
+        })
+        let borrar = crearElemento('input', undefined, {
+            id: "botonBorrarCategoria_" + categoria["id_categorias"],
+            type: "submit",
+            value: "Borrar"
+        })
+        celdaBodyBoton.appendChild(editar);
+        celdaBodyBoton.appendChild(borrar);
+
+        filaBody.appendChild(celdaBodyBoton);
+        tablaBody.appendChild(filaBody);
+    });
+    tablaCategorias.appendChild(tablaBody);
+    contenedor.appendChild(tablaCategorias);
+}
+
+
+function tablaCategoriasSimplificada(respuesta) {
+    let categorias = JSON.parse(respuesta);
+    let contenedor = document.querySelector(".pagForm_columnaRight");
+    //Buscador.
+    let buscador = crearElemento("input", undefined, {
+        id: "buscadorCategorias"
+    });
+
+    buscador.addEventListener("input", function (e) {
+        // Convertir a minúsculas y quitar espacios en blanco al inicio y al final.
+        let textoBuscar = this.value.toLowerCase().trim();
+
+        // Obtener todas las filas de la tabla.
+        let filasTabla = tablaBody.querySelectorAll("tr");
+
+        // Mostrar u ocultar según el texto del buscador.
+        filasTabla.forEach(fila => {
+            // Solo se va a buscar por nombre de categoria, se seleccionan solo las columnas correspondientes.
+            let nombreCategoria = fila.querySelector("td:nth-child(2)").innerHTML.toLowerCase();
+
+            // Mostrar la fila si coincide con el texto buscado o si no se ha ingresado nada en el input.
+            if (nombreCategoria.includes(textoBuscar) || textoBuscar === "") {
+                fila.style.display = ""; // Mostrar la fila.
+            } else {
+                fila.style.display = "none"; // Ocultar la fila.
+            }
+        });
+    });
+
+    contenedor.appendChild(buscador);
+
+    //Estructura del titulo de la tabla.
+    let tablaCategorias = crearElemento("table", undefined, {
+        class: "table table-responsive table-hover mt-4"
+    });
+    let titulosTabla = crearElemento("thead");
+
+    let filaTitulos = crearElemento("tr");
+    let titulos = ["imagenes", "descripcion"];
+    for (let i = 0; i < titulos.length; i++) {
+        let celdaTitulo = crearElemento("th", titulos[i].charAt(0).toUpperCase() + titulos[i].slice(1).toLowerCase());
+        filaTitulos.appendChild(celdaTitulo);
+    }
+    titulosTabla.appendChild(filaTitulos);
+    tablaCategorias.appendChild(titulosTabla);
+
+    //Estructura del cuerpo de la tabla.
+    tablaBody = crearElemento("tbody");
+
+    categorias.forEach(categoria => {
+        let filaBody = crearElemento("tr", undefined, {
+            id: "idcategoria_" + categoria["id_categorias"]
+        });
+        for (let i = 0; i < titulos.length; i++) {
+            if (titulos[i] == "imagenes") {
+                let celdaBody = crearElemento("td");
+                let imagenCategoria = crearElemento("img", undefined, {
+                    src: "../../../assets/img/categorias/" + categoria[titulos[i]]
+                })
+                celdaBody.appendChild(imagenCategoria);
+                filaBody.appendChild(celdaBody);
+            } else {
+                let celdaBody = crearElemento("td", categoria[titulos[i]]);
+                filaBody.appendChild(celdaBody);
+            }
+        }
+        tablaBody.appendChild(filaBody);
+    });
+    tablaCategorias.appendChild(tablaBody);
+    contenedor.appendChild(tablaCategorias);
+}
+
 // Formulario 1. Crear categorías...................
-function pagAñadirCategoria() { 
+function pagAñadirCategoria() {
     crearPlantillaFormularios('Nueva categoría', 'Datos de la nueva categoría', 'Categorías existentes');
     let contenedorForm = document.querySelector('#contenedorForm');
 
@@ -190,20 +526,20 @@ function pagAñadirCategoria() {
         href: '#',
         role: 'button',
         id: 'dropdownImgCategoria',
-        class: 'etiqueta_enlace_categoria', 
+        class: 'etiqueta_enlace_categoria',
         'data-bs-toggle': 'dropdown',
         'aria-expanded': 'false'
     });
-        let imagenCategoriaContenedor = crearElemento('div', undefined, {
-            id: 'imagenCategoriaContenedor',
-            class: 'imagenCategoriaContenedor'
-        })
-        let iconSeleccionarImg = crearElemento('i', undefined, { // por defecto aparece un + 
-            class: 'bi bi-xbi bi-plus-lg'
-        }); 
+    let imagenCategoriaContenedor = crearElemento('div', undefined, {
+        id: 'imagenCategoriaContenedor',
+        class: 'imagenCategoriaContenedor'
+    })
+    let iconSeleccionarImg = crearElemento('i', undefined, { // por defecto aparece un + 
+        class: 'bi bi-xbi bi-plus-lg'
+    });
 
-        imagenCategoriaContenedor.appendChild(iconSeleccionarImg); 
-        etiquetaEnlace.appendChild(imagenCategoriaContenedor); 
+    imagenCategoriaContenedor.appendChild(iconSeleccionarImg);
+    etiquetaEnlace.appendChild(imagenCategoriaContenedor);
 
     let contenedorGaleriaImg = crearElemento('div', undefined, {
         class: 'new_img_categoria_container dropdown-menu'
@@ -222,14 +558,14 @@ function pagAñadirCategoria() {
     let rutaCarpeta = "../../../assets/img/categorias/";
 
     // Número de imágenes
-    let numeroImagenes = 26; 
-    let imgItemDropdown = ''; 
+    let numeroImagenes = 26;
+    let imgItemDropdown = '';
 
     // Crear las opciones del desplegable con las imágenes
     for (let i = 1; i <= numeroImagenes; i++) {
         // Generar el nombre de archivo de la imagen
         let nombreImagen = i + ".png";
-            
+
         // Eliminar los últimos cuatro caracteres (".png") del nombre de la imagen
         let nombreImagenSinExtension = nombreImagen.slice(0, -4);
 
@@ -237,7 +573,7 @@ function pagAñadirCategoria() {
             id: 'dropdown-item',
             href: '#'
         });
-        
+
         // Crear y agregar la opción al desplegable
         let imgCategoriaDropdown = crearElemento("img", undefined, {
             id: 'img_' + nombreImagenSinExtension,
@@ -245,16 +581,30 @@ function pagAñadirCategoria() {
             src: rutaCarpeta + nombreImagen,
             alt: nombreImagenSinExtension
         });
-        imgCategoriaDropdown.addEventListener("click", function() {
+        imgCategoriaDropdown.addEventListener("click", function () {
             imagenCategoria.src = rutaCarpeta + nombreImagen;
         });
         imgItemDropdown.appendChild(imgCategoriaDropdown);
         estructuraGridGaleria.appendChild(imgItemDropdown);
     }
-    console.log(estructuraGridGaleria); 
+    let imagenes = estructuraGridGaleria.querySelectorAll("img");
+    for (let i = 0; i < imagenes.length; i++) {
+        imagenes[i].addEventListener("click", function (e) {
+            let textoDividido = this.id.split("_");
+            let imagenSeleccioanda = parseInt(textoDividido[1]);
+
+            imagenCategoriaContenedor.innerHTML = "";
+            //Se cambia el color de fondo a transparente.
+            imagenCategoriaContenedor.style.backgroundColor = "#fff0";
+            let imagenNueva = crearElemento("img", undefined, {
+                src: "../../../assets/img/categorias/" + imagenSeleccioanda + ".png"
+            })
+            imagenCategoriaContenedor.appendChild(imagenNueva);
+        });
+    }
 
     // Cambiar la imagen seleccionada cuando se elija una opción del desplegable
-    imagenCategoriaContenedor.addEventListener("change", function() {
+    imagenCategoriaContenedor.addEventListener("change", function () {
         let rutaImagenSeleccionada = imagenCategoriaContenedor.value;
         imagenCategoria.src = rutaImagenSeleccionada;
     });
@@ -266,7 +616,7 @@ function pagAñadirCategoria() {
     contenedorImagenSeleccionar.appendChild(etiquetaEnlace);
     contenedorImagenSeleccionar.appendChild(contenedorGaleriaImg);
 
-    contenedorImagen.appendChild(contenedorImagenSeleccionar); 
+    contenedorImagen.appendChild(contenedorImagenSeleccionar);
     contenedorFormLeft.appendChild(contenedorImagen);
 
     //. BLOQUE 2....................................................
@@ -286,7 +636,7 @@ function pagAñadirCategoria() {
         class: 'form-control',
         placeholder: 'Nombre de la nueva categoría'
     });
-    contenedorNombre.appendChild(inputNombre); 
+    contenedorNombre.appendChild(inputNombre);
 
     contenedorFormLeft.appendChild(contenedorNombre); // añadir a la columna izquierda del contendor
 
@@ -306,9 +656,9 @@ function pagAñadirCategoria() {
         id: 'newObservacionCategoria',
         class: 'form-control',
         placeholder: 'Observaciones de la nueva categoría',
-        rows: '5', 
+        rows: '5',
     });
-    contenedorObservaciones.appendChild(inputObservaciones); 
+    contenedorObservaciones.appendChild(inputObservaciones);
 
     contenedorFormLeft.appendChild(contenedorObservaciones);  // añadir a la columna izquierda del contenedor 
 
@@ -351,13 +701,13 @@ function pagAñadirCategoria() {
         class: "form-control filtroBuscador"
     });
 
-    contenedorBuscadorIcon.appendChild(inputNombreProducto); 
-    contenedorBuscarProductos.appendChild(labelProductosCategoria); 
+    contenedorBuscadorIcon.appendChild(inputNombreProducto);
+    contenedorBuscarProductos.appendChild(labelProductosCategoria);
 
     contenedorBuscarProductos.appendChild(contenedorBuscadorIcon);
 
-    contenedorFormRight.appendChild(contenedorBuscarProductos); 
-    
+    contenedorFormRight.appendChild(contenedorBuscarProductos);
+
     //. BOTONES......................................................
     let contenedorBotones = crearElemento('div', undefined, {
         class: 'form-group form_contenedor_botones'
@@ -391,13 +741,10 @@ function pagAñadirCategoria() {
     contenedorFormTop.appendChild(contenedorFormLeft);
     contenedorFormTop.appendChild(contenedorFormRight);
 
-    formCategorias.appendChild(contenedorFormTop); 
-    formCategorias.appendChild(contenedorBotones); 
+    formCategorias.appendChild(contenedorFormTop);
+    formCategorias.appendChild(contenedorBotones);
 
     contenedorForm.appendChild(formCategorias);
-}
-
-function tablaCategorias() {
 }
 
 function newCategoria() {
@@ -430,29 +777,435 @@ function navProductos() {
     navListarProductos(); 
 }
 
-function navListarProductos() { 
-    pagListarProductos(); 
+function navListarProductos() {
+    let contenedor = document.querySelector("#contenedor");
+    // Antes que nada, se limpia el contenedor.
+    contenedor.innerHTML = "";
+
+    // Contenedor de botones de categorias y h1 con el titulo de la vista inicio.
+    let parteSuperior = crearElemento("div", undefined, undefined);
+    let h1Inicio = crearElemento("h1", "Productos", {
+        id: "tituloApartado",
+        class: "py-3 mb-3 mt-4"
+    });
+
+    parteSuperior.appendChild(h1Inicio);
+    contenedor.appendChild(parteSuperior);
+
+    // Contenedor inferior de la pagina. La tabla se crea por separado del inicio y las categorias.
+    // Este contenedor se crea si no existe todavia.
+    let parteInferior = document.querySelector("#parteInferior");
+    if (document.querySelector("#parteInferior") == null) {
+        parteInferior = crearElemento("div", undefined, {
+            id: "parteInferior",
+            class: "mt-5"
+        });
+    }
+    contenedor.appendChild(parteInferior);
+    imprimirFiltroTabla();
+    imprimirTablaProductos();
 }
 
-function pagListarProductos() { // mostrar tabla con todos los productos y sus datos
-    // Contenido para la parte superior
-    let tituloPagina = "Productos";
-    let contenidoSuperior = crearElemento("div", undefined, {
-        class: "row contenidoSuperior"
+function pagListarProductos(respuesta) {
+    let contenedor = document.querySelector("#contenedor");
+
+    // Antes que nada, se limpia el contenedor.
+    contenedor.innerHTML = "";
+
+    // Contenedor de botones de categorias y h1 con el titulo de la vista inicio.
+    let parteSuperior = crearElemento("div", undefined, undefined);
+    let h1Inicio = crearElemento("h1", "Productos", {
+        id: "tituloApartado",
+        class: "py-3 mb-3 mt-4"
     });
 
-    // Contenido para la parte inferior
-    let contenidoInferior = document.createElement("div", undefined, {
-        id: 'row contenidoInferior',
-        class: 'contenidoInferior'
+    parteSuperior.appendChild(h1Inicio);
+
+    let categorias = crearElemento("div", undefined, {
+        class: "row",
+        id: "categorias"
     });
 
-    // Crear la plantilla genérica
-    crearPlantillaGenerica1(tituloPagina, contenidoSuperior, contenidoInferior);
+    respuesta.forEach(fila => {
+        let carta = crearElemento("div", undefined, {
+            class: "col-6 col-sm-3 col-md-3 col-lg-3"
+        });
+
+        // Le doy un id al contenedor para usarlo en el manejador.
+        let divCarta = crearElemento("div", undefined, {
+            id: "idCategoria_" + fila.id_categorias,
+            class: "label_effect card card_margin p-3 mb-3",
+            "data-toggle": "tooltip"
+        });
+
+        // Le doy un manejador a cada boton que usa el id para consultar las categorias.
+        divCarta.addEventListener("click", manejadorCategoria);
+
+        let p = crearElemento("p", fila.descripcion, undefined);
+        let img = crearElemento("img", undefined, {
+            src: "../../../assets/img/categorias/" + fila.imagenes,
+            alt: fila.descripcion
+        });
+
+        //Organizo los elementos y los agrego al div row.
+        divCarta.appendChild(img);
+        divCarta.appendChild(p);
+        carta.appendChild(divCarta);
+        categorias.appendChild(carta);
+    });
+
+    //Agrego el div con la lista de cartas al contenedor superior de la pagina.
+    parteSuperior.appendChild(categorias);
+
+    //Agrego el contenedor superior a la pagina.
+    contenedor.appendChild(parteSuperior);
+
+    // Contenedor inferior de la pagina. La tabla se crea por separado del inicio y las categorias.
+    // Este contenedor se crea si no existe todavia.
+    let parteInferior = document.querySelector("#parteInferior");
+    if (document.querySelector("#parteInferior") == null) {
+        parteInferior = crearElemento("div", undefined, {
+            id: "parteInferior",
+            class: "mt-5"
+        });
+    }
+    contenedor.appendChild(parteInferior);
+    imprimirFiltroTabla();
+    imprimirTablaProductos();
 }
 
 function navAñadirProducto() {
     pagAñadirProducto();
+}
+
+function imprimirTablaProductos(nombre = null, categoria = null, unidades = null) {
+    let todosProductos = JSON.parse(localStorage.getItem("todosProductos"));
+
+    let contenedorTablaProductos = document.querySelector("#contenedorTablaProductos");
+    if (contenedorTablaProductos == null) {
+        contenedorTablaProductos = crearElemento("div", undefined, {
+            class: "row",
+            id: "contenedorTablaProductos"
+        });
+    } else {
+        contenedorTablaProductos.innerHTML = "";
+    }
+
+    let tabla = crearElemento("table", undefined, {
+        id: "tabla",
+        class: "table table-responsive table-hover mt-4"
+    });
+    let tablaHead = crearElemento("thead");
+    let tablaBody = crearElemento("tbody");
+
+    let filaHead = crearElemento("tr");
+    let celdaCheckbox = crearElemento("th");
+    let inputCheckbox = crearElemento("input", undefined, {
+        type: "checkbox",
+        class: "genericoCheckCabecera"
+    });
+    celdaCheckbox.appendChild(inputCheckbox);
+    filaHead.appendChild(celdaCheckbox);
+
+    let titulos = ["Producto", "Categoría", "Unidades", "Observaciones", ""];
+    let productosEncontrados = false;
+
+    titulos.forEach(titulo => {
+        let celdaHead = crearElemento("th", titulo);
+        filaHead.appendChild(celdaHead);
+    });
+
+    for (let i = 0; i < todosProductos.length; i++) {
+        let filaBody = crearElemento("tr");
+
+        // filaBody.addEventListener("click", manejadorProductoPopup);
+
+        let celdaCheckbox = crearElemento("td");
+        let inputCheckbox = crearElemento("input", undefined, {
+            type: "checkbox",
+            class: "genericoCheck"
+        });
+        celdaCheckbox.appendChild(inputCheckbox);
+        filaBody.appendChild(celdaCheckbox);
+
+        let datosProducto = [
+            todosProductos[i]["nombre_producto"],
+            todosProductos[i]["nombre_categoria"],
+            todosProductos[i]["nombre_unidades"],
+            todosProductos[i]["nombre_observaciones"]
+        ];
+
+        if ((nombre === null || todosProductos[i]["nombre_producto"].toLowerCase().includes(nombre.toLowerCase())) &&
+            (categoria === null || todosProductos[i]["id_categoria"] == categoria) &&
+            (unidades === null || todosProductos[i]["nombre_unidades"] == unidades)) {
+
+            datosProducto.forEach((dato, index) => {
+                let celdaBody = crearElemento("td");
+
+                if (index === 0) {
+                    celdaBody.classList.add("tabla_nombreLargo");
+                }
+
+                if (index === 1) {
+                    celdaBody.classList.add("tabla_nombreLargo");
+
+                    let imagenCategoria = crearElemento("img", undefined, {
+                        src: `../../../assets/img/categorias/${todosProductos[i]["imagen_categoria"]}`,
+                        width: "35px",
+                    });
+                    celdaBody.appendChild(imagenCategoria);
+
+                }
+
+                celdaBody.innerHTML += dato;
+
+                filaBody.appendChild(celdaBody);
+
+                // Verificar si la celda actual es para la columna de observaciones
+                if (index === 3) {
+                    celdaBody.classList.add("tabla_observaciones");
+                }
+            });
+
+            //Los id de los botones concuerdan con la posicion del producto en el array.
+            //Esto se va a utilizar para identificar que producto esta en cada boton.
+            let celdaBoton = crearElemento("td", undefined, {
+                class: "td_alignRight"
+            });
+            let botonEditar = crearElemento("i", undefined, {
+                id: "botonEditar_" + i,
+                class: "bi bi-pencil-square",
+            });
+            let botonBorrar = crearElemento("i", undefined, {
+                id: "botonBorrar_" + i,
+                class: "bi bi-trash3",
+            })
+            // botonAñadir.addEventListener("click", agregarCesta);
+            // botonAñadir.addEventListener("click", manejadorCarrito);
+            celdaBoton.appendChild(botonEditar);
+            celdaBoton.appendChild(botonBorrar);
+            filaBody.appendChild(celdaBoton);
+
+            tablaBody.appendChild(filaBody);
+            productosEncontrados = true;
+        }
+    }
+
+    tablaHead.appendChild(filaHead);
+    tabla.appendChild(tablaHead);
+    tabla.appendChild(tablaBody);
+
+    contenedorTablaProductos.appendChild(tabla);
+    contenedor.appendChild(contenedorTablaProductos);
+
+    if (!productosEncontrados) {
+        contenedorTablaProductos.innerHTML = "";
+        let mensajeVacio = mostrarMensajeVacio("No hay productos", "¿Hacer una solicitud de producto?", "Hacer solicitud");
+        contenedorTablaProductos.appendChild(mensajeVacio);
+        let botonMensajeVacio = document.querySelector("#botonMensajeVacio");
+        // botonMensajeVacio.addEventListener("click", manejadorSolicitud);
+    }
+}
+
+function manejadorCategoria(e) {
+    let textoDividido = this.id.split("_");
+    let idCategoria = textoDividido[1];
+
+    filtroCategoria(idCategoria);
+}
+function manejadorFiltro(e) {
+    let nombre = document.getElementById("filtroBuscadorNombre").value.trim();
+    let categoria = document.getElementById("filtroDesplegableCategoria").value;
+    let unidades = document.getElementById("filtroDesplegableUnidades").value;
+
+    // Si la opción por defecto está seleccionada, asigna null
+    if (categoria === "Categorías") {
+        categoria = null;
+    }
+    if (unidades === "Ud. de medida") {
+        unidades = null;
+    }
+
+    imprimirTablaProductos(nombre, categoria, unidades);
+}
+
+function filtroCategoria(id_categoriaRecibido) {
+    //Contenedor principal de la pagina.
+    let contenedor = document.querySelector("#contenedor");
+
+    //Se cambia el titulo de la pagina para que coincida con los productos.
+    let tituloApartado = document.querySelector("#tituloApartado");
+    if (tituloApartado != null && tituloApartado.innerHTML != "Productos") {
+        tituloApartado.innerHTML = "Productos";
+    }
+
+    // En caso de que sea la primera vez que cargue la pagina, va a haber una seccion con id historial. Lo elimino
+    let historial = document.querySelector("#historial");
+    if (historial != null) {
+        historial.remove();
+    }
+
+    // Contenedor inferior de la pagina. La tabla se crea por separado del inicio y las categorias.
+    // Este contenedor se crea si no existe todavia.
+    let parteInferior = document.querySelector("#parteInferior");
+    if (document.querySelector("#parteInferior") == null) {
+        parteInferior = crearElemento("div", undefined, {
+            id: "parteInferior",
+            class: "mt-5"
+        });
+    }
+
+    contenedor.appendChild(parteInferior);
+
+    imprimirFiltroTabla(null, id_categoriaRecibido, null);
+    imprimirTablaProductos(null, id_categoriaRecibido, null);
+}
+
+function imprimirFiltroTabla(nombre = null, categoria = null, unidades = null) {
+    let todosProductos = JSON.parse(localStorage.getItem("todosProductos"));
+    let parteInferior = document.querySelector("#parteInferior");
+
+    let contenedorFiltroLabelySelect = crearElemento("div", undefined, { // contiene el div contenedorFiltroLabel y contenedorFiltroLeft
+        id: "contenedorFiltroLabelySelect",
+        class: "contenedorFiltroLabelySelect"
+    });
+
+    let contenedorFiltroLabel = crearElemento("div", undefined, { // contiene el icono de filtros y el texto "Filtrar por"
+        id: "contenedorFiltroLabel",
+        class: "contenedorFiltroLabel"
+    });
+
+    // Crear el icono de filtros
+    let iconoFiltros = document.createElement("i");
+    iconoFiltros.classList.add("bi", "bi-sliders");
+
+    let labelFiltros = crearElemento("p", "Filtrar por", {
+        id: "labelFiltro"
+    });
+
+    contenedorFiltroLabel.appendChild(iconoFiltros);
+    contenedorFiltroLabel.appendChild(labelFiltros);
+
+    let contenedorFiltroLeft = crearElemento("div", undefined, {
+        id: "contenedorFiltroLeft",
+        class: "contenedorFiltroLeft"
+    });
+
+    // Crear el contenedor del filtro
+    // Se renueva el filtro.
+    let contenedorFiltro = document.querySelector("#filtro");
+    if (contenedorFiltro != null) {
+        contenedorFiltro.remove();
+    }
+
+    contenedorFiltro = crearElemento("div", undefined, {
+        id: "filtro",
+        class: "row contenedorFiltros"
+    });
+
+    // Crear el desplegable para las categorías
+    let selectCategoria = crearElemento("select", undefined, {
+        id: "filtroDesplegableCategoria",
+        class: "form-select selectFiltros"
+    });
+
+    selectCategoria.addEventListener("change", manejadorFiltro);
+    let optionDefaultCategoria = document.createElement("option");
+    optionDefaultCategoria.text = "Categorías";
+    selectCategoria.add(optionDefaultCategoria);
+    let categorias = [...new Set(todosProductos.map(producto => producto.id_categoria))];
+    categorias.forEach(id => {
+        let optionCategoria = document.createElement("option");
+        optionCategoria.text = todosProductos.find(producto => producto.id_categoria == id).nombre_categoria;
+        optionCategoria.value = id;
+        if (id == categoria) {
+            optionCategoria.selected = true;
+        }
+        selectCategoria.add(optionCategoria);
+    });
+
+    contenedorFiltroLeft.appendChild(selectCategoria);
+
+    // Crear el desplegable para las unidades
+    let selectUnidades = crearElemento("select", undefined, {
+        id: "filtroDesplegableUnidades",
+        class: "form-select selectFiltros"
+    });
+
+    selectUnidades.addEventListener("change", manejadorFiltro);
+    let optionDefaultUnidades = document.createElement("option");
+    optionDefaultUnidades.text = "Ud. de medida";
+    selectUnidades.add(optionDefaultUnidades);
+    let unidadesFiltro = [...new Set(todosProductos.map(producto => producto.nombre_unidades))];
+    unidadesFiltro.forEach(unidad => {
+        let optionUnidad = document.createElement("option");
+        optionUnidad.text = unidad;
+        if (unidad == unidades) {
+            optionUnidad.selected = true;
+        }
+        selectUnidades.add(optionUnidad);
+    });
+    contenedorFiltroLeft.appendChild(selectUnidades);
+
+    contenedorFiltroLabelySelect.appendChild(contenedorFiltroLabel);
+    contenedorFiltroLabelySelect.appendChild(contenedorFiltroLeft);
+
+    contenedorFiltro.appendChild(contenedorFiltroLabelySelect);
+
+    let contenedorFiltroRight = crearElemento("div", undefined, {
+        id: "contenedorFiltroRight",
+        class: "contenedorFiltroRight"
+    });
+
+    let contenedorBuscador = crearElemento("div", undefined, {
+        id: "contenedorBuscador",
+        class: "contenedorBuscador input-group"
+    });
+
+    let contenedorBuscadorIcon = crearElemento("div", undefined, {
+        id: "contenedorBuscadorIcon",
+        class: "contenedorBuscadorIcon input-group-prepend input-group"
+    });
+
+    let contenedorIconBuscador = crearElemento("span", undefined, {
+        class: "input-group-text searchbar"
+    });
+
+    let iconBuscador = crearElemento("i", undefined, {
+        class: "bi bi-search"
+    });
+
+    contenedorIconBuscador.appendChild(iconBuscador);
+    contenedorBuscadorIcon.appendChild(contenedorIconBuscador);
+    contenedorBuscador.appendChild(contenedorBuscadorIcon);
+
+    // Crear el campo de texto para el nombre
+    let inputNombre = crearElemento("input", undefined, {
+        id: "filtroBuscadorNombre",
+        type: "text",
+        placeholder: "Buscar por nombre de producto...",
+        class: "form-control searchbar filtroBuscador",
+        value: nombre || ""
+    });
+
+    let botonNuevoProducto = crearElemento("input", undefined, {
+        type: "submit",
+        id: "botonNuevoProducto",
+        class: "btn btn_custom_1",
+        value: "Nuevo producto",
+    });
+
+    // botonNuevoProducto.addEventListener("click", manejadorSolicitud);
+
+    inputNombre.addEventListener("input", manejadorFiltro);
+    contenedorBuscadorIcon.appendChild(inputNombre);
+    contenedorFiltroRight.appendChild(contenedorBuscador);
+    contenedorFiltroRight.appendChild(botonNuevoProducto);
+
+    contenedorFiltro.appendChild(contenedorFiltroRight);
+
+    // Añadir el contenedor del filtro al DOM
+    parteInferior.appendChild(contenedorFiltro);
 }
 
 function crearSelect(opciones,idSelect) {
@@ -723,7 +1476,98 @@ function pagAñadirProducto() {
     contenedorForm.appendChild(formProductos);
     //Es necesario ejecutar esta función aquí porque es cuando acaba de crearse el formulario
     crearCheckboxes(residuosSeleccion);
+    tablaProductosSimplificada();
 }
+
+function tablaProductosSimplificada() {
+    let productos = JSON.parse(localStorage.getItem("todosProductos"));
+    let contenedor = document.querySelector(".pagForm_columnaRight");
+
+    console.log(productos);
+
+    //Buscador.
+    let buscador = crearElemento("input", undefined, {
+        id: "buscadorCategorias"
+    });
+
+    buscador.addEventListener("input", function (e) {
+        // Convertir a minúsculas y quitar espacios en blanco al inicio y al final.
+        let textoBuscar = this.value.toLowerCase().trim();
+
+        // Obtener todas las filas de la tabla.
+        let filasTabla = tablaBody.querySelectorAll("tr");
+
+        // Mostrar u ocultar según el texto del buscador.
+        filasTabla.forEach(fila => {
+            // Solo se va a buscar por nombre de categoria, se seleccionan solo las columnas correspondientes.
+            let nombreProducto = fila.querySelector("td:first-child").innerHTML.toLowerCase();
+
+            // Mostrar la fila si coincide con el texto buscado o si no se ha ingresado nada en el input.
+            if (nombreProducto.includes(textoBuscar) || textoBuscar === "") {
+                fila.style.display = ""; // Mostrar la fila.
+            } else {
+                fila.style.display = "none"; // Ocultar la fila.
+            }
+        });
+    });
+
+    contenedor.appendChild(buscador);
+
+    //Estructura del titulo de la tabla.
+    let tablaProductos = crearElemento("table", undefined, {
+        class: "table table-responsive table-hover mt-4"
+    });
+    let titulosTabla = crearElemento("thead");
+
+    let filaTitulos = crearElemento("tr");
+    let titulos = ["descripcion", "categoria"];
+    for (let i = 0; i < titulos.length; i++) {
+        let celdaTitulo = crearElemento("th", titulos[i].charAt(0).toUpperCase() + titulos[i].slice(1).toLowerCase());
+        filaTitulos.appendChild(celdaTitulo);
+    }
+    titulosTabla.appendChild(filaTitulos);
+    tablaProductos.appendChild(titulosTabla);
+
+    //Estructura del cuerpo de la tabla.
+    tablaBody = crearElemento("tbody");
+
+    titulos = ["nombre_producto", "nombre_categoria"];
+
+    productos.forEach(producto => {
+        let filaBody = crearElemento("tr", undefined);
+
+        for (let i = 0; i < titulos.length; i++) {
+            let celdaBody = crearElemento("td", producto[titulos[i]]);
+            filaBody.appendChild(celdaBody);
+        }
+
+        tablaBody.appendChild(filaBody);
+    });
+    tablaProductos.appendChild(tablaBody);
+    contenedor.appendChild(tablaProductos);
+}
+
+// Formulario 3. Crear ud. de medida...................
+function navUdMedida() {
+    pagUdMedida();
+
+    let parametros = {
+        unidadesDeMedida: 'unidadesMedida'
+    };
+    console.log(parametros);
+
+    $.ajax({
+        type: "POST",
+        url: "./php/consultaAdmin.php",
+        data: parametros,
+        async: false,
+        success: tablaUnidadesMedida,
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.error("Error en la solicitud AJAX: " + textStatus, errorThrown);
+        }
+    });
+}
+
 function newProducto()
 {
     let nombre = document.getElementById('newNombreProducto').value;

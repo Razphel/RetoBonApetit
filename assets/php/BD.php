@@ -164,29 +164,6 @@ class BD
         return $filas;
     }
 
-    public static function imprimirTodosPedidos()
-    {
-        try {
-            $conexion = self::conexionBD();
-            $sql = "SELECT pedidos.fecha_pedido,linea_pedido.descripcion,linea_pedido.cantidad,linea_pedido.unidades,linea_pedido.observaciones 
-            FROM pedidos inner join linea_pedido 
-            ON pedidos.id_pedidos = linea_pedido.fk_pedido";
-
-            $resultado = $conexion->query($sql);
-
-            // Crear un array para almacenar todas las filas        
-            $filas = [];
-            // Recorrer los resultados y almacenar cada fila en el array        
-            while ($fila = $resultado->fetch()) {
-                $filas[] = $fila;
-            }
-        } catch (Exception $e) {
-            throw new Exception("ERROR: " + $e);
-        }
-        //Esta consulta te devuelve un array de arrays con todos los datos de la tabla producto.
-        return $filas;
-    }
-
     public static function CategoriasProductos()
     {
         try {
@@ -268,7 +245,6 @@ class BD
             self::insertarRegistro('productos', $datos1);
             $id_productoNuevo = self::seleccionarIdProductoNuevo();
             $datos2['fk_producto'] = $id_productoNuevo;
-            echo var_dump($datos2);
             self::insertarRegistro('producto_categoria', $datos2);
             foreach ($datos3 as $key => $value) 
             {   
@@ -288,16 +264,16 @@ class BD
     
 
     public static function eliminarRegistro($tabla, $id)
-{
-    try {
-        $conexion = self::conexionBD();
-        $sql = "DELETE FROM $tabla where id_$tabla =" . $id;
-        $resultado = $conexion->exec($sql);
-        return true;
-    } catch (PDOException $e) {
-        throw new Exception("ERROR: " . $e->getMessage());
+    {
+        try {
+            $conexion = self::conexionBD();
+            $sql = "DELETE FROM $tabla where id_$tabla =" . $id;
+            $resultado = $conexion->exec($sql);
+            return true;
+        } catch (PDOException $e) {
+            throw new Exception("ERROR: " . $e->getMessage());
+        }
     }
-}
 
     public static function actualizarRegistro($tabla, $datos, $id)
     {
@@ -388,33 +364,33 @@ class BD
             throw new Exception("ERROR: " . $e->getMessage());
         }
     }
-    // public static function imprimirTodosPedidos()
-    // {
-    //     try {
-    //         $conexion = self::conexionBD();
-    //         $sql = "SELECT usuarios.nombre,pedidos.fecha_pedido,linea_pedido.descripcion,linea_pedido.cantidad,linea_pedido.unidades,linea_pedido.observaciones 
-    //         FROM linea_pedido inner join pedidos
-    //         ON linea_pedido.fk_pedido =  pedidos.id_pedidos 
-    //         inner join usuarios 
-    //         on pedidos.fk_usuario = usuarios.id_usuarios 
-    //         inner join solicitudes 
-    //         on usuarios.id_usuarios = solicitudes.fk_usuario 
-    //         where solicitudes.tramitado = 1" ;
+    public static function imprimirTodosPedidos()
+    {
+        try {
+            $conexion = self::conexionBD();
+            $sql = "SELECT usuarios.nombre,pedidos.fecha_pedido,linea_pedido.descripcion,linea_pedido.cantidad,linea_pedido.unidades,linea_pedido.observaciones 
+            FROM linea_pedido inner join pedidos
+            ON linea_pedido.fk_pedido =  pedidos.id_pedidos 
+            inner join usuarios 
+            on pedidos.fk_usuario = usuarios.id_usuarios 
+            inner join solicitudes 
+            on usuarios.id_usuarios = solicitudes.fk_usuario 
+            where solicitudes.tramitado = 1" ;
 
-    //         $resultado = $conexion->query($sql);
+            $resultado = $conexion->query($sql);
 
-    //         // Crear un array para almacenar todas las filas
-    //         $filas = [];
-    //         // Recorrer los resultados y almacenar cada fila en el array
-    //         while ($fila = $resultado->fetch()) {
-    //             $filas[] = $fila;
-    //         }
-    //     } catch (Exception $e) {
-    //         throw new Exception("ERROR: " .$e);
-    //     }
-    //     //Esta consulta te devuelve un array de arrays con todos los datos de la tabla producto.
-    //     return $filas;
-    // }
+            // Crear un array para almacenar todas las filas
+            $filas = [];
+            // Recorrer los resultados y almacenar cada fila en el array
+            while ($fila = $resultado->fetch()) {
+                $filas[] = $fila;
+            }
+        } catch (Exception $e) {
+            throw new Exception("ERROR: " .$e);
+        }
+        //Esta consulta te devuelve un array de arrays con todos los datos de la tabla producto.
+        return $filas;
+    }
 
 }   
     //----------MIS PRUEBAS--------------------

@@ -34,23 +34,23 @@ function principal() {
 
     //Aqui es necesario que las consultas se ejecuten en el orden correcto.
     //Para eso hay que evitar que el ajax funcione de forma asincrona agregando async: false.
-    let parametros = {
-        mensajesInicio: true
-    };
-    //Mostrar categorias.
-    $.ajax({
-        //Ubicacion del archivo php que va a manejar los valores.
-        url: "./php/consultaUsuario.php",
-        //Metodo en que los va a recibir.
-        type: "GET",
-        dataType: "json",
-        data: parametros,
-        async: false,
-        success: mensajesInicio,
-        error: function (jqXHR, textStatus, errorThrown) {
-            console.error("Error en la solicitud AJAX: " + textStatus, errorThrown);
-        }
-    });
+    // let parametros = {
+    //     mensajesInicio: true
+    // };
+    // //Mostrar categorias.
+    // $.ajax({
+    //     //Ubicacion del archivo php que va a manejar los valores.
+    //     url: "./php/consultaUsuario.php",
+    //     //Metodo en que los va a recibir.
+    //     type: "GET",
+    //     dataType: "json",
+    //     data: parametros,
+    //     async: false,
+    //     success: mensajesInicio,
+    //     error: function (jqXHR, textStatus, errorThrown) {
+    //         console.error("Error en la solicitud AJAX: " + textStatus, errorThrown);
+    //     }
+    // });
 
     //Mostrar Historial.
     //Se almacena en esta letiable la información recogida desde el main

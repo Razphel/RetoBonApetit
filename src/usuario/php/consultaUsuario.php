@@ -39,7 +39,7 @@ if (isset($_REQUEST['pedirProductos'])) {
 }
 
 if (isset($_REQUEST['mensajesInicio'])) {
-    $mensajes = BD::imprimirMensajesInicio();
+    $mensajes = BD::imprimirMensajesInicio('mensajes');
     echo json_encode($mensajes);
 }
 
