@@ -27,15 +27,20 @@ if (isset($_POST['NewUsuario'])) {
     $addUsuario = BD::insertarRegistro("usuarios", $usuarioInsertar);
 }
 
-if(isset($_POST['NewProducto']) && isset($_POST['categoriaNewProducto']) && isset($_POST['residuosNewProducto']))
-{   
+if (isset($_GET['id_usuarios'])) {
+    echo var_dump($_GET['id_usuarios']);
+    $usuarioEliminar = json_decode($_GET['id_usuarios']);
+    $elimUser = BD::eliminarRegistro("usuarios", $usuarioEliminar);
+}
+
+if (isset($_POST['NewProducto']) && isset($_POST['categoriaNewProducto']) && isset($_POST['residuosNewProducto'])) {
     echo var_dump($_REQUEST['NewProducto']);
     echo var_dump($_REQUEST['categoriaNewProducto']);
     echo var_dump($_REQUEST['residuosNewProducto']);
-    $productoInsertar = json_decode($_REQUEST['NewProducto'],true);
-    $categoriaNewProducto = json_decode($_REQUEST['categoriaNewProducto'],true);
-    $residuosNewProducto = json_decode($_REQUEST['residuosNewProducto'],true);
-    $addProducto = BD::insertarNewProductoTransaccion($productoInsertar,$categoriaNewProducto,$residuosNewProducto);
+    $productoInsertar = json_decode($_REQUEST['NewProducto'], true);
+    $categoriaNewProducto = json_decode($_REQUEST['categoriaNewProducto'], true);
+    $residuosNewProducto = json_decode($_REQUEST['residuosNewProducto'], true);
+    $addProducto = BD::insertarNewProductoTransaccion($productoInsertar, $categoriaNewProducto, $residuosNewProducto);
 }
 
 if (isset($_REQUEST['categorias'])) {
@@ -43,11 +48,10 @@ if (isset($_REQUEST['categorias'])) {
     echo json_encode($categorias);
 }
 
-if (isset($_REQUEST['residuos'])) 
-{
+if (isset($_REQUEST['residuos'])) {
     $residuos = BD::imprimirConsultas('residuos');
     echo json_encode($residuos);
-} 
+}
 
 
 if (isset($_REQUEST['unidadesDeMedida'])) {
@@ -76,16 +80,16 @@ if (isset($_REQUEST['claveTodosUsuarios'])) {
 }
 
 if (isset($_REQUEST['recibirMensajeInicio'])) {
-    $mensaje=BD::imprimirMensajesInicio();
+    $mensaje = BD::imprimirMensajesInicio();
     echo json_encode($mensaje);
 }
 
 if (isset($_REQUEST['enviarNuevoMensaje'])) {
-    $tabla="mensajes";
-    $mensaje=$_REQUEST['nuevoMensaje'];
-    $hora=$_REQUEST['nuevaHoraLimite'];
-    $id_usuario=$_REQUEST['id_usuario'];
-    $fechaActual=$_REQUEST['fecha'];
+    $tabla = "mensajes";
+    $mensaje = $_REQUEST['nuevoMensaje'];
+    $hora = $_REQUEST['nuevaHoraLimite'];
+    $id_usuario = $_REQUEST['id_usuario'];
+    $fechaActual = $_REQUEST['fecha'];
 
     $datos = array(
         "fecha_mensaje" => $fechaActual,
@@ -126,5 +130,3 @@ if (isset($_POST['NewSolicitud'])) {
         echo "Solicitud no es un JSON válido";
     }
 }
-
-

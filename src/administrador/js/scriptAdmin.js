@@ -602,13 +602,14 @@ function pagAñadirCategoria() {
     for (let i = 0; i < imagenes.length; i++) {
         imagenes[i].addEventListener("click", function (e) {
             let textoDividido = this.id.split("_");
-            let imagenSeleccioanda = parseInt(textoDividido[1]);
+            let imagenSeleccionada = parseInt(textoDividido[1]);
 
             imagenCategoriaContenedor.innerHTML = "";
             //Se cambia el color de fondo a transparente.
             imagenCategoriaContenedor.style.backgroundColor = "#fff0";
             let imagenNueva = crearElemento("img", undefined, {
-                src: "../../../assets/img/categorias/" + imagenSeleccioanda + ".png"
+                id: "categoriaSeleccionada_" + imagenSeleccionada,
+                src: "../../../assets/img/categorias/" + imagenSeleccionada + ".png"
             })
             imagenCategoriaContenedor.appendChild(imagenNueva);
         });
@@ -742,7 +743,7 @@ function pagAñadirCategoria() {
         type: 'submit',
         value: 'Crear categoría',
         class: 'btn btn_custom_1',
-        onclick: 'crearCategoria()'
+        onclick: 'newCategoria()'
     });
 
     contenedorBotones.appendChild(btnCancelar);
@@ -761,10 +762,15 @@ function pagAñadirCategoria() {
 function newCategoria() {
     let nombre = document.getElementById('newCategoriaName').value;
     let observaciones = document.getElementById('newObservacionCategoria').value;
+    let newImagen = document.querySelector("#imagenCategoriaContenedor img");
+
+    let textoDividido = newImagen.id.split("_");
+    newImagen = parseInt(textoDividido[1]) + ".png";
 
     let parametros = {
         NewCategoria: JSON.stringify({
             descripcion: nombre,
+            imagenes: newImagen,
             observaciones: observaciones
         })
     };
@@ -1929,7 +1935,7 @@ function tablaPedidos(pedidos) {
     let titulosTabla = crearElemento("thead");
 
     let filaTitulos = crearElemento("tr");
-    let titulos = ["nombre", "fecha_pedido", "descripcion", "cantidad", "unidades", "observaciones"];
+    let titulos = [ "fecha_pedido","observaciones"];
     for (let i = 0; i < titulos.length; i++) {
         let tituloMostrar = titulos[i] === "descripcion" ? "Producto" : titulos[i];
         let celdaTitulo = crearElemento("th", tituloMostrar.charAt(0).toUpperCase() + tituloMostrar.slice(1).toLowerCase());
@@ -2032,7 +2038,7 @@ function tablaUsuarios(usuarios) {
     let titulosTabla = crearElemento("thead");
 
     let filaTitulos = crearElemento("tr");
-    let titulos = ["id_usuarios", "admin", "nombre_usuario", "nombre", "apellido", "email", "password", "activo", "observaciones", "telefono"];
+    let titulos = ["admin", "nombre_usuario", "nombre", "apellido", "email", "password", "activo", "observaciones", "telefono"];
     for (let i = 0; i < titulos.length; i++) {
         let celdaTitulo = crearElemento("th", titulos[i].charAt(0).toUpperCase() + titulos[i].slice(1).toLowerCase());
         filaTitulos.appendChild(celdaTitulo);
@@ -2065,8 +2071,9 @@ function tablaUsuarios(usuarios) {
         let borrar = crearElemento('input', undefined, {
             id: "botonBorrarUsuario_" + usuario["id_usuarios"],
             type: "submit",
-            value: "Borrar"
+            value: "Borrar",
         })
+        borrar.addEventListener("click", borrarUsuario);
         celdaBodyBoton.appendChild(editar);
         celdaBodyBoton.appendChild(borrar);
 
@@ -2077,6 +2084,30 @@ function tablaUsuarios(usuarios) {
     contenedor.appendChild(tablaUsuarios);
 }
 
+function borrarUsuario(e) {
+
+    let textoDividido = this.id.split("_");
+    let id_usuarioRecibido = parseInt(textoDividido[1]);
+
+    let parametros = {
+        id_usuarios: id_usuarioRecibido
+    }
+
+    $.ajax({
+        //Ubicacion del archivo php que va a manejar los valores.
+        url: "./php/consultaAdmin.php",
+        //Metodo en que los va a recibir.
+        type: "GET",
+        data: parametros,
+        dataType: "json",
+        success: function () {
+            principal();
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.error("Error en la solicitud AJAX: " + textStatus, errorThrown);
+        }
+    });
+}
 function navListarUsuarios() {
     pagListarUsuarios();
 
